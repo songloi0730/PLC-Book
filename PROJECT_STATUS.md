@@ -211,10 +211,16 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
    *Quy trình đánh giá* trong `CLAUDE.md`. Bản thảo hiện **0 LỖI · 0 CẢNH BÁO** ở cả hai bộ kiểm.
 5. ⚠⚠ **Tìm chuyên gia an toàn rà soát Ch.47 và Ch.48** — hạng mục treo duy nhất có rủi ro pháp lý.
    Hai chương đã viết xong nhưng **không được phát hành** trước khi có rà soát.
-6. **Viết nốt đợt 4** — còn 11 chương: Ch.2–3, 5, 8–9, 11–13, 21, 22, 24, 29.
-   *(session 9 đã viết Ch.16, 18, 19, 20 — tất cả sạch cả hai bộ kiểm ngay lượt đầu.)*
-7. **Đợt 5** — analog & truyền thông (Ch.31–46).
-8. **Đợt 6** — ráp lại (Ch.49, 53–58) + 11 phụ lục. Phụ lục A1/A2 viết sau cùng.
+6. **Viết nốt đợt 4** — còn 8 chương: Ch.2–3, 5, 11, 12, 21, 22, 24, 29.
+   *(session 9 viết Ch.16, 18, 19, 20; session 10 viết Ch.8, 9, 13.)*
+7. ⭐ **Bổ sung tên hãng vào 8 mục "Khác biệt giữa các hãng" đã viết trước khi đổi B1** —
+   Ch.10, 15, 16, 17, 18, 19, 20, 25 hiện nói chung chung kiểu "có hệ thế này, có hệ thế kia",
+   không nêu tên hãng nào. Chính sách B1 mới (session 10) cho phép nêu thẳng, và đây chính là
+   chỗ người đọc cần để **so sánh và tự chọn phần cứng**. Ch.8, 9, 13 đã viết theo chuẩn mới —
+   dùng làm mẫu. ⚠ Chỉ nêu điều **tra được và chắc chắn**; số liệu cụ thể phải kèm nguồn và
+   ngày kiểm (B2, B10), đừng bịa thông số.
+8. **Đợt 5** — analog & truyền thông (Ch.31–46).
+9. **Đợt 6** — ráp lại (Ch.49, 53–58) + 11 phụ lục. Phụ lục A1/A2 viết sau cùng.
 3. **Chốt 5 câu hỏi còn lại của máy mẫu** (`docs/case_study_may_mau.md` §7) — chưa chặn, nhưng
    Ch.55 và Ch.57 sẽ cần.
 3. ~~Bổ sung tài liệu nguồn Siemens & Mitsubishi~~ ✅ xong session 2–3. Thư viện nguồn coi như **đủ để viết**:
