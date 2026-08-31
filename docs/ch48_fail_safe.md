@@ -123,7 +123,7 @@ Nguyên tắc đã gặp ở Chương 4 và Chương 15, giờ phát biểu ở 
 
 Chương trình phải **dùng** tính chất đó, không chỉ có nó:
 
-```
+```iecst
 // Phát hiện ngoài dải → không tin giá trị, báo lỗi
 IF AI_AirPress_mA < 3.6 OR AI_AirPress_mA > 20.5 THEN
     M_AirPressFault := TRUE;
@@ -168,7 +168,7 @@ tức là đúng lúc bạn cần câu trả lời đúng.
 
 Một chi tiết dễ bỏ qua: tín hiệu xác nhận phải **độc lập với lệnh**, không được suy ra từ lệnh.
 
-```
+```iecst
 // ✗ SAI — "phản hồi" chỉ là chính cái lệnh
 M_Clamp1Confirmed := DO_Clamp1Vlv;
 
@@ -197,7 +197,7 @@ giống hệt nhau.
 
 **Nhịp tim** *(heartbeat)* giải quyết bằng cách biến sự im lặng thành thông tin:
 
-```
+```iecst
 // Bên A: đảo bit đều đặn, ví dụ mỗi 500 ms
 IF T_Heartbeat.Q THEN
     Hb_ToB := NOT Hb_ToB;
@@ -309,7 +309,7 @@ Giá trị thay thế phải là giá trị **an toàn** — thường là giá 
 
 ### 🔍 BẪY 4 — Nhịp tim dùng bit giữ mức thay vì đảo trạng thái
 
-```
+```iecst
 // ✗ SAI — bit kẹt ở 1 khi đối tác treo trông giống hệt lúc đang chạy
 Hb_ToB := TRUE;
 ```

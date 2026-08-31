@@ -24,7 +24,14 @@
     "MD036": false,
 
     // Bullet/ordered list trong bảng và callout gây báo giả.
-    "MD032": false
+    "MD032": false,
+
+    // Bốn callout (⚠ NGUY HIỂM · ⚡ LƯU Ý · 💡 MẸO · 🔍 BẪY) là BỐN blockquote
+    // RIÊNG, cách nhau bằng dòng trống. Đã kiểm bằng marked (CommonMark): hai
+    // blockquote liền nhau cách nhau một dòng trống render ra đúng hai thẻ
+    // blockquote tách biệt. MD028 chỉ cảnh báo cho parser đời cũ hay gộp chúng
+    // lại — không áp cho quy ước callout của sách này.
+    "MD028": false
   },
   "globs": ["docs/**/*.md"],
   "ignores": ["node_modules/**"]

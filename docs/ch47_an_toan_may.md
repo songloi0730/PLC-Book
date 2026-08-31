@@ -53,7 +53,7 @@ nguy không dừng theo CPU.**
 
 Trình tự đúng của một dự án:
 
-```
+```text
 1. Xác định giới hạn của máy      (làm gì, ai dùng, dùng thế nào, kể cả dùng sai dự đoán được)
         ↓
 2. Nhận diện mối nguy              (liệt kê MỌI cách máy có thể gây hại)
@@ -319,7 +319,7 @@ Với mỗi dạng năng lượng trong máy, phải có cách **cô lập, kho�
 
 ### 🔍 BẪY 1 — Đưa E-Stop vào logic PLC thường
 
-```
+```iecst
 // ✗✗ SAI NGHIÊM TRỌNG
 IF NOT DI_EStopOK THEN
     DO_ConvRun     := FALSE;
@@ -347,7 +347,7 @@ tồn tại trên sơ đồ.
 
 ### 🔍 BẪY 4 — Reset tự động khi hết điều kiện
 
-```
+```iecst
 // ✗ SAI — máy tự chạy lại khi gỡ E-Stop
 IF DI_EStopOK THEN
     MachineState := Running;

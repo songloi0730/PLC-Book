@@ -37,7 +37,7 @@ lầm trong code đã viết mất nửa ngày.
 
 Lưu đồ cho trạm 1 của DP-01, dạng đơn giản nhất:
 
-```
+```text
       ┌─────────────┐
       │  Chờ board  │◄────────────────┐
       └──────┬──────┘                 │
@@ -90,7 +90,7 @@ chất với hai cách ở Chương 25:
 
 Với biến số bước, mã bước nên **cách nhau 10** để về sau chèn thêm bước mà không phải đánh số lại:
 
-```
+```text
 0   — chờ board
 10  — nâng chặn
 20  — nâng kẹp
@@ -116,7 +116,7 @@ Cần chèn một bước giữa 20 và 30? Dùng 25. Không phải sửa gì kh
 
 Trình tự trạm 1, viết bằng biến số bước:
 
-```
+```text
 // ── Trình tự trạm 1 — chỉ chạy khi tầng máy cho phép (Chương 27) ──
 IF NOT M_CycleEnable THEN
     RETURN;                                   // giữ nguyên bước, không tiến
@@ -209,7 +209,7 @@ lỗi thành một cơ chế **giấu lỗi**.
 
 Không cần một timer cho mỗi bước. Một timer dùng chung, tự đặt lại mỗi khi bước đổi:
 
-```
+```text
 VAR
     Stn1_StepPrev  : INT;
     T_StepTimeout  : TON;
@@ -259,7 +259,7 @@ dừng máy. Cách này phân biệt được **chờ hợp lệ** với **kẹt
 > 💡 **MẸO — thông báo lỗi phải nói ba điều**
 > Không đủ: *"Lỗi trạm 1"*. Đủ: **bước nào · đang chờ gì · nên kiểm tra gì**.
 >
-> ```
+> ```text
 > "S1.20 quá thời gian (3 giây) — chờ DI_Clamp1Up.
 >  Kiểm tra: cảm biến reed kẹp trạm 1, áp suất khí, xy-lanh có kẹt không."
 > ```
@@ -279,7 +279,7 @@ tuần tự.
 
 Tách thành hai chuỗi bước độc lập, mỗi chuỗi một biến bước riêng, rồi **hợp nhất** khi cả hai xong:
 
-```
+```text
 // Nhánh A: hạ kẹp
 CASE Stn1_BranchA OF
    0:  IF M_ParallelStart THEN Stn1_BranchA := 10; END_IF;
@@ -315,7 +315,7 @@ END_IF;
 
 Ở máy nhiều trạm, dạng phổ biến nhất:
 
-```
+```text
 Trạm 1 ở bước 50:  "chờ trạm 2 sẵn sàng"   →  chờ  Stn2_Ready
 Trạm 2 ở bước 0:   "chờ board tới"          →  chờ  DI_BoardStn2
 ```
@@ -337,7 +337,7 @@ mới"*, và phải **bằng TRUE khi trạm 2 rỗng**. Sai nghĩa ở đây l�
 **Hai — giám sát "máy đứng chờ" ở tầng máy.** Đã nêu ở mục 26.4: nếu không sản phẩm nào ra trong một
 khoảng dài, báo cảnh báo kèm **trạng thái mọi trạm**:
 
-```
+```text
 "Máy đứng chờ 120 giây.  Trạm 1: bước 50 (chờ trạm 2).  Trạm 2: bước 0 (chờ board)."
 ```
 
@@ -359,7 +359,7 @@ sát ở tầng máy.
 
 ### 🔍 BẪY 2 — Dùng timeout để chuyển bước
 
-```
+```iecst
 // ✗ SAI — timer thay cho phản hồi
 IF T_Wait.Q THEN
     Stn1_Step := 30;         // "chắc kẹp lên rồi"
@@ -369,7 +369,7 @@ END_IF;
 Trình tự này chạy đúng khi mọi thứ bình thường, và **hỏng âm thầm** khi cơ cấu chậm hoặc kẹt. Bước sau
 sẽ tác động lên một cơ cấu chưa ở đúng vị trí.
 
-```
+```iecst
 // ✓ ĐÚNG — phản hồi để chuyển, timeout để báo lỗi
 IF Clamp1.Done THEN
     Stn1_Step := 30;
@@ -395,7 +395,7 @@ Luôn có một biến `Stn1_FaultStep` giữ lại bước lúc xảy ra lỗi,
 
 Đoạn code ở mục 26.3 mở đầu bằng:
 
-```
+```iecst
 IF NOT M_CycleEnable THEN
     RETURN;
 END_IF;

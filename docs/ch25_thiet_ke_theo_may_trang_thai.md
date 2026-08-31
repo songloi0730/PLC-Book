@@ -9,7 +9,7 @@
 
 Một kỹ sư viết chương trình cho DP-01. Cách làm rất tự nhiên: mỗi tình huống một cờ.
 
-```
+```text
 M_Running     — máy đang chạy tự động
 M_Paused      — máy đang tạm dừng
 M_Homing      — máy đang về gốc
@@ -21,7 +21,7 @@ tốt. Thêm nút Reset: **bắt đầu lạ**.
 
 Một hôm máy dừng giữa chu trình. Kỹ thuật viên mở phần mềm xem, thấy:
 
-```
+```text
 M_Running = 1        M_Paused  = 1
 M_Homing  = 0        M_Fault   = 1
 ```
@@ -162,7 +162,7 @@ Máy trạng thái không phụ thuộc ngôn ngữ. Dưới đây là cùng m�
 
 Cách gọn nhất khi ngôn ngữ có `CASE`.
 
-```
+```text
 // Khai báo trạng thái bằng kiểu liệt kê — KHÔNG dùng số trần
 TYPE E_MachineState :
     (Uninitialized, Homing, Idle, Running, Hold, Alarm, Resetting);
@@ -252,7 +252,7 @@ Ba điểm đáng chú ý trong đoạn trên:
 Khi phải viết bằng ladder — thường vì đội bảo trì tại nhà máy chỉ đọc được ladder (xem Chương 20) —
 dùng **một bit cho mỗi trạng thái**, kèm một quy tắc bắt buộc.
 
-```
+```text
 // Mỗi trạng thái một bit
 S_Uninit   S_Homing   S_Idle   S_Running   S_Hold   S_Alarm   S_Resetting
 ```
@@ -265,7 +265,7 @@ S_Uninit   S_Homing   S_Idle   S_Running   S_Hold   S_Alarm   S_Resetting
 > - Thêm một nấc **giám sát**: đếm số bit đang bật; khác 1 thì bật `M_AnyFault`. Nấc này là lưới an
 >   toàn — nó biến một lỗi logic âm thầm thành một báo động nhìn thấy được.
 
-```
+```text
 // Nấc chuyển tiếp: Idle → Running
    S_Idle   DI_StartPB   M_AllPermissive              S_Running
  ────┤ ├───────┤ ├───────────┤ ├────────────────┬────────( S )──
@@ -297,7 +297,7 @@ DP-01 có **hai trạm**. Câu hỏi tự nhiên: một máy trạng thái hay b
 
 Câu trả lời: **ba** — một cho máy tổng, một cho mỗi trạm — xếp thành hai tầng.
 
-```
+```text
               ┌─────────────────────────────┐
               │   MachineState  (máy tổng)  │
               │   Idle / Running / Alarm …  │
@@ -399,7 +399,7 @@ sau mới phát hiện.
 **Cách phòng:** đèn tháp và dòng trạng thái trên màn hình phải **suy ra trực tiếp từ biến trạng thái**,
 không tính lại từ điều kiện khác:
 
-```
+```iecst
 DO_LampGreen  := (MachineState = Running);
 DO_LampYellow := (MachineState = Idle) OR (MachineState = Hold)
                  OR (MachineState = Homing) OR (MachineState = Uninitialized);

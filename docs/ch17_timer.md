@@ -8,7 +8,7 @@
 
 Một trạm kẹp board. Người viết chương trình dùng cách đơn giản nhất:
 
-```
+```iecst
 // Ra lệnh kẹp, chờ 2 giây, coi như đã kẹp xong
 M_ClampReq := TRUE;
 T_Wait(IN := TRUE, PT := T#2S);
@@ -48,7 +48,7 @@ Ngõ ra lên **sau khi** ngõ vào đã giữ mức 1 đủ thời gian đặt. 
 
 **Dùng khi:** cần một điều kiện tồn tại **liên tục** một khoảng thời gian mới coi là thật.
 
-```
+```iecst
 // Chỉ báo mất khí khi tín hiệu mất LIÊN TỤC quá 0,5 giây
 // → chống báo động giả do nhiễu hoặc dao động ngắn
 T_AirFault(IN := NOT DI_AirOK, PT := T#500MS);
@@ -63,7 +63,7 @@ Ngõ ra lên **ngay** khi ngõ vào lên. Khi ngõ vào tụt, ngõ ra **còn gi
 
 **Dùng khi:** cần kéo dài một trạng thái sau khi điều kiện đã mất.
 
-```
+```iecst
 // Quạt hút chạy thêm 30 giây sau khi tắt nguồn nhiệt
 T_FanRun(IN := M_HeaterOn, PT := T#30S);
 DO_ExhaustFan := T_FanRun.Q;
@@ -76,7 +76,7 @@ ngõ vào sau đó. Nhấn giữ hay nhả ra đều không đổi kết quả.
 
 **Dùng khi:** cần một xung có độ dài xác định.
 
-```
+```iecst
 // Còi kêu đúng 1 giây mỗi lần có báo động mới, dù báo động kéo dài bao lâu
 T_Buzz(IN := M_NewAlarm, PT := T#1S);
 DO_Buzzer := T_Buzz.Q;
@@ -145,7 +145,7 @@ Ba cách dùng timer chính đáng trong lát cắt này.
 
 ### Lọc tín hiệu — chống báo động giả
 
-```
+```iecst
 // Công tắc áp suất khí dao động quanh ngưỡng khi máy nén đang nạp.
 // Chỉ báo lỗi nếu mất khí LIÊN TỤC quá 500 ms.
 T_AirLow(IN := NOT DI_AirOK, PT := T#500MS);
@@ -157,7 +157,7 @@ qua báo động (Chương 44).
 
 ### Chống rung tiếp điểm nút bấm
 
-```
+```iecst
 // Nút bấm cơ khí nảy vài lần trong vài mili-giây khi nhấn
 T_StartDeb(IN := DI_StartPB, PT := T#20MS);
 M_StartClean := T_StartDeb.Q;
@@ -167,7 +167,7 @@ M_StartClean := T_StartDeb.Q;
 
 Đây là cách dùng timer đúng đắn nhất trong toàn bộ chương trình trình tự:
 
-```
+```text
 // ── Bước 20: nâng kẹp ──
 M_Stn1_ClampReq := TRUE;
 
@@ -202,7 +202,7 @@ câu trả lời đúng nhất**.
 
 Một số hệ giới hạn thời gian đặt tối đa của một timer. Cần thời gian dài hơn thì nối tầng:
 
-```
+```iecst
 // Ví dụ: cần 30 phút từ hai timer 15 phút
 T_A(IN := M_Enable AND NOT T_B.Q, PT := T#15M);
 T_B(IN := T_A.Q,                  PT := T#15M);
@@ -211,7 +211,7 @@ M_30MinDone := T_B.Q;
 
 Cách khác thường gọn hơn: dùng **một timer ngắn kích một bộ đếm**:
 
-```
+```iecst
 // Timer 1 giây tự kích lại, đếm số giây
 T_Sec(IN := M_Enable AND NOT T_Sec.Q, PT := T#1S);
 C_Sec(CU := T_Sec.Q, R := NOT M_Enable, PV := 1800);   // 1800 giây = 30 phút
@@ -249,7 +249,7 @@ TON đặt lại bộ đếm **ngay** khi ngõ vào tụt xuống 0, dù chỉ m
 Nếu điều kiện vào dao động — cảm biến rung, tín hiệu nhiễu, hoặc một điều kiện logic nhấp nháy — thì
 timer **không bao giờ đếm đủ**, và triệu chứng là *"timer không bao giờ hết giờ"*.
 
-```
+```iecst
 // ✗ Điều kiện vào nhấp nháy → timer đếm lại liên tục
 T_X(IN := DI_BoardStn1 AND M_SomeFlickeringCondition, PT := T#5S);
 
@@ -278,7 +278,7 @@ không còn đủ sau khi ai đó thêm chức năng (Chương 10).
 
 ### 🔍 BẪY 5 — Dùng chung một thể hiện timer ở nhiều chỗ
 
-```
+```iecst
 // ✗ SAI — cùng một thể hiện T_Wait dùng cho hai bước
 IF Step = 20 THEN  T_Wait(IN := TRUE, PT := T#3S);  END_IF;
 IF Step = 40 THEN  T_Wait(IN := TRUE, PT := T#5S);  END_IF;

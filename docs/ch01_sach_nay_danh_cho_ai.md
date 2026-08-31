@@ -284,7 +284,7 @@ Một số thứ **giữ nguyên tiếng Anh, không dịch**, vì dịch ra s�
 Code trong sách viết ở dạng trung lập chuẩn IEC 61131-3, không phải cú pháp riêng của hãng nào. Tag
 đặt tên theo quy ước thống nhất toàn sách (giải thích ở Chương 30):
 
-```
+```text
 DI_  ngõ vào số        DO_  ngõ ra số
 AI_  ngõ vào analog    AO_  ngõ ra analog
 AX_  trục              NET_ kết nối mạng

@@ -46,7 +46,7 @@ nhiều trục phối hợp hoặc khi rủi ro va chạm cao.
 
 ### Giả lập ngõ vào
 
-```
+```iecst
 VAR
     M_SimMode : BOOL;                 // bật chế độ mô phỏng
     Sim_BoardStn1 : BOOL;             // giá trị giả, đặt bằng tay khi mô phỏng
@@ -81,7 +81,7 @@ không biết mình đang chạy thật hay giả.
 Cảm biến giả mà lên ngay lập tức thì không kiểm được timeout và không kiểm được trình tự có chờ đúng
 không. Thêm độ trễ giả:
 
-```
+```iecst
 // Xy-lanh giả: nhận lệnh → sau 800 ms thì "tới đích"
 T_SimClamp1(IN := M_Stn1_ClampReq, PT := T#800MS);
 Sim_Clamp1Up := T_SimClamp1.Q;
@@ -232,7 +232,7 @@ Bốn biện pháp ở mục 50.3 tồn tại vì **kỷ luật cá nhân là kh
 
 ### 🔍 BẪY 3 — Mô phỏng cả tín hiệu an toàn
 
-```
+```iecst
 // ✗✗ SAI NGHIÊM TRỌNG
 IF M_SimMode THEN
     X_EStopOK := TRUE;        // "cho tiện thử"

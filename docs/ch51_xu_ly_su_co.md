@@ -43,7 +43,7 @@ chứng quan sát được**, rồi đi ngược về phía nguyên nhân.
 
 Chuỗi truy ngược, luôn theo thứ tự này:
 
-```
+```text
 ① Triệu chứng máy      "kẹp trạm 1 không lên"
         ↓
 ② Ngõ ra nào lẽ ra phải tác động?          DO_Clamp1Vlv

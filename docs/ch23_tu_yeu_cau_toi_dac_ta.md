@@ -94,7 +94,7 @@ Trước khi vẽ lưu đồ (Chương 26), viết trình tự **bằng lời** 
 
 Nhưng viết tự do sẽ mơ hồ. Dùng mẫu câu cố định:
 
-```
+```text
 Bước <số> — <tên bước>
   Điều kiện vào:   <cái gì phải đúng để bắt đầu bước này>
   Hành động:       <máy làm gì>
@@ -104,7 +104,7 @@ Bước <số> — <tên bước>
 
 Áp cho trạm 1 của DP-01:
 
-```
+```text
 Bước 20 — Nâng kẹp giữ board
   Điều kiện vào:   chặn đã nâng (DI_Stop1Up = 1) và có board (DI_BoardStn1 = 1)
   Hành động:       cấp lệnh nâng kẹp trạm 1

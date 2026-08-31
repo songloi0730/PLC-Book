@@ -73,7 +73,7 @@ Mỗi loại cơ cấu viết **một lần** thành một **khối chức năng
 DP-01 ở lát cắt này có bốn xy-lanh hai vị trí (chặn ×2, kẹp ×2). Chúng khác nhau ở tag, giống nhau ở
 hành vi. Vậy viết một khối:
 
-```
+```text
 FUNCTION_BLOCK FB_Cylinder2Pos
 VAR_INPUT
     Extend      : BOOL;      // yêu cầu đi ra (giữ mức, không phải xung)
@@ -115,7 +115,7 @@ END_IF;
 
 Rồi tạo bốn thể hiện:
 
-```
+```iecst
 VAR
     Stop1  : FB_Cylinder2Pos;
     Clamp1 : FB_Cylinder2Pos;
@@ -155,7 +155,7 @@ Hai trạm của DP-01 chạy song song trên hai board khác nhau. Chúng cần
 
 ### Cách sai — trạm 1 nhìn vào ruột trạm 2
 
-```
+```iecst
 // ✗ SAI — trạm 1 đọc biến nội bộ của trạm 2
 IF Stn2_Step = 0 AND NOT DI_BoardStn2 THEN
     // nhả board sang
@@ -172,7 +172,7 @@ Vì sao sai, kể cả khi nó chạy:
 
 Mỗi trạm công bố một **tập biến ra nhỏ, ổn định**, và đó là **thứ duy nhất** người khác được đọc:
 
-```
+```iecst
 // Giao diện công bố của trạm 2 — coi như hợp đồng, hạn chế thay đổi
 Stn2_Ready      : BOOL;     // sẵn sàng nhận board mới
 Stn2_Busy       : BOOL;     // đang xử lý
@@ -182,7 +182,7 @@ Stn2_BoardDone  : BOOL;     // board đã xử lý xong, chờ chuyển đi
 
 Bên trong trạm 2, cứ đổi bao nhiêu bước tuỳ ý — miễn là bốn biến trên vẫn đúng nghĩa. Trạm 1 chỉ đọc:
 
-```
+```iecst
 // ✓ ĐÚNG — đọc giao diện đã công bố, không đọc ruột
 IF Stn1_BoardDone AND Stn2_Ready THEN
     M_Stn1_ReleaseBoard := TRUE;
@@ -204,7 +204,7 @@ Chuyền là tài nguyên **dùng chung**: cả hai trạm đều có lúc cần
 
 Quy tắc: **tài nguyên dùng chung do tầng trên quản lý**. Hai trạm chỉ *yêu cầu*:
 
-```
+```iecst
 // Mỗi trạm nêu yêu cầu
 M_Stn1_ConvReq : BOOL;
 M_Stn2_ConvReq : BOOL;
@@ -286,7 +286,7 @@ Nếu tách, quy tắc bắt buộc: **dữ liệu đi qua ranh giới tác vụ
 
 Trong tác vụ duy nhất, thứ tự gọi các khối **là một phần của thiết kế** (Chương 10):
 
-```
+```text
 1. Đọc và xử lý tín hiệu vào     (lọc, bắt cạnh, tính cờ điều kiện)
 2. Tầng cơ cấu                    (các FB xy-lanh — tính Done/Fault)
 3. Tầng máy                       (máy trạng thái — dùng Fault vừa tính)
@@ -314,7 +314,7 @@ máy đối xử với mọi trạm như nhau.
 
 ### 🔍 BẪY 2 — Tầng trạm ghi thẳng ngõ ra
 
-```
+```iecst
 // ✗ SAI — trạm chạm thẳng vào van
 IF Stn1_Step = 20 THEN
     DO_Clamp1Vlv := TRUE;
@@ -324,7 +324,7 @@ END_IF;
 Vi phạm Q3. Hậu quả: nếu chế độ tay cũng ghi vào van đó thì có cuộn dây trùng; và liên động chống va
 chạm phải lặp lại ở mọi chỗ.
 
-```
+```iecst
 // ✓ ĐÚNG — trạm nêu yêu cầu, khối cơ cấu thực hiện
 IF Stn1_Step = 20 THEN
     M_Stn1_ClampReq := TRUE;
@@ -351,7 +351,7 @@ trên — phải có **đúng một chủ ở tầng máy**. Các trạm chỉ n
 
 Ngược lại với Bẫy 3 nhưng cùng bản chất:
 
-```
+```iecst
 // ✗ SAI — tầng máy đọc bước bên trong trạm
 IF Stn1_Step = 40 AND Stn2_Step = 10 THEN
     DO_LampYellow := TRUE;

@@ -29,7 +29,7 @@ rơ-le đó, và người phải đọc chương trình là thợ điện chứ 
 
 ### Giải phẫu một nấc thang
 
-```
+```text
    ray trái                                              ray phải
       │                                                     │
       │   DI_StartPB      DI_StopPB                          │
@@ -52,7 +52,7 @@ dòng đi qua; không thoả thì chặn. Dòng tới được cuộn dây thì 
 
 Từ đó ra hai cách ghép cơ bản:
 
-```
+```text
 NỐI TIẾP = AND                          SONG SONG = OR
                                         
   ──┤ ├───┤ ├───( )──                     ──┬─┤ ├─┬──( )──
@@ -193,7 +193,7 @@ Mạch cho phép chuyền chạy — dùng đúng lát cắt 1.
 
 ### Nấc 1 — mạch tự giữ Start/Stop
 
-```
+```text
    DI_StartPB      DI_StopPB      DI_AirOK                        M_ConvRunCmd
  ┌───┤ ├──────┬──────┤ ├────────────┤ ├──────────────────────────────( )───┐
  │            │
@@ -222,7 +222,7 @@ Chú ý ba tiếp điểm đều dùng `┤ ├`:
 
 ### Nấc 2 — chuyền chỉ chạy khi trạm 1 còn trống
 
-```
+```text
    M_ConvRunCmd   DI_BoardStn1                                    DO_ConvRun
  ────┤ ├─────────────┤/├──────────────────────────────────────────────( )───
 ```
@@ -241,7 +241,7 @@ board. Khó chịu, nhưng không nguy hiểm cho người.
 
 ### Nấc 3 — nâng chặn
 
-```
+```text
    DI_BoardStn1                                                    DO_Stop1Vlv
  ────┤ ├──────────────────────────────────────────────────────────────( )───
 ```
@@ -254,7 +254,7 @@ board. Khó chịu, nhưng không nguy hiểm cho người.
 
 **Hai nấc thang cùng ghi vào một ngõ ra.**
 
-```
+```text
 Nấc 10:   M_ConvRunCmd   ────┤ ├────────────────────( DO_ConvRun )
 
    … 200 nấc thang ở giữa …
@@ -275,7 +275,7 @@ không giải thích được (khi hai nấc trùng nằm trong hai nhánh chư�
 
 **Cách sửa** — gộp mọi điều kiện vào **một** nấc duy nhất:
 
-```
+```text
    M_ConvRunCmd   M_MaintMode                                      DO_ConvRun
  ────┤ ├─────────────┤/├───────────────────────────────────────────────( )───
 ```
@@ -302,7 +302,7 @@ nghỉ. Trong code, `┤/├` mô tả "cho dòng qua khi bit = 0". Không có l
 
 ### 🔍 BẪY 3 — Quên nhánh tự giữ
 
-```
+```text
    DI_StartPB    DI_StopPB                                       M_ConvRunCmd
  ────┤ ├───────────┤ ├────────────────────────────────────────────────( )───
 ```
@@ -312,7 +312,7 @@ Thiếu nhánh song song. Máy chạy **đúng lúc đang giữ nút Start**, nh
 Triệu chứng dễ nhận. Nhưng có biến thể khó hơn: nhánh tự giữ mắc **sai vị trí** — vòng qua cả tiếp
 điểm `DI_StopPB`:
 
-```
+```text
  ┌───┤ ├──────┬──────┤ ├────────────────────────────────( M_ConvRunCmd )───┐
  │ DI_StartPB │   DI_StopPB
  │            │
@@ -345,7 +345,7 @@ nào đang chặn.
 
 Cách làm tốt hơn: tách điều kiện phức tạp thành **các bit trung gian có tên nói lên ý nghĩa**.
 
-```
+```text
 // Thay vì một nấc thang khổng lồ:
    M_ConvPermissive  M_Stn1Clear  M_NoFault                        DO_ConvRun
  ────────┤ ├──────────────┤ ├─────────┤/├───────────────────────────────( )───

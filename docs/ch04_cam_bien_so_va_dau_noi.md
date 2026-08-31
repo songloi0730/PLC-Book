@@ -123,7 +123,7 @@ thuộc một trong hai loại:
 
 **Cảm biến PNP — đóng lên nguồn dương**
 
-```
+```text
         +24V ──────┬─────────────────┐
                    │                 │
               ┌────┴────┐         [transistor]
@@ -138,7 +138,7 @@ Khi phát hiện vật: **dây đen = +24 V**. Cảm biến **cấp dòng ra** *
 
 **Cảm biến NPN — đóng xuống nguồn âm**
 
-```
+```text
         +24V ──────┬─────────────────
                    │
               ┌────┴────┐

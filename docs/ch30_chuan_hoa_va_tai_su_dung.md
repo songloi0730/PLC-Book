@@ -44,7 +44,7 @@ board. Bạn không cần tra. Khi quy ước hỗn độn, mỗi tag là một 
 
 ### Quy ước dùng trong sách
 
-```
+```text
 <tiền tố>_<vùng><chức năng>
 
 DI_   ngõ vào số          DO_   ngõ ra số
@@ -75,7 +75,7 @@ Ví dụ từ DP-01:
 
 Quy tắc 5 đáng giải thích thêm. So sánh:
 
-```
+```iecst
 // ✗ Khó đọc — hai phủ định
 IF NOT DI_DoorNotOpen THEN …
 
@@ -121,7 +121,7 @@ vi — viết một khối, tạo bốn thể hiện (Chương 27, mục 27.3).
 Khi một cơ cấu có nhiều biến liên quan, gom chúng vào một **kiểu dữ liệu người dùng** *(user-defined
 type, UDT)* thay vì để rời rạc:
 
-```
+```iecst
 // ✗ Rời rạc — bốn biến không có gì nối chúng lại
 M_Stn1_Step      : INT;
 M_Stn1_Fault     : BOOL;
@@ -159,7 +159,7 @@ Ba lợi ích, và lợi ích thứ ba là lớn nhất:
 
 ### Comment vô dụng và comment có giá trị
 
-```
+```iecst
 // ✗ Vô dụng — lặp lại đúng cái code đã nói
 // Đặt M_Stn1_ClampReq bằng TRUE
 M_Stn1_ClampReq := TRUE;
@@ -269,7 +269,7 @@ Không cần hệ thống phức tạp. Bốn thứ này đã giải quyết ph�
 | 3 | **Sao lưu trước mọi thay đổi**, đặt tên có ngày và phiên bản | `DP01_v1.4_2026-08-31_truoc-sua-timeout` |
 | 4 | Hiển thị **phiên bản trên màn hình vận hành** | Người ở xa hỏi "máy đang chạy bản nào" là trả lời được ngay |
 
-```
+```text
 // ── Nhật ký thay đổi — giữ ngay đầu chương trình ──
 // v1.4  2026-08-31  NVA  Tăng timeout bước S1.20 từ 2 s lên 3 s.
 //                        Lý do: đo thực tế 0,8 s nhưng lúc áp khí thấp
@@ -310,7 +310,7 @@ tháng có hai quy ước trộn lẫn — tệ hơn không có quy ước nào.
 
 ### 🔍 BẪY 5 — Tối ưu hoá làm mất khả năng đọc
 
-```
+```iecst
 // ✗ Gọn nhưng không ai đọc nổi
 M_Out := (A AND NOT B) OR (C AND (D OR NOT E)) AND NOT (F OR G);
 

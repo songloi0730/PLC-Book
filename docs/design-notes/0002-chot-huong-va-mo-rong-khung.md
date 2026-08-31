@@ -132,7 +132,7 @@ Hai phụ lục mới: **J** (hồ sơ máy mẫu DP-01 đầy đủ để ráp 
 **Quy tắc:** thuật ngữ chuyên môn ghi **tiếng Việt trước, tiếng Anh trong ngoặc, ở lần xuất hiện đầu
 tiên của mỗi chương** — sau đó dùng tiếng Việt.
 
-```
+```text
 ✅ vòng quét (scan cycle)          ✅ bắt cạnh lên (rising edge)
 ✅ tự giữ (seal-in / latch)        ✅ khối chức năng (function block, FB)
 ```

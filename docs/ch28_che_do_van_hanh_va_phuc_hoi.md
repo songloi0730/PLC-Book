@@ -73,7 +73,7 @@ Trước khi bàn về gốc, phải rõ máy có những chế độ nào và m
 Ở `Manual`, người vận hành được chọn *thứ tự* thao tác, nhưng **các liên động chống va chạm vẫn phải
 còn nguyên**:
 
-```
+```text
 // Ở Manual, nút "hạ chặn trạm 1" chỉ tác dụng khi kẹp đã hạ
 DI_ManStop1Down  AND  M_ModeManual  AND  DI_Clamp1Dn   →   DO_Stop1Vlv := FALSE
                                           ▲
@@ -87,7 +87,7 @@ thường là người đang sửa máy — tức là đang ở tình huống d�
 chương trình không biết điều đó, mọi bước chờ cảm biến board sẽ timeout và báo lỗi. Cần một cờ
 `M_DryRun` mà các bước chờ sản phẩm kiểm tra:
 
-```
+```iecst
 IF DI_BoardStn1 OR M_DryRun THEN
     Step := Step + 1;
 END_IF;
@@ -149,7 +149,7 @@ Thứ tự về gốc phải **không vi phạm bảng va chạm ở bất kỳ 
 
 Thứ tự đúng cho DP-01:
 
-```
+```iecst
 Bước H0 — Dừng chuyền, cấm mọi chuyển động tự động
           DO_ConvRun := FALSE
 
@@ -190,7 +190,7 @@ Ba quyết định trong trình tự trên, mỗi cái đều truy về một d�
 Mỗi bước về gốc phải có **thời gian tối đa**. Quá thời gian → quay lại `Alarm` với mã lỗi **nói rõ kẹt
 ở bước nào**:
 
-```
+```iecst
 IF HomingStep = 1 AND T_StepTimeout.Q THEN
     FaultCode  := 'HOME-01: kẹp không hạ được trong 3 giây';
     M_AnyFault := TRUE;
@@ -265,7 +265,7 @@ cho con người, và con người nhìn được board có bất thường khô
 
 ### 🔍 BẪY 1 — Suy tư thế từ cảm biến đối diện
 
-```
+```iecst
 // ✗ SAI
 IF NOT DI_Clamp1Up THEN
     // coi như kẹp đã hạ  → SAI khi kẹp đang ở giữa chừng
@@ -274,7 +274,7 @@ IF NOT DI_Clamp1Up THEN
 Xy-lanh mất khí giữa hành trình làm **cả hai cảm biến cùng báo 0**. Code trên hiểu nhầm thành "đã hạ"
 và cho bước tiếp theo chạy.
 
-```
+```iecst
 // ✓ ĐÚNG — kiểm tra cảm biến ĐÍCH đang bật
 IF DI_Clamp1Dn THEN
     // kẹp thật sự đã hạ
@@ -282,7 +282,7 @@ IF DI_Clamp1Dn THEN
 
 Và nếu cần phát hiện tư thế giữa chừng để báo lỗi:
 
-```
+```iecst
 M_Clamp1Unknown := NOT DI_Clamp1Up AND NOT DI_Clamp1Dn;
 ```
 

@@ -20,7 +20,7 @@ sấy cứng bằng đèn UV, rồi chuyển sang máy phía sau. Mỗi board c�
 thống quản lý sản xuất (MES) xem board này có được phép làm không và làm theo công thức nào, rồi báo
 kết quả về sau khi xong.
 
-```
+```text
  [Máy trước] ──SMEMA──► ┌──────────────── DP-01 ────────────────┐ ──SMEMA──► [Máy sau]
                         │                                        │
                         │  chuyền vào    TRẠM 1        TRẠM 2    │
@@ -197,7 +197,7 @@ khí đủ, ionizer OK, chọn chế độ Auto, MES kết nối được (hoặ
 
 ## 4. Các trạng thái máy — state model (nguồn cho Ch.25)
 
-```
+```text
 Uninitialized ──► Homing ──► Idle ──► Running ──► (hai trạm chạy song song)
                     │          │         │
                     │          │         ├──► Hold  (giữ nguyên vị trí, board ở nguyên chỗ)

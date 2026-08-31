@@ -9,7 +9,7 @@
 Một kỹ sư viết đoạn logic tạo xung một chu kỳ — mỗi lần nhấn nút chỉ cho ra đúng một xung, dù giữ nút
 bao lâu. Đoạn logic hai dòng, ai nhìn cũng thấy đúng:
 
-```
+```text
 Dòng 1:   DI_StartPB  AND  NOT M_StartMem   →   M_StartPulse
 Dòng 2:   DI_StartPB                        →   M_StartMem
 ```
@@ -134,7 +134,7 @@ trước** — thường là tắt hết, nhưng cấu hình được. Đây kh�
 
 Lấy một đoạn thật từ lát cắt 1 của DP-01: board tới vị trí trạm keo thì dừng chuyền và nâng chặn.
 
-```
+```text
 // ── Dòng 1 ──────────────────────────────────────────────
 // Có board tại trạm 1 → yêu cầu dừng chuyền
 DI_BoardStn1                         →  M_Stn1Occupied
@@ -181,7 +181,7 @@ chậm thêm đúng một vòng quét. Với đoạn này, 5 ms trễ thêm là 
 
 Đây là bài toán mở đầu chương. Giờ giải thích được rồi.
 
-```
+```text
 Dòng 1:   DI_StartPB  AND  NOT M_StartMem   →   M_StartPulse
 Dòng 2:   DI_StartPB                        →   M_StartMem
 ```
@@ -256,7 +256,7 @@ vòng quét — nhưng vòng quét là chỗ nó lộ ra.
 
 Trong phần mềm, gọi một hàm xong là việc đã xong. Trong máy:
 
-```
+```iecst
 DO_Clamp1Vlv := TRUE;    // ra lệnh nâng kẹp
 // … dòng ngay sau, cùng vòng quét:
 // kẹp ĐÃ nâng chưa?  →  CHƯA. Van còn chưa được ghi ra module.
@@ -271,7 +271,7 @@ DO_Clamp1Vlv := TRUE;    // ra lệnh nâng kẹp
 
 Cách viết đúng là chờ **tín hiệu phản hồi** từ cảm biến xác nhận, kèm timeout để báo lỗi nếu quá lâu:
 
-```
+```iecst
 // Ra lệnh, rồi chuyển bước CHỈ KHI cảm biến xác nhận
 DO_Clamp1Vlv := TRUE;
 IF DI_Clamp1Up THEN

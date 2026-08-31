@@ -60,7 +60,7 @@ Làm khi **chưa cấp điện**, đối chiếu với bản vẽ và bảng I/O
 
 Không bật tất cả một lúc. Bật từng nhánh, đo trước khi bật nhánh sau:
 
-```
+```text
 1. Nguồn tổng → đo điện áp vào, đo sau aptomat
 2. Biến áp / bộ nguồn 24 V → đo 24 V khi KHÔNG tải
 3. Nhánh cấp nguồn PLC → đo, kiểm đèn nguồn
