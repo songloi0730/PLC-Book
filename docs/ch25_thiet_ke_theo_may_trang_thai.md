@@ -413,18 +413,31 @@ Ba dòng, không điều kiện phụ. Đèn **không thể** nói khác biến 
 ## 25.8 Khác biệt giữa các hãng
 
 Khái niệm máy trạng thái **không phụ thuộc hãng** — nó là cách tổ chức tư duy, không phải tính năng
-của phần mềm. Nhưng công cụ hỗ trợ thì khác nhau:
+của phần mềm. Nhưng công cụ hỗ trợ thì khác nhau, và khác đủ để ảnh hưởng tới cách bạn hiện thực.
 
-| Khía cạnh | Khác nhau ở đâu |
-|---|---|
-| **Kiểu liệt kê** *(enumeration)* | Có hệ hỗ trợ đầy đủ; có hệ chỉ có hằng số nguyên đặt tên. Nếu hệ của bạn không có, dùng hằng số **có tên** — đừng bao giờ dùng số trần |
-| **Lệnh `CASE`** | Có ở mọi hệ có Structured Text. Hệ chỉ có ladder thì dùng cách bit trạng thái |
-| **SFC như một lựa chọn** | Ngôn ngữ SFC (Chương 21) diễn đạt trực tiếp bước và chuyển tiếp. Hợp cho **trình tự**, ít hợp cho **chế độ máy** — vì SFC khó diễn đạt "từ mọi bước đều nhảy được vào Alarm" |
-| **Xem trạng thái trực tuyến** | Cách hiển thị kiểu liệt kê khi giám sát khác nhau đáng kể; có hệ hiện tên, có hệ hiện số |
+| Khía cạnh | Siemens | Mitsubishi | Rockwell | CODESYS / TwinCAT |
+|---|---|---|---|---|
+| **Kiểu liệt kê** *(enumeration)* | Có, khai báo trong SCL | Hạn chế hơn — thường dùng hằng số có tên | Không có kiểu liệt kê thật; dùng hằng số có tên | Có `TYPE` liệt kê đầy đủ |
+| **Lệnh `CASE`** | Có trong SCL | Có trong ST của GX Works3 | Có trong routine ST | Có |
+| **Ngôn ngữ SFC sẵn có** | **S7-GRAPH** | **SFC / MELSAP3** | Routine kiểu **SFC** | SFC theo chuẩn |
+| **Xem trạng thái trực tuyến** | Hiện tên nếu dùng kiểu liệt kê | Thường hiện số | Hiện giá trị tag | Hiện tên nếu dùng kiểu liệt kê |
+
+> 💡 **Hệ không có kiểu liệt kê thì làm gì?**
+> Dùng **hằng số có tên**, và tuyệt đối không viết số trần trong code: `STATE_IDLE := 10`,
+> `STATE_HOMING := 20`. Bạn mất khả năng hiện tên khi giám sát trực tuyến, nên bù lại bằng cách
+> **hiển thị tên trạng thái trên màn hình vận hành** (Chương 44) — người vận hành và người bảo trì
+> cần cái tên đó hơn bạn nhiều.
+
+> ⚠ **Về SFC — cả ba hãng lớn đều có, nhưng nó không phải câu trả lời cho chương này.**
+> SFC diễn đạt **trình tự** rất tốt (Chương 26). Nó diễn đạt **chế độ máy** kém, vì máy trạng thái ở
+> chương này cần đường "từ **mọi** trạng thái đều nhảy được vào `Alarm`" — thứ mà SFC phải vẽ rất
+> rườm rà. Cách thường gặp trong thực tế, và cũng là khuyến nghị của sách: **chế độ máy dùng `CASE`;
+> trình tự bên trong chế độ `Running` thì dùng SFC hoặc `CASE`.**
+>
+> Thêm một lý do thực dụng: S7-GRAPH và các gói SFC tương đương ở hãng khác **thường nằm trong gói
+> bản quyền riêng hoặc ấn bản phần mềm cao hơn**. Kiểm trước khi thiết kế dựa vào nó (Chương 13).
 
 Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
-
----
 
 ## 25.9 Bảng chốt — dùng khi thiết kế máy mới
 

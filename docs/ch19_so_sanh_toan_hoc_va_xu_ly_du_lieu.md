@@ -422,16 +422,56 @@ việc tính toán trong PLC mang lại (Chương 51, Chương 55).
 
 ## 19.9 Khác biệt giữa các hãng
 
-| Điểm | Điều cần biết |
-|---|---|
-| ⚠⚠ **Chia cho 0** | Khác nhau **nhiều nhất** và hậu quả nặng nhất — có hệ chuyển CPU sang STOP. Phải tra tài liệu đúng hệ, và dù kết quả thế nào vẫn luôn kiểm mẫu số |
-| ⚠ REAL → INT | Cắt hay làm tròn tuỳ hệ và tuỳ lệnh. Dùng hàm ép kiểu **tường minh** thay vì gán ngầm |
-| Hành vi khi tràn | Phần lớn quay vòng im lặng; một số hệ đặt bit trạng thái. Đừng dựa vào bit đó nếu chưa xác nhận |
-| Tên kiểu dữ liệu | Chuẩn dùng `INT`/`DINT`/`REAL`; các hãng có tên riêng và dải hơi khác — kiểm dải, không suy từ tên |
-| Kiểm tra dải mảng | Có hệ kiểm tự động, có hệ không, có hệ chỉ kiểm khi gỡ lỗi. **Luôn tự kẹp chỉ số** |
-| Lệnh thanh ghi dịch sẵn có | Nhiều hệ có lệnh dịch bit chuyên dụng, nhanh và gọn hơn vòng `FOR`. Tra Phụ lục A |
+Đây là chương có **khác biệt nguy hiểm nhất giữa các hãng** trong cả cuốn sách, vì hậu quả không phải
+"code không chạy" mà là "code chạy và cho kết quả khác".
 
----
+### ⚠⚠ Chia cho 0 — phải tra theo đúng CPU
+
+| Hệ | Hành vi thường gặp |
+|---|---|
+| **Siemens S7-1200 / S7-1500** | Lệnh chia đặt `ENO` về sai và trả kết quả không dùng được; CPU **thường không dừng** |
+| ⚠ **Siemens S7-300 / S7-400 (đời cũ)** | Lỗi lập trình kích khối xử lý lỗi tương ứng; **nếu chương trình không có khối đó, CPU chuyển sang STOP** |
+| **Mitsubishi** | Đặt cờ lỗi phép toán và mã lỗi vào thanh ghi chẩn đoán; lệnh không thực thi. Có dừng CPU hay không tuỳ cấu hình |
+| **Rockwell Logix** | Ghi một **lỗi nhẹ** *(minor fault)* vào bộ điều khiển rồi chạy tiếp |
+| **CODESYS / TwinCAT** | Tuỳ cấu hình xử lý ngoại lệ của runtime |
+
+> ⚠⚠ **Bảng này là lý do tồn tại của quy tắc ở mục 19.5, không phải thứ thay thế nó.**
+> Hành vi phụ thuộc **cả dòng CPU, cả phiên bản firmware, cả cấu hình xử lý lỗi**, và ô nào cũng có
+> ngoại lệ. Đừng dùng bảng này để quyết định có cần kiểm mẫu số hay không.
+>
+> **Luôn kiểm mẫu số khác 0.** Một dòng `IF` rẻ hơn nhiều so với đi tra tài liệu cho từng CPU — và nó
+> đúng ở mọi hệ, kể cả hệ bạn chưa từng dùng.
+
+### ⚠ Làm tròn khi ép kiểu số thực sang số nguyên
+
+| Hệ | Điều cần biết |
+|---|---|
+| **Siemens** | ⚠ Lệnh `ROUND` làm tròn **về số chẵn gần nhất** khi giá trị nằm đúng ở giữa — `0,5` ra `0`, còn `1,5` ra `2`. Muốn cắt phần thập phân thì dùng `TRUNC`. Đây là chỗ gây bất ngờ nhất |
+| **Mitsubishi** | Lệnh chuyển số thực sang số nguyên **cắt** phần thập phân; có lệnh riêng nếu cần làm tròn |
+| **Rockwell** | Gán số thực vào tag số nguyên thì **làm tròn**; dùng `TRN` để cắt |
+| **CODESYS / TwinCAT** | `REAL_TO_INT` làm tròn; `TRUNC` cắt |
+
+Với một chiều dài đoạn keo, chênh lệch giữa cắt và làm tròn là gần một đơn vị — đủ để hỏng sản phẩm.
+**Dùng hàm ép kiểu tường minh**, đừng dựa vào phép gán ngầm.
+
+### Kiểu dữ liệu và thanh ghi dịch
+
+| Khía cạnh | Siemens | Mitsubishi | Rockwell | CODESYS |
+|---|---|---|---|---|
+| Số nguyên 16 / 32 bit | `Int` / `DInt` | `D` là 16 bit; hai `D` liền nhau cho 32 bit | `INT` / `DINT` | `INT` / `DINT` |
+| ⚠ Kiểu "tự nhiên" của CPU | — | — | ⭐ **`DINT`** — dùng `INT` khiến bộ điều khiển phải chuyển đổi qua lại, chậm hơn mà không tiết kiệm được gì | — |
+| Lệnh dịch bit | `SHL` / `SHR`, hoặc thao tác trên mảng | `SFTL` / `SFTR` cho bit, `WSFL` / `WSFR` cho word | **`BSL`** / **`BSR`** kèm một cấu trúc điều khiển | Thao tác mảng trong ST |
+| Hàng đợi FIFO sẵn có | Tự viết bằng mảng | Lệnh chuyên dụng tuỳ dòng | ⭐ **`FFL`** / **`FFU`** — nạp vào và lấy ra theo FIFO | Thư viện |
+
+> 💡 **Bài toán ở mục 19.6 phổ biến tới mức các hãng làm sẵn lệnh cho nó.**
+> "Board lỗi phát hiện ở trạm đầu, loại bỏ ở cuối chuyền" chính là thứ mà `FFL`/`FFU` của Rockwell và
+> họ lệnh `SFTL`/`SFTR` của Mitsubishi sinh ra để giải. Nếu hệ của bạn có lệnh sẵn thì **dùng nó**:
+> gọn hơn, nhanh hơn, và tránh hẳn Bẫy 5 (dịch sai chiều) vì bạn không còn tự viết vòng lặp nữa.
+
+| Điểm còn lại | Điều cần biết |
+|---|---|
+| Hành vi khi tràn số | Phần lớn quay vòng im lặng; một số hệ đặt cờ trạng thái. **Xác nhận bằng thử nghiệm** nếu tài liệu không nói dứt khoát |
+| Kiểm tra dải mảng | Có hệ kiểm tự động, có hệ không, có hệ chỉ kiểm khi biên dịch ở chế độ gỡ lỗi. **Luôn tự kẹp chỉ số** |
 
 ## 19.10 Bẫy thường gặp
 

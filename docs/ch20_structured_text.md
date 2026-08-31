@@ -413,16 +413,42 @@ họ không cần nhìn thì viết ở dạng gọn nhất.
 
 ## 20.8 Khác biệt giữa các hãng
 
+### ⭐ Trước hết là tên gọi
+
+| Hệ | Gọi ngôn ngữ này là gì |
+|---|---|
+| Chuẩn IEC 61131-3 · CODESYS · Beckhoff TwinCAT | **ST** — *Structured Text* |
+| ⚠ **Siemens** | **SCL** — *Structured Control Language* |
+| Mitsubishi (GX Works3) | **ST** |
+| Rockwell (Studio 5000) | **ST** — routine kiểu *Structured Text* |
+
+> ⚠ **Tra tài liệu Siemens bằng từ khoá "Structured Text" thì bạn sẽ không tìm ra.**
+> Siemens gọi nó là **SCL**. Cùng một ngôn ngữ, cùng một chuẩn, khác tên. Chi tiết nhỏ này làm mất
+> hàng giờ của người mới.
+
+### Tính sẵn có và bản quyền
+
+| Hệ | Điều phải kiểm **trước khi thiết kế** |
+|---|---|
+| **Siemens** | SCL có cho S7-1200 và S7-1500; ⚠ với S7-1500 thường cần ấn bản TIA Portal cao hơn. Kiểm gói bản quyền bạn đang có |
+| **Mitsubishi** | GX Works3 hỗ trợ ST; dự án đời cũ trên GX Works2 phải là loại dự án có cấu trúc |
+| **Rockwell** | ST có ở dòng Logix; ⚠ một số ấn bản phần mềm cũ **không** cho tạo routine ST — kiểm ấn bản đang có |
+| **CODESYS / TwinCAT** | ST là ngôn ngữ chính, hỗ trợ đầy đủ nhất |
+| ⚠ **Dòng CPU nhỏ, giá thấp** | **Nhiều dòng chỉ có ladder, không có ST.** Đây là ràng buộc phần cứng chứ không phải ràng buộc phần mềm — Chương 13, tiêu chí 5 |
+
+> ⚠⚠ **Kiểm tính sẵn có của ST là việc làm lúc CHỌN CPU, không phải lúc viết code.**
+> Phát hiện CPU không hỗ trợ ST sau khi đã thiết kế xong kiến trúc chương trình nghĩa là viết lại từ
+> đầu bằng ladder, hoặc đổi CPU. Cả hai đều đắt.
+
+### Các khác biệt còn lại
+
 | Điểm | Điều cần biết |
 |---|---|
-| ⚠ ST có sẵn không | **Không phải mọi dòng CPU đều hỗ trợ ST**, nhất là các dòng nhỏ, giá thấp. Kiểm **trước khi thiết kế**, không phải khi đã viết xong |
-| Bản quyền phần mềm | Một số hệ tính ST là chức năng của bản trả phí cao hơn — ảnh hưởng chi phí và khả năng khách hàng tự sửa |
-| Chú thích `//` | Có ở gần như mọi hệ hiện đại; hệ cũ có thể chỉ nhận `(* … *)` |
-| ⚠ Thời gian watchdog | Giá trị mặc định và cách đặt khác nhau. **Đừng tăng watchdog để chữa vòng lặp chậm** — sửa vòng lặp |
-| Trạng thái trực tuyến của ST | Chất lượng hiển thị rất khác nhau; có hệ hiện giá trị ngay cạnh biến, có hệ phải mở bảng riêng. Ảnh hưởng trực tiếp tới việc chẩn đoán |
-| Gỡ lỗi từng bước | Ít hệ hỗ trợ chạy từng dòng như IDE thường — đừng thiết kế dựa vào giả định có nó |
-
----
+| Chú thích `//` | Có ở TIA Portal, GX Works3, Studio 5000 và CODESYS. Kiểu `(* … *)` thì chắc chắn có ở mọi hệ |
+| ⚠ Watchdog | Siemens: *cycle monitoring time* trong thuộc tính CPU. Rockwell: watchdog **riêng cho từng tác vụ**. Mitsubishi: đặt trong tham số PLC, kèm lệnh `WDT` để nạp lại giữa vòng quét dài. **Đừng tăng nó để chữa vòng lặp chậm** (Bẫy 5) |
+| Trạng thái trực tuyến của ST | Khác nhau nhiều và ảnh hưởng thẳng tới việc chẩn đoán: có hệ hiện giá trị ngay cạnh biến trong code, có hệ phải mở bảng theo dõi riêng. ⭐ Đây là một lý do thực tế nữa cho quy tắc ở mục 20.6 |
+| Gỡ lỗi từng bước | Ít hệ hỗ trợ chạy từng dòng như IDE thông thường. Đừng thiết kế dựa trên giả định có nó |
+| Trộn ngôn ngữ trong một dự án | Mọi hệ nêu trên đều cho mỗi khối hoặc mỗi routine dùng một ngôn ngữ riêng — đó chính là điều kiện để làm được bảng phân chia ở mục 20.6 |
 
 ## 20.9 Bẫy thường gặp
 

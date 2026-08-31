@@ -365,16 +365,37 @@ ngay cái nào sai — thay vì dò mười hai tiếp điểm.
 Ladder là ngôn ngữ trong chuẩn IEC 61131-3, nên **khái niệm giống nhau ở mọi hệ**: tiếp điểm, cuộn dây,
 nối tiếp là AND, song song là OR, chạy từ trên xuống. Chuyển hệ không phải học lại ladder.
 
-Nhưng những chi tiết sau **khác nhau thật** và sẽ làm bạn vấp khi đổi hệ:
+Nhưng những chi tiết sau **khác nhau thật** và sẽ làm bạn vấp khi đổi hệ.
 
-| Khía cạnh | Khác nhau ở đâu |
+### ⭐ Tên hai lệnh tiếp điểm — chỗ gây nhầm nhất
+
+| Hệ | Tiếp điểm "kiểm tra bit = 1" | Tiếp điểm "kiểm tra bit = 0" | Cuộn dây |
+|---|---|---|---|
+| **Chuẩn IEC / CODESYS** | Tiếp điểm thường mở | Tiếp điểm thường đóng | Cuộn dây |
+| **Siemens** | Tiếp điểm thường mở `-\| \|-` | Tiếp điểm thường đóng `-\|/\|-` | Cuộn dây |
+| **Mitsubishi** | `LD` / `AND` / `OR` | `LDI` / `ANI` / `ORI` (chữ **I** = *inverse*) | `OUT` |
+| ⚠ **Rockwell** | **XIC** — *Examine If Closed* | **XIO** — *Examine If Open* | **OTE** — *Output Energize* |
+
+> ⚠ **Tên của Rockwell là cái tên gây hại nhất trong nghề.**
+> `XIC` viết tắt của *Examine If Closed*, nhưng nó **không** hỏi "tiếp điểm ngoài kia có đóng không".
+> Nó hỏi **"bit trong bộ nhớ có bằng 1 không"**. Với một nút NC đấu vào ngõ vào, bit bằng 1 khi nút
+> **chưa** bị nhấn — nên `XIC` "đúng" trong khi tiếp điểm vật lý đang ở trạng thái nghỉ.
+>
+> Đây chính xác là nội dung mục 15.2 và là gốc của tổ hợp 2 ở mục 15.3. Người học trên hệ Rockwell
+> rồi suy từ tên lệnh ra hành vi vật lý sẽ sai — và sai ở đúng chỗ nguy hiểm nhất.
+>
+> **Cách chữa duy nhất:** đọc lệnh tiếp điểm là *"bit này bằng 1?"*, không bao giờ đọc là *"tiếp điểm
+> này đóng?"*. Quy tắc này đúng ở mọi hệ và miễn nhiễm với tên gọi.
+
+### Các khác biệt còn lại
+
+| Khía cạnh | Khác nhau thế nào |
 |---|---|
-| **Tên hai lệnh tiếp điểm** | Mỗi hãng một tên gọi và một cách viết tắt. Ký hiệu vẽ thì giống nhau. |
-| **Cảnh báo cuộn dây trùng** | Có hãng chặn biên dịch, có hãng chỉ cảnh báo, có hãng im lặng. Xem Bẫy 1. |
-| **Số nhánh song song và độ rộng nấc thang tối đa** | Có giới hạn, và giới hạn khác nhau. |
-| **Cách đặt tên tín hiệu** | Địa chỉ tuyệt đối hay tag có tên — ảnh hưởng lớn tới cách đọc chương trình. Chương 11. |
-| **Lệnh mở rộng đặt ngay trên nấc thang** | Số học, so sánh, chuyển dữ liệu — mỗi hãng một bộ lệnh và một cách hiển thị. Chương 19. |
-| **Cuộn dây có nhớ (SET/RESET)** | Ký hiệu và hành vi khi mất điện khác nhau. Chương 16. |
+| **Cảnh báo cuộn dây trùng** | Siemens (TIA Portal), Mitsubishi (GX Works) và Rockwell (Studio 5000) đều phát hiện và cảnh báo bit bị ghi nhiều lần — nhưng **mức độ khác nhau**: có nơi chặn biên dịch, có nơi chỉ ghi vào danh sách cảnh báo mà người ta bỏ qua. Xem Bẫy 1 |
+| **Số nhánh song song / độ rộng nấc thang** | Đều có giới hạn, và giới hạn khác nhau theo hệ và theo dòng CPU. Chạm giới hạn thì phải tách nấc — thường cũng là lúc nấc đã quá phức tạp (Bẫy 5) |
+| **Cách đặt tên tín hiệu** | Rockwell Logix dùng **tag có tên** là mô hình gốc, không có địa chỉ tuyệt đối kiểu truyền thống. Siemens và Mitsubishi cho dùng **cả hai** — địa chỉ tuyệt đối (`%I0.0`, `X0`) và tag có tên. Chương 11 |
+| **Lệnh mở rộng trên nấc thang** | Mỗi hãng một bộ lệnh số học/so sánh/chuyển dữ liệu với tên riêng. Chương 19 nêu tên cụ thể |
+| **Cuộn dây có nhớ (SET/RESET)** | Siemens `(S)`/`(R)`; Mitsubishi `SET`/`RST`; Rockwell `OTL`/`OTU`. Hành vi khi mất điện phụ thuộc khai báo biến — Chương 16 |
 
 Đối chiếu chi tiết năm hệ: **Phụ lục A2**.
 

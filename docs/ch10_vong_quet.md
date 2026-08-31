@@ -319,16 +319,34 @@ bài toán này một cách có hệ thống.
 ## 10.5 Khác biệt giữa các hãng
 
 Cơ chế bốn giai đoạn là **giống nhau ở mọi hãng** — đây là nguyên lý, không phải lựa chọn thiết kế
-riêng. Nhưng chi tiết thì khác, và những khác biệt sau **có ảnh hưởng thật** khi bạn chuyển hệ:
+riêng. Nhưng chi tiết thì khác, và những khác biệt sau **có ảnh hưởng thật** khi bạn chuyển hệ.
 
-| Khía cạnh | Khác nhau ở đâu |
-|---|---|
-| **Tên gọi ảnh ngõ vào/ra** | Mỗi hãng một tên và một cách đánh địa chỉ. Khái niệm như nhau. |
-| **Cách truy cập trực tiếp** | Hãng thì có lệnh riêng, hãng thì có hậu tố trên địa chỉ, hãng thì cấu hình theo module. |
-| **Chương trình chạy theo tác vụ hay tuần tự** | Một số hệ chạy toàn bộ chương trình trong một tác vụ chu kỳ mặc định; số khác bắt bạn khai báo tác vụ ngay từ đầu. Ảnh hưởng trực tiếp tới Bẫy 5. |
-| **Giá trị mặc định và cách chỉnh watchdog** | Giới hạn mặc định khác nhau đáng kể. **Luôn tra tài liệu của đúng CPU bạn dùng.** |
-| **Hành vi ngõ ra khi CPU vào lỗi** | Có hệ tắt hết; có hệ giữ giá trị cuối; có hệ cho cấu hình từng kênh. ⚠ Đây là khác biệt **liên quan an toàn** — phải kiểm tra, không được suy đoán. |
-| **Cập nhật I/O phân tán** | I/O qua mạng có thể cập nhật **không đồng bộ** với vòng quét, theo chu kỳ riêng của mạng. |
+| Khía cạnh | Siemens (S7-1200/1500) | Mitsubishi (FX5U / iQ-R) | Rockwell (Logix) | CODESYS / TwinCAT |
+|---|---|---|---|---|
+| **Tên gọi ảnh ngõ vào/ra** | *Process image* — PII (vào) và PIQ (ra) | Làm mới ở **xử lý END** của mỗi vòng quét | ⭐ Xem hàng riêng bên dưới | I/O gán vào **tác vụ**, mỗi tác vụ tự làm mới phần của nó |
+| **Truy cập trực tiếp, bỏ qua ảnh** | Hậu tố `:P` trên địa chỉ, ví dụ `%I0.0:P` | Lệnh làm mới (`RFS` ở dòng FX); thiết bị truy cập trực tiếp ở iQ-R | Đọc/ghi tag I/O trực tiếp; có lệnh làm mới tức thời | Tuỳ cấu hình ánh xạ I/O của tác vụ |
+| **Chạy theo tác vụ hay tuần tự** | Chương trình chu kỳ trong OB1; thêm OB ngắt chu kỳ khi cần | Chương trình chính quét tuần tự; có đặt **quét hằng số** *(constant scan)* | ⭐ **Bắt buộc khai báo tác vụ**: liên tục, định kỳ, hoặc theo sự kiện | **Bắt buộc khai báo tác vụ** và chu kỳ ngay từ đầu |
+| **Giám sát thời gian quét** | *Cycle monitoring time*, đặt trong thuộc tính CPU | Đặt trong tham số PLC; có lệnh `WDT` để nạp lại trong vòng quét dài | **Watchdog riêng cho từng tác vụ** | Watchdog theo từng tác vụ |
+| ⚠ **Ngõ ra khi CPU lỗi/STOP** | Cấu hình từng kênh: giữ giá trị cuối hoặc dùng **giá trị thay thế** | Cấu hình giữ hoặc xoá ngõ ra | Cấu hình từng module theo **Program Mode** và **Fault Mode** | Tuỳ cấu hình phần cứng |
+
+### ⭐ Điểm khác biệt lớn nhất: Rockwell không đồng bộ I/O với vòng quét
+
+Mô hình bốn giai đoạn ở mục 10.2 mô tả đúng cách **phần lớn** PLC làm việc. Dòng Logix của Rockwell
+(ControlLogix, CompactLogix) làm khác, và khác ở chỗ quan trọng:
+
+> **I/O được trao đổi theo chu kỳ riêng của nó — RPI *(Requested Packet Interval)* — không đồng bộ
+> với lúc chương trình chạy.**
+
+Hệ quả cho người lập trình:
+
+- Không còn "một lần chụp ảnh cho cả vòng quét". Giá trị một ngõ vào **có thể đổi giữa chừng** trong
+  lúc chương trình đang chạy, nếu bạn đọc nó ở hai chỗ khác nhau.
+- Muốn có ảnh nhất quán, phải **tự sao chép** giá trị I/O vào biến ở đầu chương trình rồi dùng bản
+  sao đó — điều mà các hệ khác làm sẵn cho bạn.
+- Thời gian đáp ứng phụ thuộc **cả** chu kỳ tác vụ **và** RPI, chứ không chỉ thời gian quét.
+
+Đây không phải điểm hay hoặc dở — nó là một đánh đổi thiết kế khác. Nhưng nếu bạn học vòng quét trên
+một hệ rồi chuyển sang Logix mà không biết điều này, bạn sẽ gặp lỗi khó hiểu và đi tìm nhầm chỗ.
 
 Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
 

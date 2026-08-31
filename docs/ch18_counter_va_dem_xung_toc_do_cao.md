@@ -299,18 +299,35 @@ Ngoài ra cần một quy ước rõ ràng cho **thời điểm đặt lại**:
 
 ## 18.7 Khác biệt giữa các hãng
 
-| Điểm | Điều cần biết |
-|---|---|
-| Tên khối | Chuẩn là `CTU`/`CTD`/`CTUD`; ladder các hãng có ký hiệu riêng, nhưng chân `CU`/`R`/`PV`/`CV`/`Q` thì tương ứng được |
-| ⚠ Hành vi khi tràn | Khác nhau **đáng kể**: có hệ dừng ở giá trị lớn nhất, có hệ quay vòng về 0, có hệ báo lỗi. Nếu bộ đếm chạy dài ngày, phải tra tài liệu — đếm quay vòng âm thầm là lỗi rất khó tìm |
-| ⚠ Kiểu dữ liệu của `CV` | Có hệ dùng số nguyên 16 bit (tối đa 32 767 — một ca sản xuất nhanh có thể chạm), có hệ dùng 32 bit. Kiểm trước khi thiết kế |
-| Cấu hình HSC | Khác nhau hoàn toàn: có hệ cấu hình trong phần cứng, có hệ dùng khối chức năng chuyên dụng, có hệ dùng module riêng |
-| Kênh vào cho HSC | Số lượng và vị trí kênh khác nhau giữa các dòng CPU — **kiểm khi chọn phần cứng** |
-| Khai báo thể hiện giữ được | Xem Chương 16, mục 16.7 — cùng vấn đề, cùng mức khác biệt |
+| Khía cạnh | Siemens (S7-1200/1500) | Mitsubishi (FX5U / iQ-R) | Rockwell (Logix) | CODESYS / TwinCAT |
+|---|---|---|---|---|
+| Khối đếm | `CTU` `CTD` `CTUD` | Thiết bị `C` + lệnh `OUT`/`RST` | `CTU` `CTD` | `CTU` `CTD` `CTUD` |
+| Giá trị hiện tại / đặt | `.CV` / `.PV` | Giá trị hiện tại và giá trị đặt của thiết bị `C` | `.ACC` / `.PRE` | `.CV` / `.PV` |
+| ⚠ Đặt lại | Chân `R` | Lệnh `RST` | ⚠ **Bắt buộc lệnh `RES`** | Chân `R` |
+| ⚠ Độ rộng số đếm | Chọn kiểu dữ liệu khi khai báo khối (`Int`, `DInt`…) | ⚠ **Theo dải số hiệu**: dải thấp là 16 bit, dải cao là 32 bit | `.ACC` là `DINT` 32 bit | Theo kiểu dữ liệu khai báo |
+| Bộ đếm tốc độ cao | HSC tích hợp trên CPU, cấu hình trong phần cứng | ⚠ Thiết bị `C` chuyên dụng, **gắn cứng với ngõ vào cụ thể** | Module đếm chuyên dụng, hoặc ngõ vào tốc độ cao trên CPU nhỏ | Thiết bị đầu cuối EtherCAT chuyên dụng |
 
-Chi tiết cho từng hệ nằm ở Phụ lục A.
+### ⚠ Ba chỗ dễ vấp nhất
 
----
+**1. Mitsubishi — độ rộng và chức năng nằm ở SỐ HIỆU thiết bị.** Giống hệt vấn đề với timer ở Chương
+17: bộ đếm `C` dải thấp là 16 bit, dải cao là 32 bit, và **dải cao nhất là bộ đếm tốc độ cao gắn cứng
+với các ngõ vào nhất định trên CPU**. Nghĩa là chọn HSC nào thì **cũng là chọn luôn chân nào phải đấu
+dây vào** — đây là quyết định đấu tủ, không phải quyết định lập trình. Tra bảng phân dải và bảng ánh
+xạ chân **trước khi vẽ sơ đồ đấu**.
+
+**2. Rockwell — `RES` và bẫy dùng chung.** Bộ đếm cần `RES` để về 0. Và ⚠ **một lệnh `RES` xoá cả
+timer lẫn counter cùng tên tag** — dùng nhầm tag là xoá nhầm thứ.
+
+**3. Số kênh HSC phụ thuộc dòng CPU, không phụ thuộc hãng.** Cùng một hãng, CPU nhỏ có thể có vài
+kênh, CPU lớn hơn có nhiều kênh và tần số cao hơn. **Đây là con số phải tra theo đúng mã CPU** — và
+phải tra **trước khi mua** (Chương 13, tiêu chí 3), vì không thêm được bằng phần mềm.
+
+> ⚠ **Hành vi khi tràn khác nhau và ít khi được ghi rõ.** Có hệ dừng ở giá trị lớn nhất, có hệ quay
+> vòng, có hệ đặt cờ lỗi. Đừng suy từ hệ này sang hệ khác — tra tài liệu, và nếu không tìm được câu
+> trả lời dứt khoát thì **thử nghiệm**: đặt giá trị sát trần rồi cho đếm thêm, xem chuyện gì xảy ra.
+> Mười phút thử nghiệm rẻ hơn một lỗi sản lượng âm sau ba tháng.
+
+Chi tiết đối chiếu năm hệ: **Phụ lục A2**.
 
 ## 18.8 Bẫy thường gặp
 

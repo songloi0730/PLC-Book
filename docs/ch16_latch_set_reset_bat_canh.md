@@ -393,16 +393,46 @@ thái cuối cùng phụ thuộc vào việc bạn nhả nút ở vòng quét ch
 
 ## 16.7 Khác biệt giữa các hãng
 
-Nguyên lý giống nhau; tên gọi và cách khai báo khác nhau. Chi tiết theo từng hệ nằm ở Phụ lục A, ở
-đây chỉ nêu những chỗ **dễ vấp**:
+Nguyên lý giống nhau; tên gọi và cách khai báo khác nhau đáng kể. Đây là chương mà việc chuyển chương
+trình giữa hai hệ hay sai nhất.
+
+### Tên lệnh
+
+| Việc | Chuẩn IEC / CODESYS | Siemens | Mitsubishi | Rockwell |
+|---|---|---|---|---|
+| Đặt bit lên 1 và giữ | Cuộn `S`; khối `SR` | `(S)` | `SET` | **`OTL`** — *Output Latch* |
+| Đưa bit về 0 và giữ | Cuộn `R`; khối `RS` | `(R)` | `RST` | **`OTU`** — *Output Unlatch* |
+| Bắt cạnh lên | `R_TRIG` | Tiếp điểm `P`; khối `P_TRIG` | `PLS`; tiếp điểm `LDP` | **`ONS`** *(One Shot)*; `OSR` |
+| Bắt cạnh xuống | `F_TRIG` | Tiếp điểm `N`; khối `N_TRIG` | `PLF`; tiếp điểm `LDF` | `OSF` |
+
+> ⚠ **Khối `SR` và `RS` — hai chữ cái đảo nhau, hành vi đảo nhau.**
+> `SR` ưu tiên **Set**, `RS` ưu tiên **Reset**. Khi cả hai đầu vào cùng đúng, kết quả khác hẳn. Đọc
+> kỹ trước khi dùng, và đừng đoán từ tên.
+
+### ⭐ Biến giữ được — chỗ khác nhau nhiều nhất
+
+| Hệ | Cách khai báo | Điều dễ vấp |
+|---|---|---|
+| **Siemens** | Đặt **vùng nhớ M giữ được** trong thuộc tính CPU; với khối dữ liệu thì bật thuộc tính *Retain* cho từng biến | Quên bật *Retain* thì biến về 0 sau mất điện, không có cảnh báo nào |
+| **Mitsubishi** | Theo **dải thiết bị**: một số dải `M`, `D`, `C`, `T` là dải chốt *(latched)*, đặt trong tham số PLC | ⚠ Giữ hay không phụ thuộc **số hiệu thiết bị bạn chọn** — đổi `M100` thành `M500` có thể đổi luôn hành vi khi mất điện |
+| **Rockwell Logix** | ⭐ **Giá trị tag được giữ mặc định** qua chu kỳ nguồn | Ngược hẳn với Siemens: ở đây bạn phải chủ động **xoá** thứ không được phép giữ, thay vì chủ động đánh dấu thứ cần giữ |
+| **CODESYS / TwinCAT** | Từ khoá `VAR RETAIN` và `VAR PERSISTENT` | Hai từ khoá **không giống nhau** — phạm vi giữ khác nhau, tra tài liệu trước khi dùng |
+
+> ⚠⚠ **Hàng Rockwell là hàng nguy hiểm khi chuyển hệ.**
+> Quy tắc ở mục 16.4 — **không bao giờ giữ `M_Running` và biến bước** — trên Siemens được thoả mãn
+> "miễn phí" vì mặc định là không giữ. Trên Logix thì **ngược lại**: mặc định là giữ, nên bạn phải
+> viết code xoá chúng khi khởi động.
+>
+> Người chuyển chương trình từ Siemens sang Logix mà không biết điều này sẽ tạo ra đúng cỗ máy **tự
+> chạy lại khi có điện trở lại** — thứ mà IEC 60204-1 cấm.
+
+### Điểm còn lại
 
 | Điểm | Điều cần biết |
 |---|---|
-| Tên lệnh SET/RESET | Ladder thường ký hiệu `(S)` / `(R)`; có hệ dùng `SET`/`RST`, có hệ dùng khối `SR`/`RS` với thứ tự ưu tiên **đã cố định sẵn** |
-| ⚠ Khối `SR` và `RS` | `SR` ưu tiên **Set**, `RS` ưu tiên **Reset**. Hai chữ cái đảo nhau và hành vi đảo nhau — đọc kỹ trước khi dùng |
-| Lệnh bắt cạnh | Chuẩn có `R_TRIG` / `F_TRIG`; ladder các hãng có ký hiệu riêng đặt ngay trên tiếp điểm (thường là `P` và `N`) |
-| ⚠ Khai báo biến giữ được | Khác nhau nhiều nhất: có hệ khai báo theo **vùng địa chỉ**, có hệ theo **thuộc tính của biến**, có hệ theo **khối dữ liệu**. Đây là chỗ chuyển chương trình giữa hai hệ hay sai |
 | ⚠ Phạm vi "giữ được" | Có hệ phân biệt *giữ khi mất điện* với *giữ khi CPU chuyển STOP→RUN*. Hai việc khác nhau — tra tài liệu đúng hệ |
+| Nguồn nuôi vùng nhớ giữ được | Pin, siêu tụ, hoặc bộ nhớ không mất — khác nhau theo dòng CPU, ảnh hưởng lịch bảo trì (Chương 8, mục 8.6) |
+| Bắt cạnh trong ladder | Siemens và Mitsubishi có **tiếp điểm bắt cạnh** đặt thẳng trên nấc thang; cách này gọn nhưng ⚠ vẫn cần một bit nhớ riêng cho mỗi chỗ dùng — dùng chung bit là Bẫy 2 |
 
 ---
 
