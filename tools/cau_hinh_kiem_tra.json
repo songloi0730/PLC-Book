@@ -9,11 +9,10 @@
 
   "chuong_khong_can_bay": [1],
 
-  "ten_phan_mem_hang": {
-    "_mo_ta": "B1 — tuyệt đối không xuất hiện trong thân sách Ch.1–58",
-    "cam": ["TIA Portal", "Studio 5000", "GX Works", "AutoShop", "RSLogix",
-            "Sysmac Studio", "TwinCAT", "CCW", "Connected Components",
-            "FactoryTalk", "WinCC", "GT Designer", "Cscape", "PLCnext Engineer"]
+  "huong_dan_giao_dien": {
+    "_mo_ta": "B1 — tên hãng/phần mềm ĐƯỢC PHÉP nêu thẳng (người đọc cần so sánh để chọn phần cứng). Ranh giới duy nhất còn lại: thân sách không hướng dẫn thao tác theo giao diện phần mềm — việc đó thuộc Phụ lục A. Các cụm dưới đây hầu như chỉ xuất hiện khi đang mô tả thao tác trên màn hình.",
+    "cum_tu": ["chuột phải", "hộp thoại", "thanh công cụ", "nhấp đúp", "double-click",
+               "cửa sổ dự án", "cây dự án", "thanh menu"]
   },
 
   "lat_cat": {

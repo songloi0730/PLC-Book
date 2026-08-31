@@ -120,11 +120,17 @@ def kiem_bay_co_ten(so, nd, cfg, kq):
 
 
 def kiem_ten_hang(so, vanxuoi, cfg, kq):
-    """B1 — trung lập hãng trong thân sách."""
-    for ten in cfg["ten_phan_mem_hang"]["cam"]:
-        for m in mau_thuat_ngu(ten).finditer(vanxuoi):
-            kq.loi(so, "B1", "tên phần mềm hãng '%s' ở dòng %d"
-                   % (ten, dong_cua(vanxuoi, m.start())))
+    """B1 — tên hãng được phép; chỉ cấm hướng dẫn thao tác giao diện.
+
+    Nêu tên hãng, mã sản phẩm và tên phần mềm là ĐÚNG — người đọc cần so sánh
+    để chọn phần cứng. Ranh giới còn lại là thân sách không dạy bấm nút theo
+    giao diện; phần đó thuộc Phụ lục A.
+    """
+    for cum in cfg["huong_dan_giao_dien"]["cum_tu"]:
+        for m in re.finditer(re.escape(cum), vanxuoi, re.I):
+            kq.canh_bao(so, "B1", "có vẻ đang hướng dẫn thao tác giao diện ('%s') ở dòng %d "
+                                  "— việc này thuộc Phụ lục A"
+                        % (cum, dong_cua(vanxuoi, m.start())))
 
 
 def kiem_lat_cat(so, vanxuoi, cfg, kq):
