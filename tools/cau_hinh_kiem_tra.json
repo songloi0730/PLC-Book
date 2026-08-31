@@ -78,8 +78,8 @@
   },
 
   "chuong_an_toan": {
-    "_mo_ta": "B3b — bắt buộc có dòng miễn trừ trách nhiệm và cờ chờ chuyên gia duyệt",
-    "danh_sach": [3, 6, 47, 48, 56],
+    "_mo_ta": "B3b — bắt buộc có dòng miễn trừ trách nhiệm và cờ chờ chuyên gia duyệt. Ch.13 nằm trong danh sách vì nó hướng dẫn người mới TỰ DỰNG bàn thực hành có điện lưới.",
+    "danh_sach": [3, 6, 13, 47, 48, 56],
     "cum_tu_bat_buoc": ["người có thẩm quyền"]
   },
 
