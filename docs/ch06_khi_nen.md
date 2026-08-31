@@ -2,6 +2,22 @@
 
 ---
 
+> ⚠⚠ **ĐỌC TRƯỚC — phạm vi và giới hạn của chương này**
+>
+> Khí nén là **năng lượng tích trữ**: một hệ đã ngắt nguồn vẫn còn đủ khí để đẩy cơ cấu đi hết hành
+> trình. Vì vậy chương này chạm tới an toàn tính mạng, không chỉ tới tuổi thọ thiết bị.
+>
+> Chương này giúp bạn **hiểu hệ khí nén đủ để điều khiển nó cho đúng**. Nó **không**:
+> - không thay thế **thiết kế hệ khí nén** cho cỗ máy cụ thể của bạn;
+> - không thay thế việc **tính chọn** xy-lanh, van và đường ống theo tài liệu nhà sản xuất;
+> - không thay thế **quy trình cô lập năng lượng (LOTO)** do cơ sở của bạn ban hành.
+>
+> Ba việc trên phải do **người có thẩm quyền** thực hiện, dựa trên bản gốc tiêu chuẩn (ISO 4414,
+> IEC 60204-1) và trên đúng cỗ máy đó. Các hệ số và quy tắc thực dụng trong chương là để bạn **ước
+> lượng và đặt câu hỏi đúng**, không phải để bạn tự kết luận.
+
+---
+
 ## 6.1 Vì sao chương này có trong một cuốn sách về PLC
 
 Bạn viết chương trình điều khiển. Bạn không thiết kế hệ khí nén. Vậy vì sao phải đọc chương này?

@@ -162,7 +162,7 @@ Máy trạng thái không phụ thuộc ngôn ngữ. Dưới đây là cùng m�
 
 Cách gọn nhất khi ngôn ngữ có `CASE`.
 
-```text
+```iecst
 // Khai báo trạng thái bằng kiểu liệt kê — KHÔNG dùng số trần
 TYPE E_MachineState :
     (Uninitialized, Homing, Idle, Running, Hold, Alarm, Resetting);

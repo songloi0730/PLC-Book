@@ -162,7 +162,17 @@ assets/chNN/hinh_NN_k_ten.svg
 |---|---|
 | XML hợp lệ | `ET.parse(path)` — script `save()` đã tự làm |
 | ⚠ **Escape `&`** | Ký tự `&` trong chữ phải thành `&amp;`, nếu không XML hỏng. Hàm `esc()` lo việc này |
+| ⚠⚠ **Mũi tên vẽ bằng đa giác** | Dùng `arw(x1,y1,x2,y2)`. **Tuyệt đối không dùng `<marker>` / `marker-end`** |
 | Nhãn không đè nhau, không tràn khung | **Render ra PNG rồi nhìn bằng mắt** — `pymupdf.open(svg)[0].get_pixmap(dpi=110).save(...)`. Không bỏ bước này |
+
+> ⚠⚠ **Vì sao cấm `marker-end`** — bài học phải trả giá hai lần: nhiều trình render (kể cả bộ render
+> dùng để xuất PNG kiểm hình) **bỏ qua marker**. Hình vẫn hợp lệ XML, script vẫn báo OK, nhưng mũi tên
+> **biến mất** — sơ đồ mất hẳn thông tin về chiều. Hai hình đã lọt vào sách với lỗi này và chỉ bị phát
+> hiện khi bộ kiểm tra tự động quét chuỗi `marker-end`. Đa giác thì luôn hiện ở mọi trình render.
+>
+> Kèm theo đó: **lỗi bố cục chỉ lộ ra khi nhìn ảnh render**. Cùng hai hình đó còn có một dòng chú
+> thích bị hộp cảnh báo che và hai nhãn tràn ra ngoài khe giữa hai khối — không phép kiểm cú pháp nào
+> bắt được. Nhìn ảnh, mỗi lần.
 
 ---
 
@@ -177,6 +187,53 @@ Tài liệu nguồn ở `../PLC/reference/` (xem `00_INDEX.md` ở đó). Công 
 
 File `.chm` (Inovance AutoShop, CODESYS) chưa có công cụ đọc trong pipeline — nếu cần, giải nén bằng
 `7z` rồi đọc HTML bên trong.
+
+---
+
+## Quy trình đánh giá — chạy máy trước, mắt sau
+
+Bản thảo có **hai bộ kiểm tự động**. Chạy cả hai trước khi coi một chương là xong, và trước khi
+kết luận bất cứ điều gì bằng cảm nhận:
+
+```bash
+python tools/kiem_tra_chuong.py        # bất biến B1–B14 (tất cả chương)
+python tools/kiem_tra_chuong.py 47     # chỉ một chương
+npx markdownlint-cli2 "docs/**/*.md"   # cấu trúc markdown, liên kết, bảng
+```
+
+`kiem_tra_chuong.py` kiểm: mục bắt buộc (B12), bẫy có đặt tên (B5), tên phần mềm hãng lọt vào thân
+sách (B1), khai báo và kỷ luật lát cắt (B8), song ngữ (B11), hình tồn tại + XML hợp lệ + có chú
+thích (B13), tiêu chuẩn nên viện dẫn, miễn trừ trách nhiệm ở chương an toàn (B3b), và các mẫu code
+đáng ngờ. Ba mức: **LỖI** chặn phát hành · **CẢNH BÁO** phải xem · **TIN** gợi ý mở ra đọc.
+
+Khung sách đổi thì sửa `tools/cau_hinh_kiem_tra.json`, **không sửa code**.
+
+Hook `PostToolUse` trong `.claude/settings.json` tự chạy bộ kiểm cho đúng chương ngay sau mỗi lần
+ghi file `docs/chNN_*.md`, nên lỗi thiếu mục lộ ra lúc viết chứ không phải sau cả loạt chương.
+
+Ba skill trong `.claude/skills/` dành cho phần máy không kiểm được:
+
+| Skill | Dùng khi |
+|---|---|
+| `danh-gia-chuong` | Nghiệm thu một chương — 7 trục rà tay + tiêu chí dừng |
+| `kiem-tra-an-toan` | Chương chạm điện/khí nén/chuyển động/cảnh báo/nghiệm thu — ma trận tiêu chuẩn |
+| `kiem-tra-code-plc` | Chương có code — 7 phép kiểm, trọng tâm là vòng quét và chuyển bước |
+
+Agent `phan-bien-chuong` đọc chương bằng **mắt lạ** (ba vai: thợ mới · kỹ sư bảo trì · người soát
+bản in). Người dùng gọi, không tự gọi.
+
+> **Quy tắc vàng khi rà tay:** không kết luận bất kỳ điều gì trước khi đã grep ra bằng chứng, và
+> mọi nhận xét phải kèm **số dòng**. Nhận xét không chỉ được dòng nào là nhận xét bỏ đi.
+
+### Nhãn code block — bắt buộc
+
+Mọi code block phải có nhãn ngôn ngữ: **`iecst`** cho code IEC 61131-3 (ST, và giả mã theo cú pháp
+ST), **`text`** cho sơ đồ ASCII, bảng, mẫu biên bản, phiên làm việc dòng lệnh. Nhãn không chỉ để
+tô màu — nó cho phép công cụ tách đúng phần code ra kiểm, không quét nhầm sơ đồ.
+
+> ⚠ **Đoạn code cố ý sai phải được đánh dấu NGAY TRONG code**, theo mẫu
+> `// ✗ SAI — …` và `// ✓ ĐÚNG — …`. Giải thích trong lời văn phía sau là **không đủ**:
+> người đọc lướt để tìm code chép sẽ không đọc đoạn văn đó.
 
 ---
 

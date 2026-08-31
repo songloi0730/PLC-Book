@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Sinh hình SVG cho sách PLC. Bộ token thị giác dùng chung cho cả 58 chương."""
-import os, xml.etree.ElementTree as ET
+import math, os, xml.etree.ElementTree as ET
 
 ROOT = r"C:/Users/dinhn/OneDrive/Study/Chung/PLC_Programming_Book/assets"
 INK = "#1A1D21"; INK2 = "#565E66"; RULE = "#9AA3AB"
@@ -29,13 +29,26 @@ def L(x1, y1, x2, y2, stroke=INK, sw="1.6", dash=None):
     return "<line x1='%d' y1='%d' x2='%d' y2='%d' stroke='%s' stroke-width='%s'%s/>" % (x1, y1, x2, y2, stroke, sw, d)
 
 
+def arw(x1, y1, x2, y2, col=INK, sw="2", dash=None):
+    """Đường kèm đầu mũi tên vẽ bằng ĐA GIÁC.
+
+    Không dùng <marker>/marker-end: nhiều trình render (kể cả bộ render dùng
+    để xuất PNG kiểm hình) bỏ qua marker, khiến mũi tên biến mất mà chỉ phát
+    hiện được khi nhìn ảnh đã render. Đa giác thì luôn hiện.
+    """
+    ang = math.atan2(y2 - y1, x2 - x1)
+    hl, hw = 10.0, 5.0
+    bx, by = x2 - hl * math.cos(ang), y2 - hl * math.sin(ang)
+    return [L(x1, y1, int(round(bx)), int(round(by)), col, sw, dash),
+            "<polygon points='%.1f,%.1f %.1f,%.1f %.1f,%.1f' fill='%s'/>" % (
+                x2, y2,
+                bx - hw * math.sin(ang), by + hw * math.cos(ang),
+                bx + hw * math.sin(ang), by - hw * math.cos(ang), col)]
+
+
 def head(w, h, title, sub):
     return ["<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 %d %d' width='%d' height='%d'>" % (w, h, w, h),
             "<rect width='%d' height='%d' fill='%s'/>" % (w, h, BG),
-            "<defs><marker id='ar' markerWidth='9' markerHeight='9' refX='8' refY='3' orient='auto'>"
-            "<path d='M0,0 L0,6 L9,3 z' fill='%s'/></marker>"
-            "<marker id='arc' markerWidth='9' markerHeight='9' refX='8' refY='3' orient='auto'>"
-            "<path d='M0,0 L0,6 L9,3 z' fill='%s'/></marker></defs>" % (INK, CUR),
             T(24, 34, title, 16, INK, "700"), T(24, 56, sub, 12, INK2)]
 
 
@@ -50,7 +63,7 @@ def save(parts, sub, name):
 
 # ─────────────────────────────────────────── Hình 10.1 — vòng quét
 def fig_10_1():
-    W, H = 900, 330
+    W, H = 900, 362
     s = head(W, H, "Hình 10.1 — Bốn giai đoạn của vòng quét",
              "PLC lặp bốn giai đoạn này mãi mãi. Van chỉ thật sự mở ở giai đoạn 3, không phải lúc chương trình ghi lệnh.")
     boxes = [("1. ĐỌC ngõ vào", "chụp ảnh toàn bộ ngõ vào\nvào bộ nhớ một lượt"),
@@ -66,18 +79,17 @@ def fig_10_1():
         for j, ln in enumerate(d.split("\n")):
             s.append(T(x + bw // 2, y0 + 52 + j * 17, ln, 10.5, INK2, "400", "middle"))
         if i < 3:
-            s.append("<line x1='%d' y1='%d' x2='%d' y2='%d' stroke='%s' stroke-width='2' marker-end='url(#ar)'/>"
-                     % (x + bw + 3, y0 + bh // 2, x + bw + gap - 5, y0 + bh // 2, INK))
+            s += arw(x + bw + 3, y0 + bh // 2, x + bw + gap - 4, y0 + bh // 2)
     # vòng lặp về đầu
     yb = y0 + bh + 42
     xr = x0 + 3 * (bw + gap) + bw // 2
     s.append(L(xr, y0 + bh, xr, yb, INK, "2"))
     s.append(L(xr, yb, x0 + bw // 2, yb, INK, "2"))
-    s.append("<line x1='%d' y1='%d' x2='%d' y2='%d' stroke='%s' stroke-width='2' marker-end='url(#ar)'/>"
-             % (x0 + bw // 2, yb, x0 + bw // 2, y0 + bh + 6, INK))
-    s.append(T((x0 + xr) // 2, yb + 18, "lặp lại — mỗi vòng vài mili-giây tới vài chục mili-giây", 11, INK2, "400", "middle"))
-    s.append(R(30, 268, 840, 40, fill="#FDF6E7", stroke=WARN, sw="1.2"))
-    s.append(T(44, 293, "⚠  Giữa giai đoạn 1 và giai đoạn 3, dù cảm biến ngoài kia có đổi trạng thái, PLC cũng không biết — nó chỉ nhìn ảnh đã chụp.", 11.5, "#7A5B08"))
+    s += arw(x0 + bw // 2, yb, x0 + bw // 2, y0 + bh + 5)
+    # nhãn đặt NGAY TRÊN đường lặp, không đặt bên dưới — bên dưới đụng hộp cảnh báo
+    s.append(T((x0 + xr) // 2, yb - 9, "lặp lại — mỗi vòng vài mili-giây tới vài chục mili-giây", 11, INK2, "400", "middle"))
+    s.append(R(30, 292, 840, 44, fill="#FDF6E7", stroke=WARN, sw="1.2"))
+    s.append(T(44, 319, "⚠  Giữa giai đoạn 1 và giai đoạn 3, dù cảm biến ngoài kia có đổi trạng thái, PLC cũng không biết — nó chỉ nhìn ảnh đã chụp.", 11.5, "#7A5B08"))
     return save(s, "ch10", "hinh_10_1_vong_quet.svg")
 
 
@@ -190,22 +202,24 @@ def fig_15_2():
 
 # ─────────────────────────────────────────── Hình 1.1 — tổng quan DP-01
 def fig_01_1():
-    W, H = 900, 300
+    # Khổ rộng 960 để hai nhãn SMEMA có đủ chỗ giữa các khối — ở khổ 900 cũ
+    # nhãn tràn ra ngoài khe 36 px và đè lên viền khối.
+    W, H = 960, 300
     s = head(W, H, "Hình 1.1 — Máy mẫu DP-01: trạm tra keo &amp; sấy UV trên chuyền board mạch",
              "Hai trạm nối tiếp trong cùng một máy — nhờ vậy dạy được pipeline: hai trạm xử lý hai board khác nhau cùng lúc.")
     y = 110
-    s.append(R(24, y, 120, 96, fill=BG, stroke=RULE))
-    s.append(T(84, y + 44, "Máy trước", 12, INK2, "600", "middle"))
-    s.append(R(180, y - 22, 560, 140, fill=BG, stroke=INK, sw="1.8", rx="5"))
-    s.append(T(198, y - 4, "DP-01", 14, INK, "700"))
-    s.append(R(756, y, 120, 96, fill=BG, stroke=RULE))
-    s.append(T(816, y + 44, "Máy sau", 12, INK2, "600", "middle"))
-    # chuyền
     cy = y + 48
-    s.append(L(144, cy, 180, cy, INK, "2"))
-    s.append(L(740, cy, 756, cy, INK, "2"))
-    for lbl, x in (("SMEMA", 162), ("SMEMA", 748)):
-        s.append(T(x, cy - 12, lbl, 9.5, WARN, "700", "middle"))
+    s.append(R(24, y, 104, 96, fill=BG, stroke=RULE))
+    s.append(T(76, y + 44, "Máy trước", 12, INK2, "600", "middle"))
+    s.append(R(196, y - 22, 560, 140, fill=BG, stroke=INK, sw="1.8", rx="5"))
+    s.append(T(214, y - 4, "DP-01", 14, INK, "700"))
+    s.append(R(824, y, 104, 96, fill=BG, stroke=RULE))
+    s.append(T(876, y + 44, "Máy sau", 12, INK2, "600", "middle"))
+    # chuyền vào/ra — khe 68 px, nhãn SMEMA nằm gọn bên trong
+    s += arw(128, cy, 194, cy, INK, "2")
+    s += arw(758, cy, 822, cy, INK, "2")
+    for x in (161, 790):
+        s.append(T(x, cy - 13, "SMEMA", 9.5, WARN, "700", "middle"))
     # 2 trạm
     for i, (t1, t2, t3) in enumerate([("TRẠM 1", "TRA KEO", "gantry XY+Z · van tra keo"),
                                       ("TRẠM 2", "SẤY UV", "đèn UV · cửa chắn")]):
@@ -214,13 +228,13 @@ def fig_01_1():
         s.append(T(x + 90, y + 30, t1, 10.5, INK2, "600", "middle"))
         s.append(T(x + 90, y + 50, t2, 13.5, INK, "700", "middle"))
         s.append(T(x + 90, y + 70, t3, 9.5, INK2, "400", "middle"))
-    s.append("<line x1='200' y1='%d' x2='334' y2='%d' stroke='%s' stroke-width='2.4' marker-end='url(#ar)'/>" % (cy, cy, INK))
-    s.append("<line x1='526' y1='%d' x2='544' y2='%d' stroke='%s' stroke-width='2.4' marker-end='url(#ar)'/>" % (cy, cy, INK))
-    s.append("<line x1='736' y1='%d' x2='738' y2='%d' stroke='%s' stroke-width='2.4'/>" % (cy, cy, INK))
-    s.append("<circle cx='250' cy='%d' r='7' fill='%s'/>" % (cy, CUR))
-    s.append(T(250, cy + 26, "đọc mã 2D", 9.5, CUR, "600", "middle"))
-    s.append(T(250, cy + 40, "hỏi MES", 9.5, CUR, "600", "middle"))
-    s.append(R(24, 246, 852, 40, fill="#EAF1F6", stroke=RULE, sw="1.2"))
+    s += arw(216, cy, 336, cy, INK, "2.4")     # vào trạm 1
+    s += arw(524, cy, 546, cy, INK, "2.4")     # trạm 1 → trạm 2
+    s += arw(734, cy, 754, cy, INK, "2.4")     # trạm 2 → ra
+    s.append("<circle cx='262' cy='%d' r='7' fill='%s'/>" % (cy, CUR))
+    s.append(T(262, cy + 26, "đọc mã 2D", 9.5, CUR, "600", "middle"))
+    s.append(T(262, cy + 40, "hỏi MES", 9.5, CUR, "600", "middle"))
+    s.append(R(24, 246, 912, 40, fill="#EAF1F6", stroke=RULE, sw="1.2"))
     s.append(T(40, 271, "Máy được BÓC LỚP: chương thuộc lát cắt nào chỉ dùng thiết bị của lát cắt đó trở về trước. Ch.15 (Ladder) không được lấy ví dụ về servo.", 11.5, "#1F4E66"))
     return save(s, "ch01", "hinh_01_1_dp01_tong_quan.svg")
 

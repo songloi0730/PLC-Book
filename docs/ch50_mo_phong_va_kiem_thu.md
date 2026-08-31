@@ -29,6 +29,11 @@ Chương này là cách **dịch càng nhiều lỗi càng tốt lên hàng đ�
 
 ## 50.2 Ba mức mô phỏng
 
+**Mô phỏng** *(simulation)* ở đây nghĩa là cho chương trình chạy với tín hiệu **giả lập**
+*(simulated I/O)* thay cho tín hiệu từ thiết bị thật. Nó khác với **cưỡng bức** *(forcing)* — cưỡng
+bức là đè giá trị lên một điểm I/O của máy thật đang có điện, và là thao tác nguy hiểm có quy trình
+riêng (Chương 51). Mỗi tình huống đem ra thử gọi là một **ca kiểm thử** *(test case)*.
+
 | Mức | Cần gì | Kiểm được gì | Không kiểm được |
 |---|---|---|---|
 | **1 — Mô phỏng trong chương trình** | Chỉ phần mềm lập trình | Logic, trình tự, máy trạng thái, xử lý lỗi | Phần cứng, thời gian thật, nhiễu |
@@ -306,6 +311,8 @@ trình chẩn đoán có hệ thống — thứ bạn sẽ dùng nhiều nhất 
   điện; cơ sở cho ranh giới "không mô phỏng chức năng an toàn" ở mục 50.4.
 - Đặc tả trình tự, bảng thời gian bước và bảng trạng thái an toàn của DP-01 — Phụ lục J.
 - Biểu mẫu **danh sách ca kiểm thử** và **biên bản kết quả** — Phụ lục C.
+- IEC 62381 — *Automation systems in the process industry — FAT, SAT, SIT*: bảng kết quả kiểm thử
+  ở mục 50.5 chính là hồ sơ đầu vào cho FAT — xem Chương 52, mục 52.2.
 
 > ⚠ Danh sách ca kiểm ở mục 50.4 là **khung tối thiểu cho máy cỡ DP-01**. Máy của bạn có chức năng khác
 > thì có ca kiểm khác. Cách mở rộng tốt nhất: mỗi lần gặp sự cố ở hiện trường, thêm một ca kiểm để lần

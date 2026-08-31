@@ -35,17 +35,27 @@ Chương này là cách tránh loại sai thứ hai.
 
 ## 23.2 Bộ đặc tả gồm sáu phần
 
-| # | Phần | Trả lời câu hỏi | Chương liên quan |
-|---|---|---|---|
-| 1 | **Bảng I/O** | Máy có những tín hiệu gì, mỗi tín hiệu nghĩa là gì | 4, 5, 9 |
-| 2 | **Danh sách chế độ** | Máy có mấy chế độ, mỗi chế độ ai được dùng và làm được gì | 25, 28 |
-| 3 | **Mô tả trình tự** | Chu trình tự động gồm những bước nào | 26 |
-| 4 | **Xử lý bất thường** | Mỗi loại lỗi thì máy làm gì | 26, 28 |
-| 5 | **Tham số & công thức** | Cái gì đổi theo mã hàng, dải hợp lệ bao nhiêu | 29 |
-| 6 | **Tiêu chí nghiệm thu** | Làm sao biết máy đã xong | 50, 52 |
+Toàn bộ tập tài liệu này thường được gọi chung là **đặc tả chức năng** *(functional specification,
+FS — có nơi gọi là functional design specification, FDS)*. Nó được viết để trả lời **bản yêu cầu của
+người dùng** *(user requirement specification, URS)* — thứ khách hàng đưa cho bạn, thường ngắn hơn và
+mơ hồ hơn nhiều. Hai cái tên viết tắt này bạn sẽ gặp ngay trong email đầu tiên của một dự án.
+
+| # | Phần | Tên tiếng Anh hay gặp | Trả lời câu hỏi | Chương liên quan |
+|---|---|---|---|---|
+| 1 | **Bảng I/O** | *I/O list* | Máy có những tín hiệu gì, mỗi tín hiệu nghĩa là gì | 4, 5, 9 |
+| 2 | **Danh sách chế độ** | *operating modes* | Máy có mấy chế độ, mỗi chế độ ai được dùng và làm được gì | 25, 28 |
+| 3 | **Mô tả trình tự** | *sequence of operations, SOO* | Chu trình tự động gồm những bước nào | 26 |
+| 4 | **Xử lý bất thường** | *exception / fault handling* | Mỗi loại lỗi thì máy làm gì | 26, 28 |
+| 5 | **Tham số & công thức** | *parameters & recipe* | Cái gì đổi theo mã hàng, dải hợp lệ bao nhiêu | 29 |
+| 6 | **Tiêu chí nghiệm thu** | *acceptance criteria* | Làm sao biết máy đã xong | 50, 52 |
 
 Sáu phần này viết **theo thứ tự**, vì phần sau dùng kết quả của phần trước. Nhưng phần 6 — tiêu chí
 nghiệm thu — nên **phác trước, hoàn thiện sau**: xem mục 23.6.
+
+> ⚡ **LƯU Ý — vì sao cần nhớ cả tên tiếng Anh**
+> Tài liệu mẫu, phần mềm quản lý dự án, và người nước ngoài trong dự án đều dùng các tên viết tắt
+> này. Khi ai đó hỏi *"đã có SOO chưa?"*, họ đang hỏi phần 3. Không biết từ này thì bạn mất thời gian
+> hỏi lại, hoặc tệ hơn, gật đầu nhầm thứ.
 
 ---
 
@@ -145,7 +155,7 @@ và mỗi câu quên là một lần sửa đắt về sau.
 | **Máy chạy mấy mã hàng? Khác nhau ở tham số nào?** | Quyết định có cần công thức sản phẩm không (Chương 29) |
 | **Đổi mã hàng giữa ca — làm thế nào? Có cần xả hết máy trước không?** | Quyết định trình tự chuyển đổi |
 | **Sản phẩm lỗi xử lý ra sao — máy loại, hay người lấy ra?** | Quyết định có cần cơ cấu loại bỏ |
-| **Có cần truy xuất từng sản phẩm không?** | Quyết định có cần đầu đọc mã và kết nối lên hệ thống trên |
+| **Có cần truy xuất từng sản phẩm không?** | Quyết định có cần đầu đọc mã và kết nối lên hệ thống trên (Chương 42) |
 | **Hai sản phẩm vào cùng lúc thì sao?** | Trường hợp biên hay bị bỏ sót |
 
 ### Nhóm C — Vận hành hằng ngày

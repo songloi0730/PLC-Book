@@ -149,6 +149,44 @@ Level, PL)* từ **a** đến **e**, trong đó **e** là mức cao nhất. Mứ
 Một tiêu chuẩn song song dùng thang **mức toàn vẹn an toàn** *(Safety Integrity Level, SIL)*. Hai
 thang có thể quy đổi gần đúng cho nhau; chọn dùng thang nào phụ thuộc ngành và thị trường.
 
+### Cây phả hệ — vì sao có hai thang
+
+Người mới rất hay bối rối khi tài liệu chỗ thì nói PL, chỗ lại nói SIL. Lý do nằm ở quan hệ giữa
+các tiêu chuẩn:
+
+```text
+                    IEC 61508  — an toàn chức năng cho hệ điện/điện tử/
+                        │        điện tử lập trình được. Tiêu chuẩn GỐC,
+                        │        đặt ra khái niệm SIL 1–4 và vòng đời an toàn.
+                        │
+          ┌─────────────┴─────────────┐
+          │                           │
+    ISO 13849-1                  IEC 62061
+    thang PL a–e                 thang SIL (CL) cho máy
+    xuất phát từ ngành cơ khí    xuất phát từ IEC 61508
+          │                           │
+          └─────────────┬─────────────┘
+                        │
+              cùng áp cho MÁY — chọn một, không trộn
+```
+
+Ba điều rút ra:
+
+- **IEC 61508 là tiêu chuẩn nền**, viết cho mọi ngành. Bạn hiếm khi áp trực tiếp nó lên một cỗ máy;
+  bạn áp một trong hai tiêu chuẩn ngành máy phía dưới. Nhưng khái niệm mà cả hai dùng — vòng đời an
+  toàn, xác suất hỏng, mức bao phủ chẩn đoán, hỏng do nguyên nhân chung — đều bắt nguồn từ đây.
+- **SIL của ngành quá trình ≠ SIL của ngành máy.** Ngành quá trình (dầu khí, hoá chất) tính SIL theo
+  IEC 61511 với chế độ tác động *ít khi* — hệ an toàn nằm im hàng năm rồi mới cần hoạt động một lần.
+  Máy tự động hoá thì chức năng an toàn tác động **nhiều lần mỗi ca**. Cùng chữ "SIL 2" nhưng đằng
+  sau là hai phép tính khác nhau. Đừng mang con số từ tài liệu ngành này sang ngành kia.
+- **Không trộn hai thang trong cùng một chức năng an toàn.** Chọn ISO 13849 thì đi hết theo PL; chọn
+  IEC 62061 thì đi hết theo SIL. Trộn giữa chừng làm hồ sơ chứng minh mất giá trị.
+
+> 💡 **MẸO**
+> Khi đọc catalogue thiết bị an toàn, bạn sẽ thấy nhà sản xuất ghi cả hai: *"phù hợp tới PL e /
+> SIL 3"*. Đó là **năng lực tối đa của linh kiện**, không phải mức mà máy của bạn đạt được. Mức của
+> máy phụ thuộc cách bạn đấu nối và toàn bộ chuỗi từ cảm biến tới cơ cấu chấp hành.
+
 ### Kiến trúc — phân biệt bằng hai câu hỏi
 
 Các tiêu chuẩn định nghĩa một số **hạng mục kiến trúc** *(Category)*: B, 1, 2, 3, 4. Cách nhớ thực dụng
@@ -436,7 +474,12 @@ tin lệnh** là nguyên tắc xuyên suốt cả cuốn sách.
 - ISO 13849-1 và -2 — *Safety of machinery — Safety-related parts of control systems*: mức hiệu năng,
   hạng mục kiến trúc, và kiểm định (mục 47.5).
 - IEC 62061 — *Safety of machinery — Functional safety of safety-related control systems*: thang SIL
-  cho máy.
+  cho máy (mục 47.5).
+- IEC 61508 — *Functional safety of electrical/electronic/programmable electronic safety-related
+  systems*: tiêu chuẩn gốc về an toàn chức năng, nơi ISO 13849 và IEC 62061 lấy khái niệm SIL, vòng
+  đời an toàn, mức bao phủ chẩn đoán và hỏng do nguyên nhân chung (mục 47.5 — cây phả hệ).
+- IEC 61511 — *Functional safety — Safety instrumented systems for the process industry sector*: nhắc
+  ở mục 47.5 để phân biệt SIL ngành quá trình với SIL ngành máy; **không** áp cho máy tự động hoá.
 - IEC 60204-1 — *Safety of machinery — Electrical equipment of machines*: ba loại lệnh dừng, yêu cầu
   với thiết bị dừng khẩn cấp, khởi động lại có chủ ý (mục 47.6).
 - IEC 61800-5-2 — *Adjustable speed electrical power drive systems — Safety requirements*: định nghĩa

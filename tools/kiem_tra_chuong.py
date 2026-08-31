@@ -149,8 +149,19 @@ def kiem_lat_cat(so, vanxuoi, cfg, kq):
 
 
 def kiem_song_ngu(so, nd, kq):
-    """B11 — thuật ngữ song ngữ."""
-    n = len(re.findall(r"\*\([a-zA-Z][^)]{2,60}\)\*", nd))
+    """B11 — thuật ngữ song ngữ.
+
+    Đếm hai dạng, vì sách dùng cả hai một cách chính đáng:
+      1. gloss trong ngoặc:  vòng quét *(scan cycle)*  — dạng chuẩn của B11,
+         cho phép dài và xuống dòng vì nhiều gloss có kèm từ viết tắt;
+      2. cột tiếng Anh trong bảng đối chiếu:  | **Bảng I/O** | *I/O list* | …
+         — cũng là song ngữ, chỉ khác cách trình bày.
+    Không đếm chữ in nghiêng tiếng Việt (loại bằng cách đòi ký tự ASCII).
+    """
+    ngoac = re.findall(r"\*\([a-zA-Z][^)]{2,140}\)\*", nd)
+    # in nghiêng thuần ASCII, không nằm ngay sau '(' để khỏi đếm trùng dạng 1
+    nghieng = re.findall(r"(?<!\()\*([A-Za-z][A-Za-z0-9 /,.&+()-]{2,40})\*", nd)
+    n = len(ngoac) + len(set(x.strip().lower() for x in nghieng))
     if n == 0:
         kq.loi(so, "B11", "không có cặp thuật ngữ song ngữ nào")
     elif n < 4:

@@ -284,6 +284,37 @@ Không phải mọi thiết bị phụ trợ hỏng đều phải dừng máy ng
 | **Cảnh báo, vẫn chạy** | Suy giảm dần, còn trong dung sai | Đèn UV giảm còn 85 % → báo để lên kế hoạch thay |
 | **Ghi nhận** | Không ảnh hưởng ngay | Số giờ chạy của bộ lọc |
 
+### ⭐ Phép thử một dòng cho mọi cảnh báo
+
+Tự phát hiện lỗi chỉ có giá trị nếu người vận hành **làm được gì đó** với thông tin đó. Tiêu chuẩn
+quản lý hệ thống cảnh báo *(alarm management)* đặt ra một phép thử rất gọn, và nó là phép thử tốt
+nhất bạn có thể mang theo:
+
+> **Mỗi cảnh báo phải ứng với một hành động mà người vận hành cần làm, và phải còn đủ thời gian để
+> làm việc đó.** Thiếu một trong hai vế thì nó không phải cảnh báo — nó là thông tin, hãy đưa xuống
+> mức ghi nhận.
+
+Áp phép thử này lên danh sách cảnh báo của bạn, và một phần lớn sẽ rớt. Đó là kết quả tốt.
+
+**Lụt cảnh báo** *(alarm flood)* là hiện tượng một sự cố gốc kéo theo hàng chục cảnh báo hệ quả đổ
+ra cùng lúc. Người vận hành khi đó không đọc nữa — họ xác nhận hàng loạt cho hết màn hình. Cảnh báo
+quan trọng nhất chìm trong đám đông đúng vào lúc cần nó nhất.
+
+Trên DP-01, mất khí nén là ví dụ điển hình: một sự cố gốc, nhưng nếu không thiết kế thì sẽ nổ ra
+"chặn 1 không lên", "chặn 2 không lên", "kẹp không giữ", "quá thời gian bước 4"… Cách xử lý:
+
+- **Cảnh báo gốc phải chặn cảnh báo hệ quả.** Khi `AI_AirPressure` dưới ngưỡng, các timeout cơ cấu
+  khí nén bị **ức chế** *(suppressed)*, không phát ra.
+- **Ức chế phải có điều kiện rõ ràng và tự gỡ**, không phải tắt vĩnh viễn. Ức chế tuỳ tiện là cách
+  người ta vô hiệu hoá hệ cảnh báo mà vẫn tưởng nó đang chạy.
+- **Ghi lại cảnh báo bị ức chế vào nhật ký**, kể cả khi không hiển thị. Lúc điều tra sự cố, thứ tự
+  các sự kiện mới là dữ liệu quý.
+
+> ⚡ **LƯU Ý**
+> Cảnh báo là **thứ có vòng đời**: xác định → thiết kế → vận hành → theo dõi → sửa hoặc bỏ. Danh sách
+> cảnh báo được thêm vào suốt ba năm mà chưa bao giờ bị rà lại là danh sách đã hỏng. Chương 44 nói kỹ
+> phần thiết kế và trình bày cảnh báo trên màn hình vận hành.
+
 ---
 
 ## 48.7 Bẫy thường gặp
@@ -393,6 +424,9 @@ nhiên không tái hiện được.
 - ISO 12100 — *Safety of machinery — General principles for design*: phân tích mối nguy làm nền cho
   việc chọn trạng thái an toàn ở mục 48.2.
 - IEC 61131-2 — *Programmable controllers, Part 2*: đặc tính tín hiệu vào/ra và phát hiện ngoài dải.
+- IEC 62682 — *Management of alarm systems for the process industries*: vòng đời cảnh báo, yêu cầu
+  mỗi cảnh báo phải kèm hành động ứng phó, và cách xử lý lụt cảnh báo (mục 48.6). Đây là bản quốc tế
+  tương ứng của tiêu chuẩn ANSI/ISA-18.2; sách dùng số hiệu IEC.
 - Bảng I/O, danh sách chức năng an toàn và danh mục thiết bị phụ trợ của DP-01 — Phụ lục J.
 
 > ⚠ Bảng trạng thái an toàn ở mục 48.2 là **kết quả phân tích cho máy mẫu DP-01**, không phải bảng áp

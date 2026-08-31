@@ -27,8 +27,17 @@ Chương này dạy cách xây trình tự — và bài học ở trên là **qu
 
 ## 26.2 Từ lưu đồ tới bit bước
 
-Chương 25 cho máy các **chế độ**. Bên trong chế độ `Running` là một **chu trình** gồm hàng chục bước
-nối tiếp nhau. Đó là thứ chương này xây.
+Chương 25 cho máy các **chế độ** *(modes)*. Bên trong chế độ `Running` là một **chu trình** *(cycle)*
+gồm hàng chục **bước** *(step)* nối tiếp nhau. Đó là thứ chương này xây.
+
+Ba từ sẽ lặp lại suốt chương, nên chốt nghĩa ngay:
+
+| Tiếng Việt | Tiếng Anh | Nghĩa trong chương này |
+|---|---|---|
+| **Bước** | *step* | Một trạng thái của chu trình; tại mỗi thời điểm chu trình đang ở đúng một bước |
+| **Điều kiện chuyển** | *transition (condition)* | Điều kiện để rời bước hiện tại sang bước kế — phải là **phản hồi thật** |
+| **Khoá lẫn** | *interlock* | Điều kiện chặn, cấm một hành động xảy ra dù trình tự có muốn |
+| **Bit trình tự** | *sequence bit / step bit* | Cách hiện thực: mỗi bước là một bit, hoặc một số hiệu bước |
 
 ### Bắt đầu bằng lưu đồ, không bằng code
 
@@ -116,7 +125,7 @@ Cần chèn một bước giữa 20 và 30? Dùng 25. Không phải sửa gì kh
 
 Trình tự trạm 1, viết bằng biến số bước:
 
-```text
+```iecst
 // ── Trình tự trạm 1 — chỉ chạy khi tầng máy cho phép (Chương 27) ──
 IF NOT M_CycleEnable THEN
     RETURN;                                   // giữ nguyên bước, không tiến
@@ -209,7 +218,7 @@ lỗi thành một cơ chế **giấu lỗi**.
 
 Không cần một timer cho mỗi bước. Một timer dùng chung, tự đặt lại mỗi khi bước đổi:
 
-```text
+```iecst
 VAR
     Stn1_StepPrev  : INT;
     T_StepTimeout  : TON;
@@ -279,7 +288,7 @@ tuần tự.
 
 Tách thành hai chuỗi bước độc lập, mỗi chuỗi một biến bước riêng, rồi **hợp nhất** khi cả hai xong:
 
-```text
+```iecst
 // Nhánh A: hạ kẹp
 CASE Stn1_BranchA OF
    0:  IF M_ParallelStart THEN Stn1_BranchA := 10; END_IF;

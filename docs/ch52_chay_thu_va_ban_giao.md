@@ -39,6 +39,34 @@ Chương này là thứ tự bắt buộc để chuyện đó không xảy ra �
 | **7** | ⭐ **Thử tạo lỗi cố ý** | Xử lý bất thường sai | ⚡ |
 | **8** | **Chạy liên tục** | Lỗi tích luỹ, quá nhiệt, trôi | ⚡ |
 
+### ⭐ Ba mốc nghiệm thu — từ vựng bạn sẽ nghe ngay ngày đầu đi dự án
+
+Tám bước ở trên là **việc kỹ thuật**. Trong hợp đồng và trong lời nói hằng ngày ở dự án, người ta
+chia chúng theo **địa điểm và thời điểm** thành ba mốc. Tiêu chuẩn nghiệm thu hệ tự động hoá đặt tên
+cho ba mốc này, và bạn cần biết chúng vì tiền và trách nhiệm gắn vào đúng ba cái tên đó:
+
+| Mốc | Tên đầy đủ | Ở đâu | Chứng minh điều gì | Bước 1–8 tương ứng |
+|---|---|---|---|---|
+| **FAT** | *Factory Acceptance Test* — nghiệm thu tại xưởng chế tạo | Xưởng của **bên làm máy** | Máy làm đúng chức năng đã cam kết, trước khi tháo đi | 1–8, với sản phẩm mẫu |
+| **SAT** | *Site Acceptance Test* — nghiệm thu tại hiện trường | Nhà máy của **bên mua** | Máy vẫn đúng sau khi vận chuyển, lắp lại, đấu vào nguồn và khí thật của nhà máy | 1–8, lặp lại |
+| **SIT** | *Site Integration Test* — thử tích hợp tại hiện trường | Nhà máy của bên mua | Máy làm việc đúng **với các máy khác** trong chuyền và với hệ thống trên | Ghép chuyền, bắt tay, truyền dữ liệu |
+
+Ba điều quan trọng mà người mới hay hiểu sai:
+
+- **SAT không phải là FAT làm lại cho có.** Vận chuyển làm lỏng đầu nối; nguồn điện nhà máy khác
+  nguồn xưởng; khí nén nhà máy có thể bẩn hơn hoặc áp thấp hơn; nhiệt độ và độ ẩm khác. Rất nhiều
+  lỗi **chỉ xuất hiện** ở SAT. Đó là lý do tồn tại của nó.
+- **SIT là nơi lỗi đắt nhất xuất hiện.** Máy chạy hoàn hảo một mình vẫn có thể sai khi ghép chuyền:
+  bắt tay không khớp, chu kỳ không ăn nhau, dữ liệu gửi lên sai định dạng. Ở FAT không ai phát hiện
+  được, vì lúc đó chưa có máy bên cạnh.
+- **Ký FAT thường gắn với một đợt thanh toán.** Vì vậy có áp lực rất thật lên việc ký sớm. Cách tự
+  bảo vệ duy nhất là **biên bản có danh mục cụ thể** — cái gì đã thử, cái gì chưa, cái gì có điều
+  kiện. "Đã nghiệm thu" mà không kèm danh mục là câu vô nghĩa khi có tranh chấp.
+
+> ⚡ **LƯU Ý**
+> Với máy nhỏ, ba mốc có thể gộp lại — nhưng **gộp phải là quyết định có ghi lại**, không phải là
+> chuyện quên làm. Ghi rõ trong biên bản: "SIT gộp vào SAT do máy chạy độc lập, không ghép chuyền."
+
 ---
 
 ## 52.3 Bước 1–2 — kiểm nguội và cấp nguồn
@@ -221,7 +249,9 @@ tủ, thời gian hành trình từng xy-lanh. Đây là **bộ số liệu chu�
 
 ## 52.9 Danh mục kiểm bắt buộc trước khi bàn giao
 
-Đây là danh mục "không được bỏ sót" — mỗi mục đều là thứ đã từng gây sự cố ở đâu đó.
+Đây là danh mục "không được bỏ sót" — mỗi mục đều là thứ đã từng gây sự cố ở đâu đó. Danh sách các
+hạng mục còn tồn đọng tại thời điểm bàn giao gọi là **danh mục tồn** *(punch list)*: nó phải được
+viết ra, có người chịu trách nhiệm và có hạn, chứ không phải "để đó rồi tính".
 
 | # | Kiểm | Vì sao |
 |---|---|---|
@@ -244,7 +274,7 @@ tủ, thời gian hành trình từng xy-lanh. Đây là **bộ số liệu chu�
 
 | Tài liệu | Ghi chú |
 |---|---|
-| Bản vẽ điện **as-built** | ⭐ Phản ánh máy **thật**, không phải bản thiết kế ban đầu |
+| Bản vẽ điện **hoàn công** *(as-built)* | ⭐ Phản ánh máy **thật**, không phải bản thiết kế ban đầu |
 | Bảng I/O cuối cùng | Khớp với chương trình và với nhãn tại cầu đấu |
 | Chương trình PLC + HMI, **có comment** | Chương 30 |
 | Bản sao lưu đầy đủ, ghi rõ phiên bản | Gồm cả cấu hình phần cứng và tham số thiết bị |
@@ -350,6 +380,9 @@ thay đổi đều diễn ra trên một cỗ máy không được phép dừng 
   trang bị điện của máy; yêu cầu tài liệu kỹ thuật đi kèm. *(tiêu chuẩn có bản quyền)*
 - ISO 13849-2 — *Safety of machinery — Safety-related parts of control systems — Validation*: nguyên
   tắc kiểm định chức năng an toàn — nền cho mục 52.5.
+- IEC 62381 — *Automation systems in the process industry — Factory Acceptance Test (FAT), Site
+  Acceptance Test (SAT), Site Integration Test (SIT)*: định nghĩa và phạm vi ba mốc nghiệm thu ở
+  mục 52.2, và yêu cầu về hồ sơ kèm theo từng mốc.
 - Biểu mẫu **biên bản kiểm I/O 1-1**, **biên bản nghiệm thu** và **phiếu bàn giao** — Phụ lục C.
 - Bảng I/O, đặc tả và bảng trạng thái an toàn của DP-01 — Phụ lục J.
 

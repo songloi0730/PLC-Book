@@ -9,11 +9,12 @@
 Một trạm kẹp board. Người viết chương trình dùng cách đơn giản nhất:
 
 ```iecst
+// ✗ SAI — ĐỪNG CHÉP. Đây chính là cách viết gây ra sự cố kể bên dưới.
 // Ra lệnh kẹp, chờ 2 giây, coi như đã kẹp xong
 M_ClampReq := TRUE;
 T_Wait(IN := TRUE, PT := T#2S);
 IF T_Wait.Q THEN
-    Step := Step + 1;          // đi tiếp
+    Step := Step + 1;          // ✗ chuyển bước bằng đồng hồ, không bằng phản hồi
 END_IF;
 ```
 
@@ -43,7 +44,9 @@ Chuẩn IEC 61131-3 định nghĩa **ba** khối timer. Mọi hãng đều có c
 
 ### TON — trễ sườn lên *(on-delay)*
 
-Ngõ ra lên **sau khi** ngõ vào đã giữ mức 1 đủ thời gian đặt. Ngõ vào tụt xuống 0 thì ngõ ra tắt
+Ngõ ra lên **sau khi** ngõ vào đã giữ mức 1 đủ **thời gian đặt** *(preset time, PT)*. Thời gian đã
+trôi qua kể từ lúc bắt đầu đếm gọi là **thời gian đã chạy** *(elapsed time, ET)* — hầu hết hệ đều cho
+bạn đọc giá trị này, và nó rất hữu ích khi chẩn đoán. Ngõ vào tụt xuống 0 thì ngõ ra tắt
 **ngay lập tức** và bộ đếm về 0.
 
 **Dùng khi:** cần một điều kiện tồn tại **liên tục** một khoảng thời gian mới coi là thật.
@@ -55,7 +58,8 @@ T_AirFault(IN := NOT DI_AirOK, PT := T#500MS);
 M_AirFault := T_AirFault.Q;
 ```
 
-Đây là công dụng chính đáng và phổ biến nhất của TON: **lọc tín hiệu nhiễu**.
+Đây là công dụng chính đáng và phổ biến nhất của TON: **lọc tín hiệu nhiễu** *(debounce / signal
+filtering)* — chỉ chấp nhận tín hiệu sau khi nó đã ổn định đủ lâu.
 
 ### TOF — trễ sườn xuống *(off-delay)*
 
@@ -71,7 +75,7 @@ DO_ExhaustFan := T_FanRun.Q;
 
 ### TP — tạo xung *(pulse)*
 
-Ngõ ra lên khi ngõ vào có **sườn lên**, và giữ **đúng** thời gian đặt rồi tắt — **không phụ thuộc**
+Ngõ ra lên khi ngõ vào có **sườn lên** *(rising edge)*, và giữ **đúng** thời gian đặt rồi tắt — **không phụ thuộc**
 ngõ vào sau đó. Nhấn giữ hay nhả ra đều không đổi kết quả.
 
 **Dùng khi:** cần một xung có độ dài xác định.
@@ -167,7 +171,7 @@ M_StartClean := T_StartDeb.Q;
 
 Đây là cách dùng timer đúng đắn nhất trong toàn bộ chương trình trình tự:
 
-```text
+```iecst
 // ── Bước 20: nâng kẹp ──
 M_Stn1_ClampReq := TRUE;
 

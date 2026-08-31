@@ -31,6 +31,10 @@ vì thời gian dừng máy là chi phí thật.
 
 ## 30.2 Đặt tên — nhất quán quan trọng hơn đẹp
 
+Cả chương này nói về **chuẩn hoá** *(standardization)* và **dùng lại** *(reuse)*. Bộ quy tắc đặt tên
+thống nhất trong một đơn vị gọi là **quy ước đặt tên** *(naming convention)*; tập các khối đã kiểm
+chứng đem dùng lại giữa các dự án gọi là **thư viện** *(library)*.
+
 ### Vì sao nhất quán quan trọng hơn
 
 Có nhiều cách đặt tên tag hợp lý. Không cách nào **đúng tuyệt đối**. Nhưng **trộn nhiều cách trong
@@ -250,7 +254,7 @@ Kiểu thứ ba là kiểu hay xảy ra nhất trong thực tế, và nó tệ h
 | Logic chương trình | ✅ Có — mọi hãng đều có chức năng **so sánh dự án** | Công cụ mạnh nhất bạn có |
 | Cấu hình phần cứng | ⚠ Một phần | Thường phải xem bằng mắt |
 | Tham số thiết bị (driver, module thông minh) | ❌ Thường không | Phải xuất ra và lưu riêng |
-| Dự án màn hình vận hành | ⚠ Tuỳ hệ | Nhiều hệ không so sánh được |
+| Dự án màn hình vận hành (Chương 44) | ⚠ Tuỳ hệ | Nhiều hệ không so sánh được |
 | Công thức sản phẩm | ✅ Nếu lưu dạng bảng | Nên tách khỏi chương trình (Chương 29) |
 
 > ⚠ **NGUY HIỂM**
@@ -267,7 +271,7 @@ Không cần hệ thống phức tạp. Bốn thứ này đã giải quyết ph�
 | 1 | **Đánh số phiên bản** và ghi vào **một biến trong chương trình** | Đọc được khi xem trực tuyến, không cần mở file |
 | 2 | **Nhật ký thay đổi** ngay trong chương trình | Ai · ngày · sửa gì · **vì sao** |
 | 3 | **Sao lưu trước mọi thay đổi**, đặt tên có ngày và phiên bản | `DP01_v1.4_2026-08-31_truoc-sua-timeout` |
-| 4 | Hiển thị **phiên bản trên màn hình vận hành** | Người ở xa hỏi "máy đang chạy bản nào" là trả lời được ngay |
+| 4 | Hiển thị **phiên bản trên màn hình vận hành** (Chương 44) | Người ở xa hỏi "máy đang chạy bản nào" là trả lời được ngay |
 
 ```text
 // ── Nhật ký thay đổi — giữ ngay đầu chương trình ──

@@ -73,7 +73,7 @@ Mỗi loại cơ cấu viết **một lần** thành một **khối chức năng
 DP-01 ở lát cắt này có bốn xy-lanh hai vị trí (chặn ×2, kẹp ×2). Chúng khác nhau ở tag, giống nhau ở
 hành vi. Vậy viết một khối:
 
-```text
+```iecst
 FUNCTION_BLOCK FB_Cylinder2Pos
 VAR_INPUT
     Extend      : BOOL;      // yêu cầu đi ra (giữ mức, không phải xung)

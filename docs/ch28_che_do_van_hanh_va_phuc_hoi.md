@@ -29,6 +29,11 @@ giờ đặt ra: **khi máy dừng ở một tư thế bất kỳ, làm cách n�
 
 ## 28.2 Vì sao "về gốc" khó hơn "chạy"
 
+**Về gốc** *(homing / return to home position)* là đưa mọi cơ cấu về một tư thế **đã biết chắc**
+*(known state)*, để từ đó chu trình có thể bắt đầu. Đừng nhầm nó với **phục hồi sau lỗi** *(fault
+recovery)*: về gốc là một phần của phục hồi, không phải toàn bộ. Và cũng đừng nhầm với **chạy tiếp
+từ chỗ dở** *(resume)* — hai việc khác hẳn nhau, mục 28.5 nói kỹ.
+
 Khi viết chu trình tự động, bạn **biết máy đang ở đâu**: chu trình bắt đầu từ trạng thái gốc, mỗi bước
 dẫn tới bước sau, và mỗi bước biết cơ cấu đang ở tư thế nào.
 
@@ -73,7 +78,7 @@ Trước khi bàn về gốc, phải rõ máy có những chế độ nào và m
 Ở `Manual`, người vận hành được chọn *thứ tự* thao tác, nhưng **các liên động chống va chạm vẫn phải
 còn nguyên**:
 
-```text
+```iecst
 // Ở Manual, nút "hạ chặn trạm 1" chỉ tác dụng khi kẹp đã hạ
 DI_ManStop1Down  AND  M_ModeManual  AND  DI_Clamp1Dn   →   DO_Stop1Vlv := FALSE
                                           ▲
