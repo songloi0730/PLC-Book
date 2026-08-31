@@ -1,0 +1,12 @@
+{
+  "name": "plc-programming-book",
+  "private": true,
+  "description": "Cong cu kiem tra chat luong ban thao sach PLC",
+  "scripts": {
+    "lint:md": "markdownlint-cli2 \"docs/**/*.md\"",
+    "check": "python tools/kiem_tra_chuong.py"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "^0.18.1"
+  }
+}

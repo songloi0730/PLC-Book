@@ -1,0 +1,32 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 300' width='900' height='300'>
+<rect width='900' height='300' fill='#FFFFFF'/>
+<defs><marker id='ar' markerWidth='9' markerHeight='9' refX='8' refY='3' orient='auto'><path d='M0,0 L0,6 L9,3 z' fill='#1A1D21'/></marker><marker id='arc' markerWidth='9' markerHeight='9' refX='8' refY='3' orient='auto'><path d='M0,0 L0,6 L9,3 z' fill='#C0392B'/></marker></defs>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 1.1 — Máy mẫu DP-01: trạm tra keo &amp; sấy UV trên chuyền board mạch</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Hai trạm nối tiếp trong cùng một máy — nhờ vậy dạy được pipeline: hai trạm xử lý hai board khác nhau cùng lúc.</text>
+<rect x='24' y='110' width='120' height='96' rx='3' fill='#FFFFFF' stroke='#9AA3AB' stroke-width='1.4'/>
+<text x='84' y='154' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='600' fill='#565E66' text-anchor='middle'>Máy trước</text>
+<rect x='180' y='88' width='560' height='140' rx='5' fill='#FFFFFF' stroke='#1A1D21' stroke-width='1.8'/>
+<text x='198' y='106' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='14' font-weight='700' fill='#1A1D21' text-anchor='start'>DP-01</text>
+<rect x='756' y='110' width='120' height='96' rx='3' fill='#FFFFFF' stroke='#9AA3AB' stroke-width='1.4'/>
+<text x='816' y='154' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='600' fill='#565E66' text-anchor='middle'>Máy sau</text>
+<line x1='144' y1='158' x2='180' y2='158' stroke='#1A1D21' stroke-width='2'/>
+<line x1='740' y1='158' x2='756' y2='158' stroke='#1A1D21' stroke-width='2'/>
+<text x='162' y='146' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#B8860B' text-anchor='middle'>SMEMA</text>
+<text x='748' y='146' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#B8860B' text-anchor='middle'>SMEMA</text>
+<rect x='340' y='118' width='180' height='76' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.4'/>
+<text x='430' y='140' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='600' fill='#565E66' text-anchor='middle'>TRẠM 1</text>
+<text x='430' y='160' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>TRA KEO</text>
+<text x='430' y='180' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='middle'>gantry XY+Z · van tra keo</text>
+<rect x='550' y='118' width='180' height='76' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.4'/>
+<text x='640' y='140' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='600' fill='#565E66' text-anchor='middle'>TRẠM 2</text>
+<text x='640' y='160' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>SẤY UV</text>
+<text x='640' y='180' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='middle'>đèn UV · cửa chắn</text>
+<line x1='200' y1='158' x2='334' y2='158' stroke='#1A1D21' stroke-width='2.4' marker-end='url(#ar)'/>
+<line x1='526' y1='158' x2='544' y2='158' stroke='#1A1D21' stroke-width='2.4' marker-end='url(#ar)'/>
+<line x1='736' y1='158' x2='738' y2='158' stroke='#1A1D21' stroke-width='2.4'/>
+<circle cx='250' cy='158' r='7' fill='#C0392B'/>
+<text x='250' y='184' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='600' fill='#C0392B' text-anchor='middle'>đọc mã 2D</text>
+<text x='250' y='198' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='600' fill='#C0392B' text-anchor='middle'>hỏi MES</text>
+<rect x='24' y='246' width='852' height='40' rx='3' fill='#EAF1F6' stroke='#9AA3AB' stroke-width='1.2'/>
+<text x='40' y='271' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='400' fill='#1F4E66' text-anchor='start'>Máy được BÓC LỚP: chương thuộc lát cắt nào chỉ dùng thiết bị của lát cắt đó trở về trước. Ch.15 (Ladder) không được lấy ví dụ về servo.</text>
+</svg>

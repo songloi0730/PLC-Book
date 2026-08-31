@@ -1,0 +1,96 @@
+{
+  "_mo_ta": "Cấu hình cho tools/kiem_tra_chuong.py. Sửa file này khi khung sách đổi, không sửa code.",
+
+  "muc_bat_buoc": {
+    "_mo_ta": "B12 — chương thiếu các mục này coi như chưa viết xong",
+    "chung": ["Tự kiểm", "Nguồn tham khảo"],
+    "chuong_khai_niem": ["Bẫy thường gặp"]
+  },
+
+  "chuong_khong_can_bay": [1],
+
+  "ten_phan_mem_hang": {
+    "_mo_ta": "B1 — tuyệt đối không xuất hiện trong thân sách Ch.1–58",
+    "cam": ["TIA Portal", "Studio 5000", "GX Works", "AutoShop", "RSLogix",
+            "Sysmac Studio", "TwinCAT", "CCW", "Connected Components",
+            "FactoryTalk", "WinCC", "GT Designer", "Cscape", "PLCnext Engineer"]
+  },
+
+  "lat_cat": {
+    "_mo_ta": "B8 — chương thuộc lát cắt nào chỉ được dùng thiết bị của lát cắt đó trở về trước",
+    "pham_vi": [
+      {"tu": 1,  "den": 7,  "lat_cat": 0, "ten": "trước máy mẫu"},
+      {"tu": 8,  "den": 22, "lat_cat": 1, "ten": "thuần rời rạc"},
+      {"tu": 23, "den": 30, "lat_cat": 2, "ten": "thêm thiết kế"},
+      {"tu": 31, "den": 37, "lat_cat": 3, "ten": "thêm analog & trục"},
+      {"tu": 38, "den": 46, "lat_cat": 4, "ten": "thêm mạng"},
+      {"tu": 47, "den": 58, "lat_cat": 5, "ten": "đầy đủ"}
+    ],
+    "thiet_bi_theo_lat_cat": {
+      "3": ["servo", "gantry", "trục Z", "đèn UV", "cường độ UV", "áp keo", "4–20 mA", "4-20 mA", "RTD", "PID"],
+      "4": ["Modbus", "MES", "mã 2D", "SMEMA", "HMI", "màn hình vận hành", "đầu đọc mã"],
+      "5": ["rơ-le an toàn", "rèm quang", "STO", "khoá cửa", "muting"]
+    }
+  },
+
+  "tieu_chuan_theo_chuong": {
+    "_mo_ta": "Tiêu chuẩn NÊN được viện dẫn ở mục Nguồn tham khảo của từng chương",
+    "3":  ["IEC 60204-1"],
+    "4":  ["IEC 61131-2", "IEC 60947-5-1", "IEC 60204-1"],
+    "5":  ["IEC 60204-1"],
+    "6":  ["ISO 4414", "IEC 60204-1"],
+    "7":  ["IEC 61340-5-1"],
+    "9":  ["IEC 61131-2"],
+    "10": ["IEC 61131-3", "IEC 61131-2"],
+    "11": ["IEC 61131-3"],
+    "12": ["IEC 61131-9"],
+    "14": ["IEC 61131-3"],
+    "15": ["IEC 61131-3", "IEC 60204-1"],
+    "16": ["IEC 61131-3"],
+    "17": ["IEC 61131-3"],
+    "18": ["IEC 61131-3"],
+    "19": ["IEC 61131-3"],
+    "20": ["IEC 61131-3"],
+    "21": ["IEC 61131-3"],
+    "23": ["IEC 60204-1", "ISO 12100"],
+    "25": ["IEC 61131-3", "IEC 60204-1"],
+    "26": ["IEC 61131-3"],
+    "27": ["IEC 61131-3"],
+    "28": ["IEC 60204-1", "ISO 12100"],
+    "29": ["IEC 62682"],
+    "30": ["IEC 61131-3"],
+    "31": ["IEC 60381", "IEC 61131-2"],
+    "32": ["IEC 61131-2"],
+    "35": ["IEC 60204-1"],
+    "37": ["IEC 61800-5-2"],
+    "39": ["Modbus"],
+    "40": ["IEC 61784", "IEC 61158"],
+    "44": ["IEC 62682", "IEC 60204-1"],
+    "45": ["IEC 62443", "IEC 62541"],
+    "47": ["ISO 12100", "ISO 13849", "IEC 62061", "IEC 60204-1", "IEC 61800-5-2", "IEC 61508"],
+    "48": ["IEC 60204-1", "ISO 12100", "IEC 62682"],
+    "49": ["IEC 60204-1", "IEC 61643"],
+    "50": ["IEC 62381"],
+    "51": ["IEC 61131-2", "IEC 60204-1"],
+    "52": ["IEC 60204-1", "ISO 13849-2", "IEC 62381"],
+    "53": ["IEC 60204-1"],
+    "54": ["IEC 62443"],
+    "56": ["ISO 12100", "IEC 60204-1"]
+  },
+
+  "chuong_an_toan": {
+    "_mo_ta": "B3b — bắt buộc có dòng miễn trừ trách nhiệm và cờ chờ chuyên gia duyệt",
+    "danh_sach": [3, 6, 47, 48, 56],
+    "cum_tu_bat_buoc": ["người có thẩm quyền"]
+  },
+
+  "mau_code_dang_ngo": {
+    "_mo_ta": "B9 — các mẫu code cần người xem lại, không phải lỗi chắc chắn",
+    "quy_tac": [
+      {"ma": "C1", "regex": "Step\\s*:=\\s*Step\\s*\\+\\s*1", "canh_bao": "chuyển bước — kiểm điều kiện có phải phản hồi thật không (Ch.17)"},
+      {"ma": "C2", "regex": "IF\\s+T_\\w+\\.Q\\s+THEN[^;]{0,80}Step", "canh_bao": "CÓ THỂ dùng timer để chuyển bước — bẫy trung tâm Ch.17"},
+      {"ma": "C3", "regex": "WHILE", "canh_bao": "vòng lặp trong môi trường quét — kiểm điều kiện thoát (Ch.20)"},
+      {"ma": "C4", "regex": "IF\\s+NOT\\s+DI_\\w+(Up|Dn|Closed|OK)\\s+THEN", "canh_bao": "suy tư thế từ cảm biến đối diện — bẫy Ch.28"}
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 440' width='900' height='440'>
+<rect width='900' height='440' fill='#FFFFFF'/>
+<defs><marker id='ar' markerWidth='9' markerHeight='9' refX='8' refY='3' orient='auto'><path d='M0,0 L0,6 L9,3 z' fill='#1A1D21'/></marker><marker id='arc' markerWidth='9' markerHeight='9' refX='8' refY='3' orient='auto'><path d='M0,0 L0,6 L9,3 z' fill='#C0392B'/></marker></defs>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 15.2 — Mạch tự giữ: đúng và sai</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Nhánh tự giữ phải song song CHỈ với nút Start. Vòng qua cả nút Dừng là nút Dừng mất tác dụng vĩnh viễn.</text>
+<rect x='24' y='84' width='420' height='172' rx='4' fill='#FFFFFF' stroke='#2E7D4F' stroke-width='1.6'/>
+<text x='40' y='108' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#2E7D4F' text-anchor='start'>✓ ĐÚNG — nhánh giữ chỉ song song với Start</text>
+<line x1='54' y1='128' x2='54' y2='210' stroke='#9AA3AB' stroke-width='1.6'/>
+<line x1='414' y1='128' x2='414' y2='210' stroke='#9AA3AB' stroke-width='1.6'/>
+<line x1='54' y1='146' x2='132' y2='146' stroke='#1A1D21' stroke-width='1.6'/>
+<line x1='132' y1='135' x2='132' y2='157' stroke='#1A1D21' stroke-width='2'/>
+<line x1='156' y1='135' x2='156' y2='157' stroke='#1A1D21' stroke-width='2'/>
+<text x='144' y='128' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='middle'>DI_StartPB</text>
+<line x1='156' y1='146' x2='252' y2='146' stroke='#1A1D21' stroke-width='1.6'/>
+<line x1='252' y1='135' x2='252' y2='157' stroke='#1A1D21' stroke-width='2'/>
+<line x1='276' y1='135' x2='276' y2='157' stroke='#1A1D21' stroke-width='2'/>
+<text x='264' y='128' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='middle'>DI_StopPB</text>
+<line x1='276' y1='146' x2='354' y2='146' stroke='#1A1D21' stroke-width='1.6'/>
+<circle cx='369' cy='146' r='11' fill='none' stroke='#1A1D21' stroke-width='2'/>
+<line x1='380' y1='146' x2='414' y2='146' stroke='#1A1D21' stroke-width='1.6'/>
+<text x='369' y='128' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='middle'>M_ConvRunCmd</text>
+<line x1='54' y1='190' x2='134' y2='190' stroke='#2E7D4F' stroke-width='2'/>
+<line x1='122' y1='179' x2='122' y2='201' stroke='#2E7D4F' stroke-width='2'/>
+<line x1='146' y1='179' x2='146' y2='201' stroke='#2E7D4F' stroke-width='2'/>
+<text x='134' y='172' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='600' fill='#2E7D4F' text-anchor='middle'>M_ConvRunCmd</text>
+<line x1='146' y1='190' x2='164' y2='190' stroke='#2E7D4F' stroke-width='2'/>
+<line x1='164' y1='190' x2='164' y2='146' stroke='#2E7D4F' stroke-width='2'/>
+<line x1='54' y1='146' x2='54' y2='190' stroke='#2E7D4F' stroke-width='2'/>
+<text x='40' y='242' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='600' fill='#2E7D4F' text-anchor='start'>Nhả Start vẫn giữ; nhấn Dừng thì cắt được</text>
+<rect x='24' y='258' width='420' height='172' rx='4' fill='#FFFFFF' stroke='#B03A2E' stroke-width='1.6'/>
+<text x='40' y='282' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#B03A2E' text-anchor='start'>✗ SAI — nhánh giữ vòng qua cả nút Dừng</text>
+<line x1='54' y1='302' x2='54' y2='384' stroke='#9AA3AB' stroke-width='1.6'/>
+<line x1='414' y1='302' x2='414' y2='384' stroke='#9AA3AB' stroke-width='1.6'/>
+<line x1='54' y1='320' x2='132' y2='320' stroke='#1A1D21' stroke-width='1.6'/>
+<line x1='132' y1='309' x2='132' y2='331' stroke='#1A1D21' stroke-width='2'/>
+<line x1='156' y1='309' x2='156' y2='331' stroke='#1A1D21' stroke-width='2'/>
+<text x='144' y='302' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='middle'>DI_StartPB</text>
+<line x1='156' y1='320' x2='252' y2='320' stroke='#1A1D21' stroke-width='1.6'/>
+<line x1='252' y1='309' x2='252' y2='331' stroke='#1A1D21' stroke-width='2'/>
+<line x1='276' y1='309' x2='276' y2='331' stroke='#1A1D21' stroke-width='2'/>
+<text x='264' y='302' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='middle'>DI_StopPB</text>
+<line x1='276' y1='320' x2='354' y2='320' stroke='#1A1D21' stroke-width='1.6'/>
+<circle cx='369' cy='320' r='11' fill='none' stroke='#1A1D21' stroke-width='2'/>
+<line x1='380' y1='320' x2='414' y2='320' stroke='#1A1D21' stroke-width='1.6'/>
+<text x='369' y='302' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='middle'>M_ConvRunCmd</text>
+<line x1='54' y1='364' x2='254' y2='364' stroke='#B03A2E' stroke-width='2'/>
+<line x1='242' y1='353' x2='242' y2='375' stroke='#B03A2E' stroke-width='2'/>
+<line x1='266' y1='353' x2='266' y2='375' stroke='#B03A2E' stroke-width='2'/>
+<text x='254' y='346' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='600' fill='#B03A2E' text-anchor='middle'>M_ConvRunCmd</text>
+<line x1='266' y1='364' x2='284' y2='364' stroke='#B03A2E' stroke-width='2'/>
+<line x1='284' y1='364' x2='284' y2='320' stroke='#B03A2E' stroke-width='2'/>
+<line x1='54' y1='320' x2='54' y2='364' stroke='#B03A2E' stroke-width='2'/>
+<text x='40' y='416' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='600' fill='#B03A2E' text-anchor='start'>Đã chạy rồi thì nút Dừng bị nối tắt → không dừng được</text>
+</svg>

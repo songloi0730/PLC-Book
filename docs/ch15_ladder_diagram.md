@@ -1,0 +1,426 @@
+# Chương 15 — Ladder Diagram: nền tảng
+
+> **Lát cắt máy mẫu:** 1 — chỉ dùng chuyền, chặn, nâng kẹp, cảm biến board, nút bấm, công tắc áp suất khí, đèn tháp.
+
+---
+
+## 15.1 Bài toán: cỗ máy chạy đúng cho tới lúc đứt một sợi dây
+
+Một trạm chuyền có nút Dừng. Kỹ sư viết logic, chạy thử: nhấn Dừng thì chuyền dừng, nhả ra thì chạy
+lại. Nghiệm thu đạt. Máy chạy sản xuất ba tháng không sự cố.
+
+Rồi một sợi dây từ nút Dừng về tủ bị chuột cắn đứt.
+
+Người vận hành nhấn nút Dừng. **Chuyền vẫn chạy.**
+
+Không có lệnh nào sai. Chương trình y nguyên như lúc nghiệm thu. Cái sai nằm ở một chỗ mà rất nhiều
+người viết PLC không bao giờ nghĩ tới: **tổ hợp giữa loại tiếp điểm vật lý ngoài kia và loại lệnh
+trong code**. Có bốn tổ hợp. Chỉ **một** tổ hợp vừa đúng logic vừa an toàn khi đứt dây.
+
+Chương này dạy ngôn ngữ Ladder Diagram, và trọng tâm của nó là dứt điểm bốn tổ hợp đó.
+
+---
+
+## 15.2 Ladder hoạt động thế nào
+
+**Ladder Diagram (LD)** — sơ đồ hình thang — là ngôn ngữ lập trình PLC phổ biến nhất thế giới. Nó được
+thiết kế để **trông giống sơ đồ mạch rơ-le**, vì thế hệ PLC đầu tiên ra đời để thay thế đúng những tủ
+rơ-le đó, và người phải đọc chương trình là thợ điện chứ không phải lập trình viên.
+
+### Giải phẫu một nấc thang
+
+```
+   ray trái                                              ray phải
+      │                                                     │
+      │   DI_StartPB      DI_StopPB                          │
+      ├────┤ ├──────────────┤ ├───────────────( DO_ConvRun )─┤
+      │                                                     │
+      │  ← ─── điều kiện ─── →              ← kết quả →      │
+```
+
+- **Hai ray dọc** — bên trái là "nguồn", bên phải là "đích". Đây là hình ảnh vay mượn từ sơ đồ rơ-le.
+- **Nấc thang** *(rung)* — một dòng ngang. Mỗi nấc là một câu lệnh hoàn chỉnh.
+- **Tiếp điểm** *(contact)* `┤ ├` — điều kiện, nằm bên trái.
+- **Cuộn dây** *(coil)* `( )` — kết quả, nằm bên phải.
+
+Đọc nấc thang trên: "nếu `DI_StartPB` **và** `DI_StopPB` cùng thoả thì bật `DO_ConvRun`".
+
+### Dòng năng lượng
+
+Cách hình dung: có một "dòng" chảy từ ray trái sang ray phải. Tiếp điểm nào thoả điều kiện thì cho
+dòng đi qua; không thoả thì chặn. Dòng tới được cuộn dây thì cuộn dây bật.
+
+Từ đó ra hai cách ghép cơ bản:
+
+```
+NỐI TIẾP = AND                          SONG SONG = OR
+                                        
+  ──┤ ├───┤ ├───( )──                     ──┬─┤ ├─┬──( )──
+     A     B                                │      │
+                                            └─┤ ├─┘
+  bật khi A VÀ B                               B
+                                            bật khi A HOẶC B
+```
+
+Ghép lồng nhau thì diễn đạt được mọi biểu thức logic. Chương 24 nói kỹ về đại số Boolean và cách rút
+gọn; ở đây chỉ cần nhớ: **nối tiếp là AND, song song là OR**.
+
+### ⚠ Nhưng đây **không phải** là điện
+
+Đây là điểm quan trọng nhất của mục này, và là chỗ hình ảnh "giống sơ đồ rơ-le" phản chủ.
+
+Trong một tủ rơ-le thật, **mọi thứ xảy ra đồng thời**. Cấp điện vào là toàn bộ mạch phản ứng cùng lúc,
+theo vật lý.
+
+Trong PLC, **không có dòng điện nào cả**. CPU đọc từng nấc thang, tính giá trị đúng/sai, ghi kết quả,
+rồi sang nấc tiếp theo — **tuần tự, từ trên xuống dưới, trong mỗi vòng quét** *(scan cycle)*. Hình ảnh
+"dòng chảy" chỉ là ẩn dụ để dễ đọc.
+
+Hệ quả trực tiếp:
+
+| Tủ rơ-le thật | Chương trình ladder |
+|---|---|
+| Mọi mạch phản ứng đồng thời | Từng nấc thang chạy lần lượt, có trước có sau |
+| Thứ tự vẽ trên bản vẽ không ảnh hưởng | **Thứ tự nấc thang là một phần của logic** |
+| Hai cuộn dây cùng tên là hai cuộn dây thật, mắc song song | Hai cuộn dây cùng tên: cái sau đè cái trước (mục 15.4) |
+| Tiếp điểm phản ánh trạng thái rơ-le ngay lúc đó | Tiếp điểm đọc **ảnh ngõ vào** đã chụp từ đầu vòng quét |
+
+Nếu chỗ này còn mờ, quay lại Chương 10 trước khi đi tiếp. Ladder chỉ hiểu đúng được khi đã có mô hình
+vòng quét trong đầu.
+
+> ⚡ **LƯU Ý — dành riêng cho lộ trình B (thợ điện đi lên)**
+> Bạn đọc ladder được ngay từ ngày đầu, và đó là lợi thế thật. Cái bẫy là bạn sẽ có xu hướng **viết
+> chương trình như đi dây một tủ rơ-le**: cần thêm chức năng thì chồng thêm một nhánh. Cách đó chạy
+> được với máy nhỏ và sụp đổ với máy vừa. Chương 25 chữa thói quen này bằng mô hình trạng thái.
+
+### Hai lệnh tiếp điểm — và cái tên gây hại
+
+Ladder có hai lệnh tiếp điểm cơ bản:
+
+| Ký hiệu | Cách gọi phổ biến | **Thực chất nó làm gì** |
+|---|---|---|
+| `┤ ├` | "tiếp điểm thường mở", NO | **Cho dòng qua khi bit = 1** |
+| `┤/├` | "tiếp điểm thường đóng", NC | **Cho dòng qua khi bit = 0** |
+
+> 🔍 **BẪY — cái tên "thường mở / thường đóng" chính là nguồn gốc của mọi hiểu nhầm**
+>
+> Hai lệnh này **không mở, không đóng gì cả**. Chúng chỉ *kiểm tra một bit trong bộ nhớ*. Cột thứ ba
+> trong bảng trên là định nghĩa đúng duy nhất — hãy nhớ cột đó, quên hai cột đầu đi.
+>
+> Một số hãng đặt tên theo đúng bản chất — đại ý "kiểm tra xem bit có đang bật không" và "kiểm tra xem
+> bit có đang tắt không". Tên đó chính xác hơn nhiều. Nhưng ký hiệu vẽ thì ở đâu cũng như nhau, và cái
+> tên "NO/NC" thì bám dai dẳng.
+
+Vì sao cái tên này gây hại: **ngoài hiện trường cũng có tiếp điểm NO và NC** — trên nút bấm, trên cảm
+biến, trên công tắc an toàn. Hai thứ trùng tên nhưng ở hai thế giới khác nhau, và người mới ghép chúng
+lại thành một. Đó là toàn bộ nội dung mục tiếp theo.
+
+---
+
+## 15.3 Bốn tổ hợp — bảng phải thuộc
+
+### Chuẩn bị: "trạng thái NORMAL" nghĩa là gì
+
+Với một thiết bị ngoài hiện trường, **"normal" là lúc không có kích thích** — nút chưa ai nhấn, cảm
+biến chưa thấy vật, công tắc cửa với cửa đang đóng bình thường.
+
+- **Tiếp điểm NO vật lý**: lúc bình thường **hở** → không có dòng → **bit ngõ vào = 0**
+- **Tiếp điểm NC vật lý**: lúc bình thường **kín** → có dòng → **bit ngõ vào = 1**
+
+Và điều quyết định tất cả:
+
+> **Đứt dây trông giống hệt "hở tiếp điểm".** Cả hai đều làm bit = 0. PLC **không có cách nào phân biệt**.
+
+Chính chỗ này quyết định tổ hợp nào an toàn.
+
+### Bảng 4 tổ hợp
+
+Bài toán: một nút **Dừng**. Ta cần tín hiệu nội bộ `M_RunAllowed` = 1 khi **không** ai nhấn Dừng.
+
+| # | Nút vật lý | Lệnh trong code | Bình thường | Khi nhấn Dừng | **Khi đứt dây** | Kết luận |
+|:-:|---|---|---|---|---|---|
+| 1 | **NO** | `┤ ├` | bit 0 → chặn → **không cho chạy** | bit 1 → cho chạy | bit 0 → không chạy | ❌ Logic **ngược** — phải giữ nút Dừng thì máy mới chạy |
+| 2 | **NO** | `┤/├` | bit 0 → thông → cho chạy ✓ | bit 1 → chặn → dừng ✓ | bit 0 → **thông → VẪN CHẠY** | ⚠⚠ **Logic đúng nhưng NGUY HIỂM** |
+| 3 | **NC** | `┤ ├` | bit 1 → thông → cho chạy ✓ | bit 0 → chặn → dừng ✓ | bit 0 → **chặn → dừng** ✓ | ✅ **ĐÚNG — dùng cái này** |
+| 4 | **NC** | `┤/├` | bit 1 → chặn → không cho chạy | bit 0 → cho chạy | bit 0 → cho chạy | ❌ Vừa ngược vừa nguy hiểm |
+
+**Tổ hợp 3 là đáp án**: nút vật lý NC, trong code dùng `┤ ├`.
+
+### Vì sao tổ hợp 2 là tổ hợp giết người
+
+Tổ hợp 2 **chạy đúng trong mọi lần thử nghiệm**. Nhấn thì dừng, nhả thì chạy. Nghiệm thu đạt. Nó chỉ
+lộ ra vào đúng ngày sợi dây đứt — và lộ ra bằng cách **máy tiếp tục chạy khi người vận hành đang cố
+dừng nó**.
+
+Đây chính là cỗ máy ở mục 15.1.
+
+Còn tổ hợp 3, cùng tình huống đứt dây, thì **máy dừng**. Người vận hành thấy máy dừng bất thường, gọi
+bảo trì, sợi dây được nối lại. Không ai bị gì.
+
+Nguyên tắc đằng sau có tên riêng: **thiết kế hướng an toàn khi hỏng** *(fail-safe)* — hỏng hóc phải dẫn
+tới trạng thái an toàn, chứ không phải trạng thái nguy hiểm. Chương 48 khai triển đầy đủ.
+
+> ⚠ **NGUY HIỂM**
+> Quy tắc rút gọn, áp dụng cho **mọi** tín hiệu mà mất nó là phải dừng máy — nút Dừng, công tắc cửa
+> bảo vệ, công tắc áp suất, phản hồi mạch an toàn:
+>
+> **Tiếp điểm vật lý phải là NC. Trong code dùng `┤ ├`.**
+>
+> Và với **dừng khẩn cấp** *(E-Stop)* thì còn một tầng nữa: nó **không được chỉ dựa vào logic PLC**,
+> bất kể bạn dùng tổ hợp nào. Lý do: CPU treo thì logic chết theo, còn mối nguy thì không. Chương 47.
+
+### Kiểm tra nhanh khi bạn không chắc
+
+Ba câu hỏi, theo thứ tự:
+
+1. **Thiết bị này mất tín hiệu thì máy nên làm gì?** Nếu câu trả lời là "phải dừng" → tiếp điểm vật lý
+   NC, code dùng `┤ ├`.
+2. **Cầm đồng hồ đo, ở trạng thái bình thường bit này bằng mấy?** Đo thật, đừng suy đoán từ tên gọi
+   trên nhãn.
+3. **Rút dây ra và thử.** Đây là phép thử duy nhất chứng minh được, và nó nằm trong danh mục thử tạo
+   lỗi cố ý ở Chương 52.
+
+> 💡 **MẸO**
+> Cảm biến quang, cảm biến tiệm cận thường có cả hai kiểu ngõ ra hoặc chọn được bằng cách đấu dây. Khi
+> mua sắm, hãy **chọn kiểu đầu ra theo bảng 4 tổ hợp**, đừng để tới lúc đấu dây mới phát hiện mình có
+> loại sai. Chương 4 nói chi tiết về các kiểu ngõ ra cảm biến.
+
+---
+
+## 15.4 Trên máy mẫu DP-01
+
+Mạch cho phép chuyền chạy — dùng đúng lát cắt 1.
+
+### Nấc 1 — mạch tự giữ Start/Stop
+
+```
+   DI_StartPB      DI_StopPB      DI_AirOK                        M_ConvRunCmd
+ ┌───┤ ├──────┬──────┤ ├────────────┤ ├──────────────────────────────( )───┐
+ │            │
+ │ M_ConvRunCmd
+ └───┤ ├──────┘
+```
+
+Đọc: "(nhấn Start **hoặc** đã đang chạy) **và** Dừng chưa nhấn **và** khí đủ → cho phép chạy".
+
+Nhánh song song chứa chính `M_ConvRunCmd` là **mạch tự giữ** *(seal-in / latch)*: nhả nút Start ra thì
+nhánh dưới vẫn giữ cho nấc thang thông. Đây là mẫu logic phổ biến nhất trong toàn ngành điều khiển,
+và nó là bản sao trực tiếp của mạch tự giữ dựng bằng rơ-le ở Chương 3.
+
+Chú ý ba tiếp điểm đều dùng `┤ ├`:
+
+| Tag | Tiếp điểm vật lý | Vì sao `┤ ├` |
+|---|---|---|
+| `DI_StartPB` | **NO** | Nút Start — mất tín hiệu thì máy **không** khởi động. Đó là hành vi an toàn. |
+| `DI_StopPB` | **NC** | Tổ hợp 3. Đứt dây → dừng. |
+| `DI_AirOK` | **NO** *(công tắc áp suất, kín khi đủ khí)* | Đủ khí thì bit = 1. Mất khí **hoặc** đứt dây → bit = 0 → dừng. Fail-safe. |
+
+> ⚡ **LƯU Ý**
+> `DI_AirOK` là ví dụ tốt cho thấy đừng máy móc "cứ là NC". Với công tắc áp suất, tiếp điểm **kín khi
+> đủ áp** — về mặt danh mục nó là NO, nhưng về mặt fail-safe nó hành xử đúng như ta cần, vì cả "hết
+> khí" lẫn "đứt dây" đều cho bit = 0. **Tiêu chí luôn là câu hỏi 1 ở mục 15.3, không phải cái nhãn.**
+
+### Nấc 2 — chuyền chỉ chạy khi trạm 1 còn trống
+
+```
+   M_ConvRunCmd   DI_BoardStn1                                    DO_ConvRun
+ ────┤ ├─────────────┤/├──────────────────────────────────────────────( )───
+```
+
+`DI_BoardStn1` là cảm biến quang thu-phát, có board thì bit = 1. Ở đây dùng `┤/├` để diễn đạt "**chưa**
+có board tại trạm 1".
+
+Đây là chỗ dùng `┤/├` hoàn toàn chính đáng: tín hiệu này **không phải** tín hiệu an toàn. Nếu cảm biến
+board đứt dây, bit = 0, chuyền tưởng trạm trống nên vẫn chạy — hậu quả là board đâm vào chặn, hỏng
+board. Khó chịu, nhưng không nguy hiểm cho người.
+
+> 💡 **MẸO**
+> Phân biệt hai loại tín hiệu ngay từ khi lập bảng I/O: **tín hiệu an toàn** (mất là phải dừng, bắt
+> buộc fail-safe theo tổ hợp 3) và **tín hiệu quy trình** (mất thì sai sản phẩm, xử lý bằng timeout và
+> báo động). Chương 23 đưa việc phân loại này vào biểu mẫu đặc tả.
+
+### Nấc 3 — nâng chặn
+
+```
+   DI_BoardStn1                                                    DO_Stop1Vlv
+ ────┤ ├──────────────────────────────────────────────────────────────( )───
+```
+
+---
+
+## 15.5 Bẫy thường gặp
+
+### 🔍 BẪY 1 — Cuộn dây trùng
+
+**Hai nấc thang cùng ghi vào một ngõ ra.**
+
+```
+Nấc 10:   M_ConvRunCmd   ────┤ ├────────────────────( DO_ConvRun )
+
+   … 200 nấc thang ở giữa …
+
+Nấc 210:  M_MaintMode    ────┤/├────────────────────( DO_ConvRun )
+```
+
+Người viết nấc 210 nghĩ mình đang thêm điều kiện "không chạy khi ở chế độ bảo trì". Thực tế:
+
+**Nấc 210 chạy sau, nên nó thắng — mọi vòng quét.** Nấc 10 coi như không tồn tại. Chuyền giờ chạy bất
+cứ khi nào **không** ở chế độ bảo trì, kể cả khi chưa ai nhấn Start.
+
+Nguyên nhân gốc nằm ở Chương 10: cả hai nấc đều ghi vào **ảnh ngõ ra**, và chỉ giá trị cuối cùng mới
+được đẩy ra module ở giai đoạn 3.
+
+**Triệu chứng nhận biết:** một điều kiện bạn vừa thêm "có vẻ không tác dụng"; hoặc một ngõ ra nhấp nháy
+không giải thích được (khi hai nấc trùng nằm trong hai nhánh chương trình chạy luân phiên).
+
+**Cách sửa** — gộp mọi điều kiện vào **một** nấc duy nhất:
+
+```
+   M_ConvRunCmd   M_MaintMode                                      DO_ConvRun
+ ────┤ ├─────────────┤/├───────────────────────────────────────────────( )───
+```
+
+**Cách phòng:** quy tắc **mỗi ngõ ra chỉ được ghi ở đúng một nơi**. Trước khi thêm điều kiện cho một
+ngõ ra, dùng chức năng tham chiếu chéo *(cross-reference)* để tìm mọi chỗ đang ghi vào nó — Chương 22
+hướng dẫn.
+
+> ⚡ **LƯU Ý**
+> Nhiều trình biên dịch **cảnh báo** cuộn dây trùng, nhưng mức độ khác nhau: có hãng báo lỗi chặn biên
+> dịch, có hãng chỉ cảnh báo, có hãng im lặng. **Đừng trông chờ vào công cụ.** Trong một số kiến trúc
+> chương trình nâng cao, ghi cùng một tag từ nhiều nơi là hợp lệ có chủ ý — nên công cụ không thể tự
+> quyết được thay bạn.
+
+### 🔍 BẪY 2 — Đọc "NC" trên nhãn rồi suy ra lệnh trong code
+
+Người mới nhìn nhãn nút bấm ghi "NC", nghĩ "vậy trong code cũng dùng tiếp điểm NC `┤/├` cho khớp".
+**Đúng bốn tổ hợp thì đó là tổ hợp 4** — vừa ngược logic vừa nguy hiểm.
+
+Hai chữ "NC" ở hai chỗ **không liên quan tới nhau**. Ngoài hiện trường, NC mô tả trạng thái cơ khí lúc
+nghỉ. Trong code, `┤/├` mô tả "cho dòng qua khi bit = 0". Không có luật nào bắt chúng phải khớp.
+
+**Cách chữa dứt điểm:** đừng suy luận từ nhãn. Đi qua ba câu hỏi ở mục 15.3.
+
+### 🔍 BẪY 3 — Quên nhánh tự giữ
+
+```
+   DI_StartPB    DI_StopPB                                       M_ConvRunCmd
+ ────┤ ├───────────┤ ├────────────────────────────────────────────────( )───
+```
+
+Thiếu nhánh song song. Máy chạy **đúng lúc đang giữ nút Start**, nhả ra là dừng.
+
+Triệu chứng dễ nhận. Nhưng có biến thể khó hơn: nhánh tự giữ mắc **sai vị trí** — vòng qua cả tiếp
+điểm `DI_StopPB`:
+
+```
+ ┌───┤ ├──────┬──────┤ ├────────────────────────────────( M_ConvRunCmd )───┐
+ │ DI_StartPB │   DI_StopPB
+ │            │
+ │ M_ConvRunCmd
+ └────────────┴──── ✗ SAI: nhánh giữ vòng qua cả nút Dừng
+```
+
+![Mạch tự giữ đúng và sai](../assets/ch15/hinh_15_2_tu_giu.svg)
+
+*Hình 15.2 — Hai cách mắc nhánh tự giữ. Khác nhau đúng một điểm nối, hậu quả khác nhau hoàn toàn.*
+
+Ở dạng sai này, một khi đã chạy thì **nút Dừng mất tác dụng vĩnh viễn**. Nhánh tự giữ phải song song
+**chỉ với nút Start**, và mọi điều kiện dừng phải nằm **ngoài** vòng giữ đó — như nấc 1 ở mục 15.4.
+
+### 🔍 BẪY 4 — Quên rằng thứ tự nấc thang là logic
+
+Đã nói ở Chương 10, nhắc lại vì nó biểu hiện rõ nhất trong ladder: nếu nấc 20 ghi một bit mà nấc 5 đọc,
+thì **nấc 5 đọc giá trị của vòng quét trước**. Với chuỗi dài, độ trễ cộng dồn từng vòng quét một.
+
+Quy tắc thực dụng: **sắp xếp nấc thang theo dòng chảy dữ liệu** — tính điều kiện trước, dùng kết quả
+sau. Chương 30 đưa nguyên tắc này vào quy ước cấu trúc chương trình.
+
+### 🔍 BẪY 5 — Nhồi quá nhiều vào một nấc thang
+
+Ladder cho phép nấc thang rộng và lồng nhiều tầng. Điều đó **không** có nghĩa là nên làm.
+
+Một nấc thang với mười hai tiếp điểm và bốn nhánh lồng nhau thì **không ai gỡ lỗi được** — kể cả bạn,
+sáu tháng sau. Khi máy hỏng lúc hai giờ sáng, thứ bạn cần là nhìn một nấc thang và biết ngay điều kiện
+nào đang chặn.
+
+Cách làm tốt hơn: tách điều kiện phức tạp thành **các bit trung gian có tên nói lên ý nghĩa**.
+
+```
+// Thay vì một nấc thang khổng lồ:
+   M_ConvPermissive  M_Stn1Clear  M_NoFault                        DO_ConvRun
+ ────────┤ ├──────────────┤ ├─────────┤/├───────────────────────────────( )───
+```
+
+Ba bit trung gian được tính ở ba nấc riêng phía trên. Khi máy không chạy, bạn nhìn ba bit đó là biết
+ngay cái nào sai — thay vì dò mười hai tiếp điểm.
+
+> 💡 **MẸO**
+> Đây là ứng dụng trực tiếp của kỹ thuật "chia đôi bài toán" ở Chương 51. Bạn đang **thiết kế sẵn các
+> điểm đo** cho chính mình trong tương lai.
+
+---
+
+## 15.6 Khác biệt giữa các hãng
+
+Ladder là ngôn ngữ trong chuẩn IEC 61131-3, nên **khái niệm giống nhau ở mọi hệ**: tiếp điểm, cuộn dây,
+nối tiếp là AND, song song là OR, chạy từ trên xuống. Chuyển hệ không phải học lại ladder.
+
+Nhưng những chi tiết sau **khác nhau thật** và sẽ làm bạn vấp khi đổi hệ:
+
+| Khía cạnh | Khác nhau ở đâu |
+|---|---|
+| **Tên hai lệnh tiếp điểm** | Mỗi hãng một tên gọi và một cách viết tắt. Ký hiệu vẽ thì giống nhau. |
+| **Cảnh báo cuộn dây trùng** | Có hãng chặn biên dịch, có hãng chỉ cảnh báo, có hãng im lặng. Xem Bẫy 1. |
+| **Số nhánh song song và độ rộng nấc thang tối đa** | Có giới hạn, và giới hạn khác nhau. |
+| **Cách đặt tên tín hiệu** | Địa chỉ tuyệt đối hay tag có tên — ảnh hưởng lớn tới cách đọc chương trình. Chương 11. |
+| **Lệnh mở rộng đặt ngay trên nấc thang** | Số học, so sánh, chuyển dữ liệu — mỗi hãng một bộ lệnh và một cách hiển thị. Chương 19. |
+| **Cuộn dây có nhớ (SET/RESET)** | Ký hiệu và hành vi khi mất điện khác nhau. Chương 16. |
+
+Đối chiếu chi tiết năm hệ: **Phụ lục A2**.
+
+> ⚡ **LƯU Ý**
+> Bảng 4 tổ hợp ở mục 15.3 **không phụ thuộc hãng**. Nó là hệ quả của vật lý (đứt dây = mất dòng) và
+> của định nghĩa hai lệnh tiếp điểm. Học một lần, dùng ở mọi hệ, suốt đời.
+
+---
+
+## 15.7 Tự kiểm
+
+1. **Viết lại bảng 4 tổ hợp từ trí nhớ.** Chỉ ra tổ hợp đúng và giải thích vì sao tổ hợp 2 nguy hiểm
+   dù nó chạy đúng khi thử nghiệm.
+2. Vì sao PLC **không thể** phân biệt "tiếp điểm hở" với "đứt dây"? Sự thật đó dẫn tới quy tắc thiết
+   kế nào?
+3. Vẽ mạch tự giữ Start/Stop **không nhìn sách**. Rồi chỉ ra: nếu mắc nhánh giữ vòng qua cả nút Dừng
+   thì chuyện gì xảy ra.
+4. Trong nấc 2 ở mục 15.4, `DI_BoardStn1` dùng `┤/├`. Vì sao ở đây dùng `┤/├` là chính đáng, trong khi
+   dùng `┤/├` cho nút Dừng lại nguy hiểm?
+5. Một đồng nghiệp thêm điều kiện mới cho `DO_ConvRun` bằng cách viết thêm một nấc thang ở cuối chương
+   trình. **Dự đoán hậu quả** và giải thích bằng cơ chế của Chương 10.
+6. Giải thích cho một người vừa học ladder: vì sao "ladder giống sơ đồ rơ-le" là câu nói **vừa đúng
+   vừa nguy hiểm**.
+
+Câu 1 và câu 4 là hai câu phân loại. Câu 1 phải trả lời được **không cần nghĩ**; câu 4 chứng tỏ bạn
+hiểu tiêu chí chứ không thuộc lòng quy tắc.
+
+---
+
+### Chương tiếp theo
+
+**Chương 16 — Latch, Set/Reset & bắt cạnh.** Mạch tự giữ ở chương này giữ trạng thái bằng một nhánh
+song song. Có cách khác dùng lệnh SET/RESET — trông gọn hơn, nhưng hành xử **khác hẳn khi mất điện và
+khi reset**. Chương 16 so sánh hai cách và chỉ ra khi nào cách gọn lại là cách sai.
+
+---
+
+### Nguồn tham khảo chương 15
+
+- IEC 61131-3 — *Programmable controllers, Part 3: Programming languages*, phần ngôn ngữ Ladder Diagram
+  (LD). *(tiêu chuẩn có bản quyền; chương này chỉ diễn giải ở mức khái niệm)*
+- IEC 60204-1 — *Safety of machinery — Electrical equipment of machines*: nguyên tắc mạch dừng và yêu
+  cầu hành vi khi hỏng, làm cơ sở cho quy tắc fail-safe ở mục 15.3.
+- Tài liệu hãng về ngôn ngữ Ladder Diagram — dùng để đối chiếu khác biệt ở mục 15.6; số hiệu cụ thể ghi
+  trong Phụ lục A2.
+- Cấu hình I/O của DP-01 (kiểu tiếp điểm từng thiết bị) — Phụ lục J.
+
+> ⚠ Nội dung fail-safe ở mục 15.3 là **nguyên tắc thiết kế**, không thay thế đánh giá rủi ro và tính
+> toán mức hiệu năng cho một cỗ máy cụ thể. Chương 47 nêu rõ ranh giới đó.

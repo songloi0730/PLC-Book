@@ -1,0 +1,65 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 520' width='940' height='520'>
+<rect width='940' height='520' fill='#FFFFFF'/>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 17.1 — Ba loại timer: cùng một tín hiệu vào, ba kết quả khác nhau</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Xung thứ hai NGẮN HƠN thời gian đặt (PT) — đây là chỗ ba loại timer bộc lộ khác biệt rõ nhất.</text>
+<line x1='240' y1='112' x2='240' y2='470' stroke='#9AA3AB' stroke-width='0.9' stroke-dasharray='3,4'/>
+<line x1='440' y1='112' x2='440' y2='470' stroke='#9AA3AB' stroke-width='0.9' stroke-dasharray='3,4'/>
+<line x1='570' y1='112' x2='570' y2='470' stroke='#9AA3AB' stroke-width='0.9' stroke-dasharray='3,4'/>
+<line x1='620' y1='112' x2='620' y2='470' stroke='#9AA3AB' stroke-width='0.9' stroke-dasharray='3,4'/>
+<text x='24' y='128' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#1A1D21' text-anchor='start'>IN</text>
+<text x='24' y='145' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>tín hiệu vào</text>
+<line x1='190' y1='150' x2='240' y2='150' stroke='#1A1D21' stroke-width='2.4'/>
+<line x1='240' y1='150' x2='240' y2='116' stroke='#1A1D21' stroke-width='2.4'/>
+<line x1='240' y1='116' x2='440' y2='116' stroke='#1A1D21' stroke-width='2.4'/>
+<line x1='440' y1='116' x2='440' y2='150' stroke='#1A1D21' stroke-width='2.4'/>
+<line x1='440' y1='150' x2='570' y2='150' stroke='#1A1D21' stroke-width='2.4'/>
+<line x1='570' y1='150' x2='570' y2='116' stroke='#1A1D21' stroke-width='2.4'/>
+<line x1='570' y1='116' x2='620' y2='116' stroke='#1A1D21' stroke-width='2.4'/>
+<line x1='620' y1='116' x2='620' y2='150' stroke='#1A1D21' stroke-width='2.4'/>
+<line x1='620' y1='150' x2='900' y2='150' stroke='#1A1D21' stroke-width='2.4'/>
+<text x='904' y='136' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#1A1D21' text-anchor='start'></text>
+<text x='190' y='170' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>hai xung: một dài, một ngắn hơn PT</text>
+<text x='24' y='228' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#2C5F8D' text-anchor='start'>TON</text>
+<text x='24' y='245' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>trễ sườn lên</text>
+<line x1='190' y1='250' x2='330' y2='250' stroke='#2C5F8D' stroke-width='2.4'/>
+<line x1='330' y1='250' x2='330' y2='216' stroke='#2C5F8D' stroke-width='2.4'/>
+<line x1='330' y1='216' x2='440' y2='216' stroke='#2C5F8D' stroke-width='2.4'/>
+<line x1='440' y1='216' x2='440' y2='250' stroke='#2C5F8D' stroke-width='2.4'/>
+<line x1='440' y1='250' x2='900' y2='250' stroke='#2C5F8D' stroke-width='2.4'/>
+<text x='904' y='236' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#1A1D21' text-anchor='start'></text>
+<text x='190' y='270' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>lên SAU khi vào giữ đủ PT · xung ngắn KHÔNG kích được</text>
+<text x='24' y='328' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#2E7D4F' text-anchor='start'>TOF</text>
+<text x='24' y='345' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>trễ sườn xuống</text>
+<line x1='190' y1='350' x2='240' y2='350' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='240' y1='350' x2='240' y2='316' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='240' y1='316' x2='530' y2='316' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='530' y1='316' x2='530' y2='350' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='530' y1='350' x2='570' y2='350' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='570' y1='350' x2='570' y2='316' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='570' y1='316' x2='710' y2='316' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='710' y1='316' x2='710' y2='350' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='710' y1='350' x2='900' y2='350' stroke='#2E7D4F' stroke-width='2.4'/>
+<text x='904' y='336' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#1A1D21' text-anchor='start'></text>
+<text x='190' y='370' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>lên NGAY · tắt SAU khi vào tụt đủ PT</text>
+<text x='24' y='428' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#C0392B' text-anchor='start'>TP</text>
+<text x='24' y='445' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>tạo xung</text>
+<line x1='190' y1='450' x2='240' y2='450' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='240' y1='450' x2='240' y2='416' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='240' y1='416' x2='330' y2='416' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='330' y1='416' x2='330' y2='450' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='330' y1='450' x2='570' y2='450' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='570' y1='450' x2='570' y2='416' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='570' y1='416' x2='660' y2='416' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='660' y1='416' x2='660' y2='450' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='660' y1='450' x2='900' y2='450' stroke='#C0392B' stroke-width='2.4'/>
+<text x='904' y='436' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#1A1D21' text-anchor='start'></text>
+<text x='190' y='470' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>lên NGAY · giữ ĐÚNG PT, không phụ thuộc vào sau đó</text>
+<line x1='240' y1='84' x2='330' y2='84' stroke='#B8860B' stroke-width='2.2'/>
+<line x1='240' y1='79' x2='240' y2='89' stroke='#B8860B' stroke-width='2.2'/>
+<line x1='330' y1='79' x2='330' y2='89' stroke='#B8860B' stroke-width='2.2'/>
+<text x='285' y='75' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#B8860B' text-anchor='middle'>PT (thời gian đặt)</text>
+<text x='340' y='106' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='600' fill='#565E66' text-anchor='middle'>xung DÀI hơn PT</text>
+<text x='595' y='106' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#B03A2E' text-anchor='middle'>xung NGẮN hơn PT</text>
+<rect x='24' y='476' width='892' height='34' rx='3' fill='#FDF6E7' stroke='#B8860B' stroke-width='1.2'/>
+<text x='42' y='498' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#7A5B08' text-anchor='start'>Chú ý cột xung ngắn: TON không kích được (điều kiện chưa đủ bền) · TOF và TP vẫn cho ra xung đủ PT. Đây là tiêu chí chọn loại timer.</text>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 700' width='940' height='700'>
+<rect width='940' height='700' fill='#FFFFFF'/>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 28.1 — Thứ tự về gốc: sai và đúng</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Cùng một tư thế xuất phát. Thứ tự bên trái vi phạm bảng va chạm ngay ở bước đầu tiên.</text>
+<rect x='24' y='76' width='892' height='152' rx='5' fill='#FBFBFC' stroke='#9AA3AB' stroke-width='1.4'/>
+<text x='40' y='98' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='700' fill='#1A1D21' text-anchor='start'>TƯ THẾ XUẤT PHÁT — máy vừa vào Alarm vì mất khí</text>
+<text x='40' y='116' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='start'>Hai board đang bị kẹp NÂNG ở hai trạm. Chặn cả hai trạm đang nâng. Chuyền đã dừng.</text>
+<line x1='190' y1='190' x2='870' y2='190' stroke='#9AA3AB' stroke-width='2.4'/>
+<text x='190' y='208' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='start'>chuyền dừng</text>
+<text x='290' y='142' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='600' fill='#565E66' text-anchor='middle'>Trạm 1</text>
+<line x1='334' y1='190' x2='334' y2='170' stroke='#1A1D21' stroke-width='2.6'/>
+<text x='340' y='168' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8.5' font-weight='400' fill='#565E66' text-anchor='start'>chặn</text>
+<line x1='264' y1='164' x2='316' y2='164' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='264' y1='164' x2='264' y2='173' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='316' y1='164' x2='316' y2='173' stroke='#1A1D21' stroke-width='2.6'/>
+<text x='256' y='168' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='600' fill='#565E66' text-anchor='end'>kẹp ↑</text>
+<rect x='268' y='174' width='44' height='9' rx='1' fill='#DCE9F2' stroke='#2C5F8D' stroke-width='1.2'/>
+<text x='290' y='170' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8.5' font-weight='700' fill='#1F4E66' text-anchor='middle'>board A</text>
+<text x='440' y='142' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='600' fill='#565E66' text-anchor='middle'>Trạm 2</text>
+<line x1='484' y1='190' x2='484' y2='170' stroke='#1A1D21' stroke-width='2.6'/>
+<text x='490' y='168' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8.5' font-weight='400' fill='#565E66' text-anchor='start'>chặn</text>
+<line x1='414' y1='164' x2='466' y2='164' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='414' y1='164' x2='414' y2='173' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='466' y1='164' x2='466' y2='173' stroke='#1A1D21' stroke-width='2.6'/>
+<text x='406' y='168' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='600' fill='#565E66' text-anchor='end'>kẹp ↑</text>
+<rect x='418' y='174' width='44' height='9' rx='1' fill='#DCE9F2' stroke='#2C5F8D' stroke-width='1.2'/>
+<text x='440' y='170' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8.5' font-weight='700' fill='#1F4E66' text-anchor='middle'>board B</text>
+<rect x='24' y='246' width='436' height='372' rx='5' fill='#FFFFFF' stroke='#B03A2E' stroke-width='1.8'/>
+<text x='40' y='272' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#B03A2E' text-anchor='start'>✗ THỨ TỰ SAI — hạ chặn trước</text>
+<circle cx='58' cy='306' r='13' fill='#B03A2E'/>
+<text x='58' y='310' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>1</text>
+<text x='80' y='304' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='600' fill='#1A1D21' text-anchor='start'>Hạ chặn cả hai trạm</text>
+<text x='80' y='321' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>board đang treo trên kẹp — chặn không còn giữ gì</text>
+<line x1='58' y1='320' x2='58' y2='329' stroke='#9AA3AB' stroke-width='1.6'/>
+<polygon points='58.0,338.0 53.5,329.0 62.5,329.0' fill='#9AA3AB'/>
+<circle cx='58' cy='360' r='13' fill='#B03A2E'/>
+<text x='58' y='364' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>2</text>
+<text x='80' y='358' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='600' fill='#1A1D21' text-anchor='start'>Nhả kẹp cả hai trạm</text>
+<text x='80' y='375' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>board A và B cùng rơi xuống mặt chuyền</text>
+<line x1='58' y1='374' x2='58' y2='383' stroke='#9AA3AB' stroke-width='1.6'/>
+<polygon points='58.0,392.0 53.5,383.0 62.5,383.0' fill='#9AA3AB'/>
+<circle cx='58' cy='414' r='13' fill='#B03A2E'/>
+<text x='58' y='418' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>3</text>
+<text x='80' y='412' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='600' fill='#1A1D21' text-anchor='start'>Cho chuyền chạy để xả board</text>
+<text x='80' y='429' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>hai board trôi tự do, board A đuổi kịp board B</text>
+<rect x='38' y='556' width='408' height='48' rx='3' fill='#F8E7E4' stroke='#B03A2E' stroke-width='1.2'/>
+<text x='52' y='576' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='700' fill='#B03A2E' text-anchor='start'>VA CHẠM</text>
+<text x='52' y='593' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>Vi phạm V1 (board rơi không kiểm soát) và V3 (hai board đâm nhau).</text>
+<rect x='480' y='246' width='436' height='372' rx='5' fill='#FFFFFF' stroke='#2E7D4F' stroke-width='1.8'/>
+<text x='496' y='272' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#2E7D4F' text-anchor='start'>✓ THỨ TỰ ĐÚNG — hạ kẹp trước</text>
+<circle cx='514' cy='306' r='13' fill='#2E7D4F'/>
+<text x='514' y='310' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>H0</text>
+<text x='536' y='304' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='600' fill='#1A1D21' text-anchor='start'>Dừng chuyền, cấm chuyển động tự động</text>
+<text x='536' y='321' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>chốt điều kiện an toàn trước mọi thao tác</text>
+<line x1='514' y1='320' x2='514' y2='329' stroke='#9AA3AB' stroke-width='1.6'/>
+<polygon points='514.0,338.0 509.5,329.0 518.5,329.0' fill='#9AA3AB'/>
+<circle cx='514' cy='360' r='13' fill='#2E7D4F'/>
+<text x='514' y='364' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>H1</text>
+<text x='536' y='358' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='600' fill='#1A1D21' text-anchor='start'>HẠ KẸP cả hai trạm</text>
+<text x='536' y='375' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>board hạ xuống mặt chuyền, chặn vẫn giữ — chống V1</text>
+<line x1='514' y1='374' x2='514' y2='383' stroke='#9AA3AB' stroke-width='1.6'/>
+<polygon points='514.0,392.0 509.5,383.0 518.5,383.0' fill='#9AA3AB'/>
+<circle cx='514' cy='414' r='13' fill='#2E7D4F'/>
+<text x='514' y='418' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>H2</text>
+<text x='536' y='412' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='600' fill='#1A1D21' text-anchor='start'>Đánh dấu NG mọi board trong máy</text>
+<text x='536' y='429' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>không để sản phẩm dở dang lẫn hàng tốt</text>
+<line x1='514' y1='428' x2='514' y2='437' stroke='#9AA3AB' stroke-width='1.6'/>
+<polygon points='514.0,446.0 509.5,437.0 518.5,437.0' fill='#9AA3AB'/>
+<circle cx='514' cy='468' r='13' fill='#2E7D4F'/>
+<text x='514' y='472' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>H3</text>
+<text x='536' y='466' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='600' fill='#1A1D21' text-anchor='start'>Xả board TỪ TRẠM 2 TRƯỚC, rồi trạm 1</text>
+<text x='536' y='483' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>trạm sau trống thì trạm trước mới có chỗ đi — chống V3</text>
+<line x1='514' y1='482' x2='514' y2='491' stroke='#9AA3AB' stroke-width='1.6'/>
+<polygon points='514.0,500.0 509.5,491.0 518.5,491.0' fill='#9AA3AB'/>
+<circle cx='514' cy='522' r='13' fill='#2E7D4F'/>
+<text x='514' y='526' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>H4</text>
+<text x='536' y='520' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='600' fill='#1A1D21' text-anchor='start'>Nâng lại chặn về tư thế gốc</text>
+<text x='536' y='537' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='start'>mỗi bước có timeout + mã lỗi riêng</text>
+<rect x='494' y='556' width='408' height='48' rx='3' fill='#E8F2EC' stroke='#2E7D4F' stroke-width='1.2'/>
+<text x='508' y='576' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='700' fill='#2E7D4F' text-anchor='start'>VỀ GỐC AN TOÀN</text>
+<text x='508' y='593' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>Không bước nào vi phạm bảng va chạm, với mọi tư thế xuất phát.</text>
+<rect x='24' y='638' width='892' height='46' rx='3' fill='#FDF6E7' stroke='#B8860B' stroke-width='1.2'/>
+<text x='42' y='660' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#7A5B08' text-anchor='start'>Hai quy tắc rút ra được, đúng với gần như mọi máy:</text>
+<text x='42' y='677' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#7A5B08' text-anchor='start'>① Giải phóng trước, di chuyển sau — nhả kẹp/giữ trước khi cho bất cứ thứ gì chuyển động.   ② Xả sản phẩm từ cuối dây chuyền về đầu.</text>
+</svg>

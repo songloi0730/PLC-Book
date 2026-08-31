@@ -1,0 +1,31 @@
+// Cấu hình markdownlint cho bản thảo sách PLC.
+// Chỉ bật các luật thực sự ảnh hưởng tới bản in; tắt các luật văn phong
+// tiếng Anh hoặc luật gây nhiễu với văn bản tiếng Việt có emoji/callout.
+{
+  "config": {
+    "default": true,
+
+    // Độ dài dòng: bản thảo dùng dòng dài trong bảng, không giới hạn.
+    "MD013": false,
+
+    // Cho phép cùng một tiêu đề lặp ở các mục khác nhau (N.4 Bẫy thường gặp...).
+    "MD024": { "siblings_only": true },
+
+    // Nhiều chương mở bằng blockquote dẫn nhập trước H1 — hợp lệ.
+    "MD041": false,
+
+    // HTML thô: dùng cho <br> trong ô bảng.
+    "MD033": { "allowed_elements": ["br", "sub", "sup"] },
+
+    // Dấu chấm câu trong tiêu đề: tiêu đề tiếng Việt có thể kết bằng "?".
+    "MD026": { "punctuation": ".,;:!" },
+
+    // Emphasis dùng làm tiêu đề giả — sách dùng **in đậm** làm nhãn trong bảng.
+    "MD036": false,
+
+    // Bullet/ordered list trong bảng và callout gây báo giả.
+    "MD032": false
+  },
+  "globs": ["docs/**/*.md"],
+  "ignores": ["node_modules/**"]
+}

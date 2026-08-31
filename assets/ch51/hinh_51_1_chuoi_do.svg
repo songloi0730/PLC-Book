@@ -1,0 +1,63 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 560' width='940' height='560'>
+<rect width='940' height='560' fill='#FFFFFF'/>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 51.1 — Bốn phép đo tách lỗi trên đường tín hiệu ngõ vào</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Đo theo thứ tự Đ1 → Đ4. Mỗi phép đo loại trừ được một đoạn của đường tín hiệu — không cần đoán.</text>
+<rect x='40' y='126' width='150' height='72' rx='5' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.6'/>
+<text x='115' y='152' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Cảm biến</text>
+<text x='115' y='170' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='middle'>PNP, 3 dây</text>
+<rect x='250' y='126' width='110' height='72' rx='5' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.6'/>
+<text x='305' y='152' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Cầu đấu</text>
+<text x='305' y='170' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='middle'>đầu cốt</text>
+<rect x='420' y='126' width='190' height='72' rx='5' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.6'/>
+<text x='515' y='152' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Module vào</text>
+<text x='515' y='170' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='middle'>opto + ảnh ngõ vào</text>
+<rect x='680' y='126' width='210' height='72' rx='5' fill='#E7EFF6' stroke='#2C5F8D' stroke-width='1.6'/>
+<text x='785' y='152' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Chương trình</text>
+<text x='785' y='170' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.8' font-weight='400' fill='#565E66' text-anchor='middle'>bit DI_… trong code</text>
+<line x1='190' y1='176' x2='250' y2='176' stroke='#1A1D21' stroke-width='2.2'/>
+<line x1='360' y1='176' x2='420' y2='176' stroke='#1A1D21' stroke-width='2.2'/>
+<text x='220' y='166' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='middle'>dây đen</text>
+<text x='390' y='166' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='middle'>dây đen</text>
+<line x1='610' y1='176' x2='667' y2='176' stroke='#2C5F8D' stroke-width='2.2'/>
+<polygon points='676.0,176.0 667.0,180.5 667.0,171.5' fill='#2C5F8D'/>
+<text x='643' y='166' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='600' fill='#2C5F8D' text-anchor='middle'>phần mềm</text>
+<line x1='645' y1='84' x2='645' y2='262' stroke='#9AA3AB' stroke-width='1.4' stroke-dasharray='6,5'/>
+<text x='637' y='96' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#565E66' text-anchor='end'>PHẦN CỨNG</text>
+<text x='653' y='96' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#2C5F8D' text-anchor='start'>PHẦN MỀM</text>
+<circle cx='115' cy='258' r='15' fill='#C0392B'/>
+<text x='115' y='263' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#FFFFFF' text-anchor='middle'>Đ1</text>
+<line x1='115' y1='206' x2='115' y2='242' stroke='#C0392B' stroke-width='1.6' stroke-dasharray='4,3'/>
+<circle cx='250' cy='258' r='15' fill='#C0392B'/>
+<text x='250' y='263' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#FFFFFF' text-anchor='middle'>Đ2</text>
+<line x1='250' y1='206' x2='250' y2='242' stroke='#C0392B' stroke-width='1.6' stroke-dasharray='4,3'/>
+<circle cx='420' cy='258' r='15' fill='#C0392B'/>
+<text x='420' y='263' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#FFFFFF' text-anchor='middle'>Đ3</text>
+<line x1='420' y1='206' x2='420' y2='242' stroke='#C0392B' stroke-width='1.6' stroke-dasharray='4,3'/>
+<circle cx='760' cy='258' r='15' fill='#2C5F8D'/>
+<text x='760' y='263' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#FFFFFF' text-anchor='middle'>Đ4</text>
+<line x1='760' y1='210' x2='760' y2='242' stroke='#2C5F8D' stroke-width='1.6' stroke-dasharray='4,3'/>
+<rect x='24' y='300' width='892' height='176' rx='5' fill='#FBFBFC' stroke='#9AA3AB' stroke-width='1.3'/>
+<text x='46' y='324' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='700' fill='#565E66' text-anchor='start'>Phép đo</text>
+<text x='150' y='324' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='700' fill='#565E66' text-anchor='start'>Đo gì</text>
+<text x='392' y='324' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='700' fill='#565E66' text-anchor='start'>Nếu KHÔNG có → nguyên nhân nằm ở đây</text>
+<line x1='38' y1='332' x2='878' y2='332' stroke='#9AA3AB' stroke-width='1.2'/>
+<circle cx='56' cy='352' r='11' fill='#C0392B'/>
+<text x='56' y='356' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>Đ1</text>
+<text x='90' y='356' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#1A1D21' text-anchor='start'>Nguồn cấp cảm biến (nâu ↔ xanh dương)</text>
+<text x='392' y='356' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='start'>Nguồn 24 V hoặc cầu chì nhánh — dừng ở đây, không đo tiếp</text>
+<circle cx='56' cy='382' r='11' fill='#C0392B'/>
+<text x='56' y='386' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>Đ2</text>
+<text x='90' y='386' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#1A1D21' text-anchor='start'>Đen ↔ chân chung module, khi cảm biến kích hoạt</text>
+<text x='392' y='386' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='start'>Cảm biến hỏng, HOẶC kiểu đấu sai (PNP/NPN — Chương 4)</text>
+<circle cx='56' cy='412' r='11' fill='#C0392B'/>
+<text x='56' y='416' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>Đ3</text>
+<text x='90' y='416' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#1A1D21' text-anchor='start'>Ngay tại cầu đấu vào module</text>
+<text x='392' y='416' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='start'>Đứt dây hoặc lỏng đầu cốt — đoạn giữa Đ2 và Đ3</text>
+<circle cx='56' cy='442' r='11' fill='#2C5F8D'/>
+<text x='56' y='446' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#FFFFFF' text-anchor='middle'>Đ4</text>
+<text x='90' y='446' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#1A1D21' text-anchor='start'>Bit trong chương trình (xem trực tuyến)</text>
+<text x='392' y='446' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='start'>Module hỏng, hoặc kênh chưa được cấu hình</text>
+<rect x='24' y='490' width='892' height='52' rx='3' fill='#FDF6E7' stroke='#B8860B' stroke-width='1.2'/>
+<text x='42' y='512' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#7A5B08' text-anchor='start'>⚠  Đ2 đo so với CHÂN CHUNG CỦA MODULE, không phải so với 0 V.</text>
+<text x='42' y='530' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#7A5B08' text-anchor='start'>Đo so với 0 V sẽ cho kết quả 'có điện áp' ngay cả khi tổ hợp đấu nối sai — bạn sẽ bỏ sót đúng nguyên nhân (Chương 4).</text>
+</svg>
