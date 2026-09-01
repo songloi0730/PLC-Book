@@ -35,7 +35,10 @@ def main():
         cot[2] = " [%s](%s) " % (ten, ten_file)
         dong = "|".join(cot)
 
-    dong_moi = re.sub(r"⬜\s*\|\s*$", "✅ |", dong)
+    # Đổi ⬜ → ✅ nhưng GIỮ NGUYÊN các cờ đi kèm (⚠ chờ chuyên gia an toàn,
+    # 🔍 chờ xác minh kỹ thuật). Bộ kiểm không gỡ được các cờ đó, và công cụ
+    # này cũng không — chỉ người dùng gỡ.
+    dong_moi = re.sub(r"⬜(\s*[^|]*)\|\s*$", lambda x: "✅%s|" % x.group(1), dong)
     if dong_moi == dong and "✅" not in dong:
         return "Ô trạng thái chương %s không phải ⬜ — kiểm tay" % so
 
