@@ -9,7 +9,8 @@
 > ⚠ DP-01 là máy **phiếm chỉ** (generic), dựng riêng cho mục đích dạy học. Không dựa trên máy, dự án
 > hay khách hàng cụ thể nào. Số liệu là minh hoạ hợp lý, **không phải thông số kiểm định**.
 
-Trạng thái: 🟨 **bản nháp session 2** — chốt trước khi viết Ch.8. Lý do chọn máy này: ADR 0002 §2.
+Trạng thái: ✅ **đã chốt số liệu (session 11)** — xem §7. Còn 2 hạng mục nhỏ ở §8.
+Lý do chọn máy này: ADR 0002 §2.
 
 ---
 
@@ -53,7 +54,7 @@ Máy đủ nhỏ để dựng lại được trên phần mềm mô phỏng, đ�
 | **Lát cắt 1 — thuần rời rạc** | Chuyền, chặn, nâng kẹp, cảm biến board, nút bấm, đèn tháp | Ch.8–22 |
 | **Lát cắt 2 — thêm thiết kế** | + máy trạng thái 2 trạm, trình tự song song, công thức sản phẩm | Ch.23–30 |
 | **Lát cắt 3 — thêm analog & trục** | + áp keo, nhiệt độ, cường độ UV, gantry XY/Z | Ch.31–37 |
-| **Lát cắt 4 — thêm mạng** | + mã 2D, MES, SMEMA, HMI, vision (tuỳ chọn) | Ch.38–46 |
+| **Lát cắt 4 — thêm mạng** | + mã 2D, MES, SMEMA, HMI | Ch.38–46 |
 | **Lát cắt 5 — đầy đủ** | + mạch an toàn, chạy thử, chẩn đoán | Ch.47–58 |
 
 > 💡 Cách dùng khi viết: chương thuộc lát cắt nào thì **chỉ được nhắc tới thiết bị của lát cắt đó và
@@ -118,7 +119,7 @@ Quy ước đặt tên: `DI_/DO_/AI_/AO_` + vị trí + chức năng. Trạm 1 =
 |---|---|---|---|---|---|
 | `AI_AirPress` | Áp suất khí nén cấp máy | 4–20 mA, 2 dây *(loop-powered)* | 0–10 bar | 3 | 31, 32 |
 | `AI_GluePress` | Áp suất keo thực tế tại đầu tra | 4–20 mA, 2 dây | 0–6 bar | 3 | 31, 32 |
-| `AI_GlueTemp` | Nhiệt độ bộ gia nhiệt keo | RTD Pt100, 3 dây | 0–100 °C | 3 | 33, 35 |
+| `AI_UvChamberTemp` | Nhiệt độ buồng sấy UV — giám sát quá nhiệt | RTD Pt100, 3 dây | 0–150 °C | 3 | 33 |
 | `AI_UvIntensity` | Cường độ đèn UV đo tại buồng sấy | 0–10 V | 0–200 mW/cm² | 3 | 32, 33 |
 | `AO_GluePressSet` | Đặt áp keo *(van điều áp điện tử)* | 0–10 V | 0–6 bar | 3 | 32, 37 |
 | `AO_ConvSpeed` | Đặt tốc độ chuyền | 0–10 V | 0–100 % ↔ 0–20 m/phút | 3 | 32, 36 |
@@ -128,10 +129,11 @@ Quy ước đặt tên: `DI_/DO_/AI_/AO_` + vị trí + chức năng. Trạm 1 =
 
 | Tên | Mô tả | Lát cắt | Chương |
 |---|---|---|---|
-| `AX_X`, `AX_Y` | Gantry 2 trục mang đầu tra keo, chạy theo đường trong công thức | 3 | 37 |
-| `AX_Z` | Trục nâng/hạ đầu tra keo, giữ khoảng cách tới mặt board | 3 | 37 |
+| `AX_X`, `AX_Y` | Gantry 2 trục mang đầu tra keo — **servo**, chạy theo đường trong công thức | 3 | 37 |
+| `AX_Z` | Trục nâng/hạ đầu tra keo — **servo**, đặt độ cao theo công thức | 3 | 37 |
 | `NET_HMI` | Màn hình vận hành | 4 | 44 |
-| `NET_Scanner` | Đầu đọc mã 2D trên board *(Ethernet hoặc RS-232)* | 4 | 38, 42 |
+| `NET_Scanner` | Đầu đọc mã 2D trên board — **Ethernet** | 4 | 42 |
+| `NET_TempCtrl` | Bộ điều khiển nhiệt độ keo rời — **RS-485, Modbus RTU** | 3 | 33, 35, 38, 39 |
 | `NET_MES` | Hệ thống quản lý sản xuất — hỏi công thức, báo kết quả | 4 | 42, 45 |
 | `NET_Drives` | 3 servo drive qua Ethernet công nghiệp | 3 | 40 |
 | `NET_IoLink` | IO-Link master cho cảm biến thông minh (khoảng cách, áp suất) | 2 | 12 |
@@ -266,12 +268,66 @@ cùng một máy chạy nhiều mã hàng trong một ca.
 
 ---
 
-## 7. Việc còn phải chốt
+## 7. Số liệu đã chốt
+
+Năm hạng mục treo từ session 2 đã được chủ dự án chốt (session 11):
+
+| # | Hạng mục | ✅ Quyết định | Ảnh hưởng |
+|---|---|---|---|
+| 1 | Mục tiêu sản lượng | ⭐ **300 board/giờ** → **12 giây/board** | Ch.55, 57 |
+| 2 | Giao tiếp đầu đọc mã 2D | **Ethernet** — theo thực tế thị trường | Ch.42 |
+| 2b | Thiết bị dạy giao tiếp nối tiếp | ⭐ **Bộ điều khiển nhiệt độ keo rời, RS-485 / Modbus RTU** | Ch.38, 39 |
+| 3 | Thị giác máy trong máy mẫu | **Không đưa vào.** Ch.43 dùng ví dụ riêng; nếu cần, DP-01 chỉ **nhận kết quả** (toạ độ X, Y, góc) | Ch.43, 57 |
+| 4 | Trục Z | ⭐ **Servo** — đặt độ cao đầu keo theo công thức | Ch.29, 37 |
+| 5 | Kích thước board | ⭐ **100 × 80 mm** | Ch.32, 37, 55 |
+
+### 7.1 Số liệu dẫn xuất
+
+Các con số sau **suy ra** từ quyết định ở trên, dùng thống nhất cho mọi chương:
+
+| Hạng mục | Giá trị | Suy ra từ |
+|---|---|---|
+| Chu kỳ mục tiêu | **12,0 s/board** | 300 board/giờ |
+| Chu kỳ mỗi trạm (pipeline 2 trạm) | ≤ **12,0 s** | Hai trạm chạy song song, trạm chậm nhất quyết định nhịp |
+| ⭐ Trạm quyết định nhịp | **Trạm 2 — sấy UV**, 6–12 s theo mã hàng | Bảng công thức §5 — mã B cần 12 s, sát trần |
+| Vùng làm việc gantry | **X 0–150 mm · Y 0–120 mm · Z 0–50 mm** | Board 100 × 80 mm + biên gá và bù đầu tra |
+
+> ⚠ **Hàng "trạm quyết định nhịp" là hàng đáng chú ý khi viết Ch.55.**
+> Với mã hàng cần sấy 12 giây, trạm 2 chiếm **trọn** chu kỳ mục tiêu — không còn dư cho việc chặn,
+> kẹp, nhả. Nghĩa là ở mã hàng đó, DP-01 **không đạt 300 board/giờ**.
+>
+> Đây là **nút cổ chai có thật và tính ra được**, đúng thứ Ch.55 cần để dạy: đo chu kỳ từng trạm,
+> tìm trạm chậm nhất, rồi bàn các hướng xử lý (thêm buồng sấy thứ hai, tăng công suất đèn để rút thời
+> gian, hay chấp nhận sản lượng thấp hơn ở mã hàng đó). Đừng "sửa" con số này cho đẹp — nó là bài học.
+
+### 7.2 Ghi chú về quyết định 2 và 2b
+
+Quyết định tách **đầu đọc mã 2D (Ethernet)** khỏi **thiết bị dạy giao tiếp nối tiếp (RS-485)** xuất
+phát từ một quan sát của chủ dự án: đầu đọc mã ngày nay phần lớn dùng Ethernet, nên ép nó thành
+RS-232 chỉ để dạy Ch.38 sẽ **sai thực tế**.
+
+Bộ điều khiển nhiệt độ rời được chọn thay thế vì ba lý do:
+
+- Đây là **thiết bị nối tiếp phổ biến nhất** trong chế tạo máy — RS-485 với Modbus RTU.
+- Nó có sẵn lý do tồn tại trên DP-01: bộ gia nhiệt keo cần nhiệt độ ổn định, và dùng bộ điều khiển
+  chuyên dụng là lựa chọn rất thường gặp.
+- ⭐ Nó tạo ra một **quyết định thiết kế đáng dạy** ở Ch.35: *khi nào dùng bộ điều khiển rời, khi nào
+  tự viết PID trên PLC* — câu hỏi thật mà người làm máy phải trả lời.
+
+Hệ quả: `AI_GlueTemp` (RTD nối thẳng vào PLC) được **bỏ**; nhiệt độ keo đọc qua RS-485. Để giữ một ví
+dụ RTD nối trực tiếp cho Ch.33, thêm `AI_UvChamberTemp` — giám sát quá nhiệt buồng sấy, là phép đo có
+lý do thật vì đèn UV sinh nhiệt.
+
+> ⚠ **Việc cần kiểm trước khi phát hành:** chủ dự án yêu cầu **đối chiếu thực tế thị trường** —
+> đầu đọc mã 2D hiện nay thực sự dùng giao tiếp gì, và bộ điều khiển nhiệt độ rời có còn phổ biến
+> không. Hai nhận định ở trên dựa trên hiểu biết chung về ngành, **chưa được xác minh bằng catalogue
+> hiện hành** (B2, B10). Cần tra trước khi in.
+
+---
+
+## 8. Việc còn phải chốt
 
 | # | Hạng mục | Ảnh hưởng tới |
 |---|---|---|
-| 1 | Số liệu chu kỳ máy: mục tiêu bao nhiêu board/giờ? Cần con số để Ch.55 tính nút cổ chai có ý nghĩa | Ch.55, 57 |
-| 2 | Đầu đọc mã 2D dùng Ethernet hay RS-232? Ethernet gọn hơn nhưng RS-232 dạy được Ch.38 sâu hơn | Ch.38, 42 |
-| 3 | Có đưa vision (camera căn chỉnh vị trí board) vào máy mẫu không, hay để Ch.43 dùng ví dụ riêng? Đưa vào thì Ch.57 giàu hơn nhưng dài hơn | Ch.43, 57 |
-| 4 | Trục Z dùng servo hay xy-lanh 2 vị trí? Servo dạy được nhiều hơn, xy-lanh đơn giản hơn cho lát cắt 1–2 | Ch.37 |
-| 5 | Kích thước board & vùng làm việc gantry — cần số cụ thể để ví dụ scale analog và tính chu kỳ khớp nhau | Ch.32, 37, 55 |
+| 1 | ⚠ `AI_UvIntensity` đang là **0–10 V**. Cường độ UV suy giảm là lỗi "máy không tự phát hiện được" (Ch.48) — có nên đổi sang **4–20 mA** để phân biệt được đứt dây không? Xem lập luận ở Ch.31 mục 31.7 | Ch.31, 32, 48 |
+| 2 | Xác minh thực tế thị trường cho quyết định 2 và 2b — xem §7.2 | Ch.38, 39, 42 |

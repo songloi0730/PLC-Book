@@ -108,15 +108,18 @@ Phép tính bắt buộc khi định dùng rơ-le cho tải đóng cắt thườ
 Số lần/chu trình  ×  chu trình/giờ  ×  giờ/ngày  ×  ngày/năm  =  số lần/năm
 ```
 
-Với DP-01: van chặn trạm 1 đóng cắt **2 lần mỗi board**, máy làm ~1 200 board mỗi ca, 2 ca mỗi ngày,
-300 ngày mỗi năm:
+Với DP-01: chu kỳ mục tiêu **300 board/giờ** (Phụ lục J §7), tức **2 400 board mỗi ca** 8 giờ ở mức
+danh định. Van chặn trạm 1 đóng cắt **2 lần mỗi board**, chạy 2 ca mỗi ngày, 300 ngày mỗi năm:
 
 ```text
-2 × 1200 × 2 × 300 = 1 440 000 lần/năm
+2 × 2400 × 2 × 300 = 2 880 000 lần/năm
 ```
 
-Một triệu tư lần mỗi năm. Với tuổi thọ điện điển hình của rơ-le trong module I/O, con số này nghĩa là
-**thay module sau vài tháng tới hơn một năm** — và thay vào lúc nào thì không biết trước, tức là dừng
+Gần ba triệu lần mỗi năm — và đó là **con số danh định**, chưa trừ thời gian dừng máy; sản lượng thật
+sẽ thấp hơn, nhưng vẫn cùng bậc độ lớn.
+
+Với tuổi thọ điện điển hình của rơ-le trong module I/O, con số này nghĩa là **thay module sau vài
+tháng tới hơn một năm** — và thay vào lúc nào thì không biết trước, tức là dừng
 máy đột xuất.
 
 > **Kết luận cho DP-01: mọi van khí dùng ngõ ra transistor, không dùng rơ-le.**
