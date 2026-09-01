@@ -26,9 +26,10 @@
       {"tu": 47, "den": 58, "lat_cat": 5, "ten": "đầy đủ"}
     ],
     "thiet_bi_theo_lat_cat": {
-      "3": ["servo", "gantry", "trục Z", "đèn UV", "cường độ UV", "áp keo", "4–20 mA", "4-20 mA", "RTD", "PID"],
+      "_ghi_chu_STO": "STO chuyển từ lát cắt 5 xuống 3 (session 11): nó là TÍNH NĂNG CỦA TRUYỀN ĐỘNG, xuất hiện cùng biến tần và servo ở Ch.36–37. Chương về biến tần không nói được về chức năng an toàn của chính nó là chương thiếu. Thiết kế MẠCH an toàn của máy — rơ-le an toàn, rèm quang, khoá cửa, muting — vẫn ở lát cắt 5 (Ch.47).",
+      "3": ["servo", "gantry", "trục Z", "đèn UV", "cường độ UV", "áp keo", "4–20 mA", "4-20 mA", "RTD", "PID", "STO"],
       "4": ["Modbus", "MES", "mã 2D", "SMEMA", "HMI", "màn hình vận hành", "đầu đọc mã"],
-      "5": ["rơ-le an toàn", "rèm quang", "STO", "khoá cửa", "muting"]
+      "5": ["rơ-le an toàn", "rèm quang", "khoá cửa", "muting"]
     }
   },
 

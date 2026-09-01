@@ -139,6 +139,8 @@ def kiem_lat_cat(so, vanxuoi, cfg, kq):
     if lc is None or lc == 0:
         return
     for lc_sau, tbi in cfg["lat_cat"]["thiet_bi_theo_lat_cat"].items():
+        if lc_sau.startswith("_"):      # khoá chú thích trong config, không phải lát cắt
+            continue
         if int(lc_sau) <= lc:
             continue
         for t in tbi:
