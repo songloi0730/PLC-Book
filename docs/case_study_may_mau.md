@@ -331,3 +331,4 @@ lý do thật vì đèn UV sinh nhiệt.
 |---|---|---|
 | 1 | ⚠ `AI_UvIntensity` đang là **0–10 V**. Cường độ UV suy giảm là lỗi "máy không tự phát hiện được" (Ch.48) — có nên đổi sang **4–20 mA** để phân biệt được đứt dây không? Xem lập luận ở Ch.31 mục 31.7 | Ch.31, 32, 48 |
 | 2 | Xác minh thực tế thị trường cho quyết định 2 và 2b — xem §7.2 | Ch.38, 39, 42 |
+| 3 | ⚠ Biến tần chuyền hiện **chỉ có `DI_VfdReady`** — không đọc được dòng động cơ, tốc độ thật, hay bit "đang giới hạn dòng". Có thêm kết nối mạng tới biến tần không? Xem lập luận ở Ch.36 mục 36.9 | Ch.36, 40, 55 |
