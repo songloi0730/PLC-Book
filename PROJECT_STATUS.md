@@ -209,16 +209,16 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
 3. ~~Viết đợt 3~~ ✅ xong session 7.
 4. ~~Dựng quy trình đánh giá + rà lại 18 chương đã viết~~ ✅ xong session 9 — xem mục
    *Quy trình đánh giá* trong `CLAUDE.md`. Bản thảo hiện **0 LỖI · 0 CẢNH BÁO** ở cả hai bộ kiểm.
-5. ⚠⚠ **Tìm chuyên gia an toàn rà soát Ch.47 và Ch.48** — hạng mục treo duy nhất có rủi ro pháp lý.
-   Hai chương đã viết xong nhưng **không được phát hành** trước khi có rà soát.
-6. **Viết nốt đợt 4** — còn 8 chương: Ch.2, 3, 5, 11, 12, 22, 24, 29.
-   *(session 9 viết Ch.16, 18, 19, 20; session 10 viết Ch.8, 9, 13, 14, 21.)*
-   ⚠ Khung đợt 4 ban đầu **sót Ch.14** (tổng quan IEC 61131-3) — đã viết ở session 10 vì
-   Ch.15/20/21 đều dựa vào khái niệm POU và thể hiện của nó.
-7. ~~**Bổ sung tên hãng vào 8 mục "Khác biệt giữa các hãng"**~~ ✅ xong session 10 —
-   Ch.10, 15, 16, 17, 18, 19, 20, 25 đã nêu tên và số liệu cụ thể theo B1 mới. Số liệu chi tiết
-   đều kèm cảnh báo phải tra catalogue hiện hành (B2, B10); chỗ nào không chắc thì ghi rõ là
-   phải tra hoặc phải thử nghiệm, không bịa thông số.
+5. ⚠⚠ **Tìm chuyên gia an toàn rà soát Ch.3, Ch.6, Ch.47 và Ch.48** — hạng mục treo duy nhất có
+   rủi ro pháp lý. Bốn chương đã viết xong nhưng **không được phát hành** trước khi có rà soát.
+   Ch.3 (điện cơ bản + LOTO) và Ch.6 (khí nén) chạm an toàn tính mạng; Ch.47/48 chạm thiết kế
+   mạch an toàn. Cờ ⚠ trong mục lục **chỉ người dùng gỡ được**.
+6. ~~**Viết nốt đợt 4**~~ ✅ xong session 10.
+   ⭐ **Chương 1–30 nay đã LIỀN MẠCH, không còn lỗ hổng** — trọn Phần I–IV.
+   *(session 9: Ch.16, 18, 19, 20 · session 10: Ch.2, 3, 5, 8, 9, 11, 12, 13, 14, 21, 22, 24, 29)*
+   ⚠ Khung đợt 4 ban đầu **sót Ch.14** (tổng quan IEC 61131-3) — đã bổ sung, vì Ch.15/20/21
+   đều dựa vào khái niệm POU và thể hiện của nó.
+7. ~~**Bổ sung tên hãng vào 8 mục cũ**~~ ✅ xong session 10.
 8. **Đợt 5** — analog & truyền thông (Ch.31–46).
 9. **Đợt 6** — ráp lại (Ch.49, 53–58) + 11 phụ lục. Phụ lục A1/A2 viết sau cùng.
 3. **Chốt 5 câu hỏi còn lại của máy mẫu** (`docs/case_study_may_mau.md` §7) — chưa chặn, nhưng
