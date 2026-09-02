@@ -157,6 +157,12 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 > ⭐ **Hệ quả thực dụng:** khi cần một giá trị nhất quán trong một đoạn logic, hãy **sao chép nó vào
 > một biến ở đầu đoạn** và dùng biến đó. ⭐ Cách này đúng trên **mọi** hệ, nên đáng làm thành thói
 > quen.
+>
+> ⭐⭐ **Chính hãng cũng khuyến nghị đúng cách này, và gọi nó là "buffer the values".** Đó là từ khoá
+> đáng nhớ: khi tra tài liệu Rockwell về vấn đề này, tìm *"buffering I/O"* sẽ ra ngay.
+>
+> *(Đối chiếu: Rockwell Logix 5000 Controllers I/O and Tag Data programming manual, 1756-PM004 —
+> mục về truy cập dữ liệu I/O và đệm giá trị.)*
 
 ---
 
@@ -179,8 +185,26 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 >
 > Xem Chương 12 và Chương 53 mục 53.5.
 
-> ⭐ **Trên CODESYS, `RETAIN` và `PERSISTENT` là hai thứ khác nhau** — và sự khác nhau chính nằm ở
-> việc giá trị có sống sót qua các thao tác tải xuống hay không. ⚠ Đọc kỹ tài liệu phiên bản bạn dùng.
+> ⭐⭐ **Trên CODESYS, `RETAIN` và `PERSISTENT` là hai thứ khác nhau — và khác đúng ở chỗ nguy hiểm
+> nhất:**
+>
+> | Thao tác | `VAR RETAIN` | `VAR PERSISTENT` |
+> |---|---|---|
+> | Mất điện rồi có lại (khởi động ấm) | ⭐ Giữ | ⭐ Giữ |
+> | Sửa trực tuyến *(online change)* | Giữ | Giữ |
+> | ⭐⭐ **Tải chương trình xuống** *(download)* | ⚠⚠ **MẤT** | ⭐ **Giữ** |
+> | Reset lạnh *(reset cold)* | ⚠ Mất | ⭐ Giữ |
+> | Reset về gốc *(reset origin)* | Mất | Mất |
+>
+> ⚠⚠ **Hàng "tải chương trình xuống" chính là cái bẫy "bộ đếm ba năm về không".** Nếu bộ đếm bảo trì
+> khai bằng `RETAIN`, nó sống qua mọi lần mất điện — rồi biến mất ở lần nạp chương trình đầu tiên.
+>
+> ⚡ Lưu ý phụ: nếu **một** biến trong khối hàm được đánh dấu `PERSISTENT`, thể hiện của khối đó
+> thường bị lưu **trọn vẹn** vào vùng nhớ giữ được — tốn bộ nhớ hơn bạn tưởng.
+>
+> *(Đối chiếu: tài liệu CODESYS Development System, mục "Preserving Data with Persistent Variables"
+> — tra cứu 2026-09-02. ⚠ Hành vi có thể khác theo phiên bản và theo phần cứng đích: **vẫn phải thử
+> thực tế** theo mục A1.6.)*
 
 ---
 

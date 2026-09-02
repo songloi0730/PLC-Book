@@ -48,14 +48,30 @@ Trước khi vào bảng, cần phân biệt ba loại quan hệ:
 
 > ⚠⚠ **Cột Mitsubishi là chỗ khác biệt thật, không phải khác tên.**
 >
-> ⭐ Ở hệ kiểu thiết bị, mỗi bộ định thời là **một thiết bị `T` có độ phân giải cố định** — `T0–T199`
-> có thể là 100 ms, dải khác là 10 ms hoặc 1 ms. Giá trị đặt là **số nguyên đếm theo độ phân giải
-> đó**.
+> ⭐ Ở hệ kiểu thiết bị, giá trị đặt là **số nguyên đếm theo độ phân giải của bộ định thời**, không
+> phải một khoảng thời gian. Độ phân giải đến từ **hai nguồn**:
 >
-> ⚠ Nghĩa là `K20` cho **2,0 giây** hay **0,02 giây** tuỳ vào `T` đó thuộc dải nào. ⚠⚠ **Đây là một
-> nguồn lỗi kinh điển khi chuyển chương trình hoặc khi đổi số hiệu bộ định thời.**
+> | Nguồn | Ví dụ trên MELSEC iQ-F (FX5) |
+> |---|---|
+> | ⭐ **Lệnh dùng để chạy bộ định thời** | `OUT` → 100 ms · `OUTH` → 10 ms · `OUTHS` → 1 ms |
+> | ⭐ **Kiểu thiết bị `T`** | Có kiểu 1 ms · 10 ms · 100 ms, và bản giữ được của cả ba |
 >
-> ⭐ **Luôn kiểm độ phân giải của dải `T` bạn đang dùng.**
+> ⚠ Nghĩa là cùng `K20` cho:
+>
+> ```text
+> OUT   T5  K20   →  20 × 100 ms  =  2,0 giây
+> OUTH  T5  K20   →  20 ×  10 ms  =  0,2 giây
+> OUTHS T5  K20   →  20 ×   1 ms  =  0,02 giây
+> ```
+>
+> ⚠⚠ **Đây là nguồn lỗi kinh điển khi chuyển chương trình, khi đổi lệnh, hoặc khi đổi số hiệu bộ định
+> thời.**
+>
+> ⭐ **Luôn kiểm cả lệnh lẫn kiểu thiết bị `T` bạn đang dùng.** Dải giá trị đặt cũng cho biết độ phân
+> giải: với `OUT` là 0,1–3276,7 s; `OUTH` là 0,01–327,67 s; `OUTHS` là 0,001–32,767 s.
+>
+> *(Đối chiếu: MELSEC iQ-F FX5 Programming Manual — Instructions/Standard Functions/Function Blocks,
+> mục lệnh `OUT` cho bộ định thời.)*
 
 > ⭐ **Điểm chung của cả năm hệ — nhắc lại vì nó quan trọng hơn mọi khác biệt cú pháp:**
 > ⚠⚠ **Bộ định thời KHÔNG dùng để chuyển bước trình tự** — chỉ để báo lỗi khi phản hồi không tới
@@ -168,8 +184,26 @@ Trước khi vào bảng, cần phân biệt ba loại quan hệ:
 > | Vì sao chuyển động không tương đương | |
 > |---|---|
 > | ⭐ Mô hình trục, cách về gốc, cách xử lý lỗi đều khác | |
-> | ⭐ **PLCopen Motion** là nỗ lực chuẩn hoá — nhưng ⚠ **mức độ tuân thủ khác nhau** | |
+> | ⭐ **PLCopen Motion** là nỗ lực chuẩn hoá — nhưng ⚠ **mức độ tuân thủ khác nhau** | Xem bên dưới |
 > | ⚠ Phần an toàn của truyền động (STO) gắn chặt với phần cứng | Chương 36, 47 |
+
+> ⭐⭐ **"Mức độ tuân thủ khác nhau" có cơ chế cụ thể, không phải nói chung chung.**
+>
+> Đặc tả PLCopen Motion đánh dấu từng chân của mỗi khối hàm theo ba mức:
+>
+> | Dấu | Nghĩa |
+> |---|---|
+> | **B** — basic | ⭐ **Bắt buộc** phải có mới được coi là tuân thủ |
+> | **E** — extended | Tuỳ chọn; hãng cài đặt **tập con** nào cũng được |
+> | **V** — vendor | ⭐ **Phần riêng của hãng**, khai báo trong tài liệu của họ |
+>
+> Nhà cung cấp muốn tuyên bố tuân thủ phải **điền bảng khai** cho biết họ hỗ trợ khối nào, chân nào.
+>
+> ⭐ **Nghĩa là: hai hệ đều "theo PLCopen" vẫn có thể khác nhau ở mọi chân đánh dấu E và V.** Khi
+> chuyển nền, hãy đối chiếu **bảng khai tuân thủ** của cả hai hãng, đừng tin nhãn "PLCopen" là đủ.
+>
+> *(Đối chiếu: PLCopen — Function Blocks for Motion Control, phụ lục Compliance Procedure and
+> Compliance List.)*
 
 ---
 
