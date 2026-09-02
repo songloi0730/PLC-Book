@@ -231,6 +231,30 @@ Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
 
 ---
 
+## Đợt 9 — 2026-09-02 · Ch.37 (chuyển động servo)
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 43 | Ch.37 | *(chưa có)* — ⭐⭐ **sai lệch bám** *(following error)* | ➕ | ⚠ **Chương servo không hề nhắc chẩn đoán cơ bản nhất của servo.** Tài liệu chuyển động Inovance: sai lệch bám = hiệu giữa vị trí lệnh gửi xuống driver và vị trí encoder gửi lên, có **giới hạn đặt được**, vượt thì driver báo lỗi và dừng trục. **Đã bổ sung mục 37.8b** |
+| 44 | Ch.37 §37.8 | Mẫu `Execute` / `Done` / `Busy` của PLCopen | ✅➕ | Đúng, nhưng ⚠ **không nêu tên khối nào** nên người đọc không tra tiếp được. **Đã bổ sung tiền tố `MC_`** và ví dụ (`MC_Power`, `MC_Home`, `MC_MoveAbsolute`, `MC_Stop`, `MC_Reset`) |
+
+### Kết quả đợt 9
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **2** |
+| ✅ Xác nhận đúng | 1 |
+| ➕ Bổ sung nội dung còn thiếu | 2 |
+
+> ⭐⭐ **Sai lệch bám là loại nội dung có giá trị cao bất thường: một phép đo phát hiện được vấn đề
+> CƠ KHÍ, miễn phí, từ trong chương trình.**
+>
+> Nó nối thẳng vào bài toán mở đầu chương ("trục Z đâm xuống board") — chạm vật cản làm sai lệch bám
+> tăng vọt ngay lập tức. ⭐ Và nó là lần thứ **năm** nguyên tắc *"ghi mốc lúc máy còn mới"* xuất hiện
+> trong sách.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -241,7 +265,7 @@ kiểm**, không phải "không có lỗi".
 | ⚠⚠ **An toàn** | ⭐ **Đã đối chiếu hết** — 3, 6, 47, 48, Phụ lục D (đợt 1, 3, 4, 7). ⚠ Cờ ⚠ vẫn giữ | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
 | Đo lường & analog | 34 *(31, 33, 35 đã đối chiếu đợt 5–7)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
 | Truyền thông | 38, 42 *(39, 40 đã đối chiếu đợt 3, 8)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
-| Chuyển động | 37 | PLCopen Motion, Mitsubishi Positioning | ⭐ Cao |
+| Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7, 8, 9, 11, 12, 14, 18, 19 | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | 15–17, 20, 21 | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |

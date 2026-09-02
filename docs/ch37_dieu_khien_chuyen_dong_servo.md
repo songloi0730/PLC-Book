@@ -328,6 +328,81 @@ END_IF;
 
 ---
 
+## 37.8b ⭐⭐ Sai lệch bám — tín hiệu chẩn đoán quan trọng nhất của servo
+
+Đây là khái niệm nối thẳng tới bài toán mở đầu chương, và là thứ **phải giám sát trên mọi trục**.
+
+### Nó là gì
+
+Trong chế độ chạy đồng bộ theo vị trí, PLC **gửi vị trí đích** xuống driver theo từng chu kỳ, còn
+encoder **gửi vị trí thật** ngược lên.
+
+```text
+   PLC  ──── vị trí lệnh ────►  Driver  ────►  Động cơ
+    ▲                                            │
+    └──────── vị trí thật (encoder) ─────────────┘
+
+   Sai lệch bám  =  vị trí lệnh  −  vị trí thật
+```
+
+⭐ **Sai lệch này LUÔN tồn tại.** Động cơ có quán tính, driver có thời gian đáp ứng — trục không bao
+giờ ở đúng chỗ lệnh bảo nó ở, nó luôn **bám theo sau** một chút.
+
+| Sai lệch bám | Nghĩa |
+|---|---|
+| Nhỏ và ổn định | ⭐ **Bình thường** — trục đang bám tốt |
+| ⭐ Tăng khi tăng tốc, giảm khi chạy đều | Bình thường — lớn nhất ở lúc gia tốc |
+| ⚠ **Tăng dần theo thời gian** | Trục **không theo kịp** — quá tải, kẹt, hoặc chỉnh định sai |
+| ⚠⚠ **Vượt giới hạn đặt** | Driver **báo lỗi và dừng trục** |
+
+### ⭐⭐ Vì sao nó là chẩn đoán tốt nhất
+
+Đặt **giới hạn sai lệch bám** là cách rẻ nhất để phát hiện **cơ khí có vấn đề**:
+
+| Sai lệch bám tăng bất thường nói lên | Ví dụ |
+|---|---|
+| ⭐ **Có vật cản** | ⭐⭐ **Đúng bài toán mở đầu chương** — trục Z gặp board, keo khô, hoặc gá lệch |
+| Ma sát tăng | Ray dẫn hướng thiếu mỡ, bụi bẩn |
+| Tải nặng hơn thiết kế | Gá thêm đồ, sản phẩm nặng hơn |
+| Chỉnh định driver chưa đủ cứng | Trục "mềm", bám kém |
+| Phanh chưa nhả hết | ⚠ Trục kéo cả phanh — nóng driver, mòn phanh |
+
+> ⭐⭐ **Đây là thứ hiếm trong nghề: một phép đo phát hiện được vấn đề CƠ KHÍ, miễn phí, từ trong
+> chương trình.**
+>
+> Trục Z đâm xuống board không chỉ là lỗi lập trình vị trí — nó cũng làm **sai lệch bám tăng vọt**
+> ngay khi chạm vật cản. ⭐ Giới hạn sai lệch bám đặt đúng sẽ **dừng trục trước khi hỏng đầu keo**.
+>
+> ⚠ Nhưng nó **không thay thế** giới hạn cứng và mạch an toàn (mục 37.6) — nó chỉ là lớp phát hiện
+> thêm, và nó nằm **trong** driver nên không có mức an toàn.
+
+### ⭐ Ghi mốc — lại một lần nữa
+
+| Việc | Vì sao |
+|---|---|
+| ⭐ **Ghi sai lệch bám lớn nhất** của từng trục lúc nghiệm thu | Chương 52 — có cái để so |
+| ⭐ Theo dõi xu hướng theo tháng | ⚠ **Tăng dần = cơ khí đang xấu đi** (Chương 53 mục 53.5) |
+| Đặt giới hạn **cao hơn giá trị bình thường một khoảng hợp lý** | ⚠ Quá sát thì báo lỗi giả; quá rộng thì mất tác dụng bảo vệ |
+
+⭐ Đây là lần thứ năm nguyên tắc **"ghi mốc lúc máy còn mới"** xuất hiện trong sách — cùng với điện
+áp 24 V (Ch.8), dòng động cơ (Ch.36), số lỗi mạng (Ch.40) và chu kỳ máy (Ch.55).
+
+### ⚡ Tên khối lệnh PLCopen — để tra tiếp
+
+Mục 37.8 nói về mẫu `Execute` / `Done` / `Busy`. Các khối chuẩn có tên bắt đầu bằng `MC_`, ví dụ
+`MC_Power` (cấp/ngắt mô-men), `MC_Home` (về gốc), `MC_MoveAbsolute` (chạy tới vị trí tuyệt đối),
+`MC_Stop`, `MC_Reset`.
+
+⭐ **Biết tiền tố `MC_` là đủ để tra tài liệu bất kỳ hãng nào** — kể cả hãng đặt tên khác, họ đều đối
+chiếu về bộ tên này. ⚠ Nhưng nhớ mục A2.7 của Phụ lục A2: **mức tuân thủ khác nhau theo chân**, nên
+vẫn phải đọc bảng khai của hãng.
+
+*(Đối chiếu: tài liệu chuyển động của Inovance H5U/InoProShop — định nghĩa sai lệch bám là hiệu giữa
+vị trí lệnh gửi xuống driver và vị trí encoder gửi lên, kèm giới hạn đặt được; PLCopen — Function
+Blocks for Motion Control, tên các khối `MC_*`.)*
+
+---
+
 ## 37.9 Trên máy mẫu DP-01
 
 ### Cấu hình gantry
@@ -509,6 +584,9 @@ vào giới hạn phần cứng (mục 37.4).
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⭐⭐ Sai lệch bám là gì | **Vị trí lệnh − vị trí thật**; nó **luôn tồn tại**, trục luôn bám sau một chút |
+| ⭐ Sai lệch bám tăng bất thường nói gì | ⭐⭐ **Cơ khí có vấn đề** — vật cản, ma sát, quá tải, phanh chưa nhả |
+| ⚠ Giới hạn sai lệch bám có thay được giới hạn cứng không | **Không** — nó nằm trong driver, không có mức an toàn |
 | Servo khác biến tần | Servo điều khiển **vị trí**, có **encoder phản hồi** |
 | Ba vòng của servo | Vị trí → tốc độ → dòng, **tất cả trong drive** |
 | ⚠ Đừng viết gì trên PLC | **PID vị trí** — drive chạy nhanh hơn vòng quét nhiều bậc |
@@ -556,6 +634,12 @@ vào giới hạn phần cứng (mục 37.4).
 > Câu 2, 5, 6, 8, 9 và 13 là sáu câu phân loại. Câu 8 và 9 là tinh thần của cả chương: **giới hạn
 > phần mềm bảo vệ chống lỗi lập trình; nó không bảo vệ chống việc hệ toạ độ bị sai — và những lúc bạn
 > cần bảo vệ nhất lại chính là lúc phần mềm không đáng tin.**
+
+⭐⭐ **Bổ sung.** Vì sao sai lệch bám **luôn khác 0** kể cả khi trục hoạt động hoàn hảo? Nêu năm
+nguyên nhân làm nó tăng bất thường, và giải thích vì sao nó phát hiện được vấn đề **cơ khí** từ
+trong chương trình.
+
+⚠ **Bổ sung.** Giới hạn sai lệch bám có thay thế được giới hạn cứng và mạch an toàn không? Vì sao?
 
 ---
 
