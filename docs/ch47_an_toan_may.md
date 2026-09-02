@@ -179,7 +179,7 @@ Ba điều rút ra:
   IEC 61511 với chế độ tác động *ít khi* — hệ an toàn nằm im hàng năm rồi mới cần hoạt động một lần.
   Máy tự động hoá thì chức năng an toàn tác động **nhiều lần mỗi ca**. Cùng chữ "SIL 2" nhưng đằng
   sau là hai phép tính khác nhau. Đừng mang con số từ tài liệu ngành này sang ngành kia.
-- **Không trộn hai thang trong cùng một chức năng an toàn.** Chọn ISO 13849 thì đi hết theo PL; chọn
+- **Không trộn hai thang trong cùng một chức năng an toàn.** Chọn ISO 13849-1 thì đi hết theo PL; chọn
   IEC 62061 thì đi hết theo SIL. Trộn giữa chừng làm hồ sơ chứng minh mất giá trị.
 
 > 💡 **MẸO**
@@ -476,7 +476,7 @@ tin lệnh** là nguyên tắc xuyên suốt cả cuốn sách.
 - IEC 62061 — *Safety of machinery — Functional safety of safety-related control systems*: thang SIL
   cho máy (mục 47.5).
 - IEC 61508 — *Functional safety of electrical/electronic/programmable electronic safety-related
-  systems*: tiêu chuẩn gốc về an toàn chức năng, nơi ISO 13849 và IEC 62061 lấy khái niệm SIL, vòng
+  systems*: tiêu chuẩn gốc về an toàn chức năng, nơi ISO 13849-1 và IEC 62061 lấy khái niệm SIL, vòng
   đời an toàn, mức bao phủ chẩn đoán và hỏng do nguyên nhân chung (mục 47.5 — cây phả hệ).
 - IEC 61511 — *Functional safety — Safety instrumented systems for the process industry sector*: nhắc
   ở mục 47.5 để phân biệt SIL ngành quá trình với SIL ngành máy; **không** áp cho máy tự động hoá.

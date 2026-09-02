@@ -108,7 +108,7 @@ Phép tính bắt buộc khi định dùng rơ-le cho tải đóng cắt thườ
 Số lần/chu trình  ×  chu trình/giờ  ×  giờ/ngày  ×  ngày/năm  =  số lần/năm
 ```
 
-Với DP-01: chu kỳ mục tiêu **300 board/giờ** (Phụ lục J §7), tức **2 400 board mỗi ca** 8 giờ ở mức
+Với DP-01: chu kỳ mục tiêu **300 board/giờ** (Phụ lục J §J.1), tức **2 400 board mỗi ca** 8 giờ ở mức
 danh định. Van chặn trạm 1 đóng cắt **2 lần mỗi board**, chạy 2 ca mỗi ngày, 300 ngày mỗi năm:
 
 ```text

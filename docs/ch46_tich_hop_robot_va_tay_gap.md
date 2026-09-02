@@ -477,7 +477,7 @@ và làm sao làm việc đúng với người có thẩm quyền về an toàn.
   yêu cầu an toàn cho robot công nghiệp và cho việc tích hợp chúng. *(tiêu chuẩn có bản quyền)*
 - **ISO/TS 15066** — *Robots and robotic devices — Collaborative robots*: yêu cầu cho ứng dụng cộng
   tác — nền cho cảnh báo ở mục 46.7.
-- ISO 12100 và ISO 13849 — đánh giá rủi ro và chức năng an toàn (Chương 47).
+- ISO 12100 và ISO 13849-1 — đánh giá rủi ro và chức năng an toàn (Chương 47).
 - **Tài liệu robot** của hãng đang dùng — dùng cho ngôn ngữ, cách ghép nối, ⚠ **định dạng và cách sao
   lưu toạ độ**, và chức năng an toàn có sẵn.
 - Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J.

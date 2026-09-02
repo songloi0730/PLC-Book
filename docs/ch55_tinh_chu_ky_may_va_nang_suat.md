@@ -309,7 +309,7 @@ OEE       = 0,90 × 0,89 × 0,98 = 0,78  →  78 %
 
 ## 55.8 Trên máy mẫu DP-01
 
-Số liệu đã chốt: **300 board/giờ** → chu kỳ **12,0 giây** (Phụ lục J §7.1).
+Số liệu đã chốt: **300 board/giờ** → chu kỳ **12,0 giây** (Phụ lục J §J.1).
 
 | Trạm | Thời gian | Ghi chú |
 |---|---|---|
@@ -474,7 +474,7 @@ lớn công việc thực tế là **sửa máy đã có** — thường là má
 
 ### Nguồn tham khảo chương 55
 
-- **Số liệu đã chốt của DP-01** — Phụ lục J §7.1: 300 board/giờ, chu kỳ 12,0 s, trạm 2 sấy UV 6–12 s.
+- **Số liệu đã chốt của DP-01** — Phụ lục J §J.1: 300 board/giờ, chu kỳ 12,0 s, trạm 2 sấy UV 6–12 s.
 - IEC 62264 (bộ) — *Enterprise-control system integration*: mô hình dữ liệu sản xuất, nền cho việc
   đưa số liệu năng suất lên hệ thống trên. *(tiêu chuẩn có bản quyền)*
 - ISO 22400 (bộ) — *Key performance indicators for manufacturing operations management*: ⭐ **định

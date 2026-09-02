@@ -252,7 +252,7 @@ lớn.
 | | **An toàn** *(safety)* | **An ninh** *(security)* |
 |---|---|---|
 | Bảo vệ chống | Hỏng hóc và sai sót **ngẫu nhiên** | Hành vi **có chủ đích** |
-| Tiêu chuẩn | ISO 13849, IEC 62061, IEC 61508 | IEC 62443 |
+| Tiêu chuẩn | ISO 13849-1, IEC 62061, IEC 61508 | IEC 62443 |
 | Chương | 47, 48 | Chương này |
 
 > ⚠⚠ **Biện pháp an ninh KHÔNG thay thế được chức năng an toàn, và ngược lại.**
@@ -324,7 +324,7 @@ lớn.
 | ⭐ Thời gian chờ chuyền | Chờ máy trước, chờ máy sau | Mỗi phút (Chương 41, mục 41.8) |
 
 > ⭐ **Hàng cuối là hàng ít máy nào gửi, và là hàng có giá trị nhất cho việc cải thiện chuyền.**
-> Với chu kỳ 12 giây đã chốt và trạm sấy UV sát trần (Phụ lục J §7.1), câu hỏi "DP-01 có phải nút cổ
+> Với chu kỳ 12 giây đã chốt và trạm sấy UV sát trần (Phụ lục J §J.1), câu hỏi "DP-01 có phải nút cổ
 > chai không" chỉ trả lời được bằng số liệu này — Chương 55.
 
 ---

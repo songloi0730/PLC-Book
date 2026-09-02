@@ -261,7 +261,7 @@ Cùng cách tính với tuổi thọ rơ-le ở Chương 9 mục 9.3:
 Số lần uốn/chu trình  ×  chu trình/giờ  ×  giờ/năm  =  số lần uốn/năm
 ```
 
-Với gantry DP-01: mỗi board gantry đi một vòng, 300 board/giờ (Phụ lục J §7.1), 2 ca × 8 giờ × 300
+Với gantry DP-01: mỗi board gantry đi một vòng, 300 board/giờ (Phụ lục J §J.1), 2 ca × 8 giờ × 300
 ngày:
 
 ```text

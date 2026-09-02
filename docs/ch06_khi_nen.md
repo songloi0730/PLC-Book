@@ -417,7 +417,10 @@ nói về loại năng lượng **không nhìn thấy, không cảm thấy** —
   *(tiêu chuẩn có bản quyền)*
 - IEC 60204-1 — *Safety of machinery — Electrical equipment of machines*: yêu cầu về cô lập năng lượng
   và khởi động lại sau khi khôi phục nguồn.
-- ISO 6431 / ISO 15552 và các tiêu chuẩn kích thước xy-lanh — dùng khi tra bảng chọn.
+- ISO 15552 — *Pneumatic fluid power — Cylinders with detachable mountings*: kích thước lắp đặt
+  xy-lanh, dùng khi tra bảng chọn. ⚠ Tiêu chuẩn tiền nhiệm **ISO 6431 đã bị thu hồi**, nhưng
+  ⭐ **tên gọi "xy-lanh ISO 6431" vẫn được nhiều hãng dùng trong catalogue** — hai loại lắp lẫn
+  được, ISO 15552 mở rộng dải đường kính và thêm rãnh gắn cảm biến từ.
 - Catalogue và phần mềm tính chọn của nhà sản xuất thiết bị khí nén — dùng cho hệ số hiệu suất, bảng
   chọn cỡ, và tính tiêu thụ khí.
 

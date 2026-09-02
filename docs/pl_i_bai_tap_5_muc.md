@@ -141,7 +141,7 @@ tự quyết định — rồi ⭐ **ghi lại quyết định đó và lý do**
 
 > ⭐⭐ **Bài 5.7 là bài tổng kết tốt nhất của cả cuốn sách.** Nó cần: trình tự nhiều trạm, pipeline,
 > theo dõi sản phẩm, báo động chẩn đoán được, và ⭐ **quyết định phải làm gì khi máy dừng giữa chừng
-> với sản phẩm đang nằm ở cả ba trạm** — đúng bài toán của DP-01 (Phụ lục J §4).
+> với sản phẩm đang nằm ở cả ba trạm** — đúng bài toán của DP-01 (Phụ lục J §J.4).
 
 ---
 

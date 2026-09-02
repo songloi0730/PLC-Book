@@ -275,7 +275,7 @@ Một số thứ **giữ nguyên tiếng Anh, không dịch**, vì dịch ra s�
 | Tên lệnh & từ khoá | `TON`, `CTU`, `MOVE`, `CASE` |
 | Tên chuẩn & giao thức | IEC 61131-3, Modbus TCP, PROFINET, EtherCAT, IO-Link |
 | Từ đã thành tên riêng trong nghề | PLC, HMI, SCADA, MES, STO, LOTO, SMEMA |
-| Tên tag trong ví dụ code | `DI_BoardStn1`, `DO_ClampVlv` |
+| Tên tag trong ví dụ code | `DI_BoardStn1`, `DO_Clamp1Vlv` |
 
 **Phụ lục F** là bảng đối chiếu Việt–Anh đầy đủ, sắp theo cả chủ đề lẫn vần.
 

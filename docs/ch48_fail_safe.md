@@ -303,7 +303,7 @@ quan trọng nhất chìm trong đám đông đúng vào lúc cần nó nhất.
 Trên DP-01, mất khí nén là ví dụ điển hình: một sự cố gốc, nhưng nếu không thiết kế thì sẽ nổ ra
 "chặn 1 không lên", "chặn 2 không lên", "kẹp không giữ", "quá thời gian bước 4"… Cách xử lý:
 
-- **Cảnh báo gốc phải chặn cảnh báo hệ quả.** Khi `AI_AirPressure` dưới ngưỡng, các timeout cơ cấu
+- **Cảnh báo gốc phải chặn cảnh báo hệ quả.** Khi `AI_AirPress` dưới ngưỡng, các timeout cơ cấu
   khí nén bị **ức chế** *(suppressed)*, không phát ra.
 - **Ức chế phải có điều kiện rõ ràng và tự gỡ**, không phải tắt vĩnh viễn. Ức chế tuỳ tiện là cách
   người ta vô hiệu hoá hệ cảnh báo mà vẫn tưởng nó đang chạy.

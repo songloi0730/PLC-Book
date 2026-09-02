@@ -393,7 +393,7 @@ mọi mục; chương sau nói **sao lưu cái gì, để ở đâu, và làm sa
   ở mục 53.3.
 - IEC 60204-1 — yêu cầu về tài liệu kỹ thuật đi kèm máy.
 - **Datasheet thiết bị** — dùng cho tuổi thọ đóng cắt, giờ chạy đèn UV, và ngưỡng ở mục 53.5.
-- Số liệu chu trình DP-01 — Phụ lục J §7.1; các phép tính tuổi thọ ở Chương 9 mục 9.3 và Chương 49
+- Số liệu chu trình DP-01 — Phụ lục J §J.1; các phép tính tuổi thọ ở Chương 9 mục 9.3 và Chương 49
   mục 49.7.
 
 > ⚠ **Nhắc lại giới hạn.** Mục 53.3 mô tả **cách tổ chức công việc**, không phải một tiêu chuẩn cụ

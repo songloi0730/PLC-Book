@@ -557,7 +557,7 @@ của DP-01 với PLC.
   giá trị 32 bit**, đơn vị của từng thanh ghi, và ⚠ **giới hạn số lần ghi**.
 - **Tài liệu khối lệnh Modbus** của hệ PLC đang dùng — dùng cho ⚠ **quy ước địa chỉ ở chân khối**,
   vốn là tầng quy ước thứ ba có thể lệch (mục 39.4).
-- Số liệu đã chốt của DP-01 — Phụ lục J §7.2.
+- Số liệu đã chốt của DP-01 — Phụ lục J §J.1.
 
 > ⚡ Bản đồ thanh ghi ở mục 39.9 là **ví dụ minh hoạ cấu trúc**, không phải bản đồ của một thiết bị
 > có thật. Bản đồ thật **luôn** phải lấy từ tài liệu của đúng model bạn dùng — và ⚠ nó có thể khác

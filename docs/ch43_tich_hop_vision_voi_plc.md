@@ -3,7 +3,7 @@
 > **Lát cắt máy mẫu:** 4 — thêm mạng: mã 2D, MES, SMEMA, màn hình vận hành, và bộ điều khiển nhiệt độ
 > keo nối RS-485.
 >
-> ⚠ **DP-01 không có hệ thị giác.** Đây là quyết định thiết kế có chủ đích (Phụ lục J §7, mục 3):
+> ⚠ **DP-01 không có hệ thị giác.** Đây là quyết định thiết kế có chủ đích (Phụ lục J §J.1, mục 3):
 > máy mẫu đã đủ phức tạp, và thêm vision không dạy thêm nguyên tắc điều khiển nào. Chương này dùng
 > **ví dụ riêng**, và mục 43.9 nói rõ nếu cần thì DP-01 sẽ ghép với vision thế nào.
 
@@ -311,7 +311,7 @@ Xử lý ảnh mất thời gian — từ vài chục tới vài trăm mili-giâ
 
 ## 43.9 Nếu DP-01 cần vision
 
-Theo quyết định ở Phụ lục J §7, DP-01 **không có** hệ thị giác. Nhưng nếu sau này cần — ví dụ board
+Theo quyết định ở Phụ lục J §J.1, DP-01 **không có** hệ thị giác. Nhưng nếu sau này cần — ví dụ board
 được đặt tự do trên băng tải thay vì được gá chính xác — thì kiến trúc sẽ là:
 
 | Hạng mục | Quyết định |
@@ -342,7 +342,7 @@ END_IF;
 > (Chương 37).
 
 > ⭐ **Nhận xét: thêm vision vào DP-01 sẽ làm chu kỳ dài thêm.**
-> Với chu kỳ mục tiêu 12 giây đã sát trần (Phụ lục J §7.1), thời gian chụp và xử lý phải nằm gọn trong
+> Với chu kỳ mục tiêu 12 giây đã sát trần (Phụ lục J §J.1), thời gian chụp và xử lý phải nằm gọn trong
 > phần chu kỳ của trạm 1 — và trạm 1 còn phải chạy hết đường keo. Đây là chỗ Chương 55 sẽ phải tính
 > lại nếu quyết thêm vision.
 
@@ -487,7 +487,7 @@ thứ đều báo động" nghĩa là không có báo động nào.
   hiệu chỉnh, và ⚠ **thời gian xử lý thật**.
 - IEC 61131-2 — *Programmable controllers, Part 2*: đặc tính ngõ ra số dùng cho trigger phần cứng.
   *(tiêu chuẩn có bản quyền)*
-- Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J §7, mục 3 (quyết định không đưa vision vào máy
+- Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J §J.1, mục 3 (quyết định không đưa vision vào máy
   mẫu).
 
 > ⚡ Nội dung về **hiệu chỉnh toạ độ** ở mục 43.6 được trình bày **ở mức khái niệm** — đủ để bạn hiểu

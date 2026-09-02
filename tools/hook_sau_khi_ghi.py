@@ -48,6 +48,8 @@ def main():
     for x in dang_ke:
         dong.append("  [%s] %s — %s" % (x["muc"], x["ma"], x["thong_diep"]))
     dong.append("Chạy `python tools/kiem_tra_chuong.py %d` để xem đầy đủ." % so)
+    dong.append("Nhớ chạy thêm `python tools/kiem_nhat_quan.py` — kiểm trôi dạt GIỮA các tài liệu")
+    dong.append("(dẫn chiếu gãy, tên tag lệch bảng I/O, số liệu chốt viết khác nhau).")
 
     sys.stdout.buffer.write(("\n".join(dong) + "\n").encode("utf-8", "replace"))
     return 0

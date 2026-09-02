@@ -280,7 +280,7 @@ Chuyền của DP-01 dùng động cơ ba pha qua biến tần.
 > `DI_VfdReady` chỉ nói "biến tần không lỗi". Nó **không** nói biến tần đang giới hạn dòng, không nói
 > tốc độ thật là bao nhiêu, không nói dòng động cơ đang tăng dần.
 >
-> Với chu kỳ mục tiêu 12 giây/board đã chốt (Phụ lục J §7) và trạm sấy UV đã sát trần, **chuyền chạy
+> Với chu kỳ mục tiêu 12 giây/board đã chốt (Phụ lục J §J.1) và trạm sấy UV đã sát trần, **chuyền chạy
 > chậm hơn lệnh 8 % là đủ để lệch kế hoạch sản xuất** — và với cấu hình hiện tại thì không ai phát
 > hiện được cho tới khi đối chiếu sản lượng.
 >

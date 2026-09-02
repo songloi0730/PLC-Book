@@ -324,7 +324,7 @@ kích phần D.
 ## 35.9 ⭐ Bộ điều khiển rời hay PID trên PLC
 
 Câu hỏi thiết kế mà máy mẫu DP-01 đặt ra: nhiệt độ keo được điều khiển bởi một **bộ điều khiển nhiệt
-độ rời** nối RS-485 (Phụ lục J §7.2), không phải bởi PID viết trong PLC. Vì sao?
+độ rời** nối RS-485 (Phụ lục J §J.1), không phải bởi PID viết trong PLC. Vì sao?
 
 | | **Bộ điều khiển rời** | **PID trên PLC** |
 |---|---|---|

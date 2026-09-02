@@ -80,7 +80,7 @@ còn nguyên**:
 
 ```iecst
 // Ở Manual, nút "hạ chặn trạm 1" chỉ tác dụng khi kẹp đã hạ
-DI_ManStop1Down  AND  M_ModeManual  AND  DI_Clamp1Dn   →   DO_Stop1Vlv := FALSE
+Cmd_ManStop1Down  AND  M_ModeManual  AND  DI_Clamp1Dn   →   DO_Stop1Vlv := FALSE
                                           ▲
                                           └── liên động KHÔNG được bỏ
 ```

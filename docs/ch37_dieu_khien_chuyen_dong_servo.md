@@ -194,7 +194,7 @@ nghĩa là đường keo không đều ở đoạn đầu.
 > 💡 **Với gantry tra keo, chữ S thường đáng giá** — chất lượng đường keo phụ thuộc chuyển động êm.
 > Với trục chỉ đi từ điểm A tới điểm B rồi dừng hẳn, hình thang là đủ.
 >
-> ⚠ Chữ S làm **chu kỳ dài hơn**. Với DP-01 đang sát trần 12 giây (Phụ lục J §7.1), đây là đánh đổi
+> ⚠ Chữ S làm **chu kỳ dài hơn**. Với DP-01 đang sát trần 12 giây (Phụ lục J §J.1), đây là đánh đổi
 > phải đo, không đoán.
 
 ---
@@ -332,7 +332,7 @@ END_IF;
 
 ### Cấu hình gantry
 
-Từ số liệu đã chốt (Phụ lục J §7.1): board **100 × 80 mm**, vùng làm việc **X 0–150 mm · Y 0–120 mm ·
+Từ số liệu đã chốt (Phụ lục J §J.1): board **100 × 80 mm**, vùng làm việc **X 0–150 mm · Y 0–120 mm ·
 Z 0–50 mm**, cả ba trục là **servo**.
 
 | Trục | Vai trò | Về gốc | Giới hạn phần cứng |
@@ -405,7 +405,7 @@ trong phần chu kỳ của trạm 1**.
 > ⚠ Đây là chỗ ba quyết định gặp nhau và có thể xung đột:
 > - **Chiều dài đường keo** theo công thức (Chương 29) — dài hơn thì lâu hơn.
 > - **Biên dạng chữ S** cho đường keo đều (mục 37.5) — êm hơn nhưng chậm hơn.
-> - **Chu kỳ mục tiêu 12 giây** (Phụ lục J §7.1).
+> - **Chu kỳ mục tiêu 12 giây** (Phụ lục J §J.1).
 >
 > Không có cách nào thoả cả ba bằng lập luận. Phải **đo** — Chương 55.
 
@@ -577,7 +577,7 @@ công nghiệp, và là cách bộ điều khiển nhiệt độ của DP-01 nó
 - **Tài liệu servo drive** của hệ đang dùng — dùng cho ⚠ **đơn vị kỹ thuật và tỉ số truyền**, kiểu về
   gốc hỗ trợ, ngõ vào giới hạn phần cứng, ngưỡng sai số bám, và ⚠ **điều khiển phanh cùng thứ tự
   nhả/kẹp**.
-- Bảng I/O, vùng làm việc gantry và số liệu đã chốt của DP-01 — Phụ lục J §7.1.
+- Bảng I/O, vùng làm việc gantry và số liệu đã chốt của DP-01 — Phụ lục J §J.1 và §J.2.
 
 > ⚡ Các con số giới hạn ở mục 37.6 (−1/51 mm, −3/53 mm, −5/55 mm) là **minh hoạ cho nguyên tắc ba
 > lớp**, không phải giá trị thiết kế. Khoảng cách giữa các lớp phụ thuộc tốc độ chạy, quán tính, và

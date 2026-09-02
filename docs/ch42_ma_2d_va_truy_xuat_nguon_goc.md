@@ -80,7 +80,7 @@ Ba yếu tố quyết định đầu đọc cố định hoạt động tốt ha
 | **Nối tiếp** (RS-232/485) | Đơn giản; ⚠ chuỗi ký tự phải phân tích trong PLC (Chương 38) |
 | **I/O số** | Chỉ báo "đọc được / không đọc được" — ⚠ **không lấy được nội dung mã** |
 
-> ⭐ **DP-01 dùng Ethernet** (Phụ lục J §7.2) — theo thực tế thị trường.
+> ⭐ **DP-01 dùng Ethernet** (Phụ lục J §J.1) — theo thực tế thị trường.
 
 ### Luồng cơ bản
 
@@ -319,7 +319,7 @@ END_CASE;
 > Nhiều hệ đặt việc hỏi MES song song với gia công cho nhanh — và mất luôn khả năng chống nhảy cóc.
 > Hỏi **trước**, và **chấp nhận mất vài trăm mili-giây**.
 >
-> ⚠ Với chu kỳ 12 giây đã chốt (Phụ lục J §7.1), vài trăm mili-giây là chấp nhận được. Nếu chu kỳ chặt
+> ⚠ Với chu kỳ 12 giây đã chốt (Phụ lục J §J.1), vài trăm mili-giây là chấp nhận được. Nếu chu kỳ chặt
 > hơn thì phải tính — đây là chỗ Chương 55 quay lại.
 
 ### Báo kết quả ở trạm 2

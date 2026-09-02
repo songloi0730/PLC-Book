@@ -79,7 +79,7 @@ không biết mình đang chạy thật hay giả.
 > 4. Cờ này nằm trong **danh mục kiểm bắt buộc trước bàn giao** (Chương 52).
 >
 > Và tuyệt đối: **tín hiệu an toàn không bao giờ được đưa qua lớp mô phỏng.** `DI_EStopOK`,
-> `DI_DoorClosed`, `DI_CurtainOK` phải luôn đọc thẳng từ phần cứng.
+> `DI_Door1Closed`, `DI_CurtainOK` phải luôn đọc thẳng từ phần cứng.
 
 ### Giả lập thời gian cơ cấu
 

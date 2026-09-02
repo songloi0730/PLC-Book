@@ -402,7 +402,7 @@ Ethernet nhanh hơn, dễ hơn, phổ biến hơn. Nhưng RS-485 vẫn có mặt
 
 ## 38.11 Trên máy mẫu DP-01
 
-Theo số liệu đã chốt (Phụ lục J §7.2):
+Theo số liệu đã chốt (Phụ lục J §J.1):
 
 | Liên kết | Giao diện | Vì sao |
 |---|---|---|
@@ -598,7 +598,7 @@ gần như mọi người từng dùng nó.
   cầu không**, điện trở đầu cuối tích hợp, và ⚠ **quy ước đánh số chân A/B**.
 - **Tài liệu bộ điều khiển nhiệt độ** — dùng cho tham số truyền thông, bản đồ thanh ghi, và ⚠ **giới
   hạn số lần ghi** vào bộ nhớ không mất.
-- Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J §7.2.
+- Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J §J.1 và §J.2.
 
 > ⚡ Các con số về **khoảng cách và số thiết bị tối đa** của RS-485 phụ thuộc tốc độ baud, chất lượng
 > cáp, và loại mạch thu phát — chúng đánh đổi lẫn nhau. Sách không nêu con số cụ thể vì con số đúng

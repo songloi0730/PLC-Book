@@ -75,7 +75,7 @@ Với DP-01, cả hai phía:
 | Tag | Chiều | Nghĩa |
 |---|---|---|
 | `DI_SmemaInAvail` | Từ máy trước | Máy trước có board sẵn |
-| `DO_SmemaInReady` | Tới máy trước | DP-01 sẵn sàng nhận |
+| `DO_SmemaInRdy` | Tới máy trước | DP-01 sẵn sàng nhận |
 | `DI_SmemaOutRdy` | Từ máy sau | Máy sau sẵn sàng nhận |
 | `DO_SmemaOutAvail` | Tới máy sau | DP-01 có board sẵn để chuyển |
 
@@ -153,7 +153,7 @@ Việc chuyển giao trách nhiệm phải **rõ ràng và không có khoảng t
 // ── PHÍA NHẬN (từ máy trước) ──
 
 // Sẵn sàng nhận: chuyền vào trống, không lỗi, đang chạy
-DO_SmemaInReady := M_Running
+DO_SmemaInRdy := M_Running
                AND NOT M_AnyFault
                AND NOT DI_BoardInfeed          // ⭐ vùng nhận phải TRỐNG
                AND NOT M_Stn1Occupied;
@@ -192,7 +192,7 @@ T_TransferIn(IN := M_TransferInActive, PT := T#5S);
 IF T_TransferIn.Q THEN
     M_AnyFault := TRUE;
     M_FaultCode := 410;              // "board kẹt ở vùng chuyển giao vào"
-    DO_SmemaInReady := FALSE;        // ⭐ ngừng nhận thêm
+    DO_SmemaInRdy := FALSE;        // ⭐ ngừng nhận thêm
 END_IF;
 ```
 
@@ -301,7 +301,7 @@ Khi dừng có kế hoạch, máy nên **xả hết board** trước khi dừng 
 ```iecst
 // Yêu cầu dừng: ngừng nhận, chạy hết board đang có
 IF M_StopRequested THEN
-    DO_SmemaInReady := FALSE;               // ⭐ ngừng nhận thêm
+    DO_SmemaInRdy := FALSE;               // ⭐ ngừng nhận thêm
     // trình tự vẫn chạy cho tới khi máy rỗng
     IF M_MachineEmpty THEN
         M_Running := FALSE;                 // dừng hẳn khi đã xả xong
@@ -321,7 +321,7 @@ END_IF;
 | Phía | Tín hiệu | Kiểu | Ghi chú |
 |---|---|---|---|
 | **Vào** | `DI_SmemaInAvail` | Ngõ vào số, cách ly | Từ máy trước |
-| **Vào** | `DO_SmemaInReady` | ⭐ Ngõ ra **rơ-le** | Tới máy trước — cách ly thật (Chương 9, mục 9.7) |
+| **Vào** | `DO_SmemaInRdy` | ⭐ Ngõ ra **rơ-le** | Tới máy trước — cách ly thật (Chương 9, mục 9.7) |
 | **Ra** | `DI_SmemaOutRdy` | Ngõ vào số, cách ly | Từ máy sau |
 | **Ra** | `DO_SmemaOutAvail` | ⭐ Ngõ ra **rơ-le** | Tới máy sau |
 | Dữ liệu | Qua mạng chung (Chương 40) | — | Mã sản phẩm, kết quả — Chương 42 |
@@ -331,9 +331,9 @@ END_IF;
 ```iecst
 CASE InfeedStep OF
     0:  // Chờ điều kiện đủ để nhận
-        DO_SmemaInReady := M_Running AND NOT M_AnyFault
+        DO_SmemaInRdy := M_Running AND NOT M_AnyFault
                        AND NOT DI_BoardInfeed AND NOT M_Stn1Occupied;
-        IF DO_SmemaInReady AND DI_SmemaInAvail THEN
+        IF DO_SmemaInRdy AND DI_SmemaInAvail THEN
             InfeedStep := 10;                    // ⭐ CẢ HAI cùng đúng
         END_IF;
 
@@ -341,7 +341,7 @@ CASE InfeedStep OF
         M_ConvInRun := TRUE;
         IF DI_BoardInfeed THEN                   // board đã vào hẳn
             M_WeOwnBoardIn := TRUE;              // ⭐ nhận trách nhiệm
-            DO_SmemaInReady := FALSE;            // ⚠ ngừng báo sẵn sàng NGAY
+            DO_SmemaInRdy := FALSE;            // ⚠ ngừng báo sẵn sàng NGAY
             InfeedStep := 20;
         END_IF;
 
@@ -360,11 +360,11 @@ END_CASE;
 T_Infeed(IN := (InfeedStep > 0), PT := T#10S);
 IF T_Infeed.Q THEN
     M_AnyFault := TRUE;  M_FaultCode := 410;
-    DO_SmemaInReady := FALSE;
+    DO_SmemaInRdy := FALSE;
 END_IF;
 ```
 
-> ⭐ **Dòng `DO_SmemaInReady := FALSE` ở bước 10 là dòng chống lại cỗ máy ở mục 41.1.**
+> ⭐ **Dòng `DO_SmemaInRdy := FALSE` ở bước 10 là dòng chống lại cỗ máy ở mục 41.1.**
 > Ngay khi board vào hẳn, DP-01 **lập tức** báo "không còn sẵn sàng" — nên máy trước không đẩy board
 > tiếp theo trong lúc DP-01 còn đang đưa board này vào trạm.
 >
@@ -375,7 +375,7 @@ END_IF;
 
 ```iecst
 // ⭐ Đếm thời gian máy phải chờ máy trước và chờ máy sau
-T_WaitUpstream(IN := (InfeedStep = 0) AND DO_SmemaInReady AND NOT DI_SmemaInAvail,
+T_WaitUpstream(IN := (InfeedStep = 0) AND DO_SmemaInRdy AND NOT DI_SmemaInAvail,
                PT := T#1H);
 T_WaitDownstream(IN := M_Board2Done AND NOT DI_SmemaOutRdy, PT := T#1H);
 
@@ -389,7 +389,7 @@ END_IF;
 > ⭐ **Hai con số này trả lời câu hỏi quan trọng nhất về hiệu suất chuyền: máy của tôi chậm, hay hàng
 > xóm chậm?**
 >
-> Với chu kỳ mục tiêu 12 giây đã chốt (Phụ lục J §7.1) và trạm sấy UV sát trần, DP-01 rất có thể là
+> Với chu kỳ mục tiêu 12 giây đã chốt (Phụ lục J §J.1) và trạm sấy UV sát trần, DP-01 rất có thể là
 > **nút cổ chai của chuyền** ở một số mã hàng. Hai bộ đếm này cho biết điều đó bằng số liệu thay vì
 > bằng tranh cãi (Chương 55).
 
@@ -431,7 +431,7 @@ khoảng trống.
 ### 🔍 BẪY 2 — Nhả tín hiệu "sẵn sàng nhận" quá muộn
 
 **Hiện tượng:** máy trước đẩy board tiếp theo trong lúc máy sau còn đang xử lý board vừa nhận.
-**Cách sửa:** `DO_SmemaInReady := FALSE` **ngay khi** board vào hẳn, cùng chỗ với việc nhận trách
+**Cách sửa:** `DO_SmemaInRdy := FALSE` **ngay khi** board vào hẳn, cùng chỗ với việc nhận trách
 nhiệm (mục 41.8).
 
 ### 🔍 BẪY 3 — Bắt tay qua mạng cho việc chuyển board
