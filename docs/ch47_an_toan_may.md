@@ -200,8 +200,22 @@ nhất là hai câu hỏi:
 | **B** | không | không | **Mất chức năng an toàn** |
 | **1** | không | không | Mất chức năng, nhưng dùng linh kiện và nguyên tắc đã được kiểm chứng nên **ít hỏng hơn** |
 | **2** | không | có, **theo chu kỳ** | Mất chức năng cho tới lần kiểm tiếp theo |
-| **3** | **có** | có, một phần | **Không mất** chức năng; phần lớn hỏng hóc được phát hiện |
-| **4** | **có** | có, đầy đủ | **Không mất** chức năng; hỏng hóc được phát hiện **kịp thời**, và hỏng tích luỹ cũng không làm mất chức năng |
+| **3** | **có** | có, một phần | Hỏng **một** chỗ thì **không mất** chức năng; ⚠ nhưng **hỏng tích luỹ có thể làm mất** |
+| **4** | **có** | có, đầy đủ | **Không mất** chức năng; hỏng hóc được phát hiện **kịp thời**, và ⭐ **chống được cả hỏng tích luỹ** |
+
+> ⭐⭐ **Hai chi tiết định lượng phân biệt Category 2 và Category 3 — và chúng hay bị bỏ qua:**
+>
+> | | Chi tiết |
+> |---|---|
+> | ⚠ **Category 2** | Tự kiểm theo chu kỳ chỉ có giá trị khi ⭐ **kiểm đủ dày so với tần suất dùng**: thông lệ là **tần suất kiểm ít nhất 100 lần tần suất yêu cầu** chức năng an toàn (có ngoại lệ cho phép tối thiểu 25 lần). ⚠ Kiểm quá thưa thì Category 2 **gần như không còn tác dụng** |
+> | ⚠⚠ **Category 3** | Chịu được **một** hỏng hóc, nhưng ⭐ **hỏng tích luỹ chưa được phát hiện VẪN có thể làm mất chức năng an toàn**. Chỉ Category 4 mới đảm bảo chống được điều đó |
+>
+> ⭐ Hàng thứ hai là lý do **giám sát tiếp điểm và kiểm định định kỳ không phải thủ tục giấy tờ** —
+> chúng chính là thứ ngăn hỏng hóc tích luỹ trong một hệ Category 3.
+>
+> *(Đối chiếu: DGUV/IFA Report 2/2017e — Functional safety of machine controls, phần áp dụng
+> ISO 13849-1. ⚠ Đây là tài liệu **diễn giải**, không phải bản gốc tiêu chuẩn — con số cụ thể và điều
+> kiện áp dụng phải lấy từ ISO 13849-1.)*
 
 Ba điểm cần hiểu cho đúng:
 

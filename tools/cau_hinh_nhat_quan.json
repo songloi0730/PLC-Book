@@ -1,15 +1,22 @@
 {
   "_muc_dich": "Cấu hình cho kiem_nhat_quan.py — kiểm TRÔI DẠT giữa các tài liệu (documentation drift). Sửa file này khi số liệu chốt hoặc danh mục tiêu chuẩn thay đổi, KHÔNG sửa code.",
-
   "_ghi_chu_bi_danh_nhom": "Phụ lục A được chia thành A1 và A2 nhưng thân sách gọi chung là 'Phụ lục A' (bất biến B1). Dẫn chiếu tới bí danh nhóm là hợp lệ.",
   "bi_danh_nhom": {
-    "A": ["A1", "A2"]
+    "A": [
+      "A1",
+      "A2"
+    ]
   },
-
   "_ghi_chu_nguon_tag": "Bảng I/O chính thức nằm ở Phụ lục J mục J.2. Mọi tag của MÁY MẪU DP-01 phải có mặt ở đó.",
   "file_nguon_tag": "pl_j_ho_so_may_mau_dp01.md",
-  "tien_to_tag": ["DI", "DO", "AI", "AO", "AX", "NET"],
-
+  "tien_to_tag": [
+    "DI",
+    "DO",
+    "AI",
+    "AO",
+    "AX",
+    "NET"
+  ],
   "_ghi_chu_tag_vi_du": "Tag của VÍ DỤ CHUNG — thiết bị không có trên DP-01 (robot, camera, lò gia nhiệt) hoặc tag minh hoạ quy ước đặt tên. Được phép dùng, KHÔNG thuộc bảng I/O DP-01. Thêm vào đây phải có chủ ý: nếu tag mô tả thiết bị CÓ trên DP-01 thì đó là drift, phải sửa chương chứ không thêm vào đây.",
   "tag_vi_du_chung": {
     "DO_RobotStart": "Ch.46 — robot, không có trên DP-01",
@@ -24,68 +31,104 @@
     "DI_Door1": "Ch.30 — ví dụ đặt tên",
     "DI_Input2": "Ch.11 — ví dụ kiểu dữ liệu chung"
   },
-
   "_ghi_chu_so_lieu": "Số liệu chốt của DP-01. Mỗi mục: 'mau' là regex tìm con số trong văn bản, 'dung' là giá trị đúng duy nhất được phép. Nếu tìm thấy dạng khác => LỖI.",
   "so_lieu_chot": {
     "san_luong": {
       "mau": "(\\d[\\d ]*) ?board/(?:giờ|h)",
-      "dung": ["300"],
+      "dung": [
+        "300"
+      ],
       "mo_ta": "sản lượng mục tiêu DP-01"
     },
     "chu_ky": {
       "mau": "chu kỳ[^.\\n]{0,40}?(\\d+[,.]\\d+) ?(?:s|giây)",
-      "dung": ["12,0"],
+      "dung": [
+        "12,0"
+      ],
       "mo_ta": "chu kỳ mục tiêu"
     },
     "kich_thuoc_board": {
       "mau": "(\\d+) ?× ?(\\d+) ?mm",
-      "dung": ["100×80"],
+      "dung": [
+        "100×80"
+      ],
       "mo_ta": "kích thước board",
       "chi_khi_co": "board"
     },
     "uon_cap": {
       "mau": "(\\d[\\d ]*\\d) lần uốn",
-      "dung": ["1 440 000", "1440000"],
+      "dung": [
+        "1 440 000",
+        "1440000"
+      ],
       "mo_ta": "số lần uốn cáp xích gantry mỗi năm"
     }
   },
-
   "_ghi_chu_tieu_chuan": "Danh mục tiêu chuẩn được phép viện dẫn. Viết sai chính tả hoặc dùng mã không có trong danh mục => CẢNH BÁO (có thể là mã thật chưa đăng ký, phải thêm vào đây có chủ ý).",
   "tieu_chuan_hop_le": [
-    "IEC 61131-1", "IEC 61131-2", "IEC 61131-3", "IEC 61131-9",
-    "IEC 60204-1", "IEC 61439", "IEC 60947-5-1",
-    "IEC 61800-3", "IEC 61800-5-2",
-    "IEC 61508", "IEC 61511", "IEC 62061",
-    "IEC 61918", "IEC 61643", "IEC 62443", "IEC 62541", "IEC 62682",
-    "IEC 62381", "IEC 62264", "IEC 60751", "IEC 60584", "IEC 60381",
+    "IEC 61131-1",
+    "IEC 61131-2",
+    "IEC 61131-3",
+    "IEC 61131-9",
+    "IEC 60204-1",
+    "IEC 61439",
+    "IEC 60947-5-1",
+    "IEC 61800-3",
+    "IEC 61800-5-2",
+    "IEC 61508",
+    "IEC 61511",
+    "IEC 62061",
+    "IEC 61918",
+    "IEC 61643",
+    "IEC 62443",
+    "IEC 62541",
+    "IEC 62682",
+    "IEC 62381",
+    "IEC 62264",
+    "IEC 60751",
+    "IEC 60584",
+    "IEC 60381",
     "IEC 61340-5-1",
-    "ISO 12100", "ISO 13849-1", "ISO 13849-2", "ISO 13850", "ISO 14119",
-    "ISO 4414", "ISO 10218", "ISO 22400", "ISO/TS 15066", "ISO/IEC 16022",
-
-    "IEC 61158", "IEC 61784",
-    "IEC 61140", "IEC 60947-5-4", "IEC 61340-5-2",
-    "ISO 15552", "ISO 6789",
-    "ISO/IEC 15415", "ISO/IEC 29158"
+    "ISO 12100",
+    "ISO 13849-1",
+    "ISO 13849-2",
+    "ISO 13850",
+    "ISO 14119",
+    "ISO 4414",
+    "ISO 10218",
+    "ISO 22400",
+    "ISO/TS 15066",
+    "ISO/IEC 16022",
+    "IEC 61158",
+    "IEC 61784",
+    "IEC 61140",
+    "IEC 60947-5-4",
+    "IEC 61340-5-2",
+    "ISO 15552",
+    "ISO 6789",
+    "ISO/IEC 15415",
+    "ISO/IEC 29158"
   ],
-
   "_ghi_chu_tieu_chuan_thu_hoi": "Tiêu chuẩn đã bị thu hồi. Vẫn được nhắc trong sách vì tên còn dùng trên catalogue, nhưng MỖI LẦN nhắc phải kèm cảnh báo là bản thu hồi và nêu bản thay thế.",
   "tieu_chuan_thu_hoi": {
     "ISO 6431": {
       "thay_bang": "ISO 15552",
-      "phai_co_gan": ["thu hồi", "tiền nhiệm"],
+      "phai_co_gan": [
+        "thu hồi",
+        "tiền nhiệm"
+      ],
       "ghi_chu": "xy-lanh khí nén; xác minh 2026-09-02 tại iso.org/standard/12786.html"
     }
   },
   "tieu_chuan_cam": {
     "IEC 62366": "tiêu chuẩn thiết bị y tế — KHÔNG áp dụng cho máy công nghiệp (đã loại session 8)"
   },
-
   "_ghi_chu_thuat_ngu": "Cặp Việt–Anh phải dùng nhất quán. Nếu một thuật ngữ tiếng Anh được gán cho hai cụm tiếng Việt khác nhau => TIN để rà lại.",
   "file_nguon_thuat_ngu": "pl_f_thuat_ngu_viet_anh.md",
-
   "_ghi_chu_bo_qua": "File không tham gia kiểm trôi dạt (tài liệu nội bộ, không phải nội dung sách).",
   "bo_qua_file": [
     "00_Muc_luc.md",
-    "case_study_may_mau.md"
+    "case_study_may_mau.md",
+    "00d_Nhat_ky_doi_chieu.md"
   ]
 }
