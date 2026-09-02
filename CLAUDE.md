@@ -192,6 +192,55 @@ File `.chm` (Inovance AutoShop, CODESYS) chưa có công cụ đọc trong pipel
 
 ---
 
+## ⭐⭐ Quy ước gộp sách và phiên bản — LÀM SAU MỖI ĐỢT SỬA
+
+⚠ **Bất biến B17: mỗi lần sửa nội dung sách xong, phải ghép lại + tăng phiên bản theo ngày +
+đẩy lên GitHub.** Không để bản phát hành tụt lại sau bản thảo.
+
+```bash
+bash tools/gop_sach.sh                 # phiên bản = BASE_VERSION.<hôm nay YYMMDD>
+bash tools/gop_sach.sh --khong-chep    # chỉ ghép để xem, không chép sang repo phát hành
+```
+
+Script tự làm: chạy bộ kiểm (⚠ **có LỖI thì dừng, không ghép**) → cập nhật số phiên bản trong
+`output/cover.md` và `output/cover.html` → ghép bìa + mục lục + 58 chương + 12 phụ lục → sinh mục lục
+HTML có id neo → bọc bảng cho cuộn ngang → dọn bản cũ → chép sang repo phát hành.
+
+### Quy ước số phiên bản
+
+| Phần | Nghĩa |
+|---|---|
+| `v1.0.0` — `BASE_VERSION` trong script | ⭐ **Tăng khi có đợt bổ sung nội dung LỚN.** Sửa thẳng trong `tools/gop_sach.sh` |
+| `.260902` | ⭐ **Ngày ghép, YYMMDD** — script tự lấy theo hôm nay |
+
+⚠ Đợt phát hành lớn thì **sửa `BASE_VERSION`**, đừng chỉ truyền tham số một lần — lần ghép sau
+sẽ tụt lại.
+
+### ⚠⚠ Repo phát hành có SÁCH KHÁC — không được đụng
+
+Đích: `CSharp Automation Machine/CSharp-Automation-Machine/book/`
+
+Thư mục đó chứa **bốn** cuốn sách của các dự án khác nhau. Script **chỉ xoá file mang đúng tên sách
+này** (`So tay Lap trinh PLC va Dieu khien May Tu dong hoa v*`). ⚠ **Không bao giờ dọn cả thư mục.**
+
+### Đẩy lên GitHub
+
+```bash
+cd "/c/Users/dinhn/OneDrive/Study/Chung/CSharp Automation Machine/CSharp-Automation-Machine"
+git add book/ && git commit -F - <<'MSG'
+book: cap nhat So tay Lap trinh PLC ... v1.0.0.<YYMMDD>
+<tom tat thay doi>
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+MSG
+git pull --rebase origin main && git push origin main
+```
+
+⚠ **Luôn `pull --rebase` trước khi push** — các sách khác được cập nhật từ máy/dự án khác, nên
+remote thường đi trước.
+
+---
+
 ## Quy trình đánh giá — chạy máy trước, mắt sau
 
 Bản thảo có **ba bộ kiểm tự động** ứng với ba loại lỗi khác nhau. Chạy cả ba trước khi coi một

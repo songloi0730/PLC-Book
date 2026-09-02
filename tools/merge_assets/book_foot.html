@@ -1,0 +1,52 @@
+</div>
+
+<button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        title="Về đầu trang">↑</button>
+
+<script>
+  var tocEl = document.getElementById('toc');
+
+  // Highlight mục lục khi scroll
+  const headings = document.querySelectorAll('h1, h2, h3');
+  const tocLinks = document.querySelectorAll('#toc a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tocLinks.forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + id
+            ? '#e2e8f0' : '';
+          a.parentElement.style.background = a.getAttribute('href') === '#' + id
+            ? '#2a2d3e' : '';
+        });
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+
+  headings.forEach(h => {
+    if (h.id) observer.observe(h);
+  });
+
+  // Trên mobile: đóng drawer mục lục ngay khi chọn một mục
+  tocLinks.forEach(a => {
+    a.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 820px)').matches) {
+        tocEl.classList.remove('open');
+      }
+    });
+  });
+
+  // Ẩn/hiện nút top
+  window.addEventListener('scroll', () => {
+    document.getElementById('top-btn').style.opacity =
+      window.scrollY > 400 ? '1' : '0';
+  });
+
+  // Đóng drawer bằng phím Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') tocEl.classList.remove('open');
+  });
+</script>
+</body>
+</html>

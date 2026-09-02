@@ -6,3 +6,6 @@ __pycache__/
 Thumbs.db
 
 tools/.cache_nguon/
+
+# ban gop — sinh lai duoc bang tools/gop_sach.sh
+output/So tay Lap trinh PLC*

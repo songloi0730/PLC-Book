@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sổ tay Lập trình PLC &amp; Điều khiển Máy Tự động hoá — v1.0.0.260902</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0b0c12;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .cover {
+    position: relative;
+    width: 640px;
+    max-width: 100%;
+    background: #13151f;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+    padding: 56px 64px;
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #f59e0b, #10b981, #3b82f6);
+  }
+  h1 {
+    color: #e8eaf0;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+  .subtitle {
+    color: #5a6480;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .subtitle .accent { color: #10b981; }
+  .badge {
+    display: inline-block;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.25);
+    color: #34d399;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .points {
+    list-style: none;
+    margin-bottom: 8px;
+  }
+  .points li {
+    color: #6b7594;
+    font-size: 13px;
+    line-height: 1.7;
+    padding-left: 18px;
+    position: relative;
+  }
+  .points li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: #10b981;
+  }
+  .points strong { color: #98a2c0; font-weight: 600; }
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 32px 0;
+  }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px 20px;
+  }
+  .meta-label {
+    color: #3a3f58;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-top: 2px;
+  }
+  .meta-value {
+    color: #7c85a8;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+  }
+  .meta-value a { color: #34d399; text-decoration: none; }
+  .stats {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .stats .n {
+    color: #e8eaf0;
+    font-size: 26px;
+    font-weight: 700;
+    font-family: 'Consolas', 'Courier New', monospace;
+    line-height: 1.2;
+  }
+  .stats .l {
+    color: #3a3f58;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .stats .row { margin-bottom: 10px; }
+  .warn {
+    margin-top: 28px;
+    padding: 14px 16px;
+    background: rgba(245,158,11,0.07);
+    border-left: 3px solid #f59e0b;
+    border-radius: 4px;
+    color: #8a7a5c;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .warn strong { color: #f59e0b; }
+  @media print {
+    body { background: white; padding: 0; }
+    .cover { width: 100%; border: none; box-shadow: none; background: white; border-radius: 0; }
+    .cover::before { display: none; }
+    h1 { color: #13151f; }
+    .subtitle, .points li { color: #444; }
+    .meta-label { color: #666; }
+    .meta-value, .stats .n { color: #222; }
+  }
+  @page { size: A4; margin: 0; }
+</style>
+</head>
+<body>
+<div class="cover">
+  <h1>Sổ tay Lập trình PLC &amp; Điều khiển Máy Tự động hoá</h1>
+  <p class="subtitle">Dành cho <span class="accent">người mới vào nghề tự động hoá</span>,
+    thợ điện chuyển sang lập trình, và <span class="accent">sinh viên</span> muốn làm được
+    một cỗ máy thật</p>
+  <div class="badge">v1.0.0.260902</div>
+
+  <ul class="points">
+    <li><strong>Trung lập hãng</strong> — khái niệm theo IEC 61131-3; phương ngữ 5 hệ gom vào Phụ lục A</li>
+    <li><strong>Một máy mẫu xuyên suốt</strong> — DP-01, trạm tra keo &amp; sấy UV trên chuyền board mạch</li>
+    <li><strong>Dạy cả phần sau khi máy đã chạy</strong> — lắp đặt, chẩn đoán, bảo trì, đo chu kỳ, retrofit</li>
+    <li><strong>Đối chiếu tài liệu gốc</strong> — mọi con số đều có nguồn, ghi trong nhật ký đối chiếu</li>
+  </ul>
+
+  <div class="divider"></div>
+
+  <div class="bottom">
+    <div class="meta">
+      <div class="meta-label">Phiên bản</div><div class="meta-value">v1.0.0.260902</div>
+      <div class="meta-label">Tác giả</div><div class="meta-value">AI &amp; songloi0730</div>
+      <div class="meta-label">Xuất bản</div><div class="meta-value">09/2026</div>
+      <div class="meta-label">Giấy phép</div><div class="meta-value"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div>
+    </div>
+    <div class="stats">
+      <div class="row"><div class="n">58</div><div class="l">Chương</div></div>
+      <div class="row"><div class="n">12</div><div class="l">Phụ lục</div></div>
+    </div>
+  </div>
+
+  <div class="warn">
+    <strong>⚠ Đọc trước khi dùng cho máy thật.</strong> Sách giúp bạn hiểu và đặt đúng câu hỏi —
+    không thay thế đánh giá rủi ro, thiết kế điện do người có chuyên môn thực hiện, hay bản gốc
+    tiêu chuẩn. Chương 3, 6, 47, 48 và Phụ lục D <strong>đang chờ chuyên gia an toàn rà soát</strong>.
+  </div>
+</div>
+</body>
+</html>
