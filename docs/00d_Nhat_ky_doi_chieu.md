@@ -210,6 +210,27 @@ Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
 
 ---
 
+## Đợt 8 — 2026-09-02 · Ch.40 (Ethernet công nghiệp)
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 40 | Ch.40 §40.6 | Bảng chuyển mạch quản lý được vs không | ✅➕ | Đúng, nhưng ⚠ **thiếu hai chức năng quyết định** — xem hai mục dưới |
+| 41 | Ch.40 | *(chưa có)* — **IGMP snooping** cho lưu lượng multicast | ➕ | Tài liệu EtherNet/IP của Inovance H5U và InoProShop: cần chuyển mạch hỗ trợ **IGMP Snooping** để lọc gói multicast không liên quan. ⚠ Thiếu nó thì **mọi thiết bị nhận lưu lượng của mọi thiết bị**; thiết bị yếu rớt mạng trong khi thiết bị mạnh vẫn chạy. **Đã bổ sung** |
+| 42 | Ch.40 | *(chưa có)* — **vòng lặp mạng** và giao thức dự phòng | ➕ | Rockwell *Resilient Converged Plantwide Ethernet*: cấu trúc vòng cần giao thức dự phòng (cây khung / giao thức vòng chuyên dụng). ⚠⚠ Vòng **không có giao thức** không phải dự phòng — **gói quảng bá chạy vô tận, mạng chết**. Cũng là điều xảy ra khi cắm nhầm hai cổng vào nhau. **Đã bổ sung** kèm triệu chứng nhận ra |
+
+### Kết quả đợt 8
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **3** |
+| ✅ Xác nhận đúng | 1 |
+| ➕ Bổ sung nội dung còn thiếu | 3 |
+
+> ⭐ **Cả hai bổ sung có cùng đặc điểm với các đợt trước: chúng hỏng theo kiểu KHÔNG lộ ra ngay.**
+> Mạng chạy tốt lúc nghiệm thu với ít thiết bị, rồi xấu dần khi máy được mở rộng.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -219,7 +240,7 @@ kiểm**, không phải "không có lỗi".
 |---|---|---|---|
 | ⚠⚠ **An toàn** | ⭐ **Đã đối chiếu hết** — 3, 6, 47, 48, Phụ lục D (đợt 1, 3, 4, 7). ⚠ Cờ ⚠ vẫn giữ | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
 | Đo lường & analog | 34 *(31, 33, 35 đã đối chiếu đợt 5–7)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
-| Truyền thông | 38, 40, 42 *(39 đã đối chiếu đợt 3)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
+| Truyền thông | 38, 42 *(39, 40 đã đối chiếu đợt 3, 8)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
 | Chuyển động | 37 | PLCopen Motion, Mitsubishi Positioning | ⭐ Cao |
 | Nền tảng PLC | 7, 8, 9, 11, 12, 14, 18, 19 | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | 15–17, 20, 21 | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |

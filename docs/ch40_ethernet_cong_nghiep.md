@@ -205,6 +205,61 @@ Ba họ trên **đều dùng cáp Ethernet và đầu nối RJ45**. Nhìn bề n
 
 ---
 
+### ⭐⭐ Hai thứ chuyển mạch phải làm mà "cắm là chạy" không cho bạn
+
+Bảng trên nói chuyển mạch quản lý được hơn ở QoS, VLAN và chẩn đoán. Còn **hai chức năng nữa** mà
+thiếu chúng thì mạng công nghiệp **hỏng theo cách rất khó hiểu**.
+
+**Một — lọc gói multicast (IGMP snooping)**
+
+Một số họ giao thức công nghiệp gửi dữ liệu I/O bằng **multicast** — một gói, nhiều người nhận.
+
+| Chuyển mạch | Làm gì với gói multicast |
+|---|---|
+| ⚠ Không hỗ trợ IGMP snooping | ⭐ **Phát ra MỌI cổng** — như quảng bá |
+| ⭐ Có IGMP snooping | Chỉ gửi tới cổng có thiết bị **thật sự đăng ký nhận** |
+
+> ⚠⚠ **Hệ quả khi thiếu: mọi thiết bị trên mạng nhận lưu lượng của mọi thiết bị khác.**
+>
+> Một HMI nhỏ hay một cảm biến sẽ phải xử lý — rồi vứt bỏ — hàng nghìn gói mỗi giây không liên quan
+> tới nó. ⭐ Triệu chứng: thiết bị yếu **phản hồi chậm hoặc rớt mạng**, trong khi thiết bị mạnh vẫn
+> bình thường. ⚠ Càng thêm thiết bị vào mạng thì càng nặng — nên nó **xuất hiện muộn**, sau khi máy
+> đã chạy một thời gian.
+>
+> ⭐ **Kiểm khi chọn thiết bị:** hỏi thẳng *"chuyển mạch này có IGMP snooping không?"* — và bật nó lên.
+
+**Hai — xử lý vòng lặp mạng**
+
+Cấu trúc **vòng** ở bảng trên cho khả năng chịu đứt một chỗ. ⭐ Nhưng một vòng Ethernet **không có
+giao thức quản lý** thì không phải dự phòng — nó là **một sự cố**.
+
+| Tình huống | Kết quả |
+|---|---|
+| ⚠⚠ Vòng **không có giao thức** | Gói quảng bá chạy vòng **vô tận**, nhân lên → ⭐ **mạng chết hoàn toàn** |
+| ⭐ Vòng **có giao thức dự phòng** | Một đoạn được **chặn có chủ ý**; đứt chỗ khác thì nó mở ra |
+
+> ⚠⚠ **Đây cũng là điều xảy ra khi ai đó vô tình cắm hai cổng của cùng một chuyển mạch vào nhau** —
+> một sai sót mất hai giây, và **cả mạng ngừng hoạt động**, kể cả phần không liên quan.
+>
+> ⭐ Triệu chứng đặc trưng: **mọi đèn cổng nháy điên loạn cùng lúc**, mất toàn bộ liên lạc, và ⚠
+> **rút một sợi cáp ra thì mọi thứ trở lại bình thường ngay**.
+>
+> ⭐ Có nhiều họ giao thức xử lý việc này — loại chuẩn hoá rộng dựa trên **cây khung** *(spanning
+> tree)*, và các giao thức vòng chuyên dụng cho mạng công nghiệp có thời gian phục hồi nhanh hơn
+> nhiều. ⚠ **Chúng không tự có** — phải chọn chuyển mạch hỗ trợ và **cấu hình**.
+
+> ⭐⭐ **Điểm chung của cả hai: chúng biến "cắm dây là chạy" thành "cắm dây rồi cấu hình".**
+>
+> ⚠ Và cả hai đều hỏng theo kiểu **không lộ ra ngay** — mạng chạy tốt lúc nghiệm thu với ít thiết bị,
+> rồi xấu dần khi máy được mở rộng. Đây đúng loại lỗi mà Chương 49 gọi là *"lỗi do lắp đặt không
+> giống lỗi lắp đặt"*.
+
+*(Đối chiếu: tài liệu EtherNet/IP của Inovance H5U và InoProShop — nêu yêu cầu chuyển mạch hỗ trợ
+IGMP Snooping để lọc gói multicast không liên quan; Rockwell — A Resilient Converged Plantwide
+Ethernet Architecture, phần các giao thức dự phòng cho cấu trúc vòng và sao.)*
+
+---
+
 ## 40.7 Địa chỉ và cấu hình
 
 ### Địa chỉ IP
@@ -419,6 +474,9 @@ xấu đi.
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⭐⭐ Chuyển mạch cần bật gì cho multicast | **IGMP snooping** — thiếu thì mọi thiết bị nhận lưu lượng của mọi thiết bị |
+| ⚠⚠ Vòng mạng không có giao thức | **Không phải dự phòng — là sự cố**: gói quảng bá chạy vô tận, mạng chết |
+| ⭐ Triệu chứng vòng lặp | Mọi đèn cổng nháy điên loạn; **rút một sợi là hết ngay** |
 | Khác biệt cốt lõi của Ethernet công nghiệp | ⭐ **Tính xác định thời gian**, không phải tốc độ |
 | Họ 1 — TCP/IP thường | Chu kỳ ms · ⭐ chuyển mạch thường dùng được · I/O, biến tần, HMI, MES |
 | Họ 2 — đồng bộ khe | 100 µs–1 ms · ⚠ hạ tầng chuyên dụng · chuyển động |
@@ -459,6 +517,12 @@ xấu đi.
 
 > Câu 1, 3, 4 và 12 là bốn câu phân loại. Câu 4 là tinh thần của cả chương: **hai gói tin trên cùng
 > một sợi dây không bình đẳng — và mạng không nói cho bạn biết gói nào đã tới muộn.**
+
+⭐⭐ **Bổ sung.** Vì sao chuyển mạch **không có IGMP snooping** làm một HMI nhỏ rớt mạng, trong khi
+PLC vẫn chạy bình thường? Vì sao triệu chứng đó **xuất hiện muộn**, sau khi máy đã chạy một thời gian?
+
+⚠⚠ **Bổ sung.** Ai đó cắm hai cổng của cùng một chuyển mạch vào nhau. Mô tả chuyện gì xảy ra, triệu
+chứng nhận ra, và vì sao một cấu trúc vòng **có giao thức** lại không gặp vấn đề đó.
 
 ---
 
