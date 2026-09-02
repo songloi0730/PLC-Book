@@ -314,6 +314,18 @@ nửa đêm.
 **Hiện tượng:** ⚠ đếm được ba năm rồi phát hiện số về không sau một lần nạp.
 **Cách sửa:** dùng vùng nhớ giữ được (Chương 12), và ⭐ **kiểm tra thực tế bằng cách nạp thử**.
 
+> ⚠⚠ **Hai cách mất bộ đếm mà không ai ngờ tới — cả hai đều phụ thuộc hệ bạn dùng:**
+>
+> | Cách mất | Ở hệ nào |
+> |---|---|
+> | ⚠ **Đặt bộ đếm ở dải thiết bị KHÔNG giữ được** | Hệ kiểu thiết bị — ⭐ nhiều dòng để **1000 phần tử đầu là vùng mất** |
+> | ⚠⚠ **ĐỔI TÊN biến** cũng làm mất giá trị | Một số nền dùng biến persistent |
+>
+> ⭐ Cách thứ hai đặc biệt hiểm: nó biến một lần **"dọn dẹp cho gọn tên biến"** thành mất sạch số liệu
+> tích luỹ nhiều năm — và người dọn dẹp không hề biết mình vừa làm gì.
+>
+> ⚠ Xem **Phụ lục A1 mục A1.6** để biết hệ của bạn thuộc loại nào.
+
 ### 🔍 BẪY 8 — Ngưỡng bảo trì làm dừng máy
 
 **Hiện tượng:** ⚡ người vận hành vô hiệu hoá tính năng trong một tuần — mất luôn cả bộ đếm.

@@ -34,8 +34,10 @@ def xp(*a):
 
 
 GOC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# Thư mục tài liệu tham khảo nằm NGOÀI repo sách (tài liệu có bản quyền của hãng)
-NGUON = os.path.normpath(os.path.join(GOC, "..", "PLC", "reference"))
+# Thư mục tài liệu tham khảo nằm NGOÀI repo sách (tài liệu có bản quyền của hãng).
+# Quét TOÀN BỘ cây PLC/, không chỉ reference/ — vì tài liệu CODESYS nằm ở en/,
+# tài liệu Inovance nằm ở Manual/, và sách giáo trình nằm ngay thư mục gốc.
+NGUON = os.path.normpath(os.path.join(GOC, "..", "PLC"))
 DEM = os.path.join(GOC, "tools", ".cache_nguon")
 
 
@@ -44,6 +46,16 @@ def cac_pdf():
     for thu_muc, _, tep in os.walk(NGUON):
         for t in sorted(tep):
             if t.lower().endswith((".pdf", ".txt")):
+                ra.append(os.path.join(thu_muc, t))
+    return sorted(ra)
+
+
+def cac_chm():
+    """File .chm KHÔNG trích được bằng pdftotext — liệt kê để biết mà mở tay."""
+    ra = []
+    for thu_muc, _, tep in os.walk(NGUON):
+        for t in sorted(tep):
+            if t.lower().endswith(".chm"):
                 ra.append(os.path.join(thu_muc, t))
     return sorted(ra)
 

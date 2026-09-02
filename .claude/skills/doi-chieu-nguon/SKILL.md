@@ -107,15 +107,20 @@ kiểm lại, và để biết chương nào **chưa** được đối chiếu.
 | `06_Electric_Circuits` — Kuphaldt | Điện DC/AC/số | 3, 8, 9 |
 | `07_Networks_Whitepapers` | EtherCAT/TSN, kiến trúc Ethernet | 40 |
 | `08_Open_Specs` | ⭐⭐ **Modbus · IO-Link · PLCopen Motion** (đặc tả gốc) | 37, 39, 12 |
+| ⭐ `Manual/` — Inovance | ⭐⭐ **H5U · H3U · AutoShop** (bản tiếng Anh) | ⭐ **Phụ lục A1, A2** |
+| ⭐ `en/` — InoProShop | ⭐⭐ Nền **CODESYS**: persistent, motion, EtherCAT | ⭐ **Phụ lục A1, A2** · 37, 40 |
+| Thư mục gốc `PLC/` | Petruzella · Rabiee · ⭐ **Hanssen (IEC 61131-3 dùng CoDeSys)** | 13–21, 30 |
 
 ### ⚠ Chỗ bộ nguồn KHÔNG phủ
 
 ⭐ **Biết nguồn thiếu ở đâu quan trọng ngang biết nó có gì.**
 
+> ⚠⚠ **Bài học đợt 1: tôi từng kết luận "không có tài liệu CODESYS/Inovance" — SAI**, vì chỉ quét
+> `reference/` mà bỏ qua thư mục cha. ⭐ **Kết luận "không có nguồn" phải kiểm kỹ như kết luận "có
+> nguồn"** — chạy `--liet-ke` trước khi khai là thiếu.
+
 | Không có | Hệ quả |
 |---|---|
-| ⚠ **CODESYS** — không có tài liệu | Khẳng định về CODESYS phải tra ngoài, ghi rõ ngày |
-| ⚠ **Inovance** — không có tài liệu | Như trên; ⭐ hoặc hạ giọng thành "tuỳ dòng" |
 | ⚠ **Bản gốc tiêu chuẩn ISO/IEC** | Chỉ có tài liệu diễn giải của hãng — ⚠⚠ **không được dẫn số điều khoản** |
 | Thị trường thiết bị hiện hành | Câu hỏi "hãng nào phổ biến" phải tra ngoài |
 

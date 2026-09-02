@@ -60,7 +60,7 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 | | Siemens | Mitsubishi | Inovance | ⭐ CODESYS | Rockwell |
 |---|---|---|---|---|---|
 | **Cách chính** | ⭐ Tag có kiểu | ⭐ **Thiết bị** (device) | Thiết bị hoặc tag tuỳ dòng | ⭐ **Biến khai báo** | ⭐⭐ **Tag, không có địa chỉ vật lý** |
-| Ngõ vào | `%I0.0` · tag | `X0` | `X0` hoặc `%IX0.0` | `%IX0.0` | Tag gán qua cấu hình |
+| Ngõ vào | `%I0.0` · tag | `X0` | ⚠ `X0` (**bát phân**) hoặc `%IX0.0` | `%IX0.0` | Tag gán qua cấu hình |
 | Ngõ ra | `%Q0.0` · tag | `Y0` | `Y0` hoặc `%QX0.0` | `%QX0.0` | Tag |
 | Bit nội | `%M0.0` · tag | `M0` | `M0` | Biến `BOOL` | Tag `BOOL` |
 | Thanh ghi | `%MW0` · DB | `D0` | `D0` | Biến `INT`/`WORD` | Tag |
@@ -77,6 +77,16 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 > ⚠ **Hệ quả khi chuyển chương trình:** mã dựa vào việc *"D100 tới D149 nằm liền nhau"* — một cách
 > viết rất phổ biến ở hệ kiểu thiết bị — ⭐ **không chuyển được trực tiếp** sang hệ tag thuần
 > (Chương 56).
+
+> ⚠⚠ **Bẫy riêng của hệ kiểu thiết bị: địa chỉ I/O đánh số BÁT PHÂN.**
+>
+> Trên Inovance H5U, ngõ vào là `X0`–`X1777` với **1024 điểm** — con số đó chỉ đúng nếu đếm bát phân.
+> Nghĩa là ⭐ **`X8` và `X9` KHÔNG tồn tại**: sau `X7` là `X10`.
+>
+> ⚠ Người quen hệ thập phân rất dễ đếm nhầm khi lập bảng I/O — và lỗi đó chỉ lộ ra lúc đấu dây.
+> Mitsubishi dùng cùng quy ước này; ⭐ đây là một trong những chỗ hai hệ giống nhau nhất.
+>
+> *(Đối chiếu: H5U&Easy Series PLC Instruction Guide, mục Soft Elements.)*
 
 > ⭐ **Lời khuyên áp dụng cho MỌI hệ:** dùng **tên**, không dùng địa chỉ trực tiếp — kể cả trên hệ cho
 > phép. `DI_BoardStn1` đọc được; `X12` thì không (Chương 24, Phụ lục B.10).
@@ -170,7 +180,7 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 
 | | Siemens | Mitsubishi | Inovance | ⭐ CODESYS | Rockwell |
 |---|---|---|---|---|---|
-| **Cách khai báo** | Đánh dấu retentive cho vùng M / DB | ⭐ **Dải thiết bị được cấu hình là latched** | Dải thiết bị latched | ⭐ `VAR RETAIN` · `VAR PERSISTENT` | ⭐ Thuộc tính của tag |
+| **Cách khai báo** | Đánh dấu retentive cho vùng M / DB | ⭐ **Dải thiết bị được cấu hình là latched** | ⭐ **Tuỳ dòng** — xem bảng riêng bên dưới | ⭐ `VAR RETAIN` · `VAR PERSISTENT` | ⭐ Thuộc tính của tag |
 | **Cần pin hay không** | Tuỳ dòng | ⚠ **Dòng cũ thường cần pin** | Tuỳ dòng | Tuỳ phần cứng | Tuỳ dòng |
 | ⚠ **Sống sót qua nạp chương trình?** | ⚠⚠ **PHẢI KIỂM** | ⚠⚠ **PHẢI KIỂM** | ⚠⚠ **PHẢI KIỂM** | ⚠ `RETAIN` vs `PERSISTENT` khác nhau ở chính điểm này | ⚠⚠ **PHẢI KIỂM** |
 
@@ -184,6 +194,41 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 > phần cứng".
 >
 > Xem Chương 12 và Chương 53 mục 53.5.
+
+> ⭐⭐ **Inovance: hai dòng, hai cơ chế hoàn toàn khác nhau — và cả hai đều có bẫy riêng.**
+>
+> | Dòng | Cơ chế giữ dữ liệu | ⚠ Bẫy |
+> |---|---|---|
+> | ⭐ **H5U / AutoShop** (kiểu thiết bị) | Theo **dải số hiệu thiết bị** | ⚠⚠ **1000 phần tử ĐẦU của mọi loại đều MẤT khi mất điện** |
+> | ⭐ **AM400/AM600, AC700/AC800 / InoProShop** (nền CODESYS) | Biến `PERSISTENT` khai trong bảng riêng | ⚠⚠ **Đổi TÊN biến làm mất giá trị** |
+>
+> **Quy luật của dòng H5U — dễ nhớ và dễ sai:**
+>
+> ```text
+> M0-M999    mat        M1000-M7999    giu
+> S0-S999    mat        S1000-S4095    giu
+> D0-D999    mat        D1000-D7999    giu
+> R0-R999    mat        R1000-R32767   giu
+> ```
+>
+> ⚠⚠ **Đặt bộ đếm bảo trì ở `D500` thì nó về 0 mỗi lần mất điện; đặt ở `D1500` thì nó sống.**
+> Hai địa chỉ trông giống hệt nhau trong chương trình — ⭐ **khác biệt nằm hoàn toàn ở con số**.
+>
+> **Bẫy của dòng InoProShop — không ai đoán ra được:**
+>
+> | Bạn đổi gì | Giá trị persistent |
+> |---|---|
+> | ⚠⚠ **Tên biến** | **MẤT — về giá trị khởi tạo** |
+> | ⚠ **Tên kiểu dữ liệu** | **MẤT** |
+> | Địa chỉ, giá trị khởi tạo, chú thích, thuộc tính | ⭐ Giữ |
+> | Thành viên của struct | Thành viên **không đổi** thì giữ; thành viên **đổi** thì mất |
+>
+> ⭐ Nghĩa là một lần "dọn dẹp cho gọn tên biến" có thể xoá sạch số liệu tích luỹ nhiều năm — đúng
+> loại thay đổi mà Chương 53 gọi là "cách làm xấu nhưng chạy đúng, để đợt sau".
+>
+> *(Đối chiếu: H5U&Easy Series PLC Instruction Guide, mục Soft Elements; InoProShop User Manual,
+> mục Persistent Rules. ⚠ Áp dụng từ một phiên bản firmware nhất định trở đi — kiểm phiên bản của
+> bạn.)*
 
 > ⭐⭐ **Trên CODESYS, `RETAIN` và `PERSISTENT` là hai thứ khác nhau — và khác đúng ở chỗ nguy hiểm
 > nhất:**

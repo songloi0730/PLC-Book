@@ -54,6 +54,36 @@ chiếu, và dễ sai nhất), cộng chương an toàn lớn nhất.
 
 ---
 
+## Đợt 2 — 2026-09-02 (sau khi mở rộng bộ nguồn)
+
+Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 10 | — | *"Bộ tài liệu không có CODESYS và Inovance"* | ⚠ | **SAI — đã đính chính.** `PLC/en/` và `PLC/Manual/` có đủ |
+| 11 | A1.2 | Inovance dùng mô hình thiết bị `X`/`Y`/`M`/`D` giống Mitsubishi | ✅➕ | H5U Instruction Guide — đúng, và ⭐ **bổ sung**: `X`/`Y` đánh số **bát phân** (`X0`–`X1777` = 1024 điểm, không có `X8`/`X9`) |
+| 12 | A1.6 | Inovance giữ dữ liệu bằng "dải thiết bị latched" | ✅➕ | H5U Instruction Guide — đúng, và ⭐ **bổ sung quy luật cụ thể**: 1000 phần tử đầu của **mọi** loại (`M`,`S`,`B`,`D`,`R`,`W`) đều mất khi mất điện |
+| 13 | A1.6 | Inovance "tuỳ dòng" (viết mơ hồ) | ➕ | InoProShop User Manual — ⭐ **cụ thể hoá**: AutoShop dùng dải thiết bị; InoProShop nền CODESYS dùng biến `PERSISTENT` |
+| 14 | A1.6 | *(chưa có trong sách)* | ➕ | InoProShop *Persistent Rules* — ⚠⚠ **bẫy mới: đổi TÊN biến persistent làm MẤT giá trị**; đổi địa chỉ/chú thích/kiểu thì giữ. **Đã bổ sung** |
+| 15 | A1.6 | CODESYS `RETAIN` vs `PERSISTENT` (đợt 1 tra web) | ✅ | Đã có nguồn nội bộ xác nhận cơ chế persistent trên nền CODESYS của Inovance |
+
+### Kết quả đợt 2
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **6** |
+| ✅ Xác nhận đúng | 3 |
+| ⚠ Phát hiện sai, đã sửa | 1 *(chính kết luận của đợt 1)* |
+| ➕ Bổ sung chi tiết còn thiếu | 4 |
+
+> ⭐⭐ **Phát hiện giá trị nhất của đợt 2 là mục 14 — một cái bẫy sách hoàn toàn chưa nhắc.**
+>
+> Trên nền CODESYS của Inovance, **đổi tên một biến persistent làm mất giá trị của nó**. Nghĩa là một
+> lần "dọn dẹp cho gọn tên biến" xoá sạch bộ đếm tích luỹ nhiều năm. ⭐ Không ai đoán ra được điều đó
+> — chỉ tra tài liệu mới biết.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -78,10 +108,16 @@ kiểm**, không phải "không có lỗi".
 ⭐ **Biết nguồn thiếu ở đâu quan trọng ngang biết nó có gì.** Khẳng định thuộc các mảng dưới đây
 **không được xác nhận bằng bộ tài liệu nội bộ** — phải tra ngoài và ghi ngày.
 
+> ⚠⚠ **ĐÍNH CHÍNH (đợt 2, 2026-09-02).** Đợt 1 kết luận "không có tài liệu CODESYS và Inovance".
+> ⭐ **Kết luận đó SAI** — tôi chỉ quét `PLC/reference/` mà bỏ qua thư mục cha `PLC/`, nơi có:
+> `en/` (tài liệu InoProShop nền CODESYS) và `Manual/` (H5U, H3U, AutoShop — bản tiếng Anh và
+> tiếng Trung), cộng sách Hanssen về IEC 61131-3 dùng CoDeSys, Petruzella, Rabiee.
+>
+> ⭐ **Bài học về quy trình:** kết luận "không có nguồn" phải được kiểm kỹ như kết luận "có nguồn".
+> Công cụ `tra_nguon.py` đã được sửa để quét **toàn bộ** cây `PLC/` (112 tài liệu thay vì 44).
+
 | Mảng | Hệ quả với sách |
 |---|---|
-| ⚠ **CODESYS** — không có tài liệu | Mọi khẳng định về CODESYS trong Phụ lục A phải tra ngoài (xem mục 6 ở trên) |
-| ⚠ **Inovance** — không có tài liệu | ⭐ Sách hiện đã viết thận trọng ("tuỳ dòng") — **giữ nguyên cách đó** cho tới khi có tài liệu |
 | ⚠⚠ **Bản gốc tiêu chuẩn ISO/IEC** | Chỉ có tài liệu diễn giải của hãng → ⚠ **không được dẫn số điều khoản** ở bất kỳ chương nào |
 | Thị trường thiết bị hiện hành | Hai giả định của máy mẫu (đầu đọc mã 2D Ethernet · bộ điều khiển nhiệt rời RS-485) vẫn **chưa xác minh** — Phụ lục J §J.9 |
 | ⚠ IO-Link System Description | ⭐ **File PDF trong bộ không trích được text** — nếu cần đối chiếu Ch.12 phải mở tay |
