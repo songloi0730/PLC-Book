@@ -109,7 +109,7 @@ N.5  Sai lầm thường gặp
 
 ### Khung cố định — chương "chẩn đoán/an toàn" (Phần VII)
 
-```
+```text
 N.1  Nguyên tắc (vì sao làm theo thứ tự này)
 N.2  Quy trình từng bước
 N.3  Bảng triệu chứng → nguyên nhân khả dĩ → phép kiểm xác nhận
@@ -118,6 +118,7 @@ N.5  Khi nào dừng lại và gọi người khác
 ```
 
 ### Cảnh báo trong bài
+
 - `> ⚠ **NGUY HIỂM**` — sai là hỏng thiết bị / điện giật / máy chạy bất ngờ / thương tích
 - `> ⚡ **LƯU Ý**` — sai là không chạy được hoặc không đạt chuẩn, nhưng không gây nguy hiểm
 - `> 💡 **MẸO**` — kinh nghiệm thực tế
