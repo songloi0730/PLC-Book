@@ -331,6 +331,10 @@ phút kẹp nhả — **đúng lúc người đã tin máy đã dừng hẳn và
 
 Nếu chọn "giữ", phải giữ bằng cơ cấu **không phụ thuộc năng lượng**.
 
+⭐ Với khí nén, cơ cấu đó là **van một chiều điều khiển** hoặc **khoá cần**, lắp **sát cửa xy-lanh**
+(Chương 6, mục 6.3). ⚠ Van hai cuộn hay van 5/3 vị trí giữa đóng **không phải** cơ cấu giữ tải —
+chúng chỉ giữ vị trí con trượt trong van.
+
 ### 🔍 BẪY 3 — Giá trị thay thế "hợp lý" thay vì an toàn
 
 Cảm biến analog ngoài dải, chương trình lấy **giá trị đo được lần cuối** làm giá trị thay thế. Máy

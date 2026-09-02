@@ -111,6 +111,47 @@ Van khí ký hiệu theo dạng **số cửa / số vị trí**:
 Với DP-01: van chặn dùng **một cuộn lò xo về vị trí chặn nâng** (mất điện thì chặn lên, board không
 đi qua). Van kẹp dùng **hai cuộn** (mất điện thì giữ kẹp, board không trôi).
 
+### ⚠⚠ Mất ĐIỆN và mất KHÍ là hai chuyện khác nhau
+
+Bảng trên trả lời câu *"mất điện thì về đâu"*. ⭐ **Nó KHÔNG trả lời câu "mất khí thì về đâu"** — và
+người mới rất dễ gộp hai câu đó làm một.
+
+| Mất cái gì | Van hai cuộn làm gì | ⭐ Xy-lanh làm gì |
+|---|---|---|
+| **Mất điện** (còn khí) | Giữ nguyên vị trí van | ⭐ Giữ nguyên — vẫn còn áp đẩy |
+| ⚠⚠ **Mất khí** | Giữ nguyên vị trí van | ⚠ **MẤT LỰC HOÀN TOÀN** — vị trí do ngoại lực quyết định |
+
+> ⚠⚠ **NGUY HIỂM — van giữ vị trí KHÔNG phải cơ cấu giữ tải.**
+>
+> Van hai cuộn (và cả van 5/3 vị trí giữa đóng) chỉ giữ **vị trí của con trượt trong van**. Nó không
+> giữ được tải, vì hai lý do vật lý:
+>
+> | Lý do | Hệ quả |
+> |---|---|
+> | ⭐ **Khí nén được** | Tải nặng nén khối khí trong xy-lanh → cơ cấu **trôi dần** |
+> | ⭐ **Mọi con trượt đều rò** | Khí thoát dần qua khe con trượt → cơ cấu **tụt từ từ** |
+>
+> ⚠ Với cơ cấu mà **trọng lực làm nó đi xuống**, hai lý do trên nghĩa là: mất khí thì tải **tụt** —
+> chậm hoặc nhanh, nhưng nó tụt.
+>
+> ⭐⭐ **Muốn giữ tải thật thì phải có cơ cấu riêng**, lắp **sát cửa xy-lanh**:
+>
+> | Cách | Nguyên lý |
+> |---|---|
+> | ⭐ **Van một chiều điều khiển** *(pilot-operated check valve)* — thường dùng theo cặp | Nhốt khí lại trong xy-lanh; chỉ mở khi có tín hiệu khí điều khiển |
+> | ⭐ **Khoá cần cơ khí** *(rod lock)* | Kẹp cơ khí giữ cần xy-lanh |
+>
+> ⚠ Lắp xa cửa xy-lanh thì đoạn ống giữa van và xy-lanh vẫn xả — và cơ cấu vẫn tụt đúng bằng thể tích
+> đoạn ống đó.
+>
+> ⭐ **Đây là quy tắc song song với trục servo có tải treo** (Chương 37, Bẫy 6): ở đó mất mô-men là
+> rơi nên cần **phanh cơ khí**; ở đây mất khí là tụt nên cần **van giữ tải hoặc khoá cần**. Cùng một
+> bài học ở hai công nghệ.
+>
+> *(ISO 4414 — *Pneumatic fluid power: General rules and safety requirements for systems and their
+> components* — nêu yêu cầu về giữ tải trong hệ khí nén. ⚠ Sách này **không dẫn số điều khoản**; khi
+> thiết kế phải đọc **bản gốc tiêu chuẩn** và tài liệu nhà sản xuất.)*
+
 > 🔍 **BẪY — van hai cuộn khi cả hai cuộn cùng có điện**
 > Van hai cuộn không có lò xo, nên nếu chương trình lỡ cấp điện **cả hai cuộn cùng lúc**, hành vi
 > **không xác định** — tuỳ van, có thể kẹt giữa, có thể theo cuộn nào có điện trước.
@@ -380,6 +421,7 @@ người thực hiện quy trình **tin rằng mình đang an toàn**.
 | 8 | Đệm giác hút là **cao su tiêu tán tĩnh điện** | Có (Chương 7) |
 | 9 | Van cô lập **khoá được · có cửa xả · với tới được** | Đủ ba |
 | 10 | Bộ lọc có **xả nước** và có trong lịch bảo trì | Có, có người chịu trách nhiệm |
+| ⚠⚠ **11** | Cơ cấu nào **trọng lực làm đi xuống** thì có **van giữ tải hoặc khoá cần**, lắp sát cửa xy-lanh | ⭐ Đã kiểm bằng **thực nghiệm ngắt khí** khi cơ cấu đang mang tải |
 
 ---
 
@@ -400,6 +442,9 @@ người thực hiện quy trình **tin rằng mình đang an toàn**.
 
 Câu 5, 8 và 10 là ba câu phân loại. Câu 5 là nhầm lẫn nguy hiểm nhất về khí nén; câu 8 là kiến thức
 làm bạn chẩn đoán được một nhóm sự cố mà người khác đoán mò; câu 10 là câu về an toàn.
+
+⚠⚠ **11.** Van hai cuộn giữ nguyên vị trí khi **mất điện**. Nó có giữ được tải khi **mất khí**
+không? Vì sao? Nêu hai cơ cấu giữ tải thật và vì sao phải lắp **sát cửa xy-lanh**.
 
 ---
 

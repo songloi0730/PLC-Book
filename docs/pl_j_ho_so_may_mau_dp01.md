@@ -282,7 +282,7 @@ cùng một máy chạy nhiều mã hàng trong một ca.
 | **SF3** | Kẹp tay khi bàn nâng kẹp hoạt động | Cửa bảo vệ có khoá tại cả hai trạm | Khoá kiểu giữ tới khi an toàn |
 | **SF4** | Với tay vào qua cửa chuyền vào/ra | Rèm quang tại hai cửa chuyền | ⚠ Cần cân nhắc muting để board đi qua mà không dừng máy (Ch.47) |
 | **SF5** | Máy khởi động bất ngờ sau khi khôi phục nguồn | ⭐ **Yêu cầu Reset có chủ ý**; không tự vào Running | Ch.48 |
-| ⭐ **SF6** | Mất khí nén khi board đang bị kẹp | Trạng thái an toàn cho van kẹp: ⭐ **GIỮ kẹp**, không nhả | ⭐ Quyết định thiết kế **có lý do** (Ch.48) |
+| ⭐ **SF6** | Mất khí nén khi board đang bị kẹp | Trạng thái an toàn cho van kẹp: ⭐ **GIỮ kẹp**, không nhả — ⚠ **phải giữ bằng van một chiều điều khiển hoặc khoá cần**, không phải bằng van hai cuộn | ⭐ Quyết định thiết kế **có lý do** (Ch.48); cơ chế ở Ch.6 mục 6.3 |
 | **SF7** | Đầu tra keo nóng gây bỏng | Che chắn cơ khí + cảnh báo; ngắt gia nhiệt khi mở cửa | Ch.47 |
 
 > ⭐⭐ **SF6 đáng dừng lại suy nghĩ.** "Trạng thái an toàn" thường được hiểu là "về vị trí nghỉ" —
