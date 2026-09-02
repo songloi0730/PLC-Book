@@ -276,7 +276,7 @@ ngày:
 
 ---
 
-## 49.8 ⭐ Bảy sai lầm gây lỗi "ngẫu nhiên"
+## 49.8 ⭐ Tám sai lầm gây lỗi "ngẫu nhiên"
 
 Gom lại đây vì đây là mục bạn sẽ quay lại khi chẩn đoán (Chương 51).
 
@@ -289,8 +289,9 @@ Gom lại đây vì đây là mục bạn sẽ quay lại khi chẩn đoán (Ch�
 | 5 | ⭐ **Nguồn 24 V thiếu công suất** | Lỗi khi **nhiều cơ cấu cùng tác động**; trông giống lỗi phần mềm (Chương 8, mục 8.7) |
 | 6 | ⭐ **Cáp thường trong xích động** | Mất tín hiệu **ngẫu nhiên**, thường ở một tư thế nhất định |
 | 7 | **Đầu cốt lỏng** | Nóng dần, sụt áp, và **nặng dần theo thời gian** (Chương 3, mục 3.2) |
+| 8 | ⚠⚠ **OSSD đấu vào ngõ vào thường** | Bit nhấp nháy do **xung kiểm tra** của thiết bị an toàn (Chương 47, mục 47.7) |
 
-> ⭐⭐ **Điểm chung của cả bảy: chúng không gây lỗi ngay và không gây lỗi đều.**
+> ⭐⭐ **Điểm chung của cả tám: chúng không gây lỗi ngay và không gây lỗi đều.**
 >
 > Máy chạy được lúc nghiệm thu. Lỗi xuất hiện sau vài tuần, vài tháng, hoặc chỉ khi có điều kiện nhất
 > định. Và vì không tái hiện được, người ta đi đổi thứ dễ đổi — cảm biến, module, chương trình.
@@ -450,7 +451,7 @@ tĩnh vẫn tốt.
 9. ⭐ Tính số lần uốn mỗi năm của cáp trong xích gantry DP-01 với 300 board/giờ, 2 ca × 8 giờ, 300
    ngày. Con số đó nói lên điều gì về cách bạn coi sợi cáp?
 10. Vì sao số dây phải có ở **cả hai đầu** và khớp với **tên tag** trong chương trình?
-11. Nêu bảy sai lầm lắp đặt gây lỗi "ngẫu nhiên". Điểm chung của chúng là gì?
+11. Nêu tám sai lầm lắp đặt gây lỗi "ngẫu nhiên". Điểm chung của chúng là gì?
 12. ⭐⭐ Khi gặp lỗi chập chờn không tái hiện được, nên nghi vào đâu trước? Vì sao quy tắc này tiết
     kiệm nhiều thời gian nhất?
 

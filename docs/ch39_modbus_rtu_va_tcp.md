@@ -119,7 +119,9 @@ Nên: tài liệu ghi **40001** → địa chỉ thật trong khung tin là **0*
 ```
 
 > ⭐ **Đây chính là ba lần thử ở mục 39.1:**
-> - Đọc `40001` → PLC gửi địa chỉ 40001, vượt dải → **lỗi địa chỉ**.
+> - Đọc `40001` → PLC gửi địa chỉ 40001 trong khung tin. ⚠ Con số đó **hợp lệ với giao thức** (trường
+>   địa chỉ là 16 bit, `0x0000`–`0xFFFF`), nhưng **thiết bị không có thanh ghi ở đó** → nó trả về
+>   **ngoại lệ 02** (xem mục 39.8).
 > - Đọc `1` → gửi địa chỉ 1, tức thanh ghi **thứ hai** → **giá trị của thứ khác**.
 > - Đọc `0` → đúng.
 
@@ -289,6 +291,7 @@ Thứ tự này tiết kiệm rất nhiều thời gian, vì nó **loại dần*
 
 | Bước | Việc | Nếu hỏng ở đây thì |
 |---|---|---|
+| 0 | ⭐⭐ **Đọc MÃ NGOẠI LỆ thiết bị trả về** trước khi làm gì khác | Nó nói thẳng loại lỗi — xem bảng bên dưới |
 | 1 | ⭐ **Tách PLC ra** — dùng phần mềm **chủ giả lập** trên máy tính nối thẳng vào thiết bị | Vấn đề ở thiết bị hoặc tầng vật lý, **không phải ở PLC** |
 | 2 | Kiểm bốn tham số nối tiếp (Chương 38, mục 38.4) | Lệch tham số |
 | 3 | ⚠ Thử **đảo hai dây A/B** (Chương 38, mục 38.12) | Quy ước A/B khác nhau |
@@ -307,6 +310,57 @@ Thứ tự này tiết kiệm rất nhiều thời gian, vì nó **loại dần*
 
 > 💡 **Bắt khung tin thật** bằng phần mềm giám sát cổng cho bạn thấy **chính xác** cái gì được gửi và
 > nhận. Với ba tầng quy ước địa chỉ có thể lệch nhau (mục 39.4), đây là cách duy nhất chắc chắn.
+
+---
+
+### ⭐⭐ Đọc mã ngoại lệ — thiết bị đang nói gì với bạn
+
+Khi thiết bị từ chối một yêu cầu, nó **không im lặng**: nó trả về khung tin lỗi có một **mã ngoại
+lệ** *(exception code)*. ⭐ Đọc được mã đó rút ngắn việc gỡ lỗi từ hàng giờ xuống vài phút.
+
+| Mã | Tên | Nghĩa thực dụng | ⭐ Nhìn vào đâu |
+|---|---|---|---|
+| **01** | Illegal Function | ⭐ **Thiết bị không hỗ trợ mã hàm này** — hoặc nó đang ở trạng thái không xử lý được | Sai mã hàm cho vùng dữ liệu (mục 39.3) |
+| ⭐⭐ **02** | Illegal Data Address | ⭐ **Địa chỉ không có trên thiết bị này** — xem bên dưới, đây là mã hay gặp nhất | ⭐ Bẫy địa chỉ (mục 39.4) |
+| **03** | Illegal Data Value | ⚠ **Cấu trúc yêu cầu sai** — ví dụ số lượng vượt giới hạn | ⚠ **KHÔNG phải** "giá trị ngoài dải quy trình" — xem cảnh báo dưới |
+| **04** | Server Device Failure | Lỗi không phục hồi được **bên trong thiết bị** | Vấn đề của thiết bị, không phải của bạn |
+| **05** | Acknowledge | Đã nhận, **đang xử lý, sẽ lâu** | Đừng coi là lỗi; đừng thử lại ngay |
+| **06** | Server Device Busy | Thiết bị **đang bận** | Thử lại sau, có giãn cách |
+
+> ⭐⭐ **Mã 02 không chỉ nói về địa chỉ bắt đầu — nó nói về TỔ HỢP địa chỉ bắt đầu và số lượng.**
+>
+> Ví dụ của chính đặc tả: một thiết bị có **100 thanh ghi**, đánh địa chỉ khung tin **0 đến 99**.
+>
+> ```text
+> Bắt đầu 96, đọc 4 thanh ghi  →  chạm 96, 97, 98, 99   →  ✓ OK
+> Bắt đầu 96, đọc 5 thanh ghi  →  chạm 96 … 100         →  ✗ ngoại lệ 02
+> ```
+>
+> ⭐ Nghĩa là **địa chỉ bắt đầu đúng vẫn có thể lỗi** nếu bạn đọc quá dài. Khi gặp mã 02 mà chắc chắn
+> địa chỉ đúng, ⭐ **hãy giảm số lượng thanh ghi đọc một lần**.
+
+> ⚠⚠ **Mã 03 bị hiểu nhầm nhiều nhất, và đặc tả nói rõ ngược lại điều người ta hay nghĩ.**
+>
+> Nó **KHÔNG** có nghĩa *"giá trị bạn ghi nằm ngoài dải hợp lý của quy trình"*. ⭐ **Modbus không biết
+> gì về ý nghĩa của giá trị** — ghi 9999 vào thanh ghi nhiệt độ đặt là hoàn toàn hợp lệ với giao
+> thức.
+>
+> Mã 03 nói **cấu trúc yêu cầu sai** — hay gặp nhất là **số lượng vượt giới hạn**:
+>
+> | Mã hàm | Giới hạn một lần |
+> |---|---|
+> | ⭐ **0x03 / 0x04** — đọc thanh ghi | ⭐⭐ **tối đa 125 thanh ghi** |
+> | 0x10 — ghi nhiều thanh ghi | tối đa 123 thanh ghi |
+> | 0x01 / 0x02 — đọc bit | tối đa 2000 bit |
+>
+> ⚠ **Đây là lỗi rất hay gặp khi đọc một khối dữ liệu lớn**: viết lệnh đọc 200 thanh ghi, thiết bị
+> trả mã 03, và thông báo trên HMI chỉ ghi "lỗi Modbus". ⭐ **Chia thành nhiều lệnh đọc.**
+>
+> ⭐⭐ **Hệ quả thiết kế:** việc bảo vệ máy khỏi giá trị công thức vô lý là việc của **chương trình
+> PLC**, không phải của giao thức (Chương 32, Phụ lục C.5).
+
+*(Đối chiếu: MODBUS Application Protocol Specification V1.1b3 — mục MODBUS Exception Codes và các
+mục mô tả mã hàm 0x01–0x10.)*
 
 ---
 
@@ -497,6 +551,10 @@ tìm nhầm hướng.
 | Bốn vùng dữ liệu | Coil · Discrete Input · ⭐ **Holding Register** · Input Register |
 | Mã hàm dùng nhiều nhất | ⭐ `03` đọc · `06` ghi một · `16` ghi nhiều |
 | ⭐⭐ Tài liệu ghi `40001` nghĩa là | **Địa chỉ khung tin `0`** |
+| ⭐⭐ Thiết bị báo lỗi thì làm gì trước | **Đọc mã ngoại lệ** — 01 sai mã hàm · **02 sai địa chỉ** · 03 cấu trúc/số lượng sai |
+| ⭐ Mã 02 nói về cái gì | ⚠ **Tổ hợp địa chỉ bắt đầu VÀ số lượng** — đúng địa chỉ vẫn lỗi nếu đọc quá dài |
+| ⚠ Mã 03 KHÔNG nghĩa là gì | **Không** phải "giá trị ngoài dải quy trình" — Modbus không biết ý nghĩa giá trị |
+| ⭐ Giới hạn một lần đọc | **125 thanh ghi** (ghi nhiều: 123 · đọc bit: 2000) |
 | Ba tầng quy ước có thể lệch | Tài liệu thiết bị · **khối lệnh PLC** · khung tin thật |
 | Đọc được một con số nghĩa là | ⚠ **Chưa chắc đúng thanh ghi** — phải xác nhận bằng giá trị đã biết |
 | ⭐⭐ Ghép 32 bit | Modbus **không quy định thứ tự word** — bốn khả năng, phải **thử** |

@@ -84,6 +84,35 @@ Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
 
 ---
 
+## Đợt 3 — 2026-09-02 · Ch.39 (Modbus) và Ch.47 (an toàn)
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 16 | Ch.39 §39.4 | *"Đọc `40001` → vượt dải → lỗi địa chỉ"* | ⚠ | Đặc tả Modbus — **thiếu chính xác**: `40001` (`0x9C41`) **hợp lệ** với trường địa chỉ 16 bit; nó lỗi vì **thiết bị không có thanh ghi ở đó** → ngoại lệ 02. **Đã sửa** |
+| 17 | Ch.39 | *(chưa có trong sách)* — **bảng mã ngoại lệ** | ➕ | ⚠⚠ Chương có hẳn mục "Quy trình gỡ lỗi Modbus" nhưng **không có mã ngoại lệ nào** → người đọc không giải mã được lỗi thiết bị trả về. **Đã bổ sung bảng 6 mã + nối vào quy trình gỡ lỗi** |
+| 18 | Ch.39 | *(chưa có)* — mã 02 nói về **tổ hợp** địa chỉ + số lượng | ➕ | Đặc tả nêu ví dụ: thiết bị 100 thanh ghi, bắt đầu 96 đọc 4 → OK; đọc 5 → **ngoại lệ 02**. ⭐ Đúng địa chỉ vẫn lỗi nếu đọc quá dài. **Đã bổ sung** |
+| 19 | Ch.39 | *(chưa có)* — **giới hạn 125 thanh ghi/lần đọc** | ➕ | Đặc tả FC 0x03: `Quantity of Registers` = 1–125 (`0x7D`). **Đã bổ sung** kèm 123 (ghi) và 2000 (bit) |
+| 20 | Ch.39 | *(chưa có)* — mã 03 **KHÔNG** nghĩa là "giá trị ngoài dải quy trình" | ➕ | ⭐ Đặc tả nói rõ ngược lại điều người ta hay nghĩ: Modbus **không biết ý nghĩa** của giá trị. **Đã bổ sung cảnh báo** |
+| 21 | Toàn sách | **OSSD** — ngõ ra thiết bị an toàn | ➕ | ⚠⚠ **Từ "OSSD" KHÔNG xuất hiện ở bất kỳ đâu** trong 58 chương + 12 phụ lục. Bổ sung mục 47.7: định nghĩa, xung kiểm tra, và ⭐ **bẫy đấu OSSD vào ngõ vào thường → bit nhấp nháy**. Nối vào Ch.49 (danh sách lỗi chập chờn, nay 8 mục) và Phụ lục E.10 |
+
+### Kết quả đợt 3
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **6** |
+| ⚠ Phát hiện sai, đã sửa | 1 |
+| ➕ Bổ sung nội dung còn thiếu | 5 |
+
+> ⭐⭐ **Đợt 3 khác hai đợt trước: phần lớn phát hiện là NỘI DUNG THIẾU, không phải nội dung sai.**
+>
+> Ch.39 dạy gỡ lỗi Modbus mà không dạy đọc mã lỗi. Cả cuốn sách nhắc "lỗi chập chờn" hàng chục lần
+> mà chưa từng nhắc **OSSD** — một trong những nguyên nhân chập chờn kinh điển nhất.
+>
+> ⭐ **Bài học về quy trình:** đối chiếu nguồn không chỉ để kiểm cái đã viết, mà để phát hiện ⭐ **cái
+> đáng lẽ phải viết mà không ai nghĩ ra** — vì người viết không biết cái mình không biết.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -91,9 +120,9 @@ kiểm**, không phải "không có lỗi".
 
 | Nhóm | Chương | Nguồn sẵn có | Ưu tiên |
 |---|---|---|---|
-| ⚠⚠ **An toàn** | 3, 6, 48, Phụ lục D | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
+| ⚠⚠ **An toàn** | 3, 6, 48, Phụ lục D *(47 đã đối chiếu đợt 1 và 3)* | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
 | Đo lường & analog | 31, 33, 34, 35 | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
-| Truyền thông | 38, 39, 40, 42 | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
+| Truyền thông | 38, 40, 42 *(39 đã đối chiếu đợt 3)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
 | Chuyển động | 37 | PLCopen Motion, Mitsubishi Positioning | ⭐ Cao |
 | Nền tảng PLC | 7, 8, 9, 11, 12, 14, 18, 19 | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | 15–17, 20, 21 | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |

@@ -245,6 +245,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | 6 | Đầu cốt lỏng — ⚠ **nặng dần theo thời gian** | 3, 49 mục 49.6 |
 | 7 | Nhiệt độ tủ — lỗi xuất hiện vào buổi chiều hoặc mùa nóng | 8 |
 | 8 | ⭐ Logic phụ thuộc **thời gian quét** — đặc biệt sau khi đổi PLC | 7, 56 mục 56.4 |
+| 9 | ⚠⚠ **Ngõ ra thiết bị an toàn (OSSD) đấu vào ngõ vào PLC THƯỜNG** — bit nhấp nháy rất nhanh do **xung kiểm tra**, đo bằng đồng hồ không thấy | ⭐ **47 mục 47.7** |
 
 > ⭐ **Cách tìm điều kiện chung:** ghi lại **thời điểm** mỗi lần lỗi, rồi đối chiếu với: ca làm việc,
 > mã hàng đang chạy, thiết bị công suất nào đang chạy, nhiệt độ, và ai đang vận hành.

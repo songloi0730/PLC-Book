@@ -275,6 +275,51 @@ Tiêu chuẩn về trang bị điện của máy phân biệt ba loại dừng:
 | **Điều khiển hai tay** | Phải giữ **cả hai** nút mới chạy | Máy ép, thao tác lặp có nguy cơ kẹp tay | Bảo vệ **người vận hành đó**, không bảo vệ người khác đứng gần |
 | **Giám sát tốc độ không** *(zero-speed)* | Chỉ cho mở cửa khi đã dừng hẳn | Trục quán tính lớn | Đi cùng khoá giữ tới khi an toàn |
 
+### ⭐⭐ OSSD — ngõ ra của thiết bị an toàn, và cái bẫy nó tạo ra
+
+Ngõ ra của rèm quang, máy quét an toàn và rơ-le an toàn có tên riêng: **OSSD** *(Output Signal
+Switching Device)* — phần của thiết bị bảo vệ **nối tới hệ điều khiển của máy**.
+
+Nó **không phải một ngõ ra số bình thường**, và khác biệt đó gây ra một trong những lỗi chập chờn
+khó hiểu nhất.
+
+| Đặc điểm OSSD | Vì sao có |
+|---|---|
+| ⭐ **Hai kênh** | Dự phòng (mục 47.5) |
+| ⭐⭐ **Tự phát xung kiểm tra rất ngắn** trên ngõ ra khi đang ở trạng thái BẬT | ⭐ Để tự phát hiện **chập sang nguồn 24 V** và **chập chéo giữa hai kênh** |
+| Tự tắt khi phát hiện lỗi | Hỏng theo hướng an toàn |
+
+> ⭐⭐ **Vì sao xung kiểm tra quan trọng:** không có nó, một sợi dây OSSD bị chập vào 24 V sẽ làm ngõ
+> ra **luôn báo an toàn** — kể cả khi rèm quang đã bị cắt. Xung kiểm tra là thứ biến "một sợi dây
+> chập" từ lỗi vô hình thành lỗi phát hiện được.
+>
+> ⭐ Khả năng phát hiện chập chéo và chập xuống đất chính là một trong những điều kiện để đạt được
+> hạng mục và mức hiệu năng cao (mục 47.5).
+
+> ⚠⚠ **BẪY: đấu OSSD vào ngõ vào số THƯỜNG của PLC.**
+>
+> Ngõ vào thường có thể **nhìn thấy xung kiểm tra** và hiểu nhầm là tín hiệu tắt. Triệu chứng:
+>
+> | Bạn thấy | Thực tế |
+> |---|---|
+> | ⭐ Bit nhấp nháy rất nhanh, không theo quy luật | Đó là **xung kiểm tra**, không phải rèm quang bị cắt |
+> | Lỗi không tái hiện được, biến mất khi đo bằng đồng hồ | Đồng hồ quá chậm để thấy xung |
+> | Báo động "rèm quang" xuất hiện ngẫu nhiên | Logic thường đọc trúng lúc có xung |
+>
+> ⭐ **Cách xử lý đúng:** đấu OSSD vào **ngõ vào của thiết bị an toàn** (rơ-le an toàn hoặc PLC an
+> toàn) — nơi được thiết kế để **bỏ qua xung kiểm tra**. Nếu chỉ cần cho PLC thường **biết** trạng
+> thái để hiển thị, hãy lấy tín hiệu đó từ **tiếp điểm phụ của rơ-le an toàn**, không lấy thẳng từ
+> OSSD.
+>
+> ⚠ Một số module ngõ vào có chế độ lọc dài hơn giúp che triệu chứng — ⭐ **nhưng che triệu chứng
+> không phải cách đấu đúng**, và nó vẫn không cho bạn mức an toàn nào.
+>
+> ⭐ Độ rộng và chu kỳ xung kiểm tra **khác nhau theo thiết bị** — tra datasheet của chính thiết bị
+> bạn dùng.
+
+*(Đối chiếu: SICK — Guidelines for Safe Machinery, mục thuật ngữ ESPE/OSSD; SICK Safety Guide,
+định nghĩa OSSD. Yêu cầu phát hiện chập chéo: DGUV/IFA Report 2/2017e.)*
+
 ### Muting — và vì sao nó nguy hiểm
 
 **Muting** là tạm thời vô hiệu hoá một thiết bị bảo vệ để sản phẩm đi qua mà máy không dừng. DP-01 cần
