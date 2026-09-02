@@ -286,6 +286,35 @@ cả cuốn sách**. Cách này có tỉ lệ phát hiện cao hơn ở giai đo
 
 ---
 
+## Đợt 11 — 2026-09-02 · Quét đợt hai + hiệu chỉnh chính mình
+
+| # | Khái niệm / khẳng định | KQ | Nguồn & xử lý |
+|---|---|:--:|---|
+| 50 | ⚠ **Dòng rò "vài mA"** *(chính bổ sung của đợt 10)* | ⚠ | Petruzella nói rõ hơn: **1–2 mA**, và ⭐ **"thường KHÔNG đủ làm thiết bị tác động nhầm"** — chỉ đáng lo với tải rất nhạy. ⭐ Tôi đã **nói quá mức rủi ro**. **Đã hiệu chỉnh** thêm đoạn cân bằng |
+| 51 | ⭐ **Mức cách ly điện của module** | ➕ | Petruzella: thường ghi 1500 hoặc 2500 V AC. **Đã bổ sung** vào Ch.9, nối tới Ch.49 (chênh điện thế đất) |
+| 52 | ⚠⚠ **Lắp module đứng giảm nhiệt độ cho phép** | ➕ | Siemens S7-1200 Manual, mục CAUTION: lắp đứng **giảm 10 °C** nhiệt độ môi trường tối đa; bảng thông số cho −20…60 °C ngang so với −20…50 °C đứng. **Đã bổ sung mục 8.7b** |
+| 53 | ⭐ **Cấp bảo vệ: module vs vỏ tủ** | ➕ | Siemens: module đạt cấp chống vật rắn lớn, **không chống nước**. ⭐ Cấp bảo vệ thật của hệ là của **vỏ tủ** → ⚠ mở cửa tủ cho mát là bỏ luôn lớp bảo vệ. **Đã bổ sung** |
+| 54 | ⭐ Rung mạnh → lắp vít thay ray DIN | ➕ | Siemens: khuyến nghị lắp tấm đế khi rung mạnh hoặc lắp đứng. **Đã bổ sung** |
+
+### Kết quả đợt 11
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **5** |
+| ⚠ **Tự hiệu chỉnh nội dung mình vừa thêm** | 1 |
+| ➕ Bổ sung nội dung còn thiếu | 4 |
+
+> ⭐⭐ **Mục 50 đáng ghi lại như một bài học về quy trình.**
+>
+> Bổ sung của đợt 10 về dòng rò **đúng về cơ chế nhưng nói quá về mức rủi ro** — vì tôi viết nó từ
+> hiểu biết chung trước khi đọc kỹ nguồn. Đọc tiếp cùng tài liệu thì thấy hãng nói rõ *"thường không
+> đủ để kích nhầm"*.
+>
+> ⚠ **Nội dung mới thêm cũng phải được đối chiếu như nội dung cũ** — không được miễn trừ chỉ vì nó
+> vừa được viết ra từ một nguồn.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

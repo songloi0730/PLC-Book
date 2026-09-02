@@ -246,6 +246,49 @@ Cộng lại rồi **nhân hệ số dự phòng 1,3–1,5**. Ba lý do cụ th�
 
 ---
 
+## 8.7b ⚠ Nhiệt và cách lắp — con số datasheet đổi theo cách bạn gắn module
+
+Mục 8.7 tính dòng. Nhưng ⭐ **mọi con số định mức trong datasheet đều gắn với một điều kiện nhiệt**,
+và điều kiện đó dễ bị vi phạm hơn người ta tưởng.
+
+### ⚠⚠ Lắp đứng làm giảm nhiệt độ cho phép
+
+Module PLC toả nhiệt và dựa vào **đối lưu tự nhiên** — không khí nóng đi lên qua các khe tản nhiệt.
+⭐ Xoay module 90° là phá hướng đối lưu đó.
+
+| Cách lắp | Nhiệt độ môi trường cho phép |
+|---|---|
+| ⭐ **Nằm ngang** (hướng thiết kế) | Định mức đầy đủ |
+| ⚠ **Lắp đứng** | ⭐⭐ **Giảm khoảng 10 °C** so với định mức |
+
+> ⚠⚠ **Con số 10 °C đó thường là khác biệt giữa "chạy được" và "không".**
+>
+> Một module ghi 0–55 °C lắp ngang chỉ còn khoảng 0–45 °C khi lắp đứng. ⭐ Trong một tủ điện mùa hè
+> không có quạt, nhiệt độ bên trong vượt 45 °C là chuyện bình thường.
+>
+> ⚠ Triệu chứng: máy chạy tốt suốt mùa mát, ⭐ **bắt đầu lỗi chập chờn vào buổi chiều mùa nóng**, rồi
+> tự khỏi vào sáng hôm sau. Người ta đi tìm trong chương trình (Phụ lục E.10, nghi phạm số 7).
+
+### ⭐ Ba điều kiện lắp đặt khác cũng có trong datasheet
+
+| Điều kiện | Vì sao |
+|---|---|
+| ⭐ **Khoảng trống trên/dưới và phía trước module** | Đối lưu cần đường đi; nhà sản xuất ghi số milimét cụ thể |
+| ⚠ **Môi trường rung mạnh** | ⭐ Lắp bằng **vít vào tấm đế** chắc hơn lắp trên **ray DIN** |
+| ⭐ **Cấp bảo vệ của chính module** | ⚠ Module PLC thường chỉ đạt cấp **chống vật rắn lớn, không chống nước** |
+
+> ⭐⭐ **Hàng cuối là điều dễ hiểu nhầm: bản thân module PLC gần như không chống được bụi mịn và
+> nước.** Cái chống là **vỏ tủ**. ⚠ Nghĩa là cấp bảo vệ ghi trên tủ mới là cấp bảo vệ thật của hệ —
+> và mở cửa tủ để "cho mát" là **bỏ luôn lớp bảo vệ đó**, đồng thời đưa bụi dẫn điện vào trong.
+>
+> ⭐ Muốn mát thì dùng **quạt có lọc** hoặc **điều hoà tủ**, không phải mở cửa.
+
+*(Đối chiếu: Siemens S7-1200 System Manual — cảnh báo lắp đứng giảm nhiệt độ môi trường cho phép,
+yêu cầu khoảng trống lắp đặt, khuyến nghị lắp vít khi rung mạnh, và cấp bảo vệ của module. ⚠ Con số
+cụ thể **khác nhau theo dòng** — tra datasheet của dòng bạn dùng.)*
+
+---
+
 ## 8.8 Công tắc RUN / STOP / REM và ý nghĩa an toàn
 
 Nhiều CPU có công tắc chọn chế độ, thường ba vị trí:
@@ -391,6 +434,8 @@ do người có thẩm quyền thiết kế.
 | Quyết định | Nguyên tắc | Sửa sau thì tốn gì |
 |---|---|---|
 | Chọn CPU | Dự phòng **20 %** I/O và bộ nhớ; tính cả giai đoạn sau | Đổi CPU giữa dự án |
+| ⚠⚠ **Hướng lắp module** | ⭐ Nằm ngang theo thiết kế; **lắp đứng giảm ~10 °C** định mức | ⚠ Lỗi chập chờn mùa nóng, rất khó truy |
+| ⭐ **Làm mát tủ** | Quạt có lọc hoặc điều hoà tủ — ⚠ **không mở cửa tủ** | Bụi dẫn điện vào tủ, mất cấp bảo vệ |
 | Dáng hình | Nguyên khối cho máy nhỏ · module hoá khi cần linh hoạt | Đổi toàn bộ tủ |
 | Vị trí khe trống | Chừa ở **cuối** rack | Dịch địa chỉ, phải kiểm I/O lại |
 | Địa chỉ trong chương trình | **Tag có tên**, không dùng địa chỉ tuyệt đối | Sửa khắp chương trình |
@@ -420,6 +465,10 @@ do người có thẩm quyền thiết kế.
 
 > Câu 3, 8 và 10 là ba câu phân loại. Câu 10 là tinh thần của cả chương: **quyết định phần cứng đến
 > trước, và sửa nó đắt hơn sửa code rất nhiều.**
+
+⚠⚠ **Bổ sung.** Một máy chạy tốt suốt mùa mát, rồi lỗi chập chờn vào buổi chiều mùa nóng và tự khỏi
+sáng hôm sau. Nêu hai nguyên nhân liên quan tới **cách lắp module**, và vì sao mở cửa tủ cho mát là
+cách xử lý **sai**.
 
 ---
 

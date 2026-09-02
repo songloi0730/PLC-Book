@@ -172,7 +172,13 @@ logic** — nên người ta đi tìm nhầm chỗ.
 ### Một — dòng rò của ngõ ra bán dẫn
 
 ⭐ **Ngõ ra bán dẫn không có trạng thái "tắt hoàn toàn".** Nó chỉ có **trở kháng cao** và **trở kháng
-thấp**. Ở trạng thái "tắt", vẫn có một **dòng rò** nhỏ — thường **vài mili-ampe** — chảy qua tải.
+thấp**. Ở trạng thái "tắt", vẫn có một **dòng rò** nhỏ — ⭐ **thường khoảng 1–2 mA** — chảy qua tải.
+
+> ⚡ **Cần nói đúng mức: dòng rò đó thường KHÔNG đủ làm thiết bị tác động nhầm.** Với phần lớn tải
+> công nghiệp, nó vô hại và bạn sẽ không bao giờ gặp vấn đề.
+>
+> ⭐ Nó chỉ đáng lo với **tải rất nhạy, dòng giữ rất nhỏ** — và khi đó thì nó gây ra một lỗi cực kỳ
+> khó hiểu. Bảng dưới là để bạn **nhận ra khi gặp**, không phải để lo lắng ở mọi ngõ ra.
 
 | Tải | Dòng rò vài mA làm gì |
 |---|---|
@@ -195,6 +201,15 @@ thấp**. Ở trạng thái "tắt", vẫn có một **dòng rò** nhỏ — th�
 >
 > ⭐ **Ngõ ra rơ-le là loại duy nhất thật sự "hở mạch" khi tắt** — đó là một lý do chọn nó ngoài lý do
 > điện áp và loại tải ở mục 9.3.
+
+### ⚡ Nhân tiện — một thông số nữa trong cùng datasheet
+
+**Mức cách ly điện** *(electrical isolation)* của module — thường ghi dạng một điện áp chịu đựng
+(ví dụ 1500 V AC hoặc 2500 V AC). ⭐ Nó cho biết module chịu được chênh áp bao nhiêu giữa mạch hiện
+trường và mạch logic bên trong trước khi cách ly bị đánh thủng.
+
+⭐ Đây là con số cần nhìn khi mạch hiện trường có **điện áp cao** hoặc khi hai phần mạch **ở điện thế
+đất khác nhau** (Chương 49 mục 49.4).
 
 ### Hai — thời gian đáp ứng và bộ lọc của ngõ vào
 
