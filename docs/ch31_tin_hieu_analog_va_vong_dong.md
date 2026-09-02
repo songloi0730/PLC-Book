@@ -75,6 +75,36 @@ Hai hàng cuối là hai bài toán mà cả chương này và Chương 32 xoay 
 | **Giá trị vượt dải đo** | Dòng hơi ngoài 4–20 mA nhưng còn trong vùng hợp lệ mở rộng |
 | Đo bình thường | 4–20 mA |
 
+### ⭐⭐ Bảng dải NAMUR — và một phân biệt rất dễ bỏ sót
+
+Khuyến nghị **NAMUR** gán ý nghĩa chẩn đoán cụ thể cho từng dải dòng nằm ngoài 4–20 mA:
+
+| Dòng đo được | Ý nghĩa |
+|---|---|
+| ⚠ **≤ 3,6 mA** | **Cảm biến hỏng** — hướng thấp |
+| ⚠ 3,6 – 3,8 mA | Cảm biến **tự phát hiện** mình hỏng, chủ động báo ra |
+| ⭐⭐ **3,8 – 4,0 mA** | ⭐ **ĐO DƯỚI DẢI — không phải lỗi!** Đại lượng thật đang thấp hơn điểm đầu thang |
+| ⭐ 20,5 – 21,0 mA | ⭐ **Đo trên dải** — cũng không phải lỗi |
+| ⚠ **≥ 21,0 mA** | **Cảm biến hỏng** — hướng cao |
+
+⭐ Cảm biến tuân NAMUR khi hoạt động bình thường sẽ **giữ dòng trong khoảng 3,8 mA đến dưới 21 mA**.
+
+> ⭐⭐ **Hàng đáng chú ý nhất là 3,8–4,0 mA, và nó là chỗ rất nhiều chương trình làm sai.**
+>
+> Cách viết ẩu là: *"dưới 4 mA thì báo lỗi cảm biến"*. ⚠ Với cách đó, mỗi lần đại lượng thật **hạ
+> xuống hơi dưới điểm đầu thang** — chuyện hoàn toàn bình thường — máy sẽ **báo lỗi cảm biến giả**.
+>
+> | Cách xử lý | Kết quả |
+> |---|---|
+> | ⚠ Ngưỡng lỗi đặt ở **4,0 mA** | ⭐ **Báo động giả** khi đo dưới dải; người vận hành học cách bỏ qua báo động (Ch.43) |
+> | ⭐ Ngưỡng lỗi đặt ở **3,6 mA**, vùng 3,8–4,0 coi là **đo dưới dải** | Phân biệt được **"cảm biến hỏng"** với **"giá trị thấp"** |
+>
+> ⭐ Đây là ví dụ điển hình cho luận điểm ở mục tiếp theo: **chuẩn cho bạn khả năng phân biệt, chương
+> trình phải thật sự phân biệt** — và phân biệt **đúng ngưỡng**.
+
+*(Đối chiếu: Kuphaldt — Lessons in Industrial Instrumentation, mục NAMUR signal levels. ⚠ Ngưỡng
+chính xác và cách cảm biến báo lỗi **khác nhau theo thiết bị** — tra datasheet.)*
+
 > ⭐ **Đây là chẩn đoán MIỄN PHÍ.** Không thêm dây, không thêm thiết bị, không thêm chi phí — chỉ nhờ
 > chọn đúng chuẩn tín hiệu. Ít quyết định kỹ thuật nào có tỉ lệ lợi ích trên chi phí tốt như vậy.
 
@@ -410,6 +440,8 @@ tin lệnh (mục 31.4, Chương 48).
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⭐⭐ Ngưỡng báo lỗi cảm biến đặt ở đâu | **3,6 mA** — ⚠ **KHÔNG phải 4,0 mA** |
+| ⭐ Vùng 3,8–4,0 mA nghĩa là gì | **Đo dưới dải — không phải lỗi.** Đặt ngưỡng ở 4,0 sẽ sinh **báo động giả** |
 | Vì sao đầu dải là **4 mA** | ⭐ Tách **vùng lỗi** (0 mA) khỏi **vùng đo** — và cảm biến 2 dây cần dòng tối thiểu để sống |
 | Tên gọi của ý tưởng đó | **Điểm không sống** *(live zero)* |
 | Chẩn đoán miễn phí gồm | Đứt dây · mất nguồn cảm biến · lỗi nội bộ · vượt dải |
@@ -449,6 +481,9 @@ tin lệnh (mục 31.4, Chương 48).
 
 > Câu 1, 4, 8, 10 và 12 là năm câu phân loại. Câu 12 là tinh thần của cả chương: **chọn chuẩn tín
 > hiệu không phải bài toán đi dây — mà là bài toán "đọc sai mà không biết thì mất gì".**
+
+⭐⭐ **Bổ sung.** Theo bảng dải NAMUR, dòng đo được **3,9 mA** nghĩa là gì? Nếu chương trình đặt
+ngưỡng báo lỗi cảm biến ở **4,0 mA** thì chuyện gì xảy ra, và vì sao hậu quả của nó nối tới Chương 43?
 
 ---
 

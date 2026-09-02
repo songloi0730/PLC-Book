@@ -163,6 +163,24 @@ Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
 
 ---
 
+## Đợt 6 — 2026-09-02 · Ch.31 (analog 4–20 mA)
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 32 | Ch.31 §31.3 | Ngưỡng phát hiện đứt dây ~**3,6 mA**, lỗi cao ~**21 mA** | ✅➕ | Kuphaldt, mục NAMUR signal levels — đúng, nhưng ⭐ **bảng NAMUR chi tiết hơn nhiều**. **Đã bổ sung bảng 5 dải** |
+| 33 | Ch.31 | *(chưa có)* — ⭐⭐ phân biệt **"đo dưới dải" (3,8–4,0 mA)** với **"cảm biến hỏng" (<3,6 mA)** | ➕ | ⚠ Sách gộp làm một. Hệ quả: đặt ngưỡng lỗi ở 4,0 mA sinh **báo động giả** mỗi khi đại lượng thật xuống hơi dưới điểm đầu thang. **Đã bổ sung** + nối tới Ch.43 (báo động giả làm người vận hành học cách bỏ qua) |
+| 34 | Ch.31 | Cảm biến tuân NAMUR giữ dòng trong dải nào khi bình thường | ➕ | **3,8 mA đến dưới 21 mA**. **Đã bổ sung** |
+
+### Kết quả đợt 6
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **3** |
+| ✅ Xác nhận đúng | 1 |
+| ➕ Bổ sung nội dung còn thiếu | 3 |
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -171,7 +189,7 @@ kiểm**, không phải "không có lỗi".
 | Nhóm | Chương | Nguồn sẵn có | Ưu tiên |
 |---|---|---|---|
 | ⚠⚠ **An toàn** | **Phụ lục D** *(3, 6, 47, 48 đã đối chiếu đợt 1, 3, 4)* | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
-| Đo lường & analog | 31, 34, 35 *(33 đã đối chiếu đợt 5)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
+| Đo lường & analog | 34, 35 *(31, 33 đã đối chiếu đợt 5–6)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
 | Truyền thông | 38, 40, 42 *(39 đã đối chiếu đợt 3)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
 | Chuyển động | 37 | PLCopen Motion, Mitsubishi Positioning | ⭐ Cao |
 | Nền tảng PLC | 7, 8, 9, 11, 12, 14, 18, 19 | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
