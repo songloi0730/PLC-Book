@@ -85,7 +85,7 @@ Bản thảo **không nhắc tên bất kỳ sách/dự án nào khác** của t
 
 ### Khung cố định — chương "khái niệm/lệnh"
 
-```
+```text
 N.1  Mở chương — chọn MỘT trong ba cách:
        (a) một sự cố thật mà chương sẽ giải thích  ← dùng khi có kiểu hỏng kinh điển
        (b) câu hỏi thực tế mà chương trả lời
@@ -99,7 +99,7 @@ N.6  Tự kiểm — "làm được gì thì coi là hiểu chương này"
 
 ### Khung cố định — chương "thiết kế" (Phần IV)
 
-```
+```text
 N.1  Vấn đề mà cách làm ngây thơ không giải được
 N.2  Phương pháp — trình bày từng bước
 N.3  Áp lên DP-01 — làm đầy đủ từ đầu tới cuối
