@@ -183,9 +183,9 @@ Ch.57 ráp toàn bộ; Phụ lục J là bản hồ sơ hoàn chỉnh để dùn
 |---|---|---|---|
 | A1 | ⭐ **Đối chiếu khái niệm 5 hệ** | Siemens · Mitsubishi · Inovance · CODESYS · Rockwell. Bảng đối chiếu: tag/ký hiệu, khối dữ liệu vs UDT vs struct, thể hiện FB, task & chu kỳ, ảnh ngõ vào, vùng nhớ giữ, cách đánh địa chỉ module. **CODESYS làm cột neo** — khi 4 hệ khác nhau thì cột này cho biết chuẩn IEC nói gì | ⬜ |
 | A2 | ⭐ **Đối chiếu lệnh + cùng một đoạn logic viết 5 lần** | TON, CTU, MOVE, quy đổi thang, bắt cạnh, khối PID, khối chuyển động; cùng một đoạn trình tự của DP-01 hiện thực trên cả 5 hệ; ⚠ những chỗ **không tương đương 1-1** — nêu rõ, không giả vờ. Phụ lục **mô tả khác biệt, không xếp hạng hãng** | ⬜ |
-| B | Tra nhanh lệnh IEC 61131-3 | Một trang in được: lệnh cơ bản theo nhóm, ký hiệu LD & ST tương ứng, kiểu dữ liệu, thứ tự ưu tiên toán tử | ⬜ |
+| B | [Tra nhanh lệnh IEC 61131-3](pl_b_tra_nhanh_lenh_iec.md) | Một trang in được: lệnh cơ bản theo nhóm, ký hiệu LD & ST tương ứng, kiểu dữ liệu, thứ tự ưu tiên toán tử | ✅ |
 | C | [Biểu mẫu dùng ngay](pl_c_bieu_mau_dung_ngay.md) | Bảng I/O · bảng tag · đặc tả trình tự · bảng chuyển trạng thái · bảng công thức · biên bản kiểm I/O 1-1 · danh sách ca kiểm thử · biên bản nghiệm thu · phiếu bàn giao (dẫn Ch.23, 25, 29, 50, 52) | ✅ |
-| D | Checklist đấu dây & bật nguồn lần đầu | Trước khi cấp điện lần đầu: thứ tự kiểm, cái gì đo trước, cái gì tuyệt đối không bỏ qua | ⬜ ⚠ |
+| D | [Checklist đấu dây & bật nguồn lần đầu](pl_d_checklist_dau_day_va_bat_nguon.md) | Trước khi cấp điện lần đầu: thứ tự kiểm, cái gì đo trước, cái gì tuyệt đối không bỏ qua | ✅ ⚠ |
 | E | [⭐ Chỉ mục tra theo triệu chứng](pl_e_tra_theo_trieu_chung.md) | "Máy không khởi động được", "một ngõ vào không lên", "giá trị analog nhảy loạn", "mạng rớt ngẫu nhiên", "chu trình dừng giữa chừng", "board hỏng mà máy báo OK", "chuyền tắc"… → dẫn đúng mục chương. Hiện thực hoá Đường tra cứu 3 đã hứa ở Ch.1 | ✅ |
 | F | [Thuật ngữ Việt–Anh](pl_f_thuat_ngu_viet_anh.md) | Bảng đối chiếu đầy đủ, sắp theo chủ đề và theo vần. Bổ trợ cho bất biến B11 — tài liệu hãng và diễn đàn đều tiếng Anh, người đọc phải tra được đúng lúc cần tra nhất | ✅ |
 | G | Phần mềm miễn phí & mô phỏng | Bảng: công cụ → làm được gì → **giới hạn bản quyền thật** → phù hợp giai đoạn học nào. Kèm ngày kiểm tra và cảnh báo tự xác nhận lại (bất biến B10) | ⬜ |
