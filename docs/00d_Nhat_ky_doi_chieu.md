@@ -113,6 +113,38 @@ Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
 
 ---
 
+## Đợt 4 — 2026-09-02 · Ch.6 (khí nén) và Ch.3 (điện) — hai chương mang cờ ⚠
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 22 | Ch.6 §6.3 | Bảng "mất điện thì về đâu" cho van 5/2 | ✅➕ | Đúng, nhưng ⚠⚠ **chương KHÔNG trả lời "mất KHÍ thì về đâu"**. Van hai cuộn giữ vị trí **van**, không giữ **tải** — khí nén được và mọi con trượt đều rò. **Đã bổ sung bảng phân biệt + hai cơ cấu giữ tải** |
+| 23 | Ch.6 | Viện dẫn ISO 4414 | ✅ | Thư mục DGUV/IFA — tên và phạm vi đúng: *Pneumatic fluid power — General rules and safety requirements*. ⚠ Chi tiết kỹ thuật giữ tải **không có trong bộ tài liệu** → tra ngoài; ⭐ **không dẫn số điều khoản** |
+| 24 | Ch.48 BẪY 2 · Phụ lục J SF6 | "Giữ kẹp khi mất khí" | ✅➕ | ⭐ Ch.48 **đã có nguyên tắc đúng** ("giữ bằng cơ cấu không phụ thuộc năng lượng") nhưng thiếu tên cơ cấu. **Đã nối ba tài liệu** cho nhất quán |
+| 25 | Ch.3 §3.3 | *"24 V nằm trong dải điện áp cực thấp → an toàn hơn"* | ⚠➕ | ⚠⚠ **Thiếu điều kiện quyết định**: ELV chỉ nói về **mức điện áp**; cái bảo vệ người là **cách ly an toàn** (SELV/PELV). Từ "SELV" **không xuất hiện ở bất kỳ đâu** trong sách. **Đã bổ sung mục mới** |
+| 26 | Ch.3 · Ch.8 | Yêu cầu với bộ nguồn 24 V | ➕ | Siemens S7-1200 System Manual, Wiring guidelines: nguồn cho mạch 24 V/I/O/truyền thông **phải đạt SELV, PELV, Class 2, Limited Voltage hoặc Limited Power** theo EN 61131-2; ⚠ nguồn **không cách ly** làm **điện áp lưới xuất hiện trên dây cảm biến**. **Đã bổ sung cả hai chương** |
+| 27 | Ch.49 §49.4 | Nối đất một điểm duy nhất | ✅ | Siemens S7-1200, Guidelines for grounding — khuyến nghị nối mọi điểm chung về **một điểm duy nhất** rồi nối đất. Khớp với sách |
+| 28 | Ch.3 §3.7 | An toàn điện: dòng giết người · tự kiểm đồng hồ · một tay trong túi · năng lượng tích trữ | ✅ | Không mâu thuẫn với các tài liệu an toàn trong bộ; ⭐ nội dung chắc, giữ nguyên |
+
+### Kết quả đợt 4
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **7** |
+| ✅ Xác nhận đúng | 4 |
+| ⚠ Thiếu điều kiện quan trọng, đã sửa | 1 |
+| ➕ Bổ sung nội dung còn thiếu | 4 |
+
+> ⭐⭐ **Phát hiện nặng nhất từ trước tới nay là mục 25–26.**
+>
+> Sách viết *"24 V nằm trong dải điện áp cực thấp nên an toàn hơn"* — đúng chữ nhưng **thiếu điều
+> kiện quyết định**. Bảo vệ đến từ **cách ly**, không từ con số 24. Một bộ nguồn không cách ly hỏng
+> có thể đưa điện áp lưới lên **dây cảm biến** — thứ mọi người cầm bằng tay trần vì tin "chỉ có 24 V".
+>
+> ⚠ Đây là loại thiếu sót mà bộ kiểm tự động **không thể** bắt: câu văn đúng ngữ pháp, đúng khung,
+> nghe hợp lý, và nguy hiểm.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -120,7 +152,7 @@ kiểm**, không phải "không có lỗi".
 
 | Nhóm | Chương | Nguồn sẵn có | Ưu tiên |
 |---|---|---|---|
-| ⚠⚠ **An toàn** | 3, 6, 48, Phụ lục D *(47 đã đối chiếu đợt 1 và 3)* | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
+| ⚠⚠ **An toàn** | **Phụ lục D** *(3, 6, 47, 48 đã đối chiếu đợt 1, 3, 4)* | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
 | Đo lường & analog | 31, 33, 34, 35 | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
 | Truyền thông | 38, 40, 42 *(39 đã đối chiếu đợt 3)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
 | Chuyển động | 37 | PLCopen Motion, Mitsubishi Positioning | ⭐ Cao |

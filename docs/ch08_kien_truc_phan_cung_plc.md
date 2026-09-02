@@ -219,6 +219,10 @@ Bộ nguồn 24 V phải cấp cho:
 | Rơ-le trung gian, rơ-le an toàn (Chương 47) | |
 | Thiết bị mạng, bộ chuyển mạch | |
 
+> ⚠⚠ **Trước khi tính công suất, kiểm một điều kiện KHÔNG thương lượng được: bộ nguồn phải là loại
+> cách ly an toàn** — đạt **SELV / PELV / Class 2 / Limited Power**. Công suất đủ mà cách ly sai thì
+> ⚠ **điện áp lưới có thể xuất hiện trên dây cảm biến** (Chương 3, mục 3.3).
+
 Cộng lại rồi **nhân hệ số dự phòng 1,3–1,5**. Ba lý do cụ thể, không phải "cho chắc":
 
 - **Dòng khởi động** *(inrush current)* của cuộn van và đèn cao hơn dòng làm việc trong vài mili-giây.

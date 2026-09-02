@@ -105,6 +105,41 @@ Bốn lý do, xếp theo tầm quan trọng:
 > Chạm nhầm hai dây 24 V có thể làm hỏng module PLC, và một chỗ chập 24 V dòng lớn vẫn gây cháy. An
 > toàn cho người và an toàn cho thiết bị là hai chuyện khác nhau.
 
+### ⚠⚠ "24 V" chưa đủ — nguồn phải được CÁCH LY AN TOÀN
+
+Đây là chỗ hiểu nhầm có hậu quả nghiêm trọng nhất trong chương, và nó rất phổ biến.
+
+⭐ **Điện áp thấp KHÔNG tự nó bảo vệ bạn.** Cái bảo vệ bạn là **cách ly** giữa mạch 24 V và điện
+lưới. Một bộ nguồn 24 V không có cách ly an toàn thì khi nó hỏng, ⚠⚠ **điện áp lưới có thể xuất hiện
+ngay trên dây cảm biến** — thứ mà mọi người vẫn cầm bằng tay trần vì "chỉ có 24 V".
+
+| Khái niệm | Nghĩa |
+|---|---|
+| **ELV** — điện áp cực thấp | ⭐ Chỉ nói về **mức điện áp**. ⚠ **Không** hứa hẹn gì về bảo vệ |
+| ⭐⭐ **SELV** *(safety extra-low voltage)* | Điện áp cực thấp **cộng với cách ly an toàn khỏi lưới**, mạch **không nối đất** |
+| ⭐⭐ **PELV** *(protective extra-low voltage)* | Như SELV nhưng mạch **có nối đất** — rất thường gặp trên máy |
+
+> ⚠⚠ **NGUY HIỂM — yêu cầu bắt buộc với nguồn 24 V cấp cho PLC**
+>
+> Nguồn cấp cho mạch 24 V, mạch I/O và mạch truyền thông phải là **nguồn được chứng nhận** đạt
+> **SELV, PELV, Class 2, Limited Voltage hoặc Limited Power** — tuỳ tiêu chuẩn áp dụng.
+>
+> ⚠ Dùng bộ nguồn **không cách ly** hoặc chỉ có **cách ly đơn** để hạ áp từ lưới xuống có thể làm
+> **điện áp nguy hiểm xuất hiện trên những mạch mà mọi người tin là chạm vào được an toàn** — dây
+> cảm biến, cáp truyền thông. Hậu quả có thể là **tử vong**.
+>
+> ⭐ **Cách kiểm thực dụng:** nhìn nhãn bộ nguồn. Nguồn công nghiệp đạt chuẩn ghi rõ **SELV** hoặc
+> **PELV** (hoặc Class 2 / Limited Power). ⚠ Nếu nhãn không ghi gì, **đừng giả định** — tra datasheet.
+>
+> ⚠ Đây cũng là lý do **không lấy bộ nguồn máy tính hay bộ sạc rẻ tiền** làm nguồn 24 V cho máy.
+
+> ⭐ **Ghi nhớ một câu:** *"24 V an toàn"* là phát biểu về **bộ nguồn**, không phải về **con số 24**.
+>
+> Cùng 24 V, từ một nguồn SELV thì chạm được; từ một nguồn không cách ly thì **có thể giết người**.
+
+*(Đối chiếu: Siemens S7-1200 System Manual, mục Wiring guidelines — nêu yêu cầu nguồn SELV/PELV theo
+EN 61131-2 và cảnh báo về nguồn không cách ly. Xem thêm IEC 61140 về bảo vệ chống điện giật.)*
+
 ---
 
 ## 3.4 ⭐ Đồng hồ vạn năng — dùng đúng cách
@@ -401,6 +436,8 @@ cấp điện lại được.
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⚠⚠ **"24 V an toàn"** đúng khi nào | ⭐ Khi nguồn đạt **SELV/PELV** — đó là phát biểu về **bộ nguồn**, không phải về con số 24 |
+| ⚠ Nguồn không cách ly gây gì | **Điện áp lưới xuất hiện trên dây cảm biến** — mạch ai cũng tin là chạm được |
 | Định luật Ohm | `U = I × R` · công suất `P = U × I` |
 | Tiếp xúc kém gây gì | Sụt áp + **nóng** (`P = I²R`), và **nặng dần theo thời gian** |
 | Đo 24 V ở đâu | ⭐ **Tại thiết bị**, không tại bộ nguồn |
@@ -442,6 +479,9 @@ cấp điện lại được.
 
 > Câu 5, 8, 9 và 12 là bốn câu phân loại. Câu 9 là tinh thần của cả chương: **quy ước an toàn trong
 > lập trình PLC bắt nguồn từ vật lý của sợi dây, không từ sở thích của người viết phần mềm.**
+
+⚠⚠ **Bổ sung.** Phân biệt **ELV**, **SELV** và **PELV**. Vì sao câu *"24 V nên an toàn"* chỉ đúng
+một nửa, và điều gì xảy ra nếu bộ nguồn 24 V không có cách ly an toàn?
 
 ---
 
