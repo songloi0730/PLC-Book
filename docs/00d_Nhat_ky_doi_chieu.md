@@ -255,6 +255,37 @@ Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
 
 ---
 
+## Đợt 10 — 2026-09-02 · Quét thiếu khái niệm trên diện rộng
+
+⭐ **Đổi cách làm:** thay vì đối chiếu từng chương, quét xem **khái niệm nào của ngành vắng mặt trong
+cả cuốn sách**. Cách này có tỉ lệ phát hiện cao hơn ở giai đoạn này.
+
+| # | Khái niệm | Có trong sách? | KQ | Nguồn & xử lý |
+|---|---|---|:--:|---|
+| 45 | ⭐⭐ **Dòng rò ngõ ra bán dẫn** | ⚠ **Không, ở bất kỳ đâu** | ➕ | Petruzella: ngõ ra bán dẫn ở trạng thái tắt **vẫn có dòng rò vài mA**. ⚠ Gây lỗi kinh điển "ngõ ra đã tắt mà thiết bị vẫn chạy". **Đã bổ sung mục 9.3b** kèm ba cách xử lý |
+| 46 | ⭐ **Thời gian đáp ứng / bộ lọc ngõ vào** | ⚠ **Không** | ➕ | Petruzella: *input ON/OFF delay*. ⚠ Lọc dài hơn độ rộng xung thì **PLC không bao giờ thấy xung** — mà đèn cảm biến vẫn nháy đúng. **Đã bổ sung** |
+| 47 | ⭐⭐ **Encoder cầu phương A/B/Z** | ⚠ **Không** | ➕ | Hugh Jack: hai kênh lệch pha 90° cho **chiều quay**; kênh Z cho **một xung mỗi vòng**. ⚠ Chương HSC dạy đếm xung mà không dạy đếm chiều. **Đã bổ sung mục 18.5b** |
+| 48 | ⚠⚠ **Chế độ x1 / x2 / x4** | ⚠ **Không** | ➕ | Đặt sai làm **mọi phép quy đổi sai đúng 4 lần** — sai theo **tỉ lệ tròn trịa**, dấu hiệu rất đặc trưng. **Đã bổ sung** kèm phép kiểm một phút (quay đúng một vòng bằng tay) |
+| 49 | Bìa Karnaugh · BCD · FIFO · độ trễ ngắt | ⚠ Không | ❔ | ⭐ **Cân nhắc và quyết định KHÔNG bổ sung**: bìa Karnaugh không phục vụ tư duy trình tự của sách; BCD là di sản; FIFO đã được thay bằng thanh ghi dịch ở Ch.41. Ghi lại để lần sau không phải cân nhắc lại |
+
+### Kết quả đợt 10
+
+| | Số lượng |
+|---|---|
+| Khái niệm đã quét | **8** |
+| ➕ Bổ sung | 4 |
+| ❔ Cân nhắc và quyết định không bổ sung | 4 |
+
+> ⭐⭐ **Bốn bổ sung của đợt này có chung một đặc điểm rất đáng chú ý: cả bốn đều biến một vấn đề
+> PHẦN CỨNG thành triệu chứng trông giống lỗi PHẦN MỀM.**
+>
+> Ngõ ra "đã tắt" mà thiết bị vẫn chạy · cảm biến nháy đúng mà PLC đếm thiếu · quy đổi sai đúng bốn
+> lần. Người lập trình sẽ đi tìm trong chương trình — và không bao giờ tìm thấy.
+>
+> ⭐ Đây chính là loại nội dung mà một cuốn sách PLC **phải** có mà tutorial online gần như luôn thiếu.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -266,7 +297,7 @@ kiểm**, không phải "không có lỗi".
 | Đo lường & analog | 34 *(31, 33, 35 đã đối chiếu đợt 5–7)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
 | Truyền thông | 38, 42 *(39, 40 đã đối chiếu đợt 3, 8)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
-| Nền tảng PLC | 7, 8, 9, 11, 12, 14, 18, 19 | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
+| Nền tảng PLC | 7, 11, 12, 14, 19 *(8, 9, 18 đã đối chiếu đợt 4, 10)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | 15–17, 20, 21 | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 51, 52, 53, 55 | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |

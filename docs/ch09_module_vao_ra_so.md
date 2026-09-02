@@ -164,6 +164,70 @@ Xung này **phá tiếp điểm rơ-le** và **giết transistor**, và nó cũn
 
 ---
 
+## 9.3b ⚠⚠ Hai thông số datasheet quyết định mà không ai đọc
+
+Hai con số sau nằm trong datasheet mọi module I/O, và cả hai đều gây ra loại lỗi **trông như lỗi
+logic** — nên người ta đi tìm nhầm chỗ.
+
+### Một — dòng rò của ngõ ra bán dẫn
+
+⭐ **Ngõ ra bán dẫn không có trạng thái "tắt hoàn toàn".** Nó chỉ có **trở kháng cao** và **trở kháng
+thấp**. Ở trạng thái "tắt", vẫn có một **dòng rò** nhỏ — thường **vài mili-ampe** — chảy qua tải.
+
+| Tải | Dòng rò vài mA làm gì |
+|---|---|
+| Cuộn van công suất lớn | ⭐ Không đủ hút — **không sao** |
+| ⚠ **Rơ-le nhỏ, cuộn nhạy** | ⚠⚠ **Có thể giữ rơ-le hút** hoặc làm nó rung |
+| ⚠ **Đèn LED báo** | ⭐ **Sáng mờ khi đáng lẽ phải tắt** — triệu chứng dễ nhận nhất |
+| ⚠⚠ **Ngõ vào PLC khác** | ⚠ Có thể đọc thành **mức 1** — xem mục dưới |
+
+> ⚠⚠ **Đây là nguyên nhân của một lỗi kinh điển: "ngõ ra đã tắt trong chương trình mà thiết bị vẫn
+> chạy".**
+>
+> Người ta kiểm bit trong PLC — đúng là 0. Kiểm đèn module — tắt. Nhưng thiết bị vẫn hoạt động, hoặc
+> nhấp nháy. ⭐ **Đo điện áp trên tải khi ngõ ra đang tắt** sẽ thấy vẫn còn một điện áp đáng kể.
+>
+> | Cách xử lý | Ghi chú |
+> |---|---|
+> | ⭐ **Chọn tải có dòng giữ lớn hơn dòng rò** | Cách tốt nhất — kiểm cả hai datasheet |
+> | ⭐ **Mắc điện trở xả song song với tải** *(bleeder)* | Dòng rò chảy qua điện trở thay vì qua tải |
+> | Dùng **ngõ ra rơ-le** cho tải nhạy | ⭐ Tiếp điểm cơ khí **không có dòng rò** |
+>
+> ⭐ **Ngõ ra rơ-le là loại duy nhất thật sự "hở mạch" khi tắt** — đó là một lý do chọn nó ngoài lý do
+> điện áp và loại tải ở mục 9.3.
+
+### Hai — thời gian đáp ứng và bộ lọc của ngõ vào
+
+Module ngõ vào có **độ trễ nhận biết** *(input ON/OFF delay)* — thời gian tối đa để mạch nhận ra
+thiết bị hiện trường vừa đổi trạng thái. Nhiều module cho **cấu hình** thời gian lọc này.
+
+| Lọc dài | Lọc ngắn |
+|---|---|
+| ⭐ Chống nhiễu tốt, chống rung tiếp điểm | ⚠ Nhiễu dễ lọt vào thành tín hiệu giả |
+| ⚠⚠ **Bỏ sót xung ngắn** | ⭐ Bắt được xung ngắn |
+
+> ⚠⚠ **Bẫy: cảm biến cho xung rất ngắn mà module lọc dài thì PLC KHÔNG BAO GIỜ THẤY xung đó.**
+>
+> Triệu chứng: đếm thiếu sản phẩm, bỏ sót vật đi nhanh — và ⭐ **đèn trên cảm biến vẫn nháy đúng**,
+> nên người ta nghi chương trình chứ không nghi module.
+>
+> ⭐ **Cách kiểm:** so **độ rộng xung** của cảm biến (tính từ tốc độ băng tải và kích thước vật) với
+> **thời gian lọc** của module. ⚠ Xung ngắn hơn thời gian lọc thì không có cách nào bắt được bằng
+> ngõ vào thường — phải dùng **bộ đếm tốc độ cao** hoặc **ngõ vào ngắt** (Chương 18, 19).
+>
+> ⭐ Ngưỡng dòng của ngõ vào cũng có mục đích tương tự: nó tồn tại để ⭐ **không nhận nhầm nhiễu và
+> dòng rò thành tín hiệu thật**.
+
+> ⭐⭐ **Điểm chung của cả hai thông số: chúng biến một vấn đề PHẦN CỨNG thành một triệu chứng trông
+> giống lỗi PHẦN MỀM.**
+>
+> ⚠ Đây đúng loại lỗi mà Chương 51 và Phụ lục E cảnh báo — và đọc datasheet mất năm phút.
+
+*(Đối chiếu: Petruzella — *Programmable Logic Controllers*, phần mô tả module ngõ ra bán dẫn và các
+thông số module I/O (dòng rò ở trạng thái tắt, nominal current per input, input ON/OFF delay).)*
+
+---
+
 ## 9.4 Cách ly quang và chân chung
 
 ### Cách ly quang
@@ -372,6 +436,9 @@ Hạ lọc chỉ khi đã xử lý xong nhiễu ở tầng đi dây và nối đ
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⚠⚠ Ngõ ra bán dẫn khi TẮT | ⭐ **Vẫn có dòng rò vài mA** — có thể giữ rơ-le nhỏ hút, làm LED sáng mờ |
+| ⭐ Loại ngõ ra duy nhất thật sự hở mạch | **Rơ-le** — tiếp điểm cơ khí không có dòng rò |
+| ⚠ Module lọc ngõ vào quá dài | ⭐ **Bỏ sót xung ngắn** — đèn cảm biến vẫn nháy đúng, PLC không thấy |
 | Cảm biến PNP thì module ngõ vào loại gì | **Sink**, chân chung 0 V |
 | Tải DC đóng cắt liên tục | **Transistor** |
 | Tải AC | **Rơ-le** hoặc **triac** |
@@ -409,6 +476,11 @@ Hạ lọc chỉ khi đã xử lý xong nhiễu ở tầng đi dây và nối đ
 
 > Câu 3, 5 và 10 là ba câu phân loại. Câu 5 là tinh thần của cả chương: **con số làm hỏng thiết bị
 > thường không phải con số in to nhất trong datasheet.**
+
+⚠⚠ **Bổ sung.** Ngõ ra transistor đã tắt trong chương trình, đèn module tắt, nhưng rơ-le nhỏ nối
+vào nó **vẫn hút**. Giải thích nguyên nhân và nêu ba cách xử lý.
+
+⚠ **Bổ sung.** Vì sao một cảm biến "vẫn nháy đèn đúng" mà PLC lại đếm thiếu? Làm sao kiểm?
 
 ---
 

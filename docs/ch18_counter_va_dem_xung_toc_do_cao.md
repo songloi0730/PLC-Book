@@ -271,6 +271,70 @@ thoải mái trong khả năng của bộ đếm phần mềm.
 
 ---
 
+## 18.5b ⭐⭐ Encoder cầu phương — đếm được CHIỀU, và nhân được độ phân giải
+
+Bộ đếm ở các mục trước chỉ đếm **số xung**. Với một trục quay hai chiều, đếm xung thôi là không đủ:
+⚠ trục quay tới rồi quay lui vẫn **cộng dồn**, và con số nói dối.
+
+### Hai kênh, lệch pha nhau
+
+Encoder tương đối có **hai kênh** — thường gọi là **A** và **B** — bố trí **lệch pha 90°**:
+
+```text
+A  ▔▔▁▁▔▔▁▁▔▔▁▁        Quay thuan: A som pha hon B
+B  ▁▔▔▁▁▔▔▁▁▔▔▁
+
+A  ▔▔▁▁▔▔▁▁▔▔▁▁        Quay nghich: B som pha hon A
+B  ▔▁▁▔▔▁▁▔▔▁▁▔
+```
+
+⭐ **Kênh nào "đi trước" cho biết chiều quay.** Bộ đếm dùng thông tin đó để quyết định **cộng hay
+trừ** — nên trục quay tới rồi lui sẽ trở về đúng số cũ.
+
+| Số kênh | Biết được gì |
+|---|---|
+| Một kênh | ⭐ Chỉ **số xung** — ⚠ dùng được khi trục **chỉ quay một chiều** |
+| ⭐ **Hai kênh (A, B)** | Số xung **và chiều** |
+| Ba kênh (thêm **Z**) | ⭐ Thêm **một xung mỗi vòng** — dùng làm mốc, xem dưới |
+
+### ⭐ Kênh Z — mốc một xung mỗi vòng
+
+Kênh **Z** *(index / marker)* phát **đúng một xung cho mỗi vòng quay**. Nó dùng để:
+
+| Việc | Vì sao cần |
+|---|---|
+| ⭐ **Về gốc chính xác** | Công tắc gốc cho vị trí thô; ⭐ **xung Z cho vị trí lặp lại được** (Chương 28, 37) |
+| Phát hiện mất xung | ⚠ Nếu số xung giữa hai lần Z **không đúng như thiết kế** thì đã bỏ sót xung |
+
+⭐ Hàng thứ hai là một phép tự kiểm rất rẻ mà ít ai dùng: encoder 1000 xung/vòng thì giữa hai xung Z
+**phải** đếm được đúng 1000 — lệch nghĩa là có vấn đề.
+
+### ⚠⚠ Nhân độ phân giải — x1, x2, x4
+
+Bộ đếm có thể đếm **một, hai hoặc bốn cạnh** trong mỗi chu kỳ của cặp A/B:
+
+| Chế độ | Đếm cạnh nào | Độ phân giải với encoder 1000 xung/vòng |
+|---|---|---|
+| **x1** | Một cạnh của A | 1 000 đếm/vòng |
+| **x2** | Cả hai cạnh của A | 2 000 đếm/vòng |
+| ⭐ **x4** | Cả hai cạnh của **cả A và B** | ⭐ **4 000 đếm/vòng** |
+
+> ⚠⚠ **Đây là nguồn của một lỗi rất hay gặp: mọi phép quy đổi sai đúng 4 lần.**
+>
+> Bạn tính hệ số quy đổi từ **1000 xung/vòng** ghi trên nhãn encoder, nhưng module đang đặt **x4** —
+> nên mọi khoảng cách, tốc độ, vị trí đều **sai bốn lần**. ⭐ Triệu chứng rất đặc trưng: **con số sai
+> theo một tỉ lệ tròn trịa** (4, hoặc 2), không phải sai lung tung.
+>
+> ⭐ **Cách kiểm nhanh nhất:** quay trục **đúng một vòng bằng tay** và xem bộ đếm tăng bao nhiêu. Con
+> số đó là độ phân giải **thực tế** — dùng nó để quy đổi, đừng dùng con số trên nhãn.
+>
+> ⚡ Đây cũng là ứng dụng thứ hai của kênh Z: quay tới khi thấy xung Z tiếp theo là **đúng một vòng**.
+
+*(Đối chiếu: Hugh Jack — *Automating Manufacturing Systems with PLCs*, mục encoder tương đối và sơ đồ
+cầu phương hai kênh; tài liệu bộ đếm tốc độ cao của các hãng cho chế độ x1/x2/x4.)*
+
+---
+
 ## 18.6 Giữ giá trị qua mất điện
 
 Sản lượng ca là **sự thật đã xảy ra** — mất là mất số liệu thật, không dựng lại được. Theo quy tắc ở
@@ -407,6 +471,10 @@ quãng đã biết, so số xung đếm được với tính toán. Chỉ hai ph
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⭐⭐ Encoder hai kênh A/B cho biết gì | Số xung **và CHIỀU** — trục quay tới rồi lui trả về đúng số cũ |
+| ⭐ Kênh Z dùng làm gì | **Một xung mỗi vòng** — về gốc chính xác, và **tự kiểm bỏ sót xung** |
+| ⚠⚠ x1 / x2 / x4 | ⭐ Đặt sai làm **mọi phép quy đổi sai đúng 4 lần** — sai theo tỉ lệ tròn trịa |
+| ⭐ Cách kiểm độ phân giải thật | **Quay đúng một vòng bằng tay**, xem bộ đếm tăng bao nhiêu |
 | Đếm tổng đã qua | `CTU` |
 | Đếm số đang có trong máy | `CTUD` + **điểm đồng bộ khi máy rỗng** |
 | Con số nào là sản lượng thật | Đếm ở nơi sản phẩm **rời máy đã xong**, tách OK/NG |
@@ -445,6 +513,12 @@ Bốn câu hỏi trước khi đặt một bộ đếm:
 
 > Câu 3, 6 và 10 là ba câu phân loại. Câu 3 là tinh thần của cả chương: **một con số sai hiếm khi
 > sai vì phép đếm — nó sai vì đang đếm nhầm thứ.**
+
+⭐⭐ **Bổ sung.** Vì sao encoder một kênh không dùng được cho trục quay hai chiều? Hai kênh A/B xác
+định chiều bằng cách nào?
+
+⚠⚠ **Bổ sung.** Mọi phép quy đổi vị trí của bạn sai đúng **4 lần**. Nguyên nhân khả dĩ nhất là gì, và
+phép kiểm nào xác nhận trong một phút?
 
 ---
 
