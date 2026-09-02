@@ -5,8 +5,13 @@ kiem_nhat_quan.py — kiểm TRÔI DẠT (drift) giữa các tài liệu của b
 kiem_tra_chuong.py kiểm TỪNG chương có đúng khung không.
 File này kiểm các chương có KHỚP NHAU không — thứ mà kiểm từng file không thấy.
 
-Ý tưởng lấy từ khái niệm "documentation drift" của prodigy: khi một tài liệu đổi,
-các tài liệu trỏ tới nó vẫn giữ nội dung cũ và không ai biết.
+Bắt khái niệm "documentation drift": khi một tài liệu đổi, các tài liệu trỏ tới nó
+vẫn giữ nội dung cũ và không ai biết.
+
+(Ghi chú nguồn: bản đầu của file này ghi ý tưởng lấy từ prodigy. Đã tra tài liệu
+prodigy 2026-09-02 — nó KHÔNG có tính năng phát hiện drift, chỉ có orchestration
+chung. Sửa lại cho đúng: công cụ này viết riêng cho bộ sách, không phỏng theo
+công cụ nào.)
 
 Sáu nhóm kiểm:
   XREF  dẫn chiếu tới mục / chương / phụ lục KHÔNG tồn tại  → LỖI
