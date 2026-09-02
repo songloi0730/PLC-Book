@@ -145,6 +145,24 @@ Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
 
 ---
 
+## Đợt 5 — 2026-09-02 · Ch.33 (đo lường)
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 29 | Ch.33 §33.4 | Pt100 = 100 Ω ở 0 °C, tăng ~**0,385 Ω/°C** | ✅➕ | Kuphaldt — alpha 0,00385 là giá trị "châu Âu", **phổ biến nhất kể cả ở Mỹ**. ⭐ **Bổ sung**: còn giá trị 0,00392 ("Mỹ"); trộn nhầm cảm biến/module gây **sai số có hệ thống, đồ thị vẫn đẹp** |
+| 30 | Ch.33 | *(chưa có trong sách)* — **sai số tự gia nhiệt RTD** | ➕ | Kuphaldt, mục Self-heating error: dòng đo sinh nhiệt `P = I²R` trên chính phần tử → phép đo **luôn cao hơn**. ⭐ Là sai số **một chiều**, lấy trung bình không khử được; nặng nhất trong **không khí tĩnh**. **Đã bổ sung**, kèm cách module giải quyết (cấp dòng theo xung) |
+| 31 | Ch.33 §33.4 | RTD 3 dây là mặc định của ngành; giả định ba sợi bằng nhau | ✅ | Kuphaldt, mục Proper RTD sensor connections — không mâu thuẫn |
+
+### Kết quả đợt 5
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **3** |
+| ✅ Xác nhận đúng | 2 |
+| ➕ Bổ sung nội dung còn thiếu | 2 |
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -153,7 +171,7 @@ kiểm**, không phải "không có lỗi".
 | Nhóm | Chương | Nguồn sẵn có | Ưu tiên |
 |---|---|---|---|
 | ⚠⚠ **An toàn** | **Phụ lục D** *(3, 6, 47, 48 đã đối chiếu đợt 1, 3, 4)* | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
-| Đo lường & analog | 31, 33, 34, 35 | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
+| Đo lường & analog | 31, 34, 35 *(33 đã đối chiếu đợt 5)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
 | Truyền thông | 38, 40, 42 *(39 đã đối chiếu đợt 3)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
 | Chuyển động | 37 | PLCopen Motion, Mitsubishi Positioning | ⭐ Cao |
 | Nền tảng PLC | 7, 8, 9, 11, 12, 14, 18, 19 | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |

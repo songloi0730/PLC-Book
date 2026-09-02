@@ -137,6 +137,49 @@ Một đôi dây đồng dài 20 m, tiết diện nhỏ, có điện trở kho�
 > ⚠ Giả định của cách 3 dây là **ba sợi có điện trở bằng nhau** — đúng khi chúng cùng loại, cùng
 > chiều dài, đi cùng một cáp. Nối thêm một đoạn dây khác loại vào **một** sợi sẽ phá giả định đó.
 
+### ⚠ Hai chi tiết nữa về RTD, cả hai đều gây sai lệch có hệ thống
+
+**Một — Pt100 có HAI hệ số, và trộn nhầm thì lệch cả thang.**
+
+| Hệ số alpha | Quen gọi | Ghi chú |
+|---|---|---|
+| ⭐ **0,00385** | "châu Âu" | ⭐ **Phổ biến nhất**, kể cả ngoài châu Âu |
+| 0,00392 | "Mỹ" | Ít gặp hơn |
+
+⚠ Cảm biến theo một hệ số mà module cấu hình theo hệ số kia thì phép đo **lệch một cách có hệ
+thống** — không nhảy, không nhiễu, chỉ **sai đều**. ⭐ Đây là loại sai số **rất khó phát hiện** vì
+đồ thị trông hoàn toàn bình thường.
+
+⭐ **Cách kiểm:** đối chiếu hệ số ghi trên datasheet cảm biến với cấu hình kênh trong phần mềm.
+
+**Hai — RTD tự làm nóng chính nó.**
+
+Muốn đo điện trở thì phải **cho dòng chạy qua** RTD. Dòng đó sinh nhiệt ngay trên phần tử đo:
+
+```text
+P  =  I² × R
+```
+
+⚠ Nhiệt đó làm RTD **nóng hơn môi trường xung quanh** → phép đo **luôn cao hơn thực tế một chút**.
+⭐ Đây là **sai số một chiều**, không phải nhiễu ngẫu nhiên — nên lấy trung bình **không** khử được.
+
+| Yếu tố | Ảnh hưởng |
+|---|---|
+| ⭐ Dòng kích lớn | Sai số lớn hơn — nhưng tín hiệu khoẻ hơn, ít nhiễu hơn |
+| Dòng kích nhỏ | Sai số nhỏ hơn, nhưng ⚠ **tỉ lệ tín hiệu/nhiễu xấu đi** |
+| ⭐ **Môi trường tản nhiệt kém** | ⚠ Nặng nhất trong **không khí tĩnh**; nhẹ hơn nhiều trong chất lỏng chảy |
+
+> ⭐⭐ **Đây là một đánh đổi, không phải một lỗi cần sửa.** Module tốt giải quyết bằng cách **cấp dòng
+> theo xung** — chỉ cho dòng chạy trong khoảnh khắc lấy mẫu rồi ngắt. ⭐ Cách đó dùng được vì phép đo
+> nhiệt độ vốn **chậm**, không cần lấy mẫu nhanh.
+>
+> ⚡ **Với người lập trình máy:** bạn thường không chỉnh được dòng kích. Điều cần biết là ⭐ **nếu phép
+> đo cao hơn thiết bị chuẩn một chút và ổn định, hãy nghi tự gia nhiệt trước khi nghi cảm biến hỏng**
+> — nhất là khi đo trong không khí tĩnh.
+
+*(Đối chiếu: Kuphaldt — Lessons in Industrial Instrumentation, mục RTD self-heating error và mục
+về hệ số alpha của RTD bạch kim.)*
+
 ### ⚠ Ba lỗi đấu RTD hay gặp
 
 | Lỗi | Hiện tượng |
@@ -392,6 +435,8 @@ lại kết quả để thấy xu hướng (mục 33.9 câu 4; Chương 51).
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⚠ Pt100 có mấy hệ số | ⭐ **Hai** — 0,00385 (phổ biến) và 0,00392. Trộn nhầm thì **lệch có hệ thống**, đồ thị vẫn đẹp |
+| ⭐ Vì sao RTD đọc cao hơn một chút | **Tự gia nhiệt** — dòng đo sinh nhiệt trên chính phần tử; ⚠ nặng nhất trong **không khí tĩnh** |
 | Sai lầm phổ biến nhất với cảm biến quá trình | ⭐ **Lắp sai chỗ**, không phải chọn sai loại |
 | Áp tương đối vs tuyệt đối | Chênh ~1 bar; khí nén công nghiệp mặc định **tương đối** |
 | Nhiệt độ < 400 °C, cần chính xác | **RTD Pt100** |
@@ -434,6 +479,10 @@ lại kết quả để thấy xu hướng (mục 33.9 câu 4; Chương 51).
 
 > Câu 1, 4, 5, 7 và 12 là năm câu phân loại. Câu 1 là tinh thần của cả chương: **phép đo đúng ở sai
 > chỗ vẫn là phép đo sai — và nó nguy hiểm hơn phép đo hỏng, vì mọi chỉ số đều xanh.**
+
+⚠ **Bổ sung.** Pt100 có hai hệ số alpha — trộn nhầm cảm biến và cấu hình module gây sai số kiểu gì,
+và vì sao nó **khó phát hiện**? Vì sao RTD luôn đọc **cao hơn** thực tế một chút, và lấy trung bình
+có khử được sai số đó không?
 
 ---
 
