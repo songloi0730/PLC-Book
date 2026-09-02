@@ -181,8 +181,8 @@ Ch.57 ráp toàn bộ; Phụ lục J là bản hồ sơ hoàn chỉnh để dùn
 
 | # | Phụ lục | Nội dung | TT |
 |---|---|---|---|
-| A1 | ⭐ **Đối chiếu khái niệm 5 hệ** | Siemens · Mitsubishi · Inovance · CODESYS · Rockwell. Bảng đối chiếu: tag/ký hiệu, khối dữ liệu vs UDT vs struct, thể hiện FB, task & chu kỳ, ảnh ngõ vào, vùng nhớ giữ, cách đánh địa chỉ module. **CODESYS làm cột neo** — khi 4 hệ khác nhau thì cột này cho biết chuẩn IEC nói gì | ⬜ |
-| A2 | ⭐ **Đối chiếu lệnh + cùng một đoạn logic viết 5 lần** | TON, CTU, MOVE, quy đổi thang, bắt cạnh, khối PID, khối chuyển động; cùng một đoạn trình tự của DP-01 hiện thực trên cả 5 hệ; ⚠ những chỗ **không tương đương 1-1** — nêu rõ, không giả vờ. Phụ lục **mô tả khác biệt, không xếp hạng hãng** | ⬜ |
+| A1 | [⭐ **Đối chiếu khái niệm 5 hệ](pl_a1_doi_chieu_khai_niem_5_he.md) | Siemens · Mitsubishi · Inovance · CODESYS · Rockwell. Bảng đối chiếu: tag/ký hiệu, khối dữ liệu vs UDT vs struct, thể hiện FB, task & chu kỳ, ảnh ngõ vào, vùng nhớ giữ, cách đánh địa chỉ module. **CODESYS làm cột neo** — khi 4 hệ khác nhau thì cột này cho biết chuẩn IEC nói gì | ✅ |
+| A2 | [⭐ **Đối chiếu lệnh + cùng một đoạn logic viết 5 lần](pl_a2_doi_chieu_lenh_va_cung_doan_logic.md) | TON, CTU, MOVE, quy đổi thang, bắt cạnh, khối PID, khối chuyển động; cùng một đoạn trình tự của DP-01 hiện thực trên cả 5 hệ; ⚠ những chỗ **không tương đương 1-1** — nêu rõ, không giả vờ. Phụ lục **mô tả khác biệt, không xếp hạng hãng** | ✅ |
 | B | [Tra nhanh lệnh IEC 61131-3](pl_b_tra_nhanh_lenh_iec.md) | Một trang in được: lệnh cơ bản theo nhóm, ký hiệu LD & ST tương ứng, kiểu dữ liệu, thứ tự ưu tiên toán tử | ✅ |
 | C | [Biểu mẫu dùng ngay](pl_c_bieu_mau_dung_ngay.md) | Bảng I/O · bảng tag · đặc tả trình tự · bảng chuyển trạng thái · bảng công thức · biên bản kiểm I/O 1-1 · danh sách ca kiểm thử · biên bản nghiệm thu · phiếu bàn giao (dẫn Ch.23, 25, 29, 50, 52) | ✅ |
 | D | [Checklist đấu dây & bật nguồn lần đầu](pl_d_checklist_dau_day_va_bat_nguon.md) | Trước khi cấp điện lần đầu: thứ tự kiểm, cái gì đo trước, cái gì tuyệt đối không bỏ qua | ✅ ⚠ |
