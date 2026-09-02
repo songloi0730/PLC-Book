@@ -239,6 +239,70 @@ CV_D = Kd × (Δe / Δt)
 
 ---
 
+## 35.6b ⚠⚠ Hai thứ phải kiểm TRƯỚC khi chỉnh định
+
+Chỉnh định giỏi đến đâu cũng vô nghĩa nếu hai thứ dưới đây sai. Cả hai đều **không phải tham số
+chỉnh** — chúng là **cấu hình**, và cả hai đều gây hậu quả rất khác nhau.
+
+### Một — ⚠⚠ Chiều tác động: thuận hay nghịch
+
+Bộ điều khiển phải biết: **đại lượng đo tăng thì ngõ ra phải tăng hay giảm?**
+
+| Chiều | Nghĩa | Ví dụ |
+|---|---|---|
+| **Thuận** *(direct-acting)* | Đo **tăng** → ngõ ra **tăng** | Điều khiển làm mát: nóng hơn thì mở lạnh nhiều hơn |
+| ⭐ **Nghịch** *(reverse-acting)* | Đo **tăng** → ngõ ra **giảm** | ⭐ **Gia nhiệt**: nóng hơn thì giảm công suất |
+
+> ⚠⚠ **NGUY HIỂM — đặt sai chiều tác động làm vòng điều khiển CHẠY LOẠN.**
+>
+> Với bộ gia nhiệt keo của DP-01, nếu đặt nhầm thành **thuận**:
+>
+> ```text
+> Nhiệt độ tăng  →  ngõ ra tăng  →  cấp nhiệt nhiều hơn  →  nhiệt độ tăng nữa  →  …
+> ```
+>
+> ⭐ Đó là **phản hồi dương**. Vòng điều khiển không dao động quanh điểm đặt — nó **chạy thẳng tới
+> giới hạn** và ở đó. ⚠ Với thiết bị gia nhiệt, hậu quả có thể là hỏng sản phẩm, hỏng thiết bị, hoặc
+> cháy.
+>
+> ⭐⭐ **Triệu chứng nhận ra ngay:** ngõ ra **bám chặt 0 % hoặc 100 %** và không bao giờ rời khỏi đó,
+> bất kể chỉnh `Kp` thế nào. ⚠ Nếu thấy triệu chứng này, **đừng chỉnh định tiếp** — kiểm chiều tác
+> động trước.
+>
+> ⚡ **Bảo vệ bắt buộc:** vòng gia nhiệt phải có **giới hạn nhiệt độ độc lập** với PID — một bộ bảo
+> vệ quá nhiệt cắt nguồn không đi qua bộ điều khiển (Chương 48).
+
+### Hai — ⚠ Đơn vị của khâu tích phân: hai cách nói NGƯỢC nhau
+
+Cùng một mức tác động tích phân được ghi bằng **hai đơn vị nghịch đảo nhau**:
+
+| Cách ghi | Ý nghĩa | ⭐ Số LỚN nghĩa là |
+|---|---|---|
+| **Phút / lần lặp** *(minutes per repeat)* | Thời gian tích phân | ⭐ Tác động tích phân **YẾU hơn** |
+| **Lần lặp / phút** *(repeats per minute)* | Độ lợi tích phân | ⭐ Tác động tích phân **MẠNH hơn** |
+
+> ⚠⚠ **Hai cách ghi này là NGHỊCH ĐẢO của nhau — nên chép nhầm là sai theo cấp số.**
+>
+> Giá trị `2` mang nghĩa hoàn toàn khác nhau:
+>
+> ```text
+> 2 phút/lần lặp   →  tác động chậm, hiền
+> 2 lần lặp/phút   →  tác động nhanh gấp 4 lần cách trên
+> ```
+>
+> ⭐ Đây là lý do **không được chép tham số PID từ máy này sang máy khác** — kể cả khi hai bộ điều
+> khiển trông giống nhau (Phụ lục A2 mục A2.7).
+>
+> ⭐⭐ **Việc phải làm trước khi chỉnh:** mở tài liệu bộ điều khiển và ⭐ **xác định nó dùng đơn vị
+> nào**. Nhiều bộ cho phép **chọn** đơn vị — nghĩa là hai máy cùng model vẫn có thể khác nhau.
+>
+> ⚡ Khâu vi phân cũng có chuyện tương tự, nhưng ít gây nhầm hơn vì thường chỉ có một đơn vị (phút).
+
+*(Đối chiếu: Kuphaldt — Lessons in Industrial Instrumentation, mục về tác động tích phân và đơn vị
+minutes-per-repeat / repeats-per-minute; và mục về thiết bị direct-acting / reverse-acting.)*
+
+---
+
 ## 35.7 ⚠ Chu kỳ vòng điều khiển
 
 Đây là lỗi đầu tiên trong ba lỗi ở mục 35.1, và nó đặc thù cho PLC.
@@ -368,6 +432,9 @@ M_CanStart := ... AND NOT M_GlueTempFault;
 ---
 
 ## 35.10 Chỉnh định thực dụng — từng bước
+
+> ⚠⚠ **Trước bước 1: kiểm chiều tác động và đơn vị khâu tích phân** (mục 35.6b). Chỉnh định một
+> vòng đặt sai chiều tác động là việc vô ích — và nguy hiểm.
 
 Không cần lý thuyết điều khiển để chỉnh một vòng PID trên máy. Quy trình dưới đây đủ dùng cho phần
 lớn vòng nhiệt độ và áp suất.
@@ -522,6 +589,9 @@ bù.
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⚠⚠ Kiểm gì TRƯỚC khi chỉnh định | **Chiều tác động** (thuận/nghịch) và **đơn vị khâu tích phân** |
+| ⭐ Đặt sai chiều tác động → triệu chứng | Ngõ ra **bám chặt 0 % hoặc 100 %**, chỉnh `Kp` không đổi gì |
+| ⚠ Vì sao không chép tham số PID giữa hai máy | **phút/lần lặp** và **lần lặp/phút** là **nghịch đảo nhau** |
 | Ba đại lượng của vòng điều khiển | **SP** điểm đặt · **PV** giá trị đo · **CV** ngõ ra |
 | Hỏi trước khi viết PID | ⭐ **On/off có đủ không?** |
 | On/off đủ khi | Dao động trong vùng chết chấp nhận được · cơ cấu hai trạng thái · ⭐ **đội bảo trì không chỉnh được PID** |
@@ -569,6 +639,12 @@ bù.
 
 > Câu 2, 4, 7, 12 và 14 là năm câu phân loại. Câu 12 là tinh thần của cả chương: **tự động bù một suy
 > giảm có thể xoá mất tín hiệu cảnh báo về chính suy giảm đó.**
+
+⚠⚠ **Bổ sung.** Bộ gia nhiệt keo được đặt nhầm thành **tác động thuận**. Mô tả điều gì xảy ra và
+vì sao đó là **phản hồi dương**. Triệu chứng nào cho phép nhận ra ngay mà không cần chỉnh định?
+
+⚠ **Bổ sung.** Vì sao `2 phút/lần lặp` và `2 lần lặp/phút` cho hai hành vi rất khác nhau? Điều đó
+nói gì về việc chép tham số PID từ máy khác?
 
 ---
 

@@ -181,6 +181,35 @@ Trọng tâm: hai mảng mà đợt 1 khai nhầm là "không có nguồn".
 
 ---
 
+## Đợt 7 — 2026-09-02 · Phụ lục D và Ch.35 (PID)
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 35 | Phụ lục D §D.2 | *"Điện áp đo cách điện cao sẽ phá module"* | ✅➕ | Kuphaldt (DC), mục megohmmeter — megôm kế tạo **điện áp DC tới 1000 V**. **Đã bổ sung con số** để cảnh báo có sức nặng |
+| 36 | Phụ lục D §D.2 | *(chưa có)* — kiểm nhãn **SELV/PELV** của bộ nguồn | ➕ | ⭐ Nối từ phát hiện đợt 4 (Ch.3). **Đã thêm mục kiểm nguội** |
+| 37 | Phụ lục D §D.5 | *(chưa có)* — kiểm **đấu OSSD đúng chỗ** | ➕ | ⭐ Nối từ phát hiện đợt 3 (Ch.47). **Đã thêm mục kiểm chức năng an toàn** |
+| 38 | Ch.35 | *(chưa có)* — ⚠⚠ **chiều tác động thuận/nghịch** | ➕ | ⚠⚠ **Chương PID không hề nhắc.** Đặt sai chiều biến vòng điều khiển thành **phản hồi dương** — ngõ ra chạy thẳng tới giới hạn. Với gia nhiệt, hậu quả có thể là cháy. **Đã bổ sung mục 35.6b** kèm triệu chứng nhận ra ngay và yêu cầu bảo vệ quá nhiệt độc lập |
+| 39 | Ch.35 | *(chưa có)* — đơn vị khâu tích phân | ➕ | Kuphaldt: **phút/lần lặp** và **lần lặp/phút** là **nghịch đảo nhau**; số lớn mang nghĩa ngược nhau. ⭐ Là lý do kỹ thuật cho quy tắc "không chép tham số PID giữa hai máy" ở Phụ lục A2. **Đã bổ sung** |
+
+### Kết quả đợt 7
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **5** |
+| ✅ Xác nhận đúng | 1 |
+| ➕ Bổ sung nội dung còn thiếu | 5 |
+
+> ⭐⭐ **Mục 38 là phát hiện nặng thứ hai của cả quá trình, sau SELV.**
+>
+> Một chương PID dài 14 mục, có cả chống bão hoà tích phân và chỉnh định từng bước, mà **không nhắc
+> chiều tác động** — thứ phải đặt đúng **trước** khi chỉnh định có ý nghĩa, và đặt sai thì vòng điều
+> khiển chạy loạn thay vì dao động.
+>
+> ⭐ Nó lọt lưới vì **bộ kiểm tự động không thể biết một chương thiếu khái niệm gì** — chỉ đối chiếu
+> với tài liệu chuyên ngành mới lộ ra.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -188,8 +217,8 @@ kiểm**, không phải "không có lỗi".
 
 | Nhóm | Chương | Nguồn sẵn có | Ưu tiên |
 |---|---|---|---|
-| ⚠⚠ **An toàn** | **Phụ lục D** *(3, 6, 47, 48 đã đối chiếu đợt 1, 3, 4)* | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
-| Đo lường & analog | 34, 35 *(31, 33 đã đối chiếu đợt 5–6)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
+| ⚠⚠ **An toàn** | ⭐ **Đã đối chiếu hết** — 3, 6, 47, 48, Phụ lục D (đợt 1, 3, 4, 7). ⚠ Cờ ⚠ vẫn giữ | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
+| Đo lường & analog | 34 *(31, 33, 35 đã đối chiếu đợt 5–7)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
 | Truyền thông | 38, 40, 42 *(39 đã đối chiếu đợt 3)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
 | Chuyển động | 37 | PLCopen Motion, Mitsubishi Positioning | ⭐ Cao |
 | Nền tảng PLC | 7, 8, 9, 11, 12, 14, 18, 19 | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |

@@ -45,6 +45,8 @@
 
 - [ ] Thiết bị lắp chắc, đúng chiều, đủ khoảng thoát nhiệt theo hướng dẫn nhà sản xuất
 - [ ] ⭐ Nhãn thiết bị **khớp danh mục vật tư** — đúng mã, đúng phiên bản
+- [ ] ⚠⚠ **Bộ nguồn 24 V có nhãn SELV / PELV / Class 2 / Limited Power** — ⭐ **không có nhãn thì
+      tra datasheet, đừng giả định** (Chương 3, mục 3.3)
 - [ ] Không có mạt kim loại, đầu dây thừa, dụng cụ bỏ quên trong tủ
 - [ ] ⭐ **Tách máng đúng ba nhóm**: động lực · tín hiệu · an toàn (Chương 49 mục 49.3)
 - [ ] Cáp giao nhau **cắt vuông góc**, không đi song song đường dài
@@ -74,9 +76,14 @@
 - [ ] Đo cách điện mạch động lực theo quy định — ⚠ **do người có thẩm quyền thực hiện**
 - [ ] ⚠⚠ **Ngắt kết nối thiết bị điện tử trước khi đo cách điện** — điện áp đo cao sẽ phá module
 
-> ⚠⚠ **Hàng cuối là hàng gây thiệt hại đắt nhất trong cả phụ lục nếu bỏ qua.** Thiết bị đo cách điện
-> đưa ra điện áp hàng trăm tới hàng nghìn vôn. ⭐ **Nó sẽ phá mọi module PLC, biến tần và HMI còn đấu
-> vào mạch.**
+> ⚠⚠ **Hàng cuối là hàng gây thiệt hại đắt nhất trong cả phụ lục nếu bỏ qua.**
+>
+> Megôm kế tạo **điện áp một chiều cao — thường tới 1000 V** để đo cách điện. ⭐ Đưa 1000 V vào một
+> mạch chứa module PLC 24 V thì **mọi module, biến tần và HMI còn đấu vào đó đều hỏng**.
+>
+> ⭐ **Ngắt ra trước, đo sau.** Không có cách sửa nào rẻ hơn việc nhớ bước này.
+>
+> *(Đối chiếu: Kuphaldt — Lessons in Electric Circuits (DC), mục megohmmeter.)*
 
 ### Mạch an toàn — kiểm nguội
 
@@ -182,6 +189,9 @@ nhân** trước khi đi tiếp.
 - [ ] ⚠ **Từng nút dừng khẩn cấp** thử riêng — ⭐ **cả ba nút phải thử cả ba**
 - [ ] Từng cửa bảo vệ thử riêng
 - [ ] Rèm quang: thử ⭐ **ở nhiều vị trí dọc chiều cao**, không chỉ ở giữa
+- [ ] ⚠⚠ **Ngõ ra OSSD đấu vào thiết bị an toàn**, KHÔNG vào ngõ vào PLC thường — ⭐ nếu bit trạng
+      thái nhấp nháy rất nhanh thì đó là **xung kiểm tra**, không phải rèm quang bị cắt (Chương 47,
+      mục 47.7)
 - [ ] ⚠⚠ Khôi phục sau khi tác động: máy **KHÔNG tự chạy lại**, phải Reset có chủ ý
 - [ ] ⚠ Mất điện rồi có lại: máy **KHÔNG tự vào Running**
 - [ ] Kiểm chức năng dừng đúng **loại dừng** đã thiết kế
