@@ -42,7 +42,7 @@ Số liệu đầy đủ: **Phụ lục J**.
 
 ---
 
-## 57.3 Giai đoạn 1 — Đặc tả
+## 57.3 Giai đoạn 1 — Đặc tả *(functional specification)*
 
 ⭐ **Đây là giai đoạn quyết định phần lớn kết quả, và là giai đoạn hay bị rút ngắn nhất.**
 
@@ -93,17 +93,20 @@ Số liệu đầy đủ: **Phụ lục J**.
 
 | Nhóm | Tag tiêu biểu | Chương |
 |---|---|---|
-| **DI — trạm 1** | `DI_BoardStn1` · `DI_ClampStn1Closed` · `DI_GantryHomeX/Y/Z` | 4, 23 |
-| **DI — trạm 2** | `DI_BoardStn2` · `DI_UvDoorClosed` | 4 |
-| **DI — an toàn** | ⚠ `DI_EStopOk` · `DI_LightCurtainOk` · `DI_GuardLocked` | 47 |
-| **DI — chuyền** | `DI_UpstreamReady` · `DI_DownstreamReady` | 41 |
-| **DO — trạm 1** | `DO_ClampStn1` · `DO_GlueValve` · `DO_NozzlePurge` | 5, 9 |
-| **DO — trạm 2** | `DO_UvLamp` · `DO_ClampStn2` | 9 |
-| **DO — báo hiệu** | `DO_TowerRed/Amber/Green` · `DO_Buzzer` | 43, 44 |
-| **AI** | `AI_AirPressure` · `AI_GluePressure` · ⭐ `AI_UvIntensity` | 31, 53 |
-| **AO** | `AO_GluePressureSet` | 31 |
-| **Trục** | Gantry X, Y (bước hoặc servo) · ⭐ **Z servo** | 37 |
-| **Mạng** | Đầu đọc mã 2D (Ethernet) · bộ điều khiển nhiệt (RS-485) · biến tần chuyền | 38, 40 |
+| **DI — trạm 1** | `DI_BoardStn1` · `DI_Clamp1Up` · `DI_Stop1Up` / `DI_Stop1Dn` | 4, 23 |
+| **DI — trạm 2** | `DI_BoardStn2` · `DI_ShutterClosed` | 4 |
+| **DI — an toàn** | ⚠ `DI_EStopOK` · `DI_CurtainOK` · `DI_Door1Closed` / `DI_Door2Closed` | 47 |
+| **DI — chuyền** | `DI_SmemaInAvail` · `DI_SmemaOutRdy` | 41 |
+| **DO — trạm 1** | `DO_Clamp1Vlv` · `DO_DispVlv` · `DO_SuckBack` | 5, 9 |
+| **DO — trạm 2** | `DO_UvLamp` · `DO_Clamp2Vlv` | 9 |
+| **DO — báo hiệu** | `DO_LampRed/Yellow/Green` · `DO_Buzzer` | 43, 44 |
+| **AI** | `AI_AirPress` · `AI_GluePress` · ⭐ `AI_UvIntensity` | 31, 53 |
+| **AO** | `AO_GluePressSet` | 31 |
+| **Trục** | `AX_X` · `AX_Y` · `AX_Z` — ⭐ **cả ba đều servo** | 37 |
+| **Mạng** | `NET_Scanner` (Ethernet) · `NET_TempCtrl` (RS-485) · `NET_MES` · `NET_Drives` | 38, 40, 42 |
+
+> ⚠ **Bảng trên là bản rút gọn.** Bảng I/O đầy đủ của DP-01 — kèm loại thiết bị, trạng thái nghỉ,
+> dải kỹ thuật và lát cắt — nằm ở **Phụ lục J**. Tên tag trong sách luôn theo bảng đó.
 
 > ⭐⭐ **Bảng I/O là tài liệu nền của cả dự án.** Nó là đầu vào cho: sơ đồ điện, đánh số dây (Ch.49),
 > chương trình, HMI, và tài liệu bàn giao. ⚠ **Làm nó trước khi đấu tủ** — nếu không, số dây và tên
@@ -133,7 +136,7 @@ Số liệu đầy đủ: **Phụ lục J**.
 
 ⭐ **Quyết định kiến trúc trước khi viết dòng lệnh đầu tiên.**
 
-### Cấu trúc tổng thể
+### Cấu trúc tổng thể *(program architecture)*
 
 ```text
 Chương trình chính
@@ -210,7 +213,7 @@ một bản chạy được.
 
 ---
 
-## 57.8 Giai đoạn 6 — Kiểm thử
+## 57.8 Giai đoạn 6 — Kiểm thử *(testing)*
 
 | Mức | Nội dung | Chương |
 |---|---|---|
