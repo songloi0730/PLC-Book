@@ -130,7 +130,7 @@ N.5  Khi nào dừng lại và gọi người khác
 Hình sinh bằng script Python trong `tools/`, **không vẽ tay từng file** — nhờ vậy 58 chương giữ được
 một ngôn ngữ thị giác duy nhất và sửa token là sửa toàn bộ.
 
-```
+```text
 tools/sinh_hinh.py        — bộ khung dùng chung (esc/T/R/L/head/save) + các hình đa chương
 tools/sinh_hinh_ch04.py   — hình chuyên biệt của Ch.4 (bốn tổ hợp đấu nối)
 assets/chNN/hinh_NN_k_ten.svg
@@ -193,14 +193,25 @@ File `.chm` (Inovance AutoShop, CODESYS) chưa có công cụ đọc trong pipel
 
 ## Quy trình đánh giá — chạy máy trước, mắt sau
 
-Bản thảo có **hai bộ kiểm tự động**. Chạy cả hai trước khi coi một chương là xong, và trước khi
-kết luận bất cứ điều gì bằng cảm nhận:
+Bản thảo có **ba bộ kiểm tự động** ứng với ba loại lỗi khác nhau. Chạy cả ba trước khi coi một
+chương là xong, và trước khi kết luận bất cứ điều gì bằng cảm nhận:
 
 ```bash
-python tools/kiem_tra_chuong.py        # bất biến B1–B14 (tất cả chương)
-python tools/kiem_tra_chuong.py 47     # chỉ một chương
+python tools/kiem_tra_chuong.py        # TỪNG chương có đúng khung không (B1–B14)
+python tools/kiem_nhat_quan.py         # các chương có KHỚP NHAU không (trôi dạt)
 npx markdownlint-cli2 "docs/**/*.md"   # cấu trúc markdown, liên kết, bảng
 ```
+
+⭐⭐ **Ba bộ kiểm bắt ba loại lỗi tách biệt — không cái nào thay được cái nào:**
+
+| Bộ kiểm | Bắt loại lỗi | Ví dụ đã bắt được thật |
+|---|---|---|
+| `kiem_tra_chuong.py` | ⭐ Một chương **thiếu khung** | Ch.2, 13 thiếu *Bẫy thường gặp*; Ch.56 thiếu dòng miễn trừ |
+| `kiem_nhat_quan.py` | ⭐⭐ Các chương **lệch nhau** | 40 dẫn chiếu tới `Phụ lục J §7.x` không tồn tại; `DO_SmemaInReady` ×12 lệch bảng I/O |
+| ⭐ **Đối chiếu nguồn** (skill) | ⚠⚠ Câu **đúng khung, nghe thuyết phục, SAI SỰ THẬT** | Độ phân giải timer Mitsubishi; ISO 6431 đã thu hồi |
+
+⚠⚠ **Loại thứ ba là loại nguy hiểm nhất và KHÔNG máy nào bắt được.** Nó chỉ lộ ra khi so với tài
+liệu gốc — xem mục *Đối chiếu nguồn* bên dưới.
 
 `kiem_tra_chuong.py` kiểm: mục bắt buộc (B12), bẫy có đặt tên (B5), tên phần mềm hãng lọt vào thân
 sách (B1), khai báo và kỷ luật lát cắt (B8), song ngữ (B11), hình tồn tại + XML hợp lệ + có chú
@@ -222,6 +233,32 @@ Ba skill trong `.claude/skills/` dành cho phần máy không kiểm được:
 
 Agent `phan-bien-chuong` đọc chương bằng **mắt lạ** (ba vai: thợ mới · kỹ sư bảo trì · người soát
 bản in). Người dùng gọi, không tự gọi.
+
+### ⭐⭐ Đối chiếu nguồn — chống "viết từ trí nhớ"
+
+```bash
+python tools/tra_nguon.py "asynchronous"           # tra 44 tài liệu gốc (~12.000 trang)
+python tools/tra_nguon.py "test rate" --tep DGUV   # thu hẹp theo tên file
+python tools/tra_nguon.py --liet-ke                # xem bộ tài liệu có gì
+```
+
+Bộ tài liệu ở `../PLC/reference/`: Kuphaldt · Hugh Jack · manual Siemens/Mitsubishi/Rockwell ·
+SICK/Schneider/DGUV về an toàn · đặc tả gốc Modbus/IO-Link/PLCopen.
+
+| Bất biến | Nội dung |
+|---|---|
+| ⭐⭐ **B15** | Mọi **con số cụ thể**, **hành vi của một hãng**, và **viện dẫn tiêu chuẩn** phải được đối chiếu nguồn trước khi coi là xong. ⚠ Không tìm được nguồn thì **hạ giọng**, không được coi là xác nhận |
+| ⭐ **B16** | Ghi kết quả vào `docs/00d_Nhat_ky_doi_chieu.md` — ⭐ **kể cả kết luận ĐÚNG**, để biết chương nào **chưa** kiểm |
+
+Quy trình đầy đủ: `.claude/skills/doi-chieu-nguon/SKILL.md`.
+
+> ⭐ **Bài học từ đợt đối chiếu đầu tiên:** trong 9 khẳng định được kiểm, số "đúng nhưng **thiếu chi
+> tiết**" (4) nhiều hơn số "sai hẳn" (3). Giá trị chính của bước này **không phải bắt lỗi** — mà là
+> tìm ra chi tiết cụ thể mà bản viết từ trí nhớ luôn bỏ sót.
+
+> ⚠⚠ **Đối chiếu nguồn KHÔNG gỡ được cờ ⚠** trên Ch.3, 6, 47, 48 và Phụ lục D. Kết luận đúng nhất
+> nó cho phép là *"đã đối chiếu, không thấy mâu thuẫn"* — chỉ **chuyên gia an toàn người thật** mới
+> gỡ được cờ.
 
 > **Quy tắc vàng khi rà tay:** không kết luận bất kỳ điều gì trước khi đã grep ra bằng chứng, và
 > mọi nhận xét phải kèm **số dòng**. Nhận xét không chỉ được dòng nào là nhận xét bỏ đi.
@@ -254,7 +291,7 @@ Giấy phép phát hành cuối cùng — **chưa chốt**, xem `PROJECT_STATUS.
 
 ## Cuối mỗi session
 
-```
+```text
 1. Cập nhật PROJECT_STATUS.md — chương/phần nào xong, việc kế tiếp
 2. Thêm entry CHANGELOG.md — file nào thay đổi, vì sao
 3. git commit (repo riêng, local)
