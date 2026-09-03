@@ -603,6 +603,47 @@ hẳn nhau**.
 
 ---
 
+## Đợt 19 — 2026-09-03 · Ch.20 (ST) — vòng lặp thứ ba, và nguyên tắc sách chưa phát biểu
+
+⭐ §20.5 là mục có cảnh báo ⚠⚠ mạnh nhất chương. Nội dung **đúng**, nhưng đối chiếu Hanssen §11.8 cho
+thấy nó ⚠ **thiếu một vòng lặp, thiếu một nguyên tắc, và bỏ ngỏ một lối thoát mà người đọc chắc chắn
+sẽ nghĩ tới**.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 101 | Ch.20 §20.5 — thiếu `REPEAT` | Chuẩn có **ba** vòng lặp; Ch.20 chỉ dạy `FOR` và `WHILE`. ⚠ **Phụ lục B đã có `REPEAT`, chương dạy thì không** — đúng mẫu lỗi đợt 16 | ⚠➕ |
+| 102 | Ch.20 — hai bẫy riêng của `REPEAT` | Hanssen: chạy **CHO TỚI KHI** điều kiện đúng (⚠ ngược cực tính với `WHILE`), và thân vòng ⭐ **luôn chạy ít nhất một lần** | ➕ |
+| 103 | ⭐⭐ Ch.20 — nguyên tắc tổng quát | Hanssen: rủi ro vòng lặp vô hạn ⭐ **lớn nhất khi điều kiện thoát phụ thuộc thứ BÊN NGOÀI**; nên dùng điều kiện phụ thuộc biến **cập nhật bên trong vòng lặp**. ⭐ Nguyên tắc này giải thích cả ba ví dụ của sách bằng **một câu** — sách chưa từng phát biểu nó | ➕➕ |
+| 104 | Ch.20 — lối thoát bỏ ngỏ | Người đã đọc Ch.10 sẽ nghĩ: *dùng **truy cập trực tiếp** thì vòng lặp thoát được*. ⭐ **Đúng kỹ thuật, tệ hơn về hậu quả** — CPU đứng chờ vài trăm ms, ⚠⚠ **nút dừng không được đọc**. Đã viết hẳn ra và bác bỏ | ➕ |
+| 105 | Ch.20 — `EXIT` và `CONTINUE` | Hanssen: `EXIT` ở vòng trong ⚠ **không dừng vòng bao ngoài**. ⭐ `CONTINUE` không thoát vòng lặp nên **không phải van an toàn** | ➕ |
+| 106 | ⭐ Quét gốc: Phụ lục B | Thêm **phép kiểm một câu** và hai điểm khác biệt của `REPEAT` vào bảng tra nhanh | ➕ |
+
+### Kết quả đợt 19
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ➕➕ Nguyên tắc mới, giá trị cao nhất | 1 |
+| ➕ Bổ sung có nguồn | 4 |
+| ⚠➕ Thiếu nội dung, đã bổ sung | 1 |
+| Nơi đã sửa | Ch.20 (3 mục mới + cú pháp + 4 dòng Bảng chốt + 3 câu Tự kiểm + nguồn) · Phụ lục B |
+
+> ⭐⭐ **Mục 103 là kiểu bổ sung đáng giá nhất mà đối chiếu nguồn mang lại: không phải một sự kiện mới,
+> mà một NGUYÊN TẮC gói gọn những gì sách đã dạy rời rạc.**
+>
+> Sách đã có ba lời khuyên đúng — đừng chờ trong vòng lặp, `FOR i := 0 TO n` với `n` tính ra là rủi
+> ro, `EXIT` không cứu được `WHILE` chờ tín hiệu. ⚠ Nhưng ba lời khuyên rời nhau thì người đọc phải
+> **nhớ ba thứ**, và không suy ra được trường hợp thứ tư.
+>
+> ⭐ Nguyên tắc của Hanssen — *điều kiện thoát phải phụ thuộc biến cập nhật bên trong vòng lặp* — biến
+> cả ba thành **hệ quả của một câu**, và cho người đọc một **phép kiểm áp được vào vòng lặp chưa từng
+> gặp**.
+>
+> ⚡ **Bài học quy trình:** đối chiếu nguồn không chỉ để **bắt lỗi**. Nguồn tốt còn cho **cách tổ chức
+> lại cái đã đúng** — và đó là thứ ⚠ ba bộ kiểm tự động không bao giờ tìm ra được.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -615,7 +656,7 @@ kiểm**, không phải "không có lỗi".
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7, 12, 14 *(8, 9, 18 đợt 4, 10; **11, 19 đợt 15**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
-| Ngôn ngữ | 15, 20, 21 *(17 đợt 16; **16 đợt 17**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
+| Ngôn ngữ | 15, 21 *(17 đợt 16; 16 đợt 17; **20 đợt 19**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 53, 55 *(**51, 52 đã đối chiếu đợt 18**)* | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |

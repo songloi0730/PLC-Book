@@ -220,6 +220,13 @@ RETURN;    // thoát khối
 >
 > ⭐ Ưu tiên `FOR` với số vòng lặp **có giới hạn rõ ràng**. Nếu buộc dùng `WHILE`, thêm bộ đếm vòng
 > lặp tối đa làm van an toàn (Chương 20).
+>
+> ⭐⭐ **Phép kiểm một câu cho mọi vòng lặp:** *điều kiện thoát có phụ thuộc một biến được cập nhật
+> **bên trong** vòng lặp không?* ⚠ Nếu nó phụ thuộc tín hiệu vào, giá trị từ mạng, hay biến do tác vụ
+> khác ghi — ⚠⚠ **đó là vòng lặp không bảo đảm kết thúc**.
+>
+> ⚠ `REPEAT` khác `WHILE` hai điểm: điều kiện **ngược cực tính** (chạy *cho tới khi* đúng), và thân
+> vòng ⭐ **luôn chạy ít nhất một lần**. ⚠ `EXIT` chỉ thoát **một tầng**.
 
 > ⭐⭐ **`CASE` là cấu trúc tự nhiên cho máy trạng thái và trình tự** — mỗi nhánh là một bước, biến
 > điều khiển là số bước hiện tại (Chương 20, 21).
