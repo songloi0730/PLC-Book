@@ -448,6 +448,50 @@ Có — lan ra **bảy phụ lục và ba chương**.
 
 ---
 
+## Đợt 15 — 2026-09-03 · Ch.19 và Ch.11 — ⚠⚠ SỬA MỘT LỜI KHUYÊN SAI
+
+⭐⭐ **Đợt này bắt đầu bằng một sai lầm của chính quy trình, đáng ghi lại.**
+
+Tôi quét từ khoá để tìm *khái niệm còn thiếu* ở Ch.11 và Ch.19, và bảng quét báo **"thiếu ép kiểu,
+thiếu chỉ số mảng"**. ⚠ **Sai** — cả hai đều đã có, chỉ là nằm ở chương kia và viết bằng từ khác từ
+tôi grep. ⭐ **Quét từ khoá đo được cái tôi nghĩ ra, không đo được cái sách có.**
+
+Nên tôi đổi câu hỏi: thay vì *"còn thiếu gì"*, hỏi *"cái đang có đã ĐÚNG chưa"*. Câu hỏi đó ra kết quả
+ngay.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 79 | Ch.19 §19.5 — chia cho 0 | Bảng cũ có **3 hành vi**. Nguồn cho thấy có ít nhất **5** — thiếu *cờ lỗi nhẹ* (Petruzella) và ⚠⚠ *tự thay mẫu số bằng 1 rồi chạy tiếp* (Inovance H5U §6.1.9.1, báo bằng **đèn LED nhấp nháy Er50/Er81**) | ⚠➕ |
+| 80 | ⚠⚠ Ch.19 — **lời khuyên phòng tránh SAI với `REAL`** | Sách viết *"bọc bằng phép kiểm khác 0"*. ⚠ **Chưa đủ**: số thực có thể khác 0 nhưng cực nhỏ. Tài liệu InoProShop chỉ rõ phải so với **ngưỡng** — **1e-6** (32 bit), tới **1e-15** (64 bit) | ⚠⚠ |
+| 81 | Ch.19 — ba nguyên nhân mẫu số bằng 0 | InoProShop: biến **chưa khởi tạo** · biến **khởi tạo sau khi bị gọi** · ⭐ biến **toàn cục ghi ở nhiều tác vụ/POU** (khó tái hiện nhất) | ➕ |
+| 82 | Ch.19 — công cụ tìm chỗ chia cho 0 | CODESYS có *"POU for implicit checks" → Division Checks*, sinh `CheckDivInt`/`CheckDivReal`… ⭐ Đặt điểm dừng ở đó là cách nhanh nhất định vị | ➕ |
+| 83 | Ch.19 Bẫy 7 + Ch.11 Bẫy 6 — chỉ số mảng | Sách nói 2 hậu quả (STOP · ghi đè). Inovance §6.1.9.2: có hệ ⚠⚠ **kẹp im lặng** — vượt trên vào phần tử cuối, vượt dưới vào phần tử 0, **không dừng, không báo** | ⚠➕ |
+| 84 | Phụ lục K §K.6 | Thêm dòng ngưỡng cho mẫu số số thực — quét cả sách, ⭐ **không còn chỗ nào khác** khuyên "kiểm khác 0" thiếu vế | ➕ |
+
+### Kết quả đợt 15
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ⚠⚠ **Lời khuyên sai, đã sửa** | 1 |
+| ⚠➕ Thiếu hành vi quan trọng, đã bổ sung | 2 |
+| ➕ Bổ sung mới có nguồn | 3 |
+| Nơi đã sửa | Ch.19 (bảng · code · 2 mục mới · Bảng chốt · 3 câu Tự kiểm · nguồn) · Ch.11 (2 chỗ) · Phụ lục K |
+
+> ⚠⚠ **Mục 80 là lỗi nặng nhất tìm được từ đầu quy trình tới giờ, vì nó là lời khuyên chứ không phải
+> thông tin.** Người đọc làm đúng theo sách vẫn dính lỗi. Một khẳng định sai thì người đọc còn có thể
+> nghi ngờ; ⭐ **một lời khuyên sai thì họ làm theo.**
+>
+> ⭐⭐ **Chủ đề chung của cả đợt — "tự xử lý" là bẫy.** Ba chỗ độc lập trong tài liệu hãng cho thấy hệ
+> **tự sửa lỗi rồi chạy tiếp**: thay mẫu số bằng 1, kẹp chỉ số mảng, và (đã có từ trước) giá trị thay
+> thế của analog. ⚠ Cả ba **biến một lỗi ồn ào thành một lỗi im lặng** — và lỗi im lặng đắt hơn nhiều.
+> Sách nay nói thẳng nguyên tắc đó ở Ch.19 và nối nó với Ch.31 và Ch.38.
+>
+> ⚡ **Bài học quy trình:** quét từ khoá tìm *thiếu* đã hết tác dụng — nó chỉ tìm được cái tôi nghĩ ra.
+> Từ đây, ⭐ **đọc cái đang có và hỏi nó có đúng không** là cách còn tìm ra lỗi.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -459,7 +503,7 @@ kiểm**, không phải "không có lỗi".
 | Đo lường & analog | ⭐ **Đã đối chiếu** (đợt 5–7, 14) | — | — |
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
-| Nền tảng PLC | 7, 11, 12, 14, 19 *(8, 9, 18 đã đối chiếu đợt 4, 10)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
+| Nền tảng PLC | 7, 12, 14 *(8, 9, 18 đợt 4, 10; **11, 19 đợt 15**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | 15–17, 20, 21 | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 51, 52, 53, 55 | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |

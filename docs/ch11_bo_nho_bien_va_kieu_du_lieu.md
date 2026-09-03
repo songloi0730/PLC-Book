@@ -253,9 +253,11 @@ END_FOR;
 ```
 
 > ⚠⚠ **Chỉ số mảng vượt dải là lỗi nguy hiểm.**
-> Tuỳ hệ: hoặc CPU báo lỗi và **chuyển sang STOP**, hoặc tệ hơn — **ghi đè lên vùng nhớ của biến
-> khác**, gây hỏng hóc ở chỗ hoàn toàn không liên quan. Mọi chỉ số đến từ tính toán phải được **kẹp
-> trong dải** trước khi dùng. Chương 19, mục 19.7.
+> Tuỳ hệ, có **ba** hậu quả: CPU báo lỗi và **chuyển sang STOP**; hoặc **ghi đè lên vùng nhớ của biến
+> khác**, gây hỏng hóc ở chỗ hoàn toàn không liên quan; hoặc ⚠⚠ — thứ khó phát hiện nhất —
+> ⭐ **hệ tự kẹp im lặng về phần tử đầu/cuối mảng rồi chạy tiếp**, khiến dữ liệu của hai sản phẩm khác
+> nhau đè lên cùng một ô nhớ mà không có dấu hiệu gì. Mọi chỉ số đến từ tính toán phải được **kẹp
+> trong dải** trước khi dùng — ⚠ **đừng trông vào việc hệ tự kẹp**. Chương 19, mục 19.7.
 
 ### Khi nào dùng mảng, khi nào dùng biến rời
 
@@ -420,7 +422,7 @@ khác và không ai biết vì sao.
 ### 🔍 BẪY 6 — Chỉ số mảng không kẹp trong dải
 
 **Hiện tượng:** CPU chuyển sang STOP; hoặc hỏng hóc ở một chỗ **hoàn toàn không liên quan** vì vùng
-nhớ biến khác bị ghi đè.
+nhớ biến khác bị ghi đè; hoặc ⚠⚠ **không có triệu chứng gì** vì hệ tự kẹp về phần tử đầu/cuối.
 **Cách sửa:** kẹp mọi chỉ số đến từ tính toán trước khi dùng (Chương 19, mục 19.7).
 
 ### 🔍 BẪY 7 — Để mọi biến ở phạm vi toàn cục

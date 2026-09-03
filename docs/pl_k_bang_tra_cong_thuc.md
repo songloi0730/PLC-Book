@@ -265,7 +265,8 @@ Nếu  Tần số xung  >  1 / (2 × Thời gian quét)   →  ⭐ PHẢI dùng 
 | ⚠⚠ **Bẫy chính** | ⭐ **Chia số nguyên cắt bỏ phần thập phân** — `7 / 2 = 3`, không phải 3,5 |
 | ⭐ Quy tắc thực dụng | ⭐ **Ép sang số thực trước khi tính**, ép về số nguyên sau khi tính xong |
 | ⚠ Với số thực | ⭐ **Không so sánh bằng** hai số thực — so bằng khoảng dung sai |
-| Chương | 14 |
+| ⚠⚠ Chia cho mẫu số **số thực** | ⭐ **So với ngưỡng, không so với 0**: `ABS(x) > 1e-6` (32 bit) · tới `1e-15` (64 bit) |
+| Chương | 14, 19 (mục 19.5) |
 
 ---
 
