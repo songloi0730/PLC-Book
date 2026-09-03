@@ -408,6 +408,46 @@ Có — lan ra **bảy phụ lục và ba chương**.
 
 ---
 
+## Đợt 14 — 2026-09-03 · Ch.34 (cân & lực), Ch.42 (mã 2D), Ch.38 (RS-485)
+
+| # | Chương · chủ đề | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 69 | Ch.34 — đơn vị **mV/V** | Kuphaldt xác nhận: cầu **mất cân bằng** thì điện áp kích **có ảnh hưởng** *("In an unbalanced bridge circuit, however, source voltage value matters!")* → mV/V tồn tại vì ngõ ra tỉ lệ với kích | ✅➕ |
+| 70 | Ch.34 — vì sao **bốn** tem biến dạng | Kuphaldt: cấu hình cầu **triệt tiêu ảnh hưởng nhiệt độ** | ✅➕ |
+| 71 | Ch.34 — **từ biến** *(creep)* | ⚠ Bộ tài liệu **không phủ** → tra ngoài, ghi ngày, **hạ giọng**: đặc tả %FSO/~30 phút, con số lấy từ datasheet | ❔➕ |
+| 72 | Ch.34 — **đặt lệch tâm** | ⚠ Không phủ → tra ngoài. ⭐ Chốt điểm đắt nhất: **sai số cơ khí, hiệu chuẩn điện không sửa được** | ❔➕ |
+| 73 | Ch.42 — **vùng yên tĩnh** | ⚠ `tra_nguon` trả **rỗng** cho `quiet zone` → tra ngoài: ISO/IEC 16022 tối thiểu **1 ô** bốn phía; GS1 khuyến nghị **2–4 ô** khi nhiễu. ⚠ **Không dẫn số điều khoản** | ❔➕ |
+| 74 | Ch.42 — **kích thước ô** *(X-dimension)* | ⚠ Không phủ → tra ngoài. ⭐ Viết theo nguyên lý (điểm ảnh trên mỗi ô), ⚠ **con số tối thiểu để datasheet đầu đọc trả lời** | ❔➕ |
+| 75 | Ch.38 — **1200 m** và tốc độ | Kuphaldt §15.6 xác nhận: khuyến nghị **1200 m**, ⭐ **tốc độ tối đa tỉ lệ nghịch với chiều dài** | ✅➕ |
+| 76 | Ch.38 — **điện trở đầu cuối đổi được tốc độ** | Kuphaldt dẫn thí nghiệm Texas Instruments: cùng cáp 30 m — **200 kbps** không có, **1 Mbps** khi có | ✅➕ |
+| 77 | Ch.38 — 1200 m có phải tường cứng | Kuphaldt chú thích: Park, Mackay & Wright ghi nhận mạng **5 km ở 1200 bps** → ⭐ **1200 m là một điểm trên đường đánh đổi** | ✅➕ |
+| 78 | Thuật ngữ — *cross-reference* | Chú tiếng Anh xuất hiện ở 3 chương với 3 cụm khác nhau → ⭐ **chỉ chú một lần ở lần dùng đầu** (Ch.15), Ch.19 và Ch.25 bỏ chú | ⚠ |
+
+### Kết quả đợt 14
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **10** |
+| ✅➕ Nguồn xác nhận **và** bổ sung nội dung mới | 5 |
+| ❔➕ ⚠ **Nguồn không phủ** — tra ngoài, ghi ngày, hạ giọng | 4 |
+| ⚠ Sai, đã sửa | 1 |
+| Mục mới thêm vào sách | **§34 (mV/V)** · **§42.2b** · **§38.3b** + 15 dòng Bảng chốt + 10 câu Tự kiểm |
+
+> ⭐⭐ **Điều đáng ghi của đợt này: bốn trên mười khẳng định KHÔNG có nguồn nội bộ.**
+>
+> Cả bốn đều là kiến thức "ai làm nghề cũng biết" — từ biến, đặt lệch tâm, vùng yên tĩnh, kích thước
+> ô. ⚠ **Chính loại kiến thức đó là chỗ dễ viết sai nhất mà không ai phát hiện**, vì nó nghe quá hiển
+> nhiên để đi kiểm.
+>
+> ⭐ Cách xử lý đã theo đúng quy tắc của kỹ năng `doi-chieu-nguon`: ❔ **không được tính là xác nhận**.
+> Bốn mục trên vào sách với **con số tối thiểu**, kèm câu chỉ người đọc về **bản gốc đặc tả** và
+> **datasheet của chính thiết bị họ mua** — thay vì chép một con số tôi không kiểm được.
+>
+> ⚡ Mục 78 là loại lỗi mà **chỉ máy tìm ra**: ba cách gọi cùng một thứ, nằm ở ba chương cách xa nhau,
+> không người đọc nào bắt được — nhưng `kiem_nhat_quan.py` thì có.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -416,8 +456,8 @@ kiểm**, không phải "không có lỗi".
 | Nhóm | Chương | Nguồn sẵn có | Ưu tiên |
 |---|---|---|---|
 | ⚠⚠ **An toàn** | ⭐ **Đã đối chiếu hết** — 3, 6, 47, 48, Phụ lục D (đợt 1, 3, 4, 7). ⚠ Cờ ⚠ vẫn giữ | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
-| Đo lường & analog | 34 *(31, 33, 35 đã đối chiếu đợt 5–7)* | Kuphaldt *Lessons in Industrial Instrumentation* | ⭐ Cao |
-| Truyền thông | 38, 42 *(39, 40 đã đối chiếu đợt 3, 8)* | ⭐ **Đặc tả Modbus gốc**, IO-Link, EtherCAT/TSN | ⭐ Cao |
+| Đo lường & analog | ⭐ **Đã đối chiếu** (đợt 5–7, 14) | — | — |
+| Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7, 11, 12, 14, 19 *(8, 9, 18 đã đối chiếu đợt 4, 10)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | 15–17, 20, 21 | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |

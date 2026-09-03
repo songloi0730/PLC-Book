@@ -79,6 +79,76 @@ tác dụng của lực, điện trở đổi rất nhỏ, và cầu mất cân 
 
 ---
 
+### ⭐⭐ Vì sao đơn vị là mV/V — và bốn thông số datasheet quyết định
+
+**Một — mV/V không phải cách viết cho gọn, nó là bản chất của mạch cầu.**
+
+Mạch cầu đo lực khác mạch cầu cân bằng ở một điểm: ⭐ **điện áp ra tỉ lệ với điện áp kích thích**.
+Cầu cân bằng cho 0 V bất kể nguồn nuôi bao nhiêu; cầu **lệch** thì nguồn nuôi quyết định biên độ ra.
+
+⭐ Vì thế độ nhạy phải ghi dưới dạng *"bao nhiêu mV ra trên mỗi vôn kích, ở tải định mức"*.
+
+```text
+Load cell 2 mV/V, kich thich 10 V  ->  toan thang =  20 mV
+Load cell 2 mV/V, kich thich  5 V  ->  toan thang =  10 mV
+```
+
+> ⚠⚠ **Hai hệ quả thực dụng:**
+>
+> | Hệ quả | |
+> |---|---|
+> | ⭐ Bộ khuếch đại **phải biết** điện áp kích thật | ⚠ Cấu hình sai điện áp kích → **sai toàn thang**, mà đồ thị vẫn đẹp |
+> | ⭐⭐ **Điện áp kích trôi thì phép đo trôi theo** | ⚠ Đây là lý do bộ khuếch đại tốt **tự cấp và tự đo** điện áp kích |
+
+**Hai — vì sao bốn tem biến dạng chứ không phải một.**
+
+Điện trở tem biến dạng đổi theo **cả lực lẫn nhiệt độ**. ⭐ Mắc bốn tem thành cầu làm ảnh hưởng của
+nhiệt độ **tự triệt tiêu**, vì nó tác động lên mọi nhánh như nhau còn lực thì không.
+
+⭐ Đây là lý do bạn không thể tự chế load cell bằng một tem biến dạng dán lên thanh thép — nó sẽ đo
+nhiệt độ phòng nhiều hơn đo lực.
+
+**Ba — ⚠ từ biến: số đọc trôi trong lúc lực KHÔNG đổi.**
+
+Giữ nguyên một tải, số đọc vẫn **trôi chậm** — hiện tượng gọi là **từ biến** *(creep)*. Datasheet
+ghi nó dưới dạng phần trăm toàn thang trong một khoảng thời gian, ⭐ **thường là 30 phút**.
+
+| Bạn làm gì | Từ biến ảnh hưởng ra sao |
+|---|---|
+| Đo lực đỉnh rồi nhả ngay | ⭐ **Gần như không ảnh hưởng** |
+| ⚠ **Giữ lực rồi mới đọc** | ⭐ Càng giữ lâu, số đọc càng lệch |
+| ⚠⚠ Giữ tải liên tục và theo dõi lâu dài | Từ biến trở thành sai số đáng kể |
+
+> ⭐ **Thiết kế theo hướng tránh nó:** đọc lực **tại thời điểm xác định trong chu trình**, không phải
+> sau một khoảng giữ tuỳ ý. ⚠ Nếu bắt buộc phải giữ, hãy **giữ đúng một khoảng cố định** để sai số
+> ít nhất **lặp lại được**.
+
+**Bốn — ⚠⚠ đặt lệch tâm: cùng một lực, số đọc khác nhau.**
+
+Load cell được thiết kế để nhận lực **tại một điểm và theo một phương**. ⭐ Lực đặt lệch tâm sinh
+thêm mô-men, và số đọc sai — sai bao nhiêu thì datasheet ghi dưới dạng phần trăm toàn thang **ứng
+với một độ lệch cho trước**.
+
+> ⚠⚠ **Đây là sai số CƠ KHÍ mà không phép hiệu chuẩn điện nào sửa được.**
+>
+> Hiệu chuẩn bằng quả cân (mục 34.3) đặt tải **đúng tâm**. Nếu khi chạy thật, cơ cấu ép lại tì lệch —
+> ⭐ **phép hiệu chuẩn vẫn đúng, mà phép đo vẫn sai**.
+>
+> | Việc phải làm | |
+> |---|---|
+> | ⭐ **Dẫn hướng cơ cấu** để lực luôn đi qua tâm load cell | Cách tốt nhất |
+> | ⭐ Tránh **lực ngang và mô-men** vào load cell | Dùng khớp cầu hoặc màng đàn hồi nếu cần |
+> | ⭐⭐ **Kiểm bằng cách đặt cùng một quả cân ở vài vị trí** | ⭐ Chênh lệch giữa các vị trí chính là sai số lệch tâm **thật của cơ cấu bạn** |
+
+⭐ Hàng cuối là phép kiểm mười phút mà rất ít người làm — và nó trả lời dứt điểm câu hỏi *"vì sao
+cùng một sản phẩm mà lực đo lúc cao lúc thấp"*.
+
+*(Đối chiếu: Kuphaldt — Lessons in Industrial Instrumentation, mục mạch cầu đo và triệt tiêu biến số
+không mong muốn. Từ biến và sai số lệch tâm là **thông số datasheet tiêu chuẩn** của load cell —
+⚠ con số cụ thể khác nhau theo thiết bị và theo cấp chính xác; tra datasheet của load cell bạn dùng.)*
+
+---
+
 ## 34.3 Hiệu chuẩn bằng quả cân chuẩn
 
 Với cân, **hiệu chuẩn là bắt buộc** — không phải tuỳ chọn. Chương 32 mục 32.8 đã phân biệt hiệu chuẩn
@@ -418,6 +488,10 @@ Chương 29).
 
 | Câu hỏi | Trả lời |
 |---|---|
+| ⭐⭐ Vì sao độ nhạy ghi bằng **mV/V** | Điện áp ra **tỉ lệ với điện áp kích** — kích trôi thì phép đo trôi |
+| ⭐ Vì sao bốn tem chứ không một | Mạch cầu **tự triệt tiêu ảnh hưởng nhiệt độ** |
+| ⚠ Từ biến | Số đọc **trôi khi lực KHÔNG đổi** — đọc tại thời điểm cố định trong chu trình |
+| ⚠⚠ Đặt lệch tâm | ⭐ **Sai số cơ khí — hiệu chuẩn điện không sửa được.** Kiểm bằng quả cân đặt vài vị trí |
 | Vì sao cảm biến vị trí không đủ | ⭐ Nhiều loại lỗi **kết thúc ở cùng vị trí**, khác nhau ở **đường đi tới đó** |
 | Tiêu chí OK/NG cho thao tác có lực | ⭐ **Cửa sổ lực–vị trí** |
 | Kiểm cửa sổ thế nào cho đúng | ⚠ Phải **đi qua đủ** mọi cửa sổ, không chỉ "không vi phạm" |
@@ -459,6 +533,13 @@ Chương 29).
 > Câu 1, 5, 6, 8 và 12 là năm câu phân loại. Câu 12 là tinh thần của cả chương: **một đại lượng cho
 > bạn một con số; quan hệ giữa hai đại lượng cho bạn một chữ ký — và chữ ký mới phát hiện được hỏng
 > hóc trôi dần.**
+
+⭐⭐ **Bổ sung.** Một load cell 2 mV/V. Bộ khuếch đại được cấu hình cho kích thích 10 V nhưng thực tế
+chỉ cấp 5 V. Phép đo sai thế nào, và vì sao **đồ thị vẫn trông bình thường**?
+
+⚠⚠ **Bổ sung.** Bạn hiệu chuẩn bằng quả cân đặt đúng tâm, kết quả hoàn hảo. Khi chạy thật, cùng một
+sản phẩm cho lực lúc cao lúc thấp. Nêu nguyên nhân cơ khí khả dĩ nhất và **phép kiểm mười phút** xác
+nhận nó.
 
 ---
 

@@ -384,7 +384,7 @@ Nguy hiểm cụ thể: một đoạn code phụ nào đó đặt `MachineState 
 mất mà nguyên nhân còn nguyên**.
 
 **Cách phòng:** chỉ gán `MachineState` **bên trong khối `CASE`** (hoặc trong các nấc chuyển tiếp đã
-định danh). Dùng tham chiếu chéo *(cross-reference)* để soát: mọi chỗ ghi vào `MachineState` phải khớp
+định danh). Dùng công cụ tham chiếu chéo để soát: mọi chỗ ghi vào `MachineState` phải khớp
 đúng một dòng trong bảng. Đây là ứng dụng trực tiếp của quy tắc "mỗi biến chỉ được ghi ở nơi đã định"
 ở Chương 10.
 

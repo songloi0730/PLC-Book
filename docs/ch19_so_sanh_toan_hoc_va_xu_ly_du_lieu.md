@@ -49,7 +49,7 @@ Ba điều dễ vấp:
 
 > 💡 **MẸO — MOVE là chỗ tốt để đặt điểm quan sát**
 > Khi gỡ lỗi một giá trị "không biết từ đâu ra", tìm **mọi** lệnh ghi vào biến đó — MOVE, phép gán,
-> khối chức năng có chân ra nối vào nó. Công cụ tham chiếu chéo *(cross-reference)* của phần mềm lập
+> khối chức năng có chân ra nối vào nó. Công cụ tham chiếu chéo của phần mềm lập
 > trình làm việc này trong vài giây (Chương 22). Đây là kỹ thuật gỡ lỗi năng suất nhất với dữ liệu.
 
 ---

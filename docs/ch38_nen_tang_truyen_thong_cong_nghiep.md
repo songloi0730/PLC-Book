@@ -53,7 +53,7 @@ Ba chuẩn giao diện điện, thường bị gọi chung là "cổng nối ti�
 | Tín hiệu | **Đơn cực** — so với đất chung | **Vi sai** | ⭐ **Vi sai** |
 | Số thiết bị | 2 | 1 phát, nhiều nhận | ⭐ **Nhiều phát, nhiều nhận** |
 | Chiều | Hai chiều đồng thời | Một chiều (có bản hai chiều) | ⭐ **Hai chiều luân phiên** *(half-duplex)* |
-| Khoảng cách | Ngắn — vài chục mét | Xa | ⭐ **Xa** — hàng trăm mét |
+| Khoảng cách | Ngắn — vài chục mét | Xa | ⭐ **Xa** — khuyến nghị tới **1200 m** (mục 38.3b) |
 | Chống nhiễu | ⚠ Kém | Tốt | ⭐ **Tốt** |
 | Số dây tín hiệu | 3 trở lên | 4 | ⭐ **2** (cộng dây đất) |
 | Vị thế hiện nay | Đang lùi dần | Ít gặp | ⭐ **Phổ biến nhất trong công nghiệp** |
@@ -84,6 +84,59 @@ Vì hai dây đi cạnh nhau (và **xoắn** vào nhau), nhiễu cảm ứng và
 >
 > 💡 Cùng nguyên lý này giải thích vì sao vòng dòng 4–20 mA chống nhiễu tốt (Chương 31, mục 31.4) và
 > vì sao Ethernet công nghiệp dùng đôi xoắn (Chương 40).
+
+---
+
+## 38.3b ⭐⭐ Khoảng cách và tốc độ đánh đổi với nhau — không con số nào đứng một mình
+
+Câu hỏi hay gặp nhất về RS-485 là *"đi được bao xa?"*. ⚠ Câu hỏi đó **thiếu một nửa**: xa bao nhiêu
+**ở tốc độ nào**.
+
+| Con số | Nội dung |
+|---|---|
+| Khuyến nghị thường trích | ⭐ **1200 m** cho cả RS-422 và RS-485 |
+| ⭐⭐ Quan hệ tốc độ–chiều dài | **Tốc độ tối đa tỉ lệ nghịch với chiều dài cáp** |
+| ⚠ Nên hiểu 1200 m là | **Một điểm trên đường đánh đổi**, không phải bức tường |
+
+**Ba dữ kiện làm rõ ý này**
+
+| Trường hợp | Kết quả |
+|---|---|
+| Cáp 30 m *(100 ft)*, ⚠ **không có điện trở đầu cuối** | ~**200 kbps** |
+| ⭐ Cùng cáp 30 m, **có** điện trở đầu cuối ở đầu nhận | ⭐ **1 Mbps** — gấp năm lần |
+| Cáp **5 km**, cáp chất lượng cao, đi dây cẩn thận | Chạy được ở **1200 bps** |
+
+> ⭐⭐ **Ba dòng trên nói ba điều khác nhau, và cả ba đều đáng nhớ:**
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Điện trở đầu cuối không phải chi tiết nhỏ** — cùng sợi cáp đó, có nó thì nhanh gấp năm lần (mục 38.5) |
+> | 2 | ⭐ **1200 m không phải giới hạn cứng** — hạ tốc độ xuống thì đi xa hơn nhiều |
+> | 3 | ⚠ Nhưng cái giá của việc đi xa là **cáp tốt và đi dây cẩn thận**, không phải may mắn |
+
+**Hệ quả khi thiết kế**
+
+> ⭐ **Chọn tốc độ thấp nhất mà chu kỳ máy chấp nhận được.**
+>
+> Người ta hay đặt baud cao *"cho chắc"*. ⚠ Ngược lại: baud cao **thu hẹp biên an toàn** của mọi thứ
+> khác — chiều dài cáp, nhánh rẽ, chất lượng đấu nối, điện trở đầu cuối. Một mạng 9600 bps tha thứ
+> cho nhiều sai sót mà mạng 115200 bps thì không.
+>
+> ⭐ Hãy tính ngược từ nhu cầu: cần đọc bao nhiêu byte, bao lâu một lần (mục 38.8) — rồi chọn baud
+> vừa đủ, không chọn baud lớn nhất mà thiết bị hỗ trợ.
+
+> 🔍 **BẪY — "hôm qua chạy được".**
+>
+> Một mạng đang chạy ở rìa biên an toàn **vẫn chạy được** — cho tới khi có người nối thêm một thiết
+> bị, kéo dài thêm mười mét, hay dựng một biến tần bên cạnh. ⚠ Lúc đó lỗi xuất hiện và **không ai
+> liên hệ nó với việc baud đang đặt quá cao từ đầu**.
+>
+> ⭐ Đây cũng là lý do ⚠ **hạ baud xuống mà hết lỗi** là một phép thử chẩn đoán rất mạnh — nó chỉ
+> thẳng vào tầng vật lý (mục 38.5, và Chương 51).
+
+*(Đối chiếu: Kuphaldt, *Lessons In Industrial Instrumentation*, §15.6 — khuyến nghị 1200 m, quan hệ
+tỉ lệ nghịch tốc độ–chiều dài, thí nghiệm của Texas Instruments về ảnh hưởng của điện trở đầu cuối,
+và ghi chú về mạng 5 km chạy ở 1200 bps do Park, Mackay & Wright ghi nhận.)*
 
 ---
 
@@ -541,6 +594,12 @@ chạy không tải.
 | Lệch chẵn lẻ → | ⚠ **Dữ liệu rác trông như thật** — nguy hiểm hơn |
 | Điện trở đầu cuối | ⭐ **Đúng hai**, ở **hai đầu vật lý** |
 | Triệu chứng thiếu điện trở đầu cuối | ⭐ **Chạy ở baud thấp, hỏng ở baud cao** |
+| ⭐⭐ "Đi được bao xa" | ⚠ **Câu hỏi thiếu một nửa** — xa bao nhiêu **ở tốc độ nào** |
+| Khuyến nghị chiều dài | ⭐ **1200 m**; ⭐ **tốc độ tối đa tỉ lệ nghịch với chiều dài** |
+| Cùng một sợi cáp, thêm điện trở đầu cuối | ⭐ **200 kbps → 1 Mbps** |
+| ⭐ Chọn baud thế nào | ⭐ **Thấp nhất mà chu kỳ máy chấp nhận được** — không phải cao nhất thiết bị hỗ trợ |
+| Baud cao làm gì | ⚠ **Thu hẹp biên an toàn** của cáp, nhánh rẽ, đấu nối |
+| ⭐ Hạ baud xuống thì hết lỗi | Phép thử chẩn đoán mạnh — chỉ thẳng vào **tầng vật lý** |
 | Phân cực | **Một bộ** trên toàn bus |
 | Cấu trúc RS-485 | **Bus**, không phải hình sao |
 | ⚠ Quy ước A/B | **Không thống nhất** giữa các hãng — thử đảo |
@@ -574,6 +633,11 @@ chạy không tải.
 12. Vì sao **không** được ghi điểm đặt vào thiết bị ở mỗi vòng quét?
 13. Nêu ba lý do RS-485 vẫn phổ biến dù Ethernet mạnh hơn.
 14. ⚠ Đã kiểm hết bốn tham số mà vẫn im lặng. Việc nên thử tiếp theo là gì, và vì sao nó hay xảy ra?
+15. ⭐⭐ Vì sao câu hỏi *"RS-485 đi được bao xa?"* là câu hỏi **thiếu**? Phải hỏi lại thế nào cho đúng?
+16. ⭐ Cùng một sợi cáp 30 m: không điện trở đầu cuối đạt ~200 kbps, có thì đạt 1 Mbps. Con số này nói
+    gì về tầm quan trọng của điện trở đầu cuối?
+17. ⭐ Vì sao nên chọn **baud thấp nhất đủ dùng** thay vì baud cao nhất thiết bị hỗ trợ? Liên hệ với
+    bẫy "hôm qua chạy được".
 
 > Câu 2, 4, 10 và 11 là bốn câu phân loại. Câu 11 là tinh thần của cả chương: **mất truyền thông không
 > làm quá trình dừng — nó làm bạn mù. Và chạy tiếp trong trạng thái mù là quyết định phải có người
@@ -598,6 +662,9 @@ gần như mọi người từng dùng nó.
   cầu không**, điện trở đầu cuối tích hợp, và ⚠ **quy ước đánh số chân A/B**.
 - **Tài liệu bộ điều khiển nhiệt độ** — dùng cho tham số truyền thông, bản đồ thanh ghi, và ⚠ **giới
   hạn số lần ghi** vào bộ nhớ không mất.
+- **Kuphaldt, Tony R.** — *Lessons In Industrial Instrumentation*, §15.6: tín hiệu vi sai, khuyến nghị
+  ⭐ **1200 m**, ⭐ **quan hệ tỉ lệ nghịch tốc độ–chiều dài**, thí nghiệm Texas Instruments về ảnh hưởng
+  của điện trở đầu cuối, và ⚠ **quy ước nhãn A/B không được chuẩn hoá** — nền cho mục 38.3b và 38.13.
 - Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J §J.1 và §J.2.
 
 > ⚡ Các con số về **khoảng cách và số thiết bị tối đa** của RS-485 phụ thuộc tốc độ baud, chất lượng

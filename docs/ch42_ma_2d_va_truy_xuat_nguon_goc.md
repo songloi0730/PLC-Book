@@ -48,6 +48,69 @@ Mã khắc quá nhạt, quá đậm, tương phản kém, hoặc bề mặt bón
 
 ---
 
+## 42.2b ⭐⭐ Hai lý do "mã không đọc được" mà không nằm ở đầu đọc
+
+Khi tỉ lệ đọc kém, người ta đổi đầu đọc, chỉnh đèn, chỉnh tiêu cự. ⭐ **Hai nguyên nhân dưới đây nằm
+ở chính CÁI MÃ**, và không có đầu đọc nào cứu được.
+
+**Một — ⚠⚠ vùng yên tĩnh bị lấn**
+
+Mã 2D cần một **viền trống** quanh nó — gọi là **vùng yên tĩnh** *(quiet zone)*. Đầu đọc dùng viền
+đó để tìm ra ranh giới và **mẫu định vị hình chữ L** của mã.
+
+| Yêu cầu | Nội dung |
+|---|---|
+| Tối thiểu theo đặc tả | ⭐ **Một ô** *(module)* trống ở **cả bốn phía** |
+| ⭐ Khuyến nghị thực dụng | **2–4 ô** khi nền nhiễu, bề mặt phản xạ, hoặc gần chi tiết khác |
+| ⚠ Trong vùng đó | **Không được có** hoa văn, chữ, đường viền, mép chi tiết |
+
+> ⚠⚠ **Đây là lỗi thiết kế cơ khí, không phải lỗi thị giác.**
+>
+> Mã in sát mép board, sát một đường mạch in, hay sát một lỗ khoan → ⭐ **đầu đọc không tìm được mẫu
+> định vị**, và nó báo "không đọc được" chứ không báo "vùng yên tĩnh bị lấn".
+>
+> ⭐ Triệu chứng đặc trưng: ⚠ **mã đọc được khi cầm tay soi ở góc khác, nhưng đầu đọc cố định thì
+> không** — vì góc nhìn khác làm mép chi tiết lọt vào hoặc ra khỏi khung.
+>
+> ⭐ **Quyết định vị trí đặt mã là việc của giai đoạn thiết kế** (Chương 57 giai đoạn 1) — sửa sau khi
+> đã có board thì phải đổi cả bản vẽ board.
+
+**Hai — ⭐ ô mã quá nhỏ so với độ phân giải camera**
+
+Kích thước một ô của mã *(module / X-dimension)* quyết định camera cần bao nhiêu điểm ảnh.
+
+```text
+So diem anh tren mot o  =  do phan giai camera tren vung nhin  x  kich thuoc o
+```
+
+⭐ Đầu đọc cần **vài điểm ảnh cho mỗi ô** mới giải mã ổn định — ⚠ **con số tối thiểu cụ thể ghi trong
+datasheet đầu đọc**, và nó khác nhau giữa mã in và mã khắc trực tiếp.
+
+| Muốn cải thiện | Cách |
+|---|---|
+| ⭐ **Làm ô mã to hơn** | ⭐ Rẻ nhất và hiệu quả nhất — nếu còn chỗ trên sản phẩm |
+| Thu hẹp vùng nhìn | Đưa đầu đọc gần hơn, hoặc dùng ống kính tiêu cự dài hơn |
+| Tăng độ phân giải đầu đọc | ⚠ Đắt, và ⭐ **không cứu được mã quá nhỏ** |
+
+> ⭐⭐ **Thứ tự đúng khi tỉ lệ đọc kém: kiểm CÁI MÃ trước, đầu đọc sau.**
+>
+> | Kiểm theo thứ tự | |
+> |---|---|
+> | 1 | ⭐ Vùng yên tĩnh có bị lấn không |
+> | 2 | ⭐ Ô mã có đủ lớn cho độ phân giải hiện tại không |
+> | 3 | Tương phản và chất lượng in/khắc (mục 42.9) |
+> | 4 | Chiếu sáng và góc đặt |
+> | 5 | Cấu hình đầu đọc |
+>
+> ⚠ Người ta thường bắt đầu từ mục 5 và đi ngược lên — mất nhiều ngày cho một vấn đề nằm ở mục 1.
+
+*(Đối chiếu: ISO/IEC 16022 — đặc tả ký hiệu Data Matrix — quy định vùng yên tĩnh tối thiểu; hướng
+dẫn GS1 khuyến nghị mở rộng khi môi trường nhiễu. ⚠ Sách này **không dẫn số điều khoản**; con số cụ
+thể và yêu cầu điểm ảnh trên ô phải lấy từ **bản gốc đặc tả** và **datasheet đầu đọc**. Tra cứu
+2026-09-03.)*
+
+---
+
 ## 42.3 Đầu đọc — cố định hay cầm tay
 
 | | ⭐ **Cố định** *(fixed-mount)* | **Cầm tay** *(handheld)* |
@@ -441,6 +504,11 @@ tới mức gây dừng máy.
 | Vì sao điện tử dùng mã 2D | Diện tích nhỏ · ⭐ **khắc trực tiếp lên board** · có sửa lỗi |
 | Tỉ lệ đọc thấp — nghi gì trước | ⭐ **Chất lượng mã và chiếu sáng**, không phải đầu đọc |
 | Yếu tố quyết định nhất khi lắp đầu đọc | ⭐ **Chiếu sáng** |
+| ⭐⭐ Hai nguyên nhân nằm ở **cái mã** | ⭐ **Vùng yên tĩnh bị lấn** · ⭐ **ô mã quá nhỏ so với độ phân giải** |
+| Vùng yên tĩnh tối thiểu | ⭐ **Một ô** ở cả bốn phía; **2–4 ô** khi nền nhiễu |
+| Triệu chứng vùng yên tĩnh bị lấn | ⚠ **Cầm tay đọc được, đầu đọc cố định thì không** |
+| Cách rẻ nhất khi ô mã quá nhỏ | ⭐ **Làm ô mã to hơn** — không phải mua đầu đọc đắt hơn |
+| Vị trí đặt mã quyết định ở đâu | ⭐ **Giai đoạn thiết kế** — sửa sau thì phải đổi bản vẽ board |
 | Nhận chuỗi mã về thì | ⭐ **Kiểm định dạng trước khi dùng** |
 | ⭐⭐ Lý do tồn tại của truy xuất | **Hỏi MES TRƯỚC khi làm** — chống nhảy cóc và chống làm trùng |
 | Ghi log một mình cho gì | Chỉ giúp **điều tra sau khi đã hỏng** |
@@ -469,6 +537,12 @@ tới mức gây dừng máy.
 10. Nếu chọn "chạy tạm", nêu bốn điều bắt buộc phải làm.
 11. ⭐ Vì sao **nhập tay không có kiểm soát** là lỗ hổng lớn nhất? Liên hệ với bẫy nào ở Chương 29?
 12. Vì sao nên đếm và theo dõi **tỉ lệ không đọc được**? Nó thuộc mức cảnh báo nào?
+13. ⭐⭐ Nêu **hai nguyên nhân "mã không đọc được" nằm ở chính cái mã**. Vì sao đổi đầu đọc không cứu
+    được cả hai?
+14. ⭐ Vùng yên tĩnh là gì, tối thiểu bao nhiêu, và đầu đọc dùng nó để làm gì? Triệu chứng đặc trưng
+    khi nó bị lấn là gì?
+15. Một mã đọc kém. Nêu **thứ tự năm bước kiểm** đúng. Người ta thường bắt đầu từ bước nào, và cái
+    giá của việc bắt đầu sai chỗ?
 
 > Câu 5, 6, 9 và 11 là bốn câu phân loại. Câu 5 là tinh thần của cả chương: **ghi log giúp bạn điều
 > tra sau khi đã hỏng; hỏi trước khi làm giúp bạn không hỏng.**
@@ -483,8 +557,10 @@ hơn: nhận toạ độ và góc lệch, đồng bộ lúc chụp với lúc v�
 
 ### Nguồn tham khảo chương 42
 
-- **ISO/IEC 16022** — *Data Matrix bar code symbology specification*: đặc tả mã Data Matrix.
-  *(tiêu chuẩn có bản quyền)*
+- **ISO/IEC 16022** — *Data Matrix bar code symbology specification*: đặc tả mã Data Matrix, gồm
+  ⭐ **yêu cầu vùng yên tĩnh** (mục 42.2b). *(tiêu chuẩn có bản quyền)*
+- **Hướng dẫn GS1 về Data Matrix** — khuyến nghị **mở rộng vùng yên tĩnh** khi môi trường nhiễu.
+  ⚠ Sách này **không dẫn số điều khoản** của các tiêu chuẩn trên; con số cụ thể phải lấy từ bản gốc.
 - **ISO/IEC 15415** và **ISO/IEC 29158** — chấm điểm chất lượng mã in và mã khắc trực tiếp; dùng khi
   chẩn đoán tỉ lệ đọc thấp (mục 42.2).
 - **Tài liệu đầu đọc mã** — dùng cho ⚠ **định dạng chuỗi trả về**, cách kích, giao thức, và yêu cầu

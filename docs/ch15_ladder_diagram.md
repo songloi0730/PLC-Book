@@ -281,7 +281,7 @@ không giải thích được (khi hai nấc trùng nằm trong hai nhánh chư�
 ```
 
 **Cách phòng:** quy tắc **mỗi ngõ ra chỉ được ghi ở đúng một nơi**. Trước khi thêm điều kiện cho một
-ngõ ra, dùng chức năng tham chiếu chéo *(cross-reference)* để tìm mọi chỗ đang ghi vào nó — Chương 22
+ngõ ra, dùng công cụ tham chiếu chéo *(cross-reference)* để tìm mọi chỗ đang ghi vào nó — Chương 22
 hướng dẫn.
 
 > ⚡ **LƯU Ý**
