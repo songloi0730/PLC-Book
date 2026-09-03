@@ -361,6 +361,52 @@ Ngoài ra cần một quy ước rõ ràng cho **thời điểm đặt lại**:
 
 ---
 
+## 18.6b ⚠⚠ Bộ đếm thường ĐÃ giữ sẵn — và đó mới là chỗ nguy hiểm
+
+Mục trên nói về việc **làm cho** bộ đếm giữ được. ⚠ Nhưng ở nhiều hệ, câu hỏi đúng lại ngược lại:
+⭐ **bộ đếm mặc định đã giữ rồi, và bạn phải chủ động xoá thứ không được phép giữ.**
+
+| Điều | Nội dung |
+|---|---|
+| ⭐ Mặc định phổ biến | **Bộ đếm giữ giá trị qua mất điện** — giá trị lúc CPU tắt được khôi phục khi có điện lại |
+| ⚠⚠ Hệ quả | Bộ đếm **điều khiển logic** sẽ khởi động lại với giá trị cũ |
+| ⭐ Ngoại lệ đáng biết | ⚠ Nếu **điều kiện đặt lại đang đúng vào lúc có điện trở lại**, bộ đếm bị xoá — số liệu bạn tưởng còn thì không còn |
+
+> ⚠⚠ **Đây là cùng một bẫy với biến giữ được ở Chương 16, mục 16.4 — chỉ khác là nó đến "miễn phí".**
+>
+> Với bộ đếm **sản lượng**, giữ được là điều bạn muốn. Với bộ đếm **điều khiển logic** — đếm số board
+> trong một mẻ, đếm bước, đếm số lần thử lại — thì ⚠⚠ **giữ được là một lỗi an toàn**: máy có điện
+> trở lại và tin rằng nó đang ở giữa mẻ thứ bảy, trong khi băng tải đã bị dọn sạch.
+>
+> ⭐ **Quy tắc:** với mỗi bộ đếm, trả lời dứt khoát câu hỏi ⭐ *"nếu mất điện ngay bây giờ rồi có điện
+> lại, giá trị này CÒN thì đúng hay SAI?"* — rồi cấu hình theo câu trả lời, ⚠ **đừng để mặc định trả
+> lời hộ**.
+
+> ⚡ **Và đừng dựa vào việc đặt lại lúc khởi động để "chữa".** Nếu bạn định xoá bộ đếm bằng một điều
+> kiện chạy lúc có điện, hãy nhớ ⚠ thứ tự thực thi lúc khởi động không phải lúc nào cũng như bạn
+> tưởng — hãy **thử thật**: cho đếm tới một giá trị, cắt nguồn, cấp lại, và **xem giá trị**.
+
+### ⚠ Cực tính chân đặt lại khác nhau giữa các hãng
+
+⭐ Một khác biệt nhỏ nhưng đủ làm hỏng cả logic đặt lại khi chuyển chương trình:
+
+| Hệ có thể | Yêu cầu để xoá bộ đếm |
+|---|---|
+| Nhóm một | Nấc / chân đặt lại phải ⭐ **ĐÚNG** *(true)* |
+| Nhóm hai | Nấc / chân đặt lại phải ⭐ **SAI** *(false)* |
+
+> ⚠ Nghĩa là cùng một đoạn logic đặt lại, chuyển sang hệ khác có thể thành ⚠⚠ **xoá bộ đếm liên tục**
+> hoặc ⚠⚠ **không bao giờ xoá** — cả hai đều im lặng.
+>
+> ⭐ **Tra tài liệu của đúng hệ trước khi viết logic đặt lại**, và kiểm bằng cách cho đếm rồi kích
+> điều kiện đặt lại trong lúc trực tuyến.
+
+*(Đối chiếu: Petruzella, *Programmable Logic Controllers* — bộ đếm PLC **thường là giữ được**, giá trị
+lúc dừng được khôi phục khi cấp nguồn lại, ⚠ trừ khi điều kiện đặt lại đang tác động lúc đó; và ⭐ cực
+tính chân đặt lại **khác nhau giữa các hãng**, tài liệu khuyến cáo tra sổ tay trước khi lập trình.)*
+
+---
+
 ## 18.7 Khác biệt giữa các hãng
 
 | Khía cạnh | Siemens (S7-1200/1500) | Mitsubishi (FX5U / iQ-R) | Rockwell (Logix) | CODESYS / TwinCAT |
@@ -368,6 +414,7 @@ Ngoài ra cần một quy ước rõ ràng cho **thời điểm đặt lại**:
 | Khối đếm | `CTU` `CTD` `CTUD` | Thiết bị `C` + lệnh `OUT`/`RST` | `CTU` `CTD` | `CTU` `CTD` `CTUD` |
 | Giá trị hiện tại / đặt | `.CV` / `.PV` | Giá trị hiện tại và giá trị đặt của thiết bị `C` | `.ACC` / `.PRE` | `.CV` / `.PV` |
 | ⚠ Đặt lại | Chân `R` | Lệnh `RST` | ⚠ **Bắt buộc lệnh `RES`** | Chân `R` |
+| ⚠ Cực tính điều kiện đặt lại | ⭐ **Tra tài liệu** — có hệ cần ĐÚNG, có hệ cần SAI (mục 18.6b) | ⭐ Tra tài liệu | ⭐ Tra tài liệu | ⭐ Tra tài liệu |
 | ⚠ Độ rộng số đếm | Chọn kiểu dữ liệu khi khai báo khối (`Int`, `DInt`…) | ⚠ **Theo dải số hiệu**: dải thấp là 16 bit, dải cao là 32 bit | `.ACC` là `DINT` 32 bit | Theo kiểu dữ liệu khai báo |
 | Bộ đếm tốc độ cao | HSC tích hợp trên CPU, cấu hình trong phần cứng | ⚠ Thiết bị `C` chuyên dụng, **gắn cứng với ngõ vào cụ thể** | Module đếm chuyên dụng, hoặc ngõ vào tốc độ cao trên CPU nhỏ | Thiết bị đầu cuối EtherCAT chuyên dụng |
 
@@ -482,6 +529,10 @@ quãng đã biết, so số xung đếm được với tính toán. Chỉ hai ph
 | Có cần HSC không | `f < 1/(10×Tq)` → không cần · `f ≥ 1/(2×Tq)` → **bắt buộc** · ở giữa → nên dùng |
 | Vì sao biên tới 10 lần | Chu kỳ quét **không cố định** và sẽ dài ra khi chương trình lớn lên |
 | Sản lượng có giữ qua mất điện không | Có — khai báo **thể hiện của khối** là giữ được, và vẫn ghi ra nơi khác |
+| ⚠⚠ Mặc định của bộ đếm ở nhiều hệ | ⭐ **ĐÃ giữ sẵn** — nguy hiểm với bộ đếm **điều khiển logic** |
+| ⭐ Câu hỏi phải trả lời cho mọi bộ đếm | *"Mất điện rồi có lại — giá trị này CÒN thì đúng hay sai?"* |
+| ⚠ Ngoại lệ khi có điện lại | Điều kiện đặt lại đang đúng lúc đó → ⭐ **bộ đếm bị xoá** |
+| ⚠ Cực tính chân đặt lại | ⭐ **Khác nhau giữa các hãng** — có hệ cần ĐÚNG, có hệ cần SAI |
 | Encoder gia số sau mất điện | Mất vị trí → **phải về gốc** (Chương 28) |
 | Encoder dùng cho an toàn được không | **Không** — Chương 47 |
 
@@ -510,6 +561,10 @@ Bốn câu hỏi trước khi đặt một bộ đếm:
 9. Bộ đếm nào trên DP-01 **không bao giờ** được đặt lại? Vì sao?
 10. ⭐ Vì sao encoder không được dùng làm căn cứ cho chức năng an toàn, dù giá trị nó đọc ra trông
     hoàn toàn hợp lý?
+11. ⚠⚠ Bộ đếm ở nhiều hệ **mặc định đã giữ được**. Nêu một bộ đếm mà điều đó là **đúng ý muốn**, và
+    một bộ đếm mà điều đó là **lỗi an toàn**. Câu hỏi nào giúp phân biệt hai loại?
+12. ⭐ Bạn định xoá bộ đếm bằng một điều kiện chạy lúc khởi động. Nêu **hai** lý do không nên tin vào
+    thiết kế đó mà không thử thật.
 
 > Câu 3, 6 và 10 là ba câu phân loại. Câu 3 là tinh thần của cả chương: **một con số sai hiếm khi
 > sai vì phép đếm — nó sai vì đang đếm nhầm thứ.**
@@ -537,6 +592,9 @@ sau làm việc với **giá trị**: so sánh, tính toán, và những chỗ p
 - Tài liệu CPU và module của từng hệ trong Phụ lục A — dùng cho số kênh HSC, tần số tối đa, chế độ
   đếm, và hành vi khi tràn. Đây là các thông số **phải tra theo đúng dòng sản phẩm**, không suy đoán.
 - Bảng I/O của DP-01 — Phụ lục J.
+- **Petruzella**, *Programmable Logic Controllers* — ⭐ bộ đếm PLC **thường là giữ được**: giá trị lúc
+  CPU dừng được khôi phục khi cấp nguồn lại, ⚠ trừ khi **điều kiện đặt lại đang tác động** lúc đó; và
+  ⭐ **cực tính điều kiện đặt lại khác nhau giữa các hãng** — nền cho mục 18.6b.
 
 > ⚡ Công thức chọn HSC ở mục 18.5 là **quy tắc thiết kế thực dụng**, không phải yêu cầu tiêu chuẩn.
 > Hệ số 10 là biên dự phòng do chu kỳ quét biến động; đơn vị của bạn có thể chọn biên khác, nhưng phải

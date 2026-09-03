@@ -415,7 +415,7 @@ trình giữa hai hệ hay sai nhất.
 |---|---|---|
 | **Siemens** | Đặt **vùng nhớ M giữ được** trong thuộc tính CPU; với khối dữ liệu thì bật thuộc tính *Retain* cho từng biến | Quên bật *Retain* thì biến về 0 sau mất điện, không có cảnh báo nào |
 | **Mitsubishi** | Theo **dải thiết bị**: một số dải `M`, `D`, `C`, `T` là dải chốt *(latched)*, đặt trong tham số PLC | ⚠ Giữ hay không phụ thuộc **số hiệu thiết bị bạn chọn** — đổi `M100` thành `M500` có thể đổi luôn hành vi khi mất điện |
-| **Rockwell Logix** | ⭐ **Giá trị tag được giữ mặc định** qua chu kỳ nguồn | Ngược hẳn với Siemens: ở đây bạn phải chủ động **xoá** thứ không được phép giữ, thay vì chủ động đánh dấu thứ cần giữ |
+| **Rockwell Logix** | ⭐ **Giữ được là thuộc tính của LỆNH**: `OTL`/`OTU` giữ được, `OTE` thì không. Ngoài ra giá trị tag nói chung sống qua chu kỳ nguồn | Ngược hẳn với Siemens: ở đây bạn phải chủ động **xoá** thứ không được phép giữ, thay vì chủ động đánh dấu thứ cần giữ |
 | **CODESYS / TwinCAT** | Từ khoá `VAR RETAIN` và `VAR PERSISTENT` | Hai từ khoá **không giống nhau** — phạm vi giữ khác nhau, tra tài liệu trước khi dùng |
 
 > ⚠⚠ **Hàng Rockwell là hàng nguy hiểm khi chuyển hệ.**
@@ -425,6 +425,19 @@ trình giữa hai hệ hay sai nhất.
 >
 > Người chuyển chương trình từ Siemens sang Logix mà không biết điều này sẽ tạo ra đúng cỗ máy **tự
 > chạy lại khi có điện trở lại** — thứ mà IEC 60204-1 cấm.
+
+> ⭐⭐ **Chỗ tinh tế nhất: cùng một bit, hai lệnh, hai hành vi khi mất điện.**
+>
+> | Lệnh | Hành vi |
+> |---|---|
+> | `OTE` *(Output Energize)* | ⭐ **Không giữ** — bit theo nấc thang, mất điện là mất |
+> | `OTL` *(Output Latch)* / `OTU` *(Output Unlatch)* | ⚠⚠ **Giữ được** — trạng thái chốt sống qua chu kỳ nguồn |
+>
+> ⚠ Nghĩa là ⭐ **việc bit có sống qua mất điện hay không do BẠN CHỌN LỆNH quyết định**, chứ không
+> phải do khai báo biến — khác hẳn mô hình ở Siemens và CODESYS, nơi hai chuyện đó tách rời (Bẫy 7).
+>
+> ⭐ Đây cũng là lý do Bẫy 7 phải đọc kèm mục này: câu *"SET/RESET không tự động giữ qua mất điện"*
+> ⚠ **đúng với hệ IEC nhưng không đúng với `OTL`/`OTU` của Logix**.
 
 ### Điểm còn lại
 
@@ -495,8 +508,10 @@ nguyên nhân lỗi vẫn còn.
 
 **Hiện tượng:** thiết kế dựa vào việc cờ còn nguyên sau khi bật máy, nhưng nó về 0 — vì biến không
 được khai báo là giữ được.
-**Cách sửa:** SET/RESET quyết định **cách bit đổi giá trị**; khai báo biến quyết định **bit có sống
-qua mất điện không**. Hai chuyện tách rời (mục 16.4).
+**Cách sửa:** ở hệ IEC, SET/RESET quyết định **cách bit đổi giá trị**, còn khai báo biến quyết định
+**bit có sống qua mất điện không** — hai chuyện tách rời (mục 16.4).
+⚠⚠ **Ngoại lệ quan trọng:** trên Logix, `OTL`/`OTU` **tự nó đã là giữ được**, còn `OTE` thì không —
+ở đó hai chuyện **không** tách rời (mục 16.7).
 
 ### 🔍 BẪY 8 — Bắt cạnh trên một tín hiệu đang rung
 
@@ -519,14 +534,18 @@ một lần nhấn.
 | Sống qua mất điện | **Khai báo biến giữ được** | ⚠ Không bao giờ giữ `M_Running` và biến bước |
 | Làm đúng một lần mỗi sự kiện | **`R_TRIG` / `F_TRIG`** | Mỗi tín hiệu một thể hiện riêng |
 | Đếm sản phẩm | **Cạnh lên** (vào) hoặc **cạnh xuống** (xong) | Hai cách cho hai con số khác nhau — chọn có ý thức |
+| ⚠⚠ Sống qua mất điện **trên Logix** | ⭐ **Chọn lệnh**: `OTL`/`OTU` giữ được, `OTE` thì không | Ở đây khai báo biến **không** phải nơi quyết định |
 | Bắt cạnh trên nút bấm | **Lọc rung rồi mới bắt cạnh** | Sai thứ tự thì một lần nhấn ra nhiều cạnh |
 
 Bốn câu hỏi tự đặt trước khi viết một bit nhớ:
 
 1. Bit này mô tả *máy đang làm gì*, hay *đã có chuyện gì xảy ra*?
 2. Nếu dòng lệnh này chạy 400 lần liên tiếp thì có sao không?
-3. Mất điện rồi bật lại, bit này **nên** bằng mấy — và tôi đã khai báo đúng chưa?
+3. Mất điện rồi bật lại, bit này **nên** bằng mấy — và tôi đã khai báo đúng chưa? ⚠ Trên Logix, hỏi
+   thêm: **tôi đang dùng `OTE` hay `OTL`/`OTU`?**
 4. Ai xoá bit này, và điều kiện xoá đã đủ chặt chưa?
+
+---
 
 ---
 
@@ -568,6 +587,8 @@ phản hồi thật.
 - Bảng I/O và đặc tả trình tự của DP-01 — Phụ lục J.
 - Tài liệu lập trình của từng hệ trong Phụ lục A — dùng cho phần khai báo biến giữ được ở mục 16.7,
   vì đây là chỗ khác nhau nhiều nhất giữa các hãng.
+- **Petruzella**, *Programmable Logic Controllers* — bảng lệnh Logix: `OTE` **không giữ**, `OTL`/`OTU`
+  ⭐ **giữ được**; mạch chốt lập trình là **retentive**, giữ trạng thái qua mất điện (mục 16.7).
 
 > ⚡ Quy tắc chọn giữ / không giữ ở mục 16.4 là **quy tắc thiết kế**, không phải yêu cầu tiêu chuẩn —
 > trừ trường hợp khởi động lại có chủ ý, vốn là yêu cầu thật. Máy của bạn có ràng buộc khác thì đáp án

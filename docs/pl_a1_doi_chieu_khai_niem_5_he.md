@@ -180,7 +180,7 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 
 | | Siemens | Mitsubishi | Inovance | ⭐ CODESYS | Rockwell |
 |---|---|---|---|---|---|
-| **Cách khai báo** | Đánh dấu retentive cho vùng M / DB | ⭐ **Dải thiết bị được cấu hình là latched** | ⭐ **Tuỳ dòng** — xem bảng riêng bên dưới | ⭐ `VAR RETAIN` · `VAR PERSISTENT` | ⭐ Thuộc tính của tag |
+| **Cách khai báo** | Đánh dấu retentive cho vùng M / DB | ⭐ **Dải thiết bị được cấu hình là latched** | ⭐ **Tuỳ dòng** — xem bảng riêng bên dưới | ⭐ `VAR RETAIN` · `VAR PERSISTENT` | ⭐ Thuộc tính của tag, **và của LỆNH** — xem dưới |
 | **Cần pin hay không** | Tuỳ dòng | ⚠ **Dòng cũ thường cần pin** | Tuỳ dòng | Tuỳ phần cứng | Tuỳ dòng |
 | ⚠ **Sống sót qua nạp chương trình?** | ⚠⚠ **PHẢI KIỂM** | ⚠⚠ **PHẢI KIỂM** | ⚠⚠ **PHẢI KIỂM** | ⚠ `RETAIN` vs `PERSISTENT` khác nhau ở chính điểm này | ⚠⚠ **PHẢI KIỂM** |
 
@@ -194,6 +194,19 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 > phần cứng".
 >
 > Xem Chương 11 và Chương 53 mục 53.5.
+
+> ⭐⭐ **Rockwell: giữ được còn là thuộc tính của LỆNH, không chỉ của biến.**
+>
+> | Lệnh | Hành vi khi mất điện |
+> |---|---|
+> | `OTE` *(Output Energize)* | ⭐ **Không giữ** |
+> | `OTL` / `OTU` *(Output Latch / Unlatch)* | ⚠⚠ **Giữ được** |
+>
+> ⚠ Đây là chỗ khác mô hình của bốn hệ còn lại, nơi "cách bit đổi giá trị" và "bit có sống qua mất
+> điện không" là hai chuyện tách rời. ⭐ Người chuyển chương trình từ hệ IEC sang Logix mà không biết
+> điều này dễ tạo ra máy **tự chạy lại khi có điện trở lại**. Xem Chương 16, mục 16.7.
+>
+> ⚡ Cùng tinh thần: ⭐ **bộ đếm ở nhiều hệ mặc định đã giữ được** — Chương 18, mục 18.6b.
 
 > ⭐⭐ **Inovance: hai dòng, hai cơ chế hoàn toàn khác nhau — và cả hai đều có bẫy riêng.**
 >

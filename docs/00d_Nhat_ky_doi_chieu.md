@@ -531,6 +531,41 @@ bản đúng thì nằm trong phụ lục tra cứu.
 
 ---
 
+## Đợt 17 — 2026-09-03 · Ch.16, Ch.18 — "giữ được" là thuộc tính của LỆNH, không chỉ của biến
+
+⭐ Đọc §16.7 để kiểm khẳng định nặng nhất của chương — *"máy tự chạy lại khi có điện trở lại, thứ mà
+IEC 60204-1 cấm"*. Khẳng định đó **đúng**, nhưng cơ chế sách nêu thì ⚠ **chưa đủ chính xác**.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 89 | Ch.16 §16.7 — Rockwell | Sách nói *"giá trị tag được giữ mặc định"*. Petruzella cho thấy điểm quyết định là **lệnh**: `OTE` **không giữ**, `OTL`/`OTU` **giữ được**. ⭐ Ở Logix, "cách bit đổi giá trị" và "bit sống qua mất điện không" ⚠ **KHÔNG tách rời** — khác hẳn mô hình IEC | ⚠➕ |
+| 90 | Ch.16 Bẫy 7 | Câu *"SET/RESET không tự động giữ qua mất điện"* ⚠ **đúng với hệ IEC nhưng sai với `OTL`/`OTU`** — đã thêm ngoại lệ | ⚠ |
+| 91 | ⭐ Quét gốc: Ch.15, Phụ lục A1 | Ch.15 bảng lệnh ladder mang **cùng** khẳng định thiếu vế; A1.6 ô Rockwell ghi *"thuộc tính của tag"*. ⭐ **Đã sửa cả hai** | ⚠ |
+| 92 | Ch.18 §18.6 — bộ đếm | Sách chỉ nói cách **làm cho** bộ đếm giữ được. Petruzella: ⭐ bộ đếm PLC **thường ĐÃ giữ sẵn** — giá trị lúc CPU dừng được khôi phục khi cấp nguồn lại. ⚠⚠ Rủi ro thật là **giữ ngoài ý muốn**, không phải mất số liệu | ⚠➕ |
+| 93 | Ch.18 — ngoại lệ lúc khởi động | Petruzella: bộ đếm ⚠ **bị xoá nếu điều kiện đặt lại đang tác động lúc cấp nguồn lại** — số liệu tưởng còn thì không còn | ➕ |
+| 94 | Ch.18 — cực tính chân đặt lại | Petruzella: ⭐ **có hãng cần nấc đặt lại ĐÚNG, có hãng cần SAI**, và khuyến cáo tra sổ tay trước khi lập trình. Chuyển hệ mà không biết → xoá liên tục hoặc không bao giờ xoá, ⚠ **cả hai đều im lặng** | ➕ |
+
+### Kết quả đợt 17
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ⚠ Sai / thiếu vế, đã sửa | 4 nơi (Ch.16 ×2, Ch.15, A1.6) |
+| ➕ Bổ sung mới có nguồn | 3 |
+| Mục mới | **§18.6b** + 6 dòng Bảng chốt + 3 câu Tự kiểm + nguồn Petruzella cho Ch.16 và Ch.18 |
+
+> ⭐⭐ **Bài học đợt 16 đã phát huy tác dụng ngay.** Đợt 16 rút ra: *sửa một khẳng định thì phải hỏi
+> "chương nào DẠY cái này"*. Đợt này áp dụng ngược lại và cũng đúng: tìm ra lỗi ở **chương dạy**
+> (Ch.16) rồi quét ra **hai nơi khác** đang chép lại nó (Ch.15, A1.6). ⭐ Quét gốc nay là bước mặc
+> định, không còn là việc nhớ ra thì làm.
+>
+> ⚡ **Điểm chung của cả hai phát hiện chính:** sách mô tả **mô hình IEC** rồi ngầm coi nó là phổ quát.
+> Nhưng hệ kiểu thiết bị và hệ Rockwell ⚠ **gộp những thứ mà IEC tách ra** — độ phân giải gộp vào
+> lệnh (đợt 16), tính giữ được gộp vào lệnh (đợt này). ⭐ **Chỗ nào sách nói "hai chuyện tách rời" là
+> chỗ đáng nghi ngờ nhất khi đối chiếu hệ khác.**
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -543,7 +578,7 @@ kiểm**, không phải "không có lỗi".
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7, 12, 14 *(8, 9, 18 đợt 4, 10; **11, 19 đợt 15**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
-| Ngôn ngữ | 15, 16, 20, 21 *(**17 đã đối chiếu đợt 16**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
+| Ngôn ngữ | 15, 20, 21 *(17 đợt 16; **16 đợt 17**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 51, 52, 53, 55 | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |

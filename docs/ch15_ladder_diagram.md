@@ -395,7 +395,7 @@ Nhưng những chi tiết sau **khác nhau thật** và sẽ làm bạn vấp kh
 | **Số nhánh song song / độ rộng nấc thang** | Đều có giới hạn, và giới hạn khác nhau theo hệ và theo dòng CPU. Chạm giới hạn thì phải tách nấc — thường cũng là lúc nấc đã quá phức tạp (Bẫy 5) |
 | **Cách đặt tên tín hiệu** | Rockwell Logix dùng **tag có tên** là mô hình gốc, không có địa chỉ tuyệt đối kiểu truyền thống. Siemens và Mitsubishi cho dùng **cả hai** — địa chỉ tuyệt đối (`%I0.0`, `X0`) và tag có tên. Chương 11 |
 | **Lệnh mở rộng trên nấc thang** | Mỗi hãng một bộ lệnh số học/so sánh/chuyển dữ liệu với tên riêng. Chương 19 nêu tên cụ thể |
-| **Cuộn dây có nhớ (SET/RESET)** | Siemens `(S)`/`(R)`; Mitsubishi `SET`/`RST`; Rockwell `OTL`/`OTU`. Hành vi khi mất điện phụ thuộc khai báo biến — Chương 16 |
+| **Cuộn dây có nhớ (SET/RESET)** | Siemens `(S)`/`(R)`; Mitsubishi `SET`/`RST`; Rockwell `OTL`/`OTU`. ⚠ Hành vi khi mất điện: ở hệ IEC phụ thuộc **khai báo biến**, còn `OTL`/`OTU` của Rockwell **tự nó đã giữ được** — Chương 16, mục 16.7 |
 
 Đối chiếu chi tiết năm hệ: **Phụ lục A2**.
 
