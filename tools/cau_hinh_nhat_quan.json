@@ -130,5 +130,20 @@
     "00_Muc_luc.md",
     "case_study_may_mau.md",
     "00d_Nhat_ky_doi_chieu.md"
+  ],
+  "_ghi_chu_glossary": "Thuật ngữ trong Phụ lục F đã RÀ TAY và xác nhận số chương đúng, dù phép đếm tự động nghi ngờ (thuật ngữ tiếng Anh ngắn hoặc xuất hiện tình cờ ở chương khác). Thêm vào đây SAU KHI đã kiểm, không phải để tắt cảnh báo cho tiện.",
+  "glossary_da_duyet": [
+    "Báo động",
+    "Cơ cấu chấp hành",
+    "Hết giờ",
+    "Khoá liên động",
+    "Kiểu dữ liệu do người dùng định ng",
+    "Ngõ vào số · Ngõ ra số",
+    "Ngắt",
+    "Sơ đồ khối chức năng",
+    "Thanh ghi dịch",
+    "Tuổi thọ cơ · điện",
+    "Van điện từ",
+    "Xác nhận báo động"
   ]
 }

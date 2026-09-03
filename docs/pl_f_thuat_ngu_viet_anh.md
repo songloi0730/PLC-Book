@@ -21,18 +21,18 @@
 
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
-| Bộ điều khiển logic khả trình | Programmable Logic Controller (PLC) | | 1, 7 |
-| ⭐ Vòng quét | scan cycle · scan time | ⭐ Khái niệm nền của cả cuốn sách | 7 |
-| Ảnh ngõ vào | input image · process image | Bản chụp trạng thái đầu vòng quét | 7 |
-| Ảnh ngõ ra | output image | | 7 |
-| Chu kỳ quét | cycle time (scan) | ⚠ Khác *cycle time* của máy (Ch.55) | 7, 55 |
-| Bộ nhớ giữ được | retentive memory · retain | Giữ qua mất điện | 12 |
-| Thời gian đáp ứng | response time | | 7 |
-| Ngắt | interrupt | | 19 |
-| Tác vụ theo chu kỳ | cyclic task | | 19 |
-| Giám sát treo máy | watchdog | | 19 |
+| Bộ điều khiển logic khả trình | Programmable Logic Controller (PLC) | | 1, 2 |
+| ⭐ Vòng quét | scan cycle · scan time | ⭐ Khái niệm nền của cả cuốn sách | 10 |
+| Ảnh ngõ vào | input image · process image | Bản chụp trạng thái đầu vòng quét | 10 |
+| Ảnh ngõ ra | output image | | 10 |
+| Chu kỳ quét | cycle time (scan) | ⚠ Khác *cycle time* của máy (Ch.55) | 10, 55 |
+| Bộ nhớ giữ được | retentive memory · retain | Giữ qua mất điện | 11 |
+| Thời gian đáp ứng | response time | | 9, 10 |
+| Ngắt | interrupt | | 10 |
+| Tác vụ theo chu kỳ | cyclic task | | 10 |
+| Giám sát treo máy | watchdog | | 10 |
 | Khe cắm · Giá đỡ | slot · rack | | 8 |
-| Module vào/ra phân tán | remote I/O · distributed I/O | | 40 |
+| Module vào/ra phân tán | remote I/O · distributed I/O | | 8 |
 
 ---
 
@@ -47,10 +47,10 @@
 | Cảm biến tiệm cận | proximity sensor | | 4 |
 | Cảm biến quang thu-phát | through-beam sensor | | 4 |
 | Cảm biến quang phản xạ | retro-reflective sensor | | 4 |
-| Cảm biến từ trên xy-lanh | reed switch · magnetic cylinder sensor | | 5 |
+| Cảm biến từ trên xy-lanh | reed switch · magnetic cylinder sensor | | 4, 6 |
 | Tiếp điểm khô | dry contact · volt-free contact | | 9 |
 | Cách ly quang | opto-isolation | | 9, 41 |
-| Chống rung tiếp điểm | debounce | | 11 |
+| Chống rung tiếp điểm | debounce | | 17 |
 | Encoder tăng dần · tuyệt đối | incremental · absolute encoder | | 18, 37 |
 | Bộ đếm xung tốc độ cao | high-speed counter (HSC) | | 18 |
 | Cặp nhiệt điện | thermocouple | | 33 |
@@ -66,17 +66,17 @@
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
 | Cơ cấu chấp hành | actuator | | 5 |
-| Xy-lanh khí nén | pneumatic cylinder | | 5 |
-| Van điện từ | solenoid valve | | 5, 9 |
-| Van 5/2 lò xo về | 5/2 spring-return valve | ⭐ Trạng thái khi mất điện là **xác định** | 5 |
-| Van 5/2 hai cuộn | 5/2 double-solenoid valve | ⚠ Giữ nguyên vị trí khi mất điện | 5 |
-| Van tiết lưu | flow control valve | Chỉnh tốc độ xy-lanh | 5 |
-| Bộ lọc–điều áp–tra dầu | FRL unit (filter-regulator-lubricator) | | 5 |
-| Giác hút chân không | vacuum cup · suction cup | | 5 |
+| Xy-lanh khí nén | pneumatic cylinder | | 6 |
+| Van điện từ | solenoid valve | | 6, 9 |
+| Van 5/2 lò xo về | 5/2 spring-return valve | ⭐ Trạng thái khi mất điện là **xác định** | 6 |
+| Van 5/2 hai cuộn | 5/2 double-solenoid valve | ⚠ Giữ nguyên vị trí khi mất điện | 6 |
+| Van tiết lưu | flow control valve | Chỉnh tốc độ xy-lanh | 6 |
+| Bộ lọc–điều áp–tra dầu | FRL unit (filter-regulator-lubricator) | | 6 |
+| Giác hút chân không | vacuum cup · suction cup | | 6 |
 | Diode dập xung | flyback diode · freewheeling diode | ⚠ Bắt buộc với tải cảm | 9 |
-| Contactor | contactor | | 9 |
-| Rơ-le trung gian | interposing relay | | 9 |
-| Tuổi thọ cơ · điện | mechanical · electrical life | ⭐ Hai con số khác nhau trong datasheet | 9 |
+| Contactor | contactor | | 5, 9 |
+| Rơ-le trung gian | interposing relay | | 5, 9 |
+| Tuổi thọ cơ · điện | mechanical · electrical life | ⭐ Hai con số khác nhau trong datasheet | 5, 9 |
 
 ---
 
@@ -85,20 +85,20 @@
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
 | Biểu đồ bậc thang | Ladder Diagram (LD) | | 15 |
-| Sơ đồ khối chức năng | Function Block Diagram (FBD) | | 16 |
+| Sơ đồ khối chức năng | Function Block Diagram (FBD) | | 21 |
 | Văn bản có cấu trúc | Structured Text (ST) | | 20 |
 | Biểu đồ chức năng tuần tự | Sequential Function Chart (SFC) | | 21 |
-| Danh sách lệnh | Instruction List (IL) | ⚠ Đã bị loại khỏi tiêu chuẩn | 15 |
-| Khối hàm | function block (FB) | | 30 |
-| Hàm | function (FUN) | | 30 |
-| Thể hiện của khối hàm | function block instance | ⭐ Mỗi thể hiện có bộ nhớ riêng | 30 |
-| Khối dữ liệu | data block (DB) | | 30 |
+| Danh sách lệnh | Instruction List (IL) | ⚠ Đã bị loại khỏi tiêu chuẩn | 21 |
+| Khối hàm | function block (FB) | | 14, 30 |
+| Hàm | function (FUN) | | 14, 30 |
+| Thể hiện của khối hàm | function block instance | ⭐ Mỗi thể hiện có bộ nhớ riêng | 14, 30 |
+| Khối dữ liệu | data block (DB) | | 11, 30 |
 | Kiểu dữ liệu do người dùng định nghĩa | user-defined type (UDT) · structure | | 14, 30 |
-| Biến toàn cục · cục bộ | global · local variable | | 24 |
-| Bắt cạnh lên · cạnh xuống | rising edge · falling edge | | 11 |
-| Tự giữ | latch · seal-in | | 15 |
-| Đặt · Xoá | set · reset | | 15 |
-| Cưỡng bức | force | ⚠⚠ Nguy hiểm — Ch.50 | 50 |
+| Biến toàn cục · cục bộ | global · local variable | | 11 |
+| Bắt cạnh lên · cạnh xuống | rising edge · falling edge | | 16 |
+| Tự giữ | latch · seal-in | | 15, 16 |
+| Đặt · Xoá | set · reset | | 16 |
+| Cưỡng bức | force | ⚠⚠ Nguy hiểm — Ch.50 | 50, 51 |
 
 ---
 
@@ -106,13 +106,13 @@
 
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
-| Bộ định thời | timer | | 11 |
-| Trễ khi bật | TON (on-delay timer) | | 11 |
-| Trễ khi tắt | TOF (off-delay timer) | | 11 |
-| Xung | TP (pulse timer) | | 11 |
-| Bộ đếm lên · xuống | CTU · CTD (count up · down) | | 12 |
-| Giá trị đặt · giá trị hiện tại | preset value · current value | | 11, 12 |
-| Thanh ghi dịch | shift register | ⭐ Theo dõi sản phẩm trên chuyền | 12, 41 |
+| Bộ định thời | timer | | 17 |
+| Trễ khi bật | TON (on-delay timer) | | 17 |
+| Trễ khi tắt | TOF (off-delay timer) | | 17 |
+| Xung | TP (pulse timer) | | 17 |
+| Bộ đếm lên · xuống | CTU · CTD (count up · down) | | 18 |
+| Giá trị đặt · giá trị hiện tại | preset value · current value | | 17, 18 |
+| Thanh ghi dịch | shift register | ⭐ Theo dõi sản phẩm trên chuyền | 18, 41 |
 
 ---
 
@@ -120,21 +120,21 @@
 
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
-| Trình tự | sequence | | 21 |
-| Bước | step | | 21 |
-| Điều kiện chuyển tiếp | transition condition | ⭐ Phải là **phản hồi thật** | 21 |
-| Hết giờ | timeout | ⭐ Chỉ để **báo lỗi** | 21 |
+| Trình tự | sequence | | 21, 26 |
+| Bước | step | | 21, 26 |
+| Điều kiện chuyển tiếp | transition condition | ⭐ Phải là **phản hồi thật** | 21, 26 |
+| Hết giờ | timeout | ⭐ Chỉ để **báo lỗi** | 26 |
 | Máy trạng thái | state machine | | 25 |
-| Khoá liên động | interlock | | 22 |
-| Khoá chéo | mutual interlock | | 22 |
-| ⭐ Chờ bận | busy-wait | ⚠ Cách viết cần tránh | 26 |
+| Khoá liên động | interlock | | 27, 47 |
+| Khoá chéo | mutual interlock | | 27, 47 |
+| ⭐ Chờ bận | busy-wait | ⚠ Cách viết cần tránh | 27 |
 | Bế tắc | deadlock | | 26 |
 | Về gốc | homing | ⭐ Bài toán khó nhất thực tế | 28 |
-| Công thức sản phẩm | recipe | | 32 |
-| Chế độ tay · tự động | manual · automatic mode | | 25 |
+| Công thức sản phẩm | recipe | | 29 |
+| Chế độ tay · tự động | manual · automatic mode | | 28 |
 | Đặc tả chức năng | functional specification | | 23 |
 | Bảng vào/ra | I/O list · I/O schedule | | 23 |
-| Chuỗi cho phép | permissive chain · ready chain | ⭐ Máy phải nói **thiếu điều kiện nào** | 43 |
+| Chuỗi cho phép | permissive chain · ready chain | ⭐ Máy phải nói **thiếu điều kiện nào** | 44 |
 
 ---
 
@@ -142,14 +142,14 @@
 
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
-| Giá trị đặt · giá trị đo | setpoint (SP) · process value (PV) | | 34 |
-| Sai lệch | error | | 34 |
-| Vòng kín · vòng hở | closed-loop · open-loop | | 34 |
+| Giá trị đặt · giá trị đo | setpoint (SP) · process value (PV) | | 35 |
+| Sai lệch | error | | 35 |
+| Vòng kín · vòng hở | closed-loop · open-loop | | 35 |
 | Điều khiển tỉ lệ–tích phân–vi phân | PID control | | 35 |
 | Vượt quá | overshoot | | 35 |
 | Bão hoà tích phân | integral windup | | 35 |
-| Vùng chết | deadband | | 34 |
-| Trễ tích luỹ | hysteresis | | 34 |
+| Vùng chết | deadband | | 32, 35 |
+| Trễ tích luỹ | hysteresis | | 32 |
 | Biến tần | VFD (variable frequency drive) · inverter | | 36 |
 | Tăng tốc · giảm tốc | acceleration · deceleration ramp | | 36 |
 | ⭐ Mô-men dừng an toàn | STO (Safe Torque Off) | ⚠ Chức năng an toàn của driver | 36, 47 |
@@ -188,7 +188,7 @@
 
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
-| Đánh giá rủi ro | risk assessment | ⭐ Làm ở **giai đoạn 1** | 6, 57 |
+| Đánh giá rủi ro | risk assessment | ⭐ Làm ở **giai đoạn 1** | 47, 57 |
 | Mối nguy | hazard | | 6 |
 | Rủi ro | risk | | 6 |
 | Giảm rủi ro theo thứ tự ưu tiên | hierarchy of risk reduction | | 6 |
@@ -218,7 +218,7 @@
 | Báo động | alarm | | 43 |
 | Xác nhận báo động | acknowledge (ack) | | 43 |
 | Báo động đầu tiên | first-out alarm | ⭐ Cái nào xảy ra **trước** | 43 |
-| Tràn báo động | alarm flood | IEC 62682 | 43 |
+| Tràn báo động | alarm flood | IEC 62682 | 44 |
 | Sửa trực tuyến | online edit | ⚠⚠ Ch.53 | 53 |
 | Tài liệu hiện trạng | as-built documentation | ⭐ Khác **bản thiết kế** | 53 |
 | Quản lý thay đổi | change management | | 53 |

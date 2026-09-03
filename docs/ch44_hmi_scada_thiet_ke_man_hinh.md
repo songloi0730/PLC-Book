@@ -175,6 +175,52 @@ chờ vài giây rồi mới báo sẽ loại được phần lớn báo giả (
 
 ---
 
+**4. ⭐⭐ Vùng chết — cho báo động dao động NGAY TẠI ngưỡng**
+
+⚠ **Trễ và vùng chết sửa hai bệnh khác nhau.** Người ta hay dùng trễ cho mọi trường hợp rồi ngạc
+nhiên vì vẫn bị làm phiền.
+
+| Triệu chứng | Sửa bằng |
+|---|---|
+| Xung nhiễu ngắn, giá trị nhảy rồi về ngay | ⭐ **Trễ trước khi báo** (kỹ thuật 3) |
+| ⭐⭐ Giá trị **nằm sát ngưỡng và dao động qua lại** | ⭐ **Vùng chết** — ngưỡng báo và ngưỡng gỡ **khác nhau** |
+
+Ví dụ cụ thể: ngưỡng báo nhiệt độ cao đặt ở **300 °C**.
+
+```text
+KHONG co vung chet:
+   300,0 -> 300,1 : bao dong
+   300,1 -> 300,0 : go bao dong
+   300,0 -> 300,1 : bao dong lai …
+   ⚠ Dao dong 0,1 do sinh ra HANG CHUC bao dong moi phut
+
+CO vung chet 5 do:
+   Bao khi VUOT 300 (chieu len)
+   Chi go khi XUONG DUOI 295 (chieu xuong)
+   ⭐ Dao dong quanh 300 chi sinh MOT bao dong
+```
+
+> ⭐⭐ **Nguyên tắc: ngưỡng BÁO và ngưỡng GỠ không được bằng nhau.**
+>
+> Đây chính là **vùng chết / trễ tích luỹ** *(hysteresis)* ở Chương 32, áp vào báo động thay vì áp
+> vào phép đo.
+>
+> ⚠ Hậu quả khi thiếu không chỉ là phiền: ⭐ **người vận hành bị buộc phải xác nhận hàng chục báo
+> động cho cùng một sự việc mà họ ĐÃ BIẾT** — và đó là cách nhanh nhất dạy họ thói quen bấm xác
+> nhận mà không đọc.
+
+> ⚡ **Nhiều khối PID của hãng đã có sẵn tham số vùng chết cho báo động** — tách riêng cho báo động
+> theo giá trị đo và báo động theo sai lệch. ⭐ Nếu dùng khối chuẩn, hãy tìm tham số đó trước khi tự
+> viết logic.
+
+> ⭐ **Chọn độ rộng vùng chết:** đủ lớn để trùm biên độ dao động bình thường của đại lượng đó, nhưng
+> ⚠ không lớn tới mức che mất một thay đổi thật đáng quan tâm. ⭐ **Đo dao động thật trước khi chọn**
+> — lại là một lần "ghi mốc lúc máy còn mới".
+
+*(Đối chiếu: Kuphaldt — Lessons in Industrial Instrumentation, mục về vùng chết của công tắc quá
+trình và báo động phiền nhiễu; Rockwell 1756-RM003 — khối PID có tham số vùng chết riêng cho báo
+động theo giá trị đo và theo sai lệch.)*
+
 ## 44.4 Phân quyền người dùng
 
 | Cấp | Làm được gì |

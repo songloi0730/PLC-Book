@@ -315,6 +315,62 @@ cả cuốn sách**. Cách này có tỉ lệ phát hiện cao hơn ở giai đo
 
 ---
 
+## Đợt 12 — 2026-09-02 · Ch.44 (báo động) và ⚠⚠ SỬA LỖI HỆ THỐNG Ở PHỤ LỤC F
+
+| # | Chương / mục | Khẳng định được kiểm | KQ | Nguồn đối chiếu |
+|---|---|---|:--:|---|
+| 55 | Ch.44 §44.3 | Ba kỹ thuật chống lụt báo động | ✅➕ | Đúng, nhưng ⚠ **thiếu vùng chết cho báo động**. Kuphaldt: không có vùng chết thì công tắc **tự gỡ ngay khi giá trị về đúng ngưỡng** → dao động 0,1 độ sinh hàng chục báo động. ⭐ **Trễ và vùng chết sửa hai bệnh khác nhau** — đã bổ sung kỹ thuật thứ tư |
+| 56 | Ch.44 | Vùng chết là tham số có sẵn của khối PID hãng | ➕ | Rockwell 1756-RM003: khối PID có `PVDB` và `DVDB` — vùng chết riêng cho báo động theo giá trị đo và theo sai lệch. **Đã bổ sung** |
+| 57 | ⚠⚠ **Phụ lục F** | **Số chương dẫn cho từng thuật ngữ** | ⚠⚠ | ⭐⭐ **SAI HỆ THỐNG — 57 dòng.** Xem bên dưới |
+| 58 | Phụ lục E | *"Chương 43 gọi đây là chuỗi cho phép"* | ⚠ | Ch.43 là **vision**. Thuật ngữ đó **không xuất hiện ở bất kỳ chương nào**. Đã sửa thành Ch.44 và bỏ cách nói "chương gọi là" |
+| 59 | Ch.44 *(nội dung tôi vừa thêm)* | *"trễ tích luỹ ở Chương 34"* | ⚠ | Ch.34 là **Cân & đo lực**; vùng chết/trễ tích luỹ ở **Ch.32**. ⭐ Lỗi tôi **tự tạo ra trong chính đợt này** |
+
+### ⚠⚠ Lỗi hệ thống ở Phụ lục F — và vì sao nó lọt lưới
+
+Phụ lục F (thuật ngữ Việt–Anh) có cột "Chương" cho mỗi thuật ngữ. ⚠ **57 dòng dẫn sai số chương**,
+vì khi viết phụ lục tôi dùng một **bản đồ chương sai trong đầu**.
+
+| Thuật ngữ | F dẫn | Chương thật |
+|---|---|---|
+| Vòng quét · ảnh ngõ vào/ra | 7 | ⭐ **10** *(Ch.7 là ESD)* |
+| Bộ định thời TON/TOF/TP | 11 | ⭐ **17** |
+| Latch · Set/Reset · bắt cạnh | 11, 15 | ⭐ **16** |
+| Bộ đếm · thanh ghi dịch | 12 | ⭐ **18** |
+| Bộ nhớ giữ được · biến | 12, 24 | ⭐ **11** |
+| Xy-lanh khí nén · van 5/2 · FRL | 5 | ⭐ **6** *(Ch.5 là cơ cấu ĐIỆN)* |
+| FBD · IL | 16, 15 | ⭐ **21** |
+| Công thức sản phẩm | 32 | ⭐ **29** |
+| Setpoint · vòng kín/hở · vùng chết | 34 | ⭐ **32, 35** *(Ch.34 là cân & đo lực)* |
+| Khoá liên động · chờ bận | 22, 26 | ⭐ **27, 47** |
+| Đánh giá rủi ro | 6 | ⭐ **47** |
+
+> ⚠⚠ **Vì sao lỗi này nguy hiểm hơn nó có vẻ:** một bảng thuật ngữ dẫn sai chương **chủ động gây hại**
+> — người đọc tra "vòng quét → Chương 7" rồi lạc vào chương ESD, và kết luận sách viết ẩu.
+>
+> ⭐⭐ **Vì sao ba bộ kiểm không bắt được:** số chương nằm trong **ô bảng**, không theo mẫu `Chương N`.
+> Với `kiem_nhat_quan.py` nó chỉ là một chữ số, không phải một dẫn chiếu.
+>
+> ⭐ **Đã thêm nhóm kiểm `GLOS`**: lấy thuật ngữ **tiếng Anh** (đặc trưng hơn tiếng Việt), đếm tần suất
+> ở mọi chương, cảnh báo nếu chương được dẫn không nằm trong nhóm dẫn đầu. Từ 41 nghi ngờ → sửa 57
+> dòng → còn 12, đã rà tay và đăng ký vào `glossary_da_duyet`.
+
+### Kết quả đợt 12
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã đối chiếu | **5** |
+| ⚠ Phát hiện sai, đã sửa | 3 *(gồm **57 dòng** ở Phụ lục F và 1 lỗi tự tạo)* |
+| ➕ Bổ sung nội dung còn thiếu | 2 |
+| ⭐ Luật kiểm mới | **GLOS** |
+
+> ⭐⭐ **Bài học lớn nhất của cả 12 đợt, rút ra ở đây: tôi tin vào bản đồ chương trong đầu mình suốt
+> nhiều phiên mà chưa một lần đối chiếu với tiêu đề chương thật.**
+>
+> Cùng loại sai lầm với đợt 2 (khai "không có tài liệu CODESYS" mà chưa quét hết thư mục). ⭐ **Thứ
+> mình tưởng đã biết là chỗ ít được kiểm nhất** — và vì thế là chỗ sai lâu nhất.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

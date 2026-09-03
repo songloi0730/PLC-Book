@@ -20,6 +20,7 @@ Sáu nhóm kiểm:
   SO    số liệu chốt bị viết khác nhau giữa các chương      → LỖI
   TC    mã tiêu chuẩn sai chính tả / không có trong danh mục→ CẢNH BÁO
   TN    thuật ngữ Việt–Anh dùng không nhất quán             → TIN
+  GLOS  Phụ lục F dẫn số chương mà chương đó KHÔNG dạy      → CẢNH BÁO
 
 Dùng:
     python tools/kiem_nhat_quan.py                # kiểm toàn bộ
@@ -327,6 +328,59 @@ def kiem_thuat_ngu(tl, cfg, kq):
                    % (anh, len(tap), " | ".join(sorted(tap))))
 
 
+# ------------------------------------------------------------------- GLOS drift
+
+def kiem_glossary(tl, cfg, kq):
+    """Phụ lục F dẫn số chương cho mỗi thuật ngữ — chương đó có thật sự dạy nó không?
+
+    Bắt được lớp lỗi mà XREF bỏ sót: số chương nằm trong Ô BẢNG, không theo mẫu
+    "Chương N", nên dẫn sai vẫn hợp lệ về cú pháp.
+
+    Cách kiểm: lấy thuật ngữ tiếng Anh (đặc trưng hơn tiếng Việt), đếm số lần xuất
+    hiện ở mọi chương. Nếu chương được dẫn KHÔNG nằm trong nhóm dẫn đầu → CẢNH BÁO.
+    ⚠ Có thể sai dương — người đọc kết quả phải tự xác nhận.
+    """
+    khoa_f = khoa_tai_lieu(cfg.get("file_nguon_thuat_ngu", ""))
+    if khoa_f not in tl:
+        return
+    bo_qua = {"safety", "control", "time", "value", "error", "system", "data",
+              "input", "output", "signal", "mode", "step", "state", "test"}
+    for line in tl[khoa_f]["van"].splitlines():
+        if not line.startswith("| ") or line.startswith("|---"):
+            continue
+        cot = [x.strip() for x in line.strip("|").split("|")]
+        if len(cot) < 4:
+            continue
+        viet, anh, so = cot[0], cot[1], cot[-1]
+        if not re.fullmatch(r"[\d,\s·]+", so) or not so.strip():
+            continue
+        nums = [n for n in re.split(r"[,\s·]+", so) if n.isdigit()]
+        if not nums:
+            continue
+        keys = [k.strip().lower() for k in re.split(r"[·(),]", anh) if len(k.strip()) > 4]
+        keys = [k for k in keys if k not in bo_qua]
+        if not keys:
+            continue
+        diem = {}
+        for n, d in tl.items():
+            if not n.isdigit():
+                continue
+            diem[n] = sum(d["van"].lower().count(k) for k in keys)
+        if not any(diem.values()):
+            continue
+        dan_dau = sorted(diem, key=lambda n: (-diem[n], int(n)))[:3]
+        dan_dau = [n for n in dan_dau if diem[n] > 0]
+        if any(n in dan_dau for n in nums):
+            continue
+        ten = re.sub(r"[⭐⚠*`]", "", viet).strip()[:34]
+        if ten in cfg.get("glossary_da_duyet", []):
+            continue                      # đã rà tay, xác nhận đúng
+        goi_y = ", ".join("Ch.%s(%d)" % (n, diem[n]) for n in dan_dau)
+        kq.canh_bao("GLOS", tl[khoa_f]["tep"], 0,
+                    "'%s' dẫn Chương %s nhưng thuật ngữ tập trung ở %s — kiểm lại"
+                    % (ten, so, goi_y))
+
+
 # --------------------------------------------------------------------- tiện ích
 
 def sap_xep_khoa(k):
@@ -347,6 +401,7 @@ NHOM = {
     "SO": None,
     "TC": None,
     "TN": None,
+    "GLOS": None,
 }
 
 
@@ -380,6 +435,8 @@ def main():
         kiem_tieu_chuan(tl, cfg, kq)
     if chay("TN"):
         kiem_thuat_ngu(tl, cfg, kq)
+    if chay("GLOS"):
+        kiem_glossary(tl, cfg, kq)
 
     if "--json" in sys.argv:
         out = json.dumps([{"muc": m, "ma": k, "tep": t, "dong": d, "thong_diep": s}

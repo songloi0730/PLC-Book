@@ -67,7 +67,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 > ⭐⭐ **Nếu máy không nói được điều kiện nào đang thiếu, đó là một lỗi thiết kế cần sửa** — không
 > phải một tình huống bình thường phải chịu đựng.
 >
-> Chương 43 gọi đây là "chuỗi cho phép": máy phải hiện được **điều kiện nào chưa đạt**, không chỉ
+> Chương 44 gọi đây là **thiết kế báo động dùng được**: máy phải hiện được **điều kiện nào chưa đạt**, không chỉ
 > "không sẵn sàng". Đây là thứ rẻ để thêm và tiết kiệm hàng giờ mỗi năm.
 
 ---
