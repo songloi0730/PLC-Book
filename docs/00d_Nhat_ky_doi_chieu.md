@@ -492,6 +492,45 @@ ngay.
 
 ---
 
+## Đợt 16 — 2026-09-03 · Ch.17 (timer) — ⚠⚠ SỬA XONG MỘT CHỖ MÀ QUÊN CHỖ DẠY NÓ
+
+⭐⭐ **Đợt 1 (mục 3) đã sửa Phụ lục A2: độ phân giải bộ định thời Mitsubishi đến từ HAI nguồn — lệnh
+(`OUT`/`OUTH`/`OUTHS`) và kiểu thiết bị `T`.** Đợt này đọc lại Ch.17 §17.7 và thấy nó ⚠ **vẫn nói
+mỗi nguồn "số hiệu thiết bị"** — tức là ⚠⚠ **bản sai vẫn nằm nguyên ở chương dạy khái niệm đó**, còn
+bản đúng thì nằm trong phụ lục tra cứu.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 85 | Ch.17 §17.7 mục 1 | Viết lại: nêu **hai nguồn**, thêm bảng và ⭐ ba dòng `OUT`/`OUTH`/`OUTHS` cùng `K20` cho **2,0 s / 0,2 s / 0,02 s** — chênh **100 lần**, code trông y hệt | ⚠ |
+| 86 | Ch.17 §17.7 bảng 5 hệ | Ô "Viết hằng số thời gian" của Mitsubishi: *"độ phân giải của thiết bị"* → *"do **lệnh và thiết bị** quyết định"* | ⚠ |
+| 87 | Ch.17 §17.8 / §17.9 | Thêm 1 dòng danh mục kiểm và 1 câu Tự kiểm về hai nguồn độ phân giải | ➕ |
+| 88 | Quét cả sách | ⭐ **Không còn chỗ nào khác** mang khẳng định thiếu vế này | ✅ |
+
+### Kết quả đợt 16
+
+| | Số lượng |
+|---|---|
+| Nơi đã kiểm | **4** |
+| ⚠ Sai, đã sửa | 2 |
+| ➕ Bổ sung | 1 |
+| ✅ Quét sạch, không còn chỗ khác | 1 |
+
+> ⚠⚠ **Đây là biến thể mới của bài học đợt 12–13, và nó khó thấy hơn.**
+>
+> Đợt 12–13: *một hiểu sai chảy vào nhiều file* → phải quét hết.
+> Đợt này: ⭐ **một hiểu sai ĐÃ ĐƯỢC SỬA ở một file, nhưng bản sai vẫn sống ở file khác** — và file
+> còn sai lại chính là ⚠⚠ **chỗ người đọc học khái niệm lần đầu**, còn chỗ đã đúng chỉ là bảng tra.
+>
+> ⭐⭐ **Bài học quy trình bổ sung:** khi sửa một khẳng định, ⚠ **câu hỏi tiếp theo không phải "còn chỗ
+> nào sai nữa không"** — mà là ⭐ **"chương nào DẠY cái này? nó đã được sửa chưa?"** Phụ lục sửa dễ vì
+> ngắn; chương dạy mới là chỗ quan trọng, và cũng là chỗ dễ quên.
+>
+> ⚡ Nhật ký đối chiếu đã giúp bắt được lỗi này — mục 3 của đợt 1 ghi rõ đã sửa *"A2.2"*, không phải
+> *"cả sách"*. ⭐ **Ghi cụ thể mình đã sửa ở ĐÂU, chứ không ghi "đã sửa", là thứ làm nên giá trị của
+> nhật ký.**
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -504,7 +543,7 @@ kiểm**, không phải "không có lỗi".
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7, 12, 14 *(8, 9, 18 đợt 4, 10; **11, 19 đợt 15**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
-| Ngôn ngữ | 15–17, 20, 21 | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
+| Ngôn ngữ | 15, 16, 20, 21 *(**17 đã đối chiếu đợt 16**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 51, 52, 53, 55 | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
