@@ -644,6 +644,53 @@ sẽ nghĩ tới**.
 
 ---
 
+## Đợt 20 — 2026-09-03 · Ch.15 — ⚠⚠ bảng 4 tổ hợp không nói giới hạn của chính nó
+
+⭐ §15.3 là một trong những mục viết tốt nhất sách: bảng 4 tổ hợp NO/NC, tổ hợp 2 "giết người", quy
+tắc *tiếp điểm vật lý NC + lệnh `┤ ├`*. ⭐ **Mọi câu đều đúng.**
+
+⚠⚠ Nhưng cả bảng được xây trên **một kiểu hỏng duy nhất — mạch bị HỞ** — và nó ⚠ **không nói ra điều
+đó**. Người đọc rời mục 15.3 với kết luận *"NC + `┤ ├` = an toàn"*, chấm hết.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 107 | ⚠⚠ Ch.15 §15.3 — phạm vi của bảng | Thêm mục nêu **hai lớp hỏng**: HỞ (đứt dây, tuột cốt) → bit 0 → tổ hợp 3 xử lý được; ⚠⚠ **CHẬP** (chạm dây, chập 24 V, **tiếp điểm hàn dính**) → bit **kẹt ở mức bình thường** → ⚠ tổ hợp 3 **KHÔNG** xử lý được | ⚠⚠➕ |
+| 108 | Ch.15 — nối vào cơ chế đã có | ⭐ Bảng 4 tổ hợp là điều kiện **CẦN, không phải ĐỦ**. Ba cơ chế chống hỏng kiểu chập **đã có sẵn trong sách**: tiếp điểm dẫn động cưỡng bức (3.5), hai kênh + kiểm chéo (47), xung kiểm tra OSSD (47.7) — ⭐ nay được nối lại thành một mạch lập luận | ➕ |
+| 109 | Ch.15 — phép kiểm nhanh | Thêm câu hỏi thứ tư: *"nếu tín hiệu này **kẹt ở mức bình thường** thì sao?"* — nếu đáp án là *"máy sẽ không dừng"* thì ⭐ **đây là chức năng an toàn**, nấc thang không đủ | ➕ |
+| 110 | Ch.48 §48.4 | ⚠ Bảng NO/NC ở Ch.48 mang **cùng phạm vi ngầm**. Đã thêm ghi chú phạm vi — ⭐ **chỉ dẫn chiếu, không thêm quy định an toàn mới** | ⚠➕ |
+| 111 | ⭐ Quét gốc | Ch.3, Ch.4, Ch.16, Ch.48, `case_study`, Phụ lục C — ⭐ **không nơi nào khác trình bày bảng này như điều kiện đủ**; Ch.4 là bảng PNP/NPN khác hẳn, không liên quan | ✅ |
+
+### Kết quả đợt 20
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **5** |
+| ⚠⚠➕ Phạm vi ngầm nguy hiểm, đã nêu rõ | 1 |
+| ➕ Bổ sung / nối lại lập luận | 3 |
+| ✅ Quét sạch | 1 |
+| Nơi đã sửa | Ch.15 (mục mới + phép kiểm + 2 câu Tự kiểm + nguồn) · Ch.48 (ghi chú phạm vi) |
+
+> ⚠⚠ **ĐIỂM CẦN CHUYÊN GIA AN TOÀN XEM — ghi lại để không quên.**
+>
+> ⭐ Nội dung thêm ở đợt này **siết chặt** chứ không nới lỏng: nó nói bảng 4 tổ hợp **hẹp hơn** người
+> đọc tưởng, và đẩy chức năng an toàn về Chương 47. Đó là hướng an toàn hơn, và mọi cơ chế được dẫn
+> đều **đã có sẵn trong sách**, không có quy định mới nào do tôi tự đặt ra.
+>
+> ⚠ Nhưng §15.3 là mục **kê đơn cách đấu nút Dừng**, nên nó thuộc phạm vi cần người thật duyệt — ngang
+> với Ch.3, 6, 47, 48. ⭐ **Đề xuất: đưa Ch.15 §15.3 vào danh sách chờ chuyên gia an toàn.** Quyết định
+> này thuộc về chủ dự án, không phải công cụ.
+
+> ⭐⭐ **Đây là biến thể sâu nhất của bài học đợt 18** — *"người đọc dựng mô hình gì trong đầu"*.
+>
+> Đợt 18: sách gộp hai thao tác làm một. ⭐ Đợt này nặng hơn: sách trình bày một bảng **hoàn chỉnh và
+> thuyết phục** đến mức chính sự hoàn chỉnh đó ⚠⚠ **làm người đọc ngừng hỏi tiếp**. Một bảng có đủ
+> bốn hàng, có hàng ✅ và hàng ❌, đọc như thể nó đã vét hết mọi khả năng.
+>
+> ⚡ **Câu hỏi nên hỏi ở mọi bảng "đầy đủ" trong sách:** ⭐ *"bảng này ngầm giả định điều gì, và nó
+> có nói ra giả định đó không?"*
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -656,7 +703,7 @@ kiểm**, không phải "không có lỗi".
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7, 12, 14 *(8, 9, 18 đợt 4, 10; **11, 19 đợt 15**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
-| Ngôn ngữ | 15, 21 *(17 đợt 16; 16 đợt 17; **20 đợt 19**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
+| Ngôn ngữ | 21 *(17 đợt 16; 16 đợt 17; 20 đợt 19; **15 đợt 20**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 53, 55 *(**51, 52 đã đối chiếu đợt 18**)* | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |

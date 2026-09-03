@@ -113,6 +113,19 @@ Nguyên tắc đã gặp ở Chương 4 và Chương 15, giờ phát biểu ở 
 | Mất nó là **phải dừng** (Dừng, cửa, áp suất, phản hồi mạch an toàn) | **NC** | Đứt dây → bit 0 → dừng |
 | Mất nó chỉ làm **sai sản phẩm** | Tuỳ, thường NO | Xử lý bằng timeout và báo lỗi |
 
+> ⚠⚠ **Phạm vi của bảng trên — đọc kèm mục 15.3.**
+>
+> Bảng này giải quyết ⭐ **hỏng kiểu HỞ** (đứt dây, tuột cốt, tiếp điểm không đóng). ⚠ Nó **không**
+> giải quyết ⭐ **hỏng kiểu CHẬP** — hai dây chạm nhau, chập sang 24 V, tiếp điểm **hàn dính** — khi
+> đó bit **kẹt ở mức "bình thường"** và PLC không phân biệt được.
+>
+> ⭐ Các cơ chế chống hỏng kiểu chập nằm ngoài phạm vi một nấc thang: **tiếp điểm dẫn động cưỡng bức**
+> (Chương 3, mục 3.5), **hai kênh và kiểm chéo**, **xung kiểm tra trên ngõ ra OSSD** (Chương 47,
+> mục 47.7).
+>
+> ⚠ Đây là ranh giới giữa *thiết kế hướng an toàn khi hỏng* của chương này và **chức năng an toàn**
+> đúng nghĩa ở Chương 47 — ⭐ chúng **không thay thế nhau**.
+
 Áp cho tín hiệu analog — đây là chỗ Chương 31 đã chuẩn bị:
 
 > Vòng dòng **4–20 mA** cho phép phân biệt "giá trị bằng 0" với "đứt dây": giá trị hợp lệ nhỏ nhất là
