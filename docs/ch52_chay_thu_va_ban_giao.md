@@ -255,7 +255,7 @@ viết ra, có người chịu trách nhiệm và có hạn, chứ không phải
 
 | # | Kiểm | Vì sao |
 |---|---|---|
-| 1 | ⭐ **Không còn cưỡng bức I/O nào** | Chương 51 — nguyên nhân tai nạn phổ biến |
+| 1 | ⭐ **Không còn cưỡng bức I/O nào** — ⚠⚠ kể cả loại **đã cài nhưng đang tắt** | Chương 51 — nguyên nhân tai nạn phổ biến |
 | 2 | ⭐ **Cờ mô phỏng đã tắt** và không giữ qua mất điện | Chương 50 |
 | 3 | ⭐ **Cờ chạy khô đã tắt** | Chương 28 |
 | 4 | **Chương trình đang chạy khớp với bản sao lưu** | Dùng chức năng so sánh — không tin trí nhớ |
@@ -316,6 +316,11 @@ triển**, còn đo từng điểm I/O thì không.
 
 *"Cứ chạy chương trình rồi xem cơ cấu nào động"* — cách này trộn hai biến số: nếu cơ cấu không động,
 bạn không biết do dây hay do logic. Bước 3 tồn tại để **tách hai thứ đó ra**.
+
+> ⭐ **Và cưỡng bức ngõ RA là công cụ đúng cho việc này, đúng về mặt cơ chế:** nó chỉ chạm tới chân ra,
+> ⭐ **không đổi bảng ảnh ngõ ra**, nên chương trình chạy y như cũ trong lúc bạn thử dây (Chương 51,
+> mục 51.7). ⚠ Cưỡng bức ngõ **VÀO** thì ngược lại — nó lan khắp chương trình, nên **không dùng để
+> kiểm dây ngõ ra**.
 
 ### 🔍 BẪY 3 — Thử E-Stop một lần rồi coi là xong
 

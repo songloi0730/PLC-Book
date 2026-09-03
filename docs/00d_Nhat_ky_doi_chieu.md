@@ -566,6 +566,43 @@ IEC 60204-1 cấm"*. Khẳng định đó **đúng**, nhưng cơ chế sách nê
 
 ---
 
+## Đợt 18 — 2026-09-03 · Ch.51 (xử lý sự cố) — cưỡng bức ngõ VÀO ≠ cưỡng bức ngõ RA
+
+⭐ Đợt này kiểm mục nguy hiểm nhất của Ch.51: **cưỡng bức I/O**. Sách đã cảnh báo đúng và đủ mạnh về
+rủi ro, nhưng ⚠ **mô tả cưỡng bức như MỘT thao tác** — trong khi nó là **hai thao tác có cơ chế khác
+hẳn nhau**.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 95 | Ch.51 §51.7 — cơ chế cưỡng bức | Petruzella §9.6: ép ngõ **vào** tác động vào **bảng ảnh ngõ vào** → ⚠⚠ **lan tới MỌI chỗ dùng bit đó**; ép ngõ **ra** chỉ tác động **đúng chân ra**, ⭐ **bảng ảnh ngõ ra không đổi** → chương trình chạy y như cũ | ➕➕ |
+| 96 | Ch.51 — hệ quả thực tế | ⭐ Hệ quả đắt nhất: **cưỡng bức ngõ VÀO nguy hiểm hơn ngõ RA**, dù nghe thì ngược lại — ép ngõ ra chỉ làm một cơ cấu chạy, ép ngõ vào làm cả chương trình tin vào thế giới không có thật, ⚠ **kể cả các nấc liên động** | ➕ |
+| 97 | Ch.51 — hiện tượng hay gây bối rối | *"Tôi ép ngõ ra rồi mà đèn báo trên màn hình vẫn tắt"* — ⭐ **đúng thiết kế**: màn hình đọc bảng ảnh, cưỡng bức chỉ chạm chân ra | ➕ |
+| 98 | Ch.51 — cài vs bật | Tài liệu cho thấy có hệ phân biệt **"đã cài cưỡng bức"** với **"đã bật cưỡng bức"** — hai trạng thái riêng. ⚠⚠ **Tắt không phải là gỡ**: lần bật sau, cưỡng bức cũ sống lại | ➕ |
+| 99 | ⭐ Quét gốc: Ch.52, Phụ lục D | Ch.52 danh mục nghiệm thu và Phụ lục D checklist đều nói *"không còn cưỡng bức"* — ⭐ đã sửa thành **"GỠ, không phải tắt"** và **"kể cả loại đã cài mà đang tắt"** | ⚠ |
+| 100 | Ch.52 Bẫy 2 | Cơ chế mới **củng cố** lập luận sẵn có: ⭐ cưỡng bức ngõ **ra** đúng là công cụ kiểm dây, chính vì nó **không** làm nhiễu logic — đã thêm giải thích và cảnh báo không dùng ngõ **vào** cho việc này | ➕ |
+
+### Kết quả đợt 18
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ➕ Bổ sung mới có nguồn | 4 |
+| ⚠ Sửa cho chặt hơn | 2 nơi (Ch.52, Phụ lục D) |
+| Nơi đã sửa | Ch.51 (mục mới + 1 dòng quy trình + 1 dòng Bảng chốt + 3 câu Tự kiểm + nguồn) · Ch.52 ×2 · Phụ lục D |
+
+> ⭐⭐ **Đây là loại phát hiện khác với các đợt trước: sách không SAI, sách THIẾU một phân biệt.**
+>
+> Mọi câu trong §51.7 đều đúng. Nhưng vì gộp hai thao tác làm một, người đọc ⚠ suy ra một mô hình tinh
+> thần sai — và mô hình sai đó dẫn tới hai lỗi ngược chiều nhau: **ép ngõ ra rồi chờ logic phía sau
+> chạy theo** (không xảy ra), và **ép ngõ vào để "thử một đoạn nhỏ"** (nó lan ra cả chương trình, kể
+> cả liên động).
+>
+> ⚡ **Bài học quy trình:** câu hỏi *"chỗ này có đúng không"* chưa đủ. Phải hỏi thêm ⭐ *"người đọc sẽ
+> DỰNG mô hình gì trong đầu từ đoạn này, và mô hình đó có đúng không"*. Một đoạn toàn câu đúng vẫn có
+> thể tạo ra một mô hình sai.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -580,7 +617,7 @@ kiểm**, không phải "không có lỗi".
 | Nền tảng PLC | 7, 12, 14 *(8, 9, 18 đợt 4, 10; **11, 19 đợt 15**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | 15, 20, 21 *(17 đợt 16; **16 đợt 17**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
-| Chẩn đoán & vận hành | 43, 49, 51, 52, 53, 55 | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
+| Chẩn đoán & vận hành | 43, 49, 53, 55 *(**51, 52 đã đối chiếu đợt 18**)* | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 
 ---

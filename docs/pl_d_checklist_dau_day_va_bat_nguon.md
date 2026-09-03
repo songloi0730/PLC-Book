@@ -174,6 +174,7 @@ nhân** trước khi đi tiếp.
 
 - [ ] ⭐ **Kiểm từng ngõ vào bằng cách tác động thật** (Phụ lục C.6)
 - [ ] ⚠ Kiểm ngõ ra bằng cưỡng bức — ⚠⚠ **chỉ khi cơ cấu vẫn còn cô lập**
+- [ ] ⚠⚠ **GỠ** (không phải tắt) mọi cưỡng bức sau mỗi phép thử — danh sách phải **rỗng**
 - [ ] Kiểm giá trị analog thô hợp lý
 - [ ] Kiểm mạng: mọi thiết bị được nhận, ⭐ **ghi số lỗi ban đầu**
 
