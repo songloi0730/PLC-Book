@@ -193,7 +193,7 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 > liệu là chưa đủ — hành vi khác nhau giữa "nạp thay đổi nhỏ", "nạp toàn bộ", và "nạp kèm cấu hình
 > phần cứng".
 >
-> Xem Chương 12 và Chương 53 mục 53.5.
+> Xem Chương 11 và Chương 53 mục 53.5.
 
 > ⭐⭐ **Inovance: hai dòng, hai cơ chế hoàn toàn khác nhau — và cả hai đều có bẫy riêng.**
 >
@@ -322,7 +322,7 @@ Nếu bạn chỉ nhớ bốn điều từ phụ lục này:
 | Khái niệm gốc theo chuẩn IEC | Chương 13–21, 30 · **Phụ lục B** |
 | Vì sao vòng quét quan trọng | Chương 7 |
 | ⚠ Chuyển chương trình sang nền mới | ⚠ **Chương 56 mục 56.4** |
-| Vùng nhớ giữ được | Chương 12 · Chương 53 mục 53.5 |
+| Vùng nhớ giữ được | Chương 11 · Chương 53 mục 53.5 |
 
 ---
 

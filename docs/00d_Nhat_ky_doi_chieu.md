@@ -371,6 +371,43 @@ vì khi viết phụ lục tôi dùng một **bản đồ chương sai trong đ�
 
 ---
 
+## Đợt 13 — 2026-09-03 · Quét lỗi số chương ra TOÀN BỘ phụ lục
+
+⭐ **Đợt 12 sửa Phụ lục F. Đợt này hỏi câu tiếp theo đúng đắn: các phụ lục khác có cùng bệnh không?**
+Có — lan ra **bảy phụ lục và ba chương**.
+
+| # | Nơi | Lỗi | KQ |
+|---|---|:--|:--:|
+| 60 | Phụ lục E (14 dòng) | Ch.43 (vision) dùng cho **báo động** → 44 · Ch.32 dùng cho **công thức** → 29 · Ch.24 (đại số Boolean) dùng cho **đọc/sửa chương trình** → 22 · Ch.12 (IO-Link) dùng cho **bộ nhớ giữ được** → 11 · Ch.5 (cơ cấu điện) dùng cho **khí nén** → 6 · Ch.21 dùng cho **trình tự/timeout** → 26 | ⚠ |
+| 61 | Phụ lục K (5) | **Lực xy-lanh · lưu lượng khí** dẫn Ch.5 → **6** · **thời gian quét** dẫn Ch.7, 19 → **10** · kiểu dữ liệu dẫn Ch.14 → **11, 19** | ⚠ |
+| 62 | Phụ lục B (2) | `R_TRIG` / `F_TRIG` dẫn Ch.11 → **16** | ⚠ |
+| 63 | Phụ lục C (1) | "Viết chương trình" dẫn Ch.24 → **22** | ⚠ |
+| 64 | Phụ lục H (4) | ISO 12100 dẫn Ch.6 → bỏ · IEC 61131-1/-2 dẫn Ch.7 → **8, 10** · ISO 4414 dẫn Ch.5 → **6** · IEC 62682 dẫn Ch.43 → **44** | ⚠ |
+| 65 | Phụ lục I (3) | Báo động dẫn Ch.43 → **44** | ⚠ |
+| 66 | Ch.53, 55, 56 + A1 (7) | *"Chương 12 về vùng nhớ giữ được"* — Ch.12 là **IO-Link**, đúng là **Ch.11** | ⚠ |
+| 67 | Phụ lục K, A2, E (3) | Ngưỡng phát hiện 4–20 mA dẫn **mục 31.7** (là "Trên máy mẫu DP-01") → **31.3** | ⚠ |
+| 68 | Ch.33, Ch.42 | Cùng dẫn 31.7 — ⭐ **KIỂM RA LÀ ĐÚNG**: §31.7 thật sự bàn quyết định 0–10 V của `AI_UvIntensity` | ✅ |
+
+### Kết quả đợt 13
+
+| | Số lượng |
+|---|---|
+| Nơi đã kiểm | **9** |
+| ⚠ Sai, đã sửa | 8 nhóm — **39 dẫn chiếu** |
+| ✅ Kiểm ra đúng, giữ nguyên | 1 |
+
+> ⭐⭐ **Cùng một nguyên nhân gốc với đợt 12, và đó mới là điều đáng ghi:** tôi viết mọi phụ lục bằng
+> **một bản đồ chương sai trong đầu**, nên lỗi không nằm ở một file — nó nằm ở **mọi file tôi viết
+> trong giai đoạn đó**.
+>
+> ⭐ **Bài học quy trình:** khi tìm ra một lỗi có nguyên nhân là "hiểu sai nền", ⚠ **đừng sửa chỗ tìm
+> thấy rồi dừng** — phải hỏi *"cái hiểu sai đó còn chảy vào đâu nữa?"* và quét hết.
+>
+> ⚡ Và mục 68 cho thấy vì sao vẫn phải kiểm từng cái: hai dẫn chiếu **trông giống lỗi** nhưng đúng.
+> Sửa hàng loạt theo mẫu mà không đọc ngữ cảnh sẽ **tạo ra lỗi mới**.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

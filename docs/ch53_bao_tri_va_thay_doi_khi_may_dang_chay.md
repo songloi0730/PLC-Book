@@ -207,7 +207,7 @@ nhiều nhất.
 
 | Mức | Cách làm | Chi phí |
 |---|---|---|
-| **1 — Đếm** | ⭐ Bộ đếm giữ được qua mất điện (Chương 12), hiện trên HMI | Gần như bằng không |
+| **1 — Đếm** | ⭐ Bộ đếm giữ được qua mất điện (Chương 11), hiện trên HMI | Gần như bằng không |
 | **2 — Ngưỡng** | Báo *nhắc nhở* khi bộ đếm vượt ngưỡng — ⚡ **nhắc, không phải dừng máy** | Vài giờ lập trình |
 | **3 — Xu hướng** | Ghi số liệu ra ngoài, xem đồ thị theo thời gian | Cần Chương 45 |
 
@@ -231,7 +231,7 @@ Ngưỡng cảnh báo = 18 000 000 lần  →  khoảng năm thứ 6
 ```
 
 > ⭐ **Phép tính này chỉ có ý nghĩa nếu bộ đếm sống sót qua mất điện và qua việc nạp lại chương
-> trình.** Xem Chương 12 về vùng nhớ giữ được, và ⚠ **kiểm tra thực tế** — nhiều người phát hiện bộ
+> trình.** Xem Chương 11 về vùng nhớ giữ được, và ⚠ **kiểm tra thực tế** — nhiều người phát hiện bộ
 > đếm bảo trì của mình bị xoá mỗi lần nạp chương trình, sau khi đã đếm được ba năm.
 
 ---
@@ -312,7 +312,7 @@ nửa đêm.
 ### 🔍 BẪY 7 — Bộ đếm bảo trì bị xoá khi nạp chương trình
 
 **Hiện tượng:** ⚠ đếm được ba năm rồi phát hiện số về không sau một lần nạp.
-**Cách sửa:** dùng vùng nhớ giữ được (Chương 12), và ⭐ **kiểm tra thực tế bằng cách nạp thử**.
+**Cách sửa:** dùng vùng nhớ giữ được (Chương 11), và ⭐ **kiểm tra thực tế bằng cách nạp thử**.
 
 > ⚠⚠ **Hai cách mất bộ đếm mà không ai ngờ tới — cả hai đều phụ thuộc hệ bạn dùng:**
 >

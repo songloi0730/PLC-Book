@@ -215,9 +215,9 @@
 
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
-| Báo động | alarm | | 43 |
-| Xác nhận báo động | acknowledge (ack) | | 43 |
-| Báo động đầu tiên | first-out alarm | ⭐ Cái nào xảy ra **trước** | 43 |
+| Báo động | alarm | | 44 |
+| Xác nhận báo động | acknowledge (ack) | | 44 |
+| Báo động đầu tiên | first-out alarm | ⭐ Cái nào xảy ra **trước** | 44 |
 | Tràn báo động | alarm flood | IEC 62682 | 44 |
 | Sửa trực tuyến | online edit | ⚠⚠ Ch.53 | 53 |
 | Tài liệu hiện trạng | as-built documentation | ⭐ Khác **bản thiết kế** | 53 |

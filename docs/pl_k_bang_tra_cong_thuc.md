@@ -43,7 +43,7 @@ Thô = 13824  →  (13824 − 0) / 27648 × (6 − 0) + 0  =  3,00 bar
 | Dòng **< 3,6 mA** | ⭐⭐ **Đứt dây / hỏng cảm biến** — không phải giá trị đo bằng 0 |
 | Dòng **> 21 mA** | Ngắn mạch hoặc lỗi cảm biến |
 | ⚠ Điều kiện áp dụng | ⭐ **Chỉ dùng được với 4–20 mA**; tín hiệu 0–10 V và 0–20 mA **không phân biệt được đứt dây** |
-| Chương | 31 mục 31.7 |
+| Chương | 31 mục 31.3 |
 
 > ⭐⭐ **Đây là lý do 4–20 mA được ưa dùng hơn 0–10 V cho phép đo quan trọng:** không phải vì chống
 > nhiễu tốt hơn (dù nó cũng đúng), mà vì ⭐ **0 mA là một trạng thái không thể xảy ra khi mọi thứ
@@ -215,7 +215,7 @@ Thời gian quét  ≈  Thời gian đọc I/O  +  Thời gian chạy chương t
 | ⚠ **Điều kiện áp dụng** | Đây là **ước lượng**, không phải bảo đảm — ⭐ **đo thời gian quét thật trên máy** |
 | ⚠ Nhớ rằng | Thời gian quét **thay đổi theo đường chạy** trong chương trình — quan tâm **giá trị lớn nhất**, không phải trung bình |
 | ⚠⚠ Bẫy khi đổi PLC | ⭐ **PLC mới thường quét nhanh hơn nhiều** — logic dựa vào vòng quét sẽ chạy khác (Ch.56) |
-| Chương | 7 · 19 · 56 mục 56.4 |
+| Chương | 10 · 56 mục 56.4 |
 
 ### ⭐ Khi nào cần bộ đếm xung tốc độ cao
 
@@ -305,8 +305,8 @@ Nếu  Tần số xung  >  1 / (2 × Thời gian quét)   →  ⭐ PHẢI dùng 
 |---|---|---|
 | Quy đổi giá trị analog | K.1 | 31 |
 | Phát hiện đứt dây cảm biến 4–20 mA | K.1 | 31 |
-| Lực xy-lanh | K.2 | 5 |
-| Lưu lượng khí | K.2 | 5 |
+| Lực xy-lanh | K.2 | 6 |
+| Lưu lượng khí | K.2 | 6 |
 | Công suất nguồn 24 V | K.3 | 8 |
 | Tuổi thọ van / rơ-le / cáp xích | K.3 | 9, 49 |
 | Ngưỡng bảo trì | K.3 | 53 |
@@ -314,9 +314,9 @@ Nếu  Tần số xung  >  1 / (2 × Thời gian quét)   →  ⭐ PHẢI dùng 
 | ⭐ **Chu kỳ máy nhiều trạm** | K.4 | 55 |
 | ⭐ **Tìm nút cổ chai** | K.4 | 55 |
 | OEE | K.4 | 55 |
-| Thời gian quét | K.5 | 7, 19 |
+| Thời gian quét | K.5 | 10 |
 | ⭐ **Khi nào cần bộ đếm tốc độ cao** | K.5 | 18 |
-| Dải kiểu dữ liệu, chống tràn | K.6 | 14 |
+| Dải kiểu dữ liệu, chống tràn | K.6 | 11, 19 |
 | Vỏ chống nhiễu, nối đất | K.7 | 31, 36, 49 |
 
 ---

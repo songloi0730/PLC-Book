@@ -174,7 +174,7 @@ Nghe tầm thường, nhưng đây là công cụ mạnh nhất và rẻ nhất 
 | Cách xử lý bộ định thời khi bị ngắt giữa chừng | Hành vi khác nhau giữa các dòng |
 | ⭐ **Kiểu dữ liệu và tràn số** | Chương 14 — một phép tính chạy đúng 15 năm có thể tràn trên nền mới |
 | Thứ tự quét khối / ngắt | Chương 19 |
-| Vùng nhớ giữ được qua mất điện | ⭐ Chương 12 — ⚠ **bộ đếm bảo trì, số lô, tổng sản lượng** |
+| Vùng nhớ giữ được qua mất điện | ⭐ Chương 11 — ⚠ **bộ đếm bảo trì, số lô, tổng sản lượng** |
 | Cách làm tròn số thực | Chương 14 |
 
 > ⚠⚠ **Hàng đầu là cái bẫy đặc trưng của retrofit.** PLC mới thường quét **nhanh hơn nhiều**. Một

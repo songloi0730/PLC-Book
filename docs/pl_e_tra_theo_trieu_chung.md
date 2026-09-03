@@ -57,7 +57,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | # | Kiểm | Trên DP-01 |
 |---|---|---|
 | 1 | ⚠ **Mạch an toàn lành** | `DI_EStopOK`, `DI_CurtainOK`, `DI_Door1Closed`, `DI_Door2Closed` |
-| 2 | Không có báo động đang treo | Xem danh sách báo động (Ch.43) |
+| 2 | Không có báo động đang treo | Xem danh sách báo động (Ch.44) |
 | 3 | Đã về gốc | Các trục ở vị trí gốc |
 | 4 | Năng lượng phụ trợ đủ | `DI_AirOK` — khí nén |
 | 5 | Thiết bị phụ sẵn sàng | `DI_VfdReady`, `DI_IonizerOK` |
@@ -91,7 +91,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | Cảm biến lệch / bẩn | Đôi khi nhận, đôi khi không | 4 |
 | ⚠ **Cáp gãy lõi trong xích động** | ⭐ Chập chờn **theo tư thế**; đo tĩnh vẫn tốt | 49 mục 49.7 |
 | Đầu cốt lỏng | ⚠ **Nặng dần theo thời gian** | 3, 49 |
-| Bit bị ghi đè trong chương trình | Bit "nhấp nháy" hoặc không bao giờ giữ | 24, 51 |
+| Bit bị ghi đè trong chương trình | Bit "nhấp nháy" hoặc không bao giờ giữ | 22, 51 |
 
 > ⭐⭐ **Bước 1 loại được nhiều nhất và mất ít thời gian nhất.** Nhìn đèn trên cảm biến trước khi mở
 > phần mềm — nó chia đôi bài toán ngay lập tức.
@@ -113,7 +113,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | ⭐ **Quá dòng chân chung của module** | Vài ngõ ra cùng nhóm yếu hoặc không tác động khi **cùng bật** | 9 mục 9.4 |
 | Nguồn 24 V thiếu công suất | ⭐ Lỗi khi **nhiều cơ cấu cùng tác động**; trông giống lỗi phần mềm | 8 mục 8.7 |
 | Van kẹt cơ khí | Có điện, có tiếng, không chuyển động | 5 |
-| Thiếu khí nén | ⭐ **Mọi cơ cấu khí nén cùng chậm hoặc không chạy** | 5 |
+| Thiếu khí nén | ⭐ **Mọi cơ cấu khí nén cùng chậm hoặc không chạy** | 6 |
 | Rơ-le hết tuổi thọ | ⚠ Đóng cắt được nhưng **tiếp điểm cháy rỗ** — sụt áp | 9 mục 9.3 |
 | Mạch an toàn đang cắt nguồn ngõ ra | ⭐ **Bit lên, đèn module sáng, nhưng không có điện ở cơ cấu** | 47 |
 
@@ -129,7 +129,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 |---|---|---|
 | ⭐ Giá trị **run liên tục** vài phần trăm | Nhiễu — ⭐ **cáp đi cạnh động lực**, hoặc vòng lặp đất | 31 mục 31.6 · 49 mục 49.4 |
 | ⭐ Nhiễu **tăng khi thiết bị công suất chạy** | ⭐⭐ **Ghép nhiễu từ cáp động lực** — dấu hiệu đặc trưng | 49 mục 49.3 |
-| Giá trị **luôn bằng 0** | Đứt dây; ⭐ với 4–20 mA thì **phân biệt được**, với 0–10 V thì không | 31 mục 31.7 |
+| Giá trị **luôn bằng 0** | Đứt dây; ⭐ với 4–20 mA thì **phân biệt được**, với 0–10 V thì không | 31 mục 31.3 |
 | Giá trị **luôn ở đáy hoặc đỉnh thang** | Sai cấu hình dải, hoặc sai kiểu tín hiệu (áp/dòng) | 31 mục 31.4 |
 | ⭐ Giá trị **lệch một hằng số** | Sai hệ số quy đổi, hoặc chưa hiệu chuẩn | 31 |
 | Giá trị **nhảy bậc lớn ngẫu nhiên** | Đầu cốt lỏng, hoặc cáp gãy lõi | 49 |
@@ -171,12 +171,12 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 
 | Quan sát | Nghi trước | Chương |
 |---|---|---|
-| ⭐ Dừng ở **cùng một bước** mỗi lần | ⭐ **Điều kiện chuyển tiếp của bước đó không đạt** — kiểm tín hiệu phản hồi | 21, 51 |
+| ⭐ Dừng ở **cùng một bước** mỗi lần | ⭐ **Điều kiện chuyển tiếp của bước đó không đạt** — kiểm tín hiệu phản hồi | 26, 51 |
 | Dừng ở **bước khác nhau** mỗi lần | Điều kiện chung: an toàn, khí nén, nguồn, mạng | E.2 |
-| Báo lỗi hết giờ ở một bước | ⭐ Cơ cấu **không tới nơi**, hoặc cảm biến phản hồi hỏng | 21 |
-| ⚠ Dừng **không có báo động nào** | ⭐⭐ **Lỗi thiết kế báo động** — hoặc CPU mất điện (Ch.49 mục 49.5) | 43, 49 |
-| Dừng khi đổi công thức | Tham số ngoài dải, hoặc thiếu tham số | 32 |
-| ⭐ Dừng lúc **hai trạm cùng cần một thứ** | ⭐ **Bế tắc** trong logic điều phối | 26 |
+| Báo lỗi hết giờ ở một bước | ⭐ Cơ cấu **không tới nơi**, hoặc cảm biến phản hồi hỏng | 26 |
+| ⚠ Dừng **không có báo động nào** | ⭐⭐ **Lỗi thiết kế báo động** — hoặc CPU mất điện (Ch.49 mục 49.5) | 44, 49 |
+| Dừng khi đổi công thức | Tham số ngoài dải, hoặc thiếu tham số | 29 |
+| ⭐ Dừng lúc **hai trạm cùng cần một thứ** | ⭐ **Bế tắc** trong logic điều phối | 26, 27 |
 | Dừng khi máy trước/sau bận | Bắt tay chuyền — có thể là **bình thường**, không phải lỗi | 41, 55 mục 55.6 |
 
 > ⭐⭐ **Hàng "dừng không có báo động" xứng đáng được coi là một lỗi phải sửa, không phải một hiện
@@ -195,10 +195,10 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | Quan sát | Nghi trước | Chương |
 |---|---|---|
 | ⭐ Hỏng **tăng dần theo thời gian** | ⭐⭐ **Một thứ đang mòn hoặc suy giảm** — đèn UV yếu dần, cảm biến trôi | 53 mục 53.5 |
-| Hỏng theo **lô vật tư** | Vật tư, không phải máy — nhưng máy nên phát hiện được | 32 |
+| Hỏng theo **lô vật tư** | Vật tư, không phải máy — nhưng máy nên phát hiện được | 29 |
 | ⭐ Hỏng khi **chạy nhanh hơn** | ⭐ Thời gian quá trình không đủ; hoặc chuyển tiếp bằng **bộ định thời thay vì phản hồi** | 55 mục 55.5 |
-| Hỏng ở **một vị trí cố định** trên sản phẩm | Cơ khí, gá, hoặc dữ liệu công thức | 32, 37 |
-| Hỏng sau khi đổi công thức | Tham số sai nhưng **vẫn trong dải hợp lệ** | 32 |
+| Hỏng ở **một vị trí cố định** trên sản phẩm | Cơ khí, gá, hoặc dữ liệu công thức | 29, 37 |
+| Hỏng sau khi đổi công thức | Tham số sai nhưng **vẫn trong dải hợp lệ** | 29 |
 | ⚠ Hỏng **không có triệu chứng tại chỗ** | ⭐ ESD, keo chưa cứng, mối hàn nguội — ⚠ **lộ ra ở công đoạn sau** | 7, 53 |
 
 > ⭐⭐ **Câu hỏi cốt lõi cho cả nhóm này: máy có phép đo nào để biết việc nó vừa làm là ĐÚNG không —
@@ -258,11 +258,11 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 
 | Vừa thay đổi | Nghi trước | Chương |
 |---|---|---|
-| ⭐ **Nạp chương trình mới** | Thay đổi vừa nạp; ⚠ và **bộ đếm giữ được có bị xoá không** | 12, 53 |
+| ⭐ **Nạp chương trình mới** | Thay đổi vừa nạp; ⚠ và **bộ đếm giữ được có bị xoá không** | 11, 53 |
 | Đổi CPU / PLC | ⭐⭐ **Thời gian quét khác** · tràn số · hành vi bộ định thời | 56 mục 56.4 |
 | Thay cảm biến | Sai loại PNP/NPN, sai NO/NC, sai căn chỉnh | 4 |
 | Thay biến tần | ⭐ **Tham số chưa nạp lại** | 36, 54 |
-| Đổi công thức | Tham số ngoài dải, hoặc thiếu tham số | 32 |
+| Đổi công thức | Tham số ngoài dải, hoặc thiếu tham số | 29 |
 | Đấu thêm thiết bị vào tủ | ⭐ **Quá tải nguồn 24 V**; hoặc thêm nguồn nhiễu | 8, 49 |
 | Sửa máy bên cạnh | Đất chung, nguồn chung, hoặc bắt tay chuyền | 41, 49 |
 | ⚠ Chạm mạch an toàn | ⚠⚠ **Phải đánh giá lại** — không chỉ kiểm tra chạy được | 47, 48, 53 |
@@ -297,7 +297,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | Bạn cần | Đọc |
 |---|---|
 | Phương pháp chẩn đoán có hệ thống | ⭐ **Chương 51** |
-| Thiết kế báo động nói được **phải làm gì** | Chương 43 |
+| Thiết kế báo động nói được **phải làm gì** | Chương 44 |
 | Quy tắc lắp đặt và chống nhiễu | ⭐ **Chương 49** |
 | Đo chu kỳ, tìm nút cổ chai | Chương 55 |
 | Theo dõi sự trôi trước khi thành lỗi | Chương 53 mục 53.5 |

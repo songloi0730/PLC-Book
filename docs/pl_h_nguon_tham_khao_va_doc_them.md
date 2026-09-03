@@ -28,7 +28,7 @@ công việc yêu cầu.
 
 | Tiêu chuẩn | Nói về | Dùng ở chương |
 |---|---|---|
-| ⭐⭐ **ISO 12100** | Nguyên tắc chung về thiết kế an toàn và **đánh giá rủi ro** | 6, 47, 56 |
+| ⭐⭐ **ISO 12100** | Nguyên tắc chung về thiết kế an toàn và **đánh giá rủi ro** | 47, 56 |
 | ⭐ **ISO 13849-1 / -2** | Bộ phận liên quan an toàn của hệ điều khiển — **mức hiệu năng (PL)** | 47, 48 |
 | ⭐ **IEC 62061** | An toàn chức năng của hệ điều khiển điện — **mức toàn vẹn (SIL)** | 47, 48 |
 | **IEC 61508** | An toàn chức năng — tiêu chuẩn nền cho các tiêu chuẩn trên | 47, 48, 53 |
@@ -51,7 +51,7 @@ công việc yêu cầu.
 | Tiêu chuẩn | Nói về | Chương |
 |---|---|---|
 | ⭐⭐ **IEC 61131-3** | ⭐ **Ngôn ngữ lập trình PLC** — xương sống của cả cuốn sách | 13–21, 30 |
-| **IEC 61131-1 / -2** | Thông tin chung · yêu cầu thiết bị | 7, 8 |
+| **IEC 61131-1 / -2** | Thông tin chung · yêu cầu thiết bị | 8, 10 |
 | **IEC 61131-9** | IO-Link | 12 |
 | **IEC 61439** | Tủ điện hạ áp | 49 |
 | **IEC 61800-3** | Yêu cầu EMC cho hệ truyền động | 36, 49 |
@@ -59,7 +59,7 @@ công việc yêu cầu.
 | **IEC 61643** | Thiết bị chống quá áp lan truyền | 49 |
 | **IEC 62443** | ⭐ **An ninh mạng công nghiệp** | 45, 53, 54 |
 | **IEC 62541** | OPC UA | 40, 45 |
-| **IEC 62682** | ⭐ Quản lý hệ thống báo động | 43 |
+| **IEC 62682** | ⭐ Quản lý hệ thống báo động | 44 |
 | **IEC 62381** | Kiểm tra chấp nhận hệ tự động hoá (FAT/SAT) | 52 |
 | **IEC 62264** · **ISO 22400** | Tích hợp hệ điều hành sản xuất · ⭐ **chỉ số năng suất** | 45, 55 |
 
@@ -71,7 +71,7 @@ công việc yêu cầu.
 | **IEC 60584** | Cặp nhiệt điện | 33 |
 | **IEC 60381** | Tín hiệu analog chuẩn (4–20 mA, 0–10 V) | 31 |
 | **IEC 61340-5-1** | ⭐ Bảo vệ linh kiện điện tử khỏi tĩnh điện (ESD) | 7 |
-| **ISO 4414** | An toàn hệ khí nén | 5 |
+| **ISO 4414** | An toàn hệ khí nén | 6 |
 | **ISO/IEC 16022** | Mã 2D Data Matrix | 42 |
 
 > ⭐ **Cách mua thực dụng:** đừng mua cả bộ. ⭐ **Mua bản bạn thật sự dùng** — với người lập trình máy,

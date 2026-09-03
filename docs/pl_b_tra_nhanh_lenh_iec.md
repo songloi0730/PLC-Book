@@ -78,8 +78,8 @@ Từ **cao xuống thấp**:
 | `:=` | Gán | Cuộn dây | 15 |
 | `S` | Đặt (giữ 1) | Cuộn dây Set | 15 |
 | `R` | Xoá (giữ 0) | Cuộn dây Reset | 15 |
-| `R_TRIG` | ⭐ Bắt **cạnh lên** | Tiếp điểm P | 11 |
-| `F_TRIG` | ⭐ Bắt **cạnh xuống** | Tiếp điểm N | 11 |
+| `R_TRIG` | ⭐ Bắt **cạnh lên** | Tiếp điểm P | 16 |
+| `F_TRIG` | ⭐ Bắt **cạnh xuống** | Tiếp điểm N | 16 |
 | `SR` | Flip-flop ưu tiên Set | | 15 |
 | `RS` | Flip-flop ưu tiên Reset | | 15 |
 

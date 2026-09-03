@@ -154,7 +154,7 @@ Trước khi vào bảng, cần phân biệt ba loại quan hệ:
 > | ⭐⭐ **Gộp luôn phát hiện ngoài dải** | ⚠ Điều mà khối chuẩn thường **không** làm |
 >
 > ⭐ Hàng cuối là lý do mạnh nhất: khối chuẩn quy đổi 3,0 mA thành một con số âm và **không nói gì**.
-> Khối tự viết thì báo *"lỗi cảm biến"* (Chương 31 mục 31.7).
+> Khối tự viết thì báo *"lỗi cảm biến"* (Chương 31 mục 31.3).
 
 ---
 

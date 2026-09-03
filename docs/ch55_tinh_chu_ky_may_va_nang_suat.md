@@ -480,7 +480,7 @@ lớn công việc thực tế là **sửa máy đã có** — thường là má
 - ISO 22400 (bộ) — *Key performance indicators for manufacturing operations management*: ⭐ **định
   nghĩa chuẩn hoá cho các chỉ số năng suất**, gồm cả nhóm chỉ số mà OEE thuộc về. Dùng nó khi cần
   con số **so sánh được giữa các nhà máy**.
-- Phép đo thời gian bước và bộ đếm — Chương 12 (vùng nhớ giữ được), Chương 21 (trình tự), Chương 43
+- Phép đo thời gian bước và bộ đếm — Chương 11 (vùng nhớ giữ được), Chương 21 (trình tự), Chương 43
   (báo động), Chương 53 mục 53.5 (bảo trì).
 
 > ⚠ **Giới hạn.** Công thức OEE ở mục 55.7 là dạng phổ biến nhất, nhưng ⚠ **định nghĩa chi tiết khác

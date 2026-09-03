@@ -44,7 +44,7 @@
 | **1.6** | **SET / RESET.** Bài 1.1 viết lại bằng cuộn dây Set/Reset. So sánh với bản tự giữ: khác nhau ở đâu khi CPU khởi động lại? | Set/Reset vs tự giữ | ✅ |
 | **1.7** | **Bắt cạnh lên.** Mỗi lần nhấn nút, đầu ra **đảo trạng thái** (nhấn bật, nhấn nữa tắt). | ⭐ Bắt cạnh — nếu không bắt cạnh, đầu ra nhấp nháy mỗi vòng quét | ✅ |
 | **1.8** | **Mạch lật hai nút.** Nút A bật, nút B tắt. Nếu nhấn cả hai cùng lúc thì **tắt thắng**. | Ưu tiên trong flip-flop | ✅ |
-| **1.9** | **Báo động có xác nhận.** Cảm biến lỗi → đèn nháy + còi. Nhấn Ack → còi tắt, ⭐ **đèn chuyển sang sáng liên tục** cho tới khi hết lỗi. | ⭐ Ba trạng thái báo động (Ch.43) | ✅ |
+| **1.9** | **Báo động có xác nhận.** Cảm biến lỗi → đèn nháy + còi. Nhấn Ack → còi tắt, ⭐ **đèn chuyển sang sáng liên tục** cho tới khi hết lỗi. | ⭐ Ba trạng thái báo động (Ch.44) | ✅ |
 | **1.10** | ⭐ **Chuỗi cho phép.** Máy chỉ chạy khi đủ 5 điều kiện. Khi thiếu, ⭐ **phải chỉ ra điều kiện nào đang thiếu**, không chỉ "chưa sẵn sàng". | ⭐⭐ Chuỗi cho phép — thứ tiết kiệm hàng giờ khi máy không khởi động | ✅ |
 | **1.11** | **Kiểm đèn.** Nhấn nút Test → mọi đèn và còi bật 2 giây rồi về trạng thái thật. | ⭐ Vì sao cần: đèn báo lỗi bị cháy = lỗi vô hình | ✅ |
 | **1.12** | **Ưu tiên dừng.** Ba nút Start ở ba vị trí, hai nút Stop. Bất kỳ nút Stop nào cũng dừng được. | ⚠ Stop luôn thắng Start | — |
@@ -89,7 +89,7 @@
 | **3.3** | ⭐⭐ **Cùng bài, hai cách.** Làm bài 3.1 hai lần: (a) chỉ dùng bộ định thời nối tiếp, (b) dùng **thanh ghi bước**. So sánh: cách nào dễ thêm một pha đèn mới? | ⭐⭐ **Vì sao trình tự có cấu trúc thắng chuỗi timer** | ✅ |
 | **3.4** | **Trạm trộn.** Mở van A đủ lượng → mở van B đủ lượng → khuấy 30 s → xả. Có Start/Stop/Reset. | Trình tự nhiều bước có điều kiện | ✅ |
 | **3.5** | **Cổng bãi xe.** Xe tới → mở cổng → chờ xe qua hẳn → đóng. ⚠ **Không được đóng khi xe còn dưới cổng**. | ⚠ Khoá liên động an toàn trong trình tự | ✅ |
-| **3.6** | ⭐ **Báo động first-out.** Năm nguyên nhân đều làm máy dừng. Hiển thị ⭐ **nguyên nhân xảy ra TRƯỚC TIÊN**, không phải cả năm. | ⭐⭐ First-out — thứ phân biệt báo động hữu ích với tràn báo động (Ch.43) | ✅ |
+| **3.6** | ⭐ **Báo động first-out.** Năm nguyên nhân đều làm máy dừng. Hiển thị ⭐ **nguyên nhân xảy ra TRƯỚC TIÊN**, không phải cả năm. | ⭐⭐ First-out — thứ phân biệt báo động hữu ích với tràn báo động (Ch.44) | ✅ |
 | **3.7** | **Timeout từng bước.** Thêm timeout riêng cho mỗi bước của bài 3.4, mỗi timeout có **mã lỗi riêng**. | Chẩn đoán được từ báo động | ✅ |
 | **3.8** | ⭐⭐ **Chuyển Manual ↔ Auto không giật.** Máy đang chạy Auto, chuyển sang Manual rồi quay lại. ⚠ **Cơ cấu không được nhảy vị trí**, trình tự phải biết mình đang ở đâu. | ⭐⭐ Bài khó nhất mức 3 — và là vấn đề thật trên mọi máy | — |
 | **3.9** | **Bỏ bước theo công thức.** Trình tự 6 bước; công thức quyết định bước 3 và 5 **có chạy hay không**. | ⭐ Tham số là **dữ liệu**, không phải mã (Ch.32) | — |
@@ -114,7 +114,7 @@
 | **4.6** | ⭐ **Giới hạn tốc độ thay đổi.** Giá trị đặt tốc độ chuyền không được nhảy đột ngột — giới hạn 10 %/giây. | ⭐ Ramp — bảo vệ cơ khí | ✅ |
 | **4.7** | ⚠ **Ép kiểu và tràn số.** Tính tổng lưu lượng: cộng giá trị đọc mỗi 100 ms trong 24 giờ. ⚠ **Chọn kiểu dữ liệu sao cho không tràn**, và chứng minh bằng phép tính. | ⚠⚠ Tràn số — lỗi âm thầm nhất (Ch.14) | ✅ |
 | **4.8** | **Tích phân lưu lượng.** Từ tín hiệu lưu lượng tức thời, tính tổng thể tích đã chảy qua. | Tích phân rời rạc theo vòng quét | — |
-| **4.9** | ⭐ **Dải báo động nhiều mức.** Một giá trị analog có 4 ngưỡng: thấp-thấp, thấp, cao, cao-cao. Mỗi ngưỡng có ⭐ **mức ưu tiên và hành động khác nhau**. | ⭐ Phân cấp báo động (Ch.43) | — |
+| **4.9** | ⭐ **Dải báo động nhiều mức.** Một giá trị analog có 4 ngưỡng: thấp-thấp, thấp, cao, cao-cao. Mỗi ngưỡng có ⭐ **mức ưu tiên và hành động khác nhau**. | ⭐ Phân cấp báo động (Ch.44) | — |
 
 > ⭐⭐ **Bài 4.2 là bài nên làm kể cả khi bạn thấy nó dễ.** Rất nhiều máy thật xử lý sai chỗ này: cảm
 > biến đứt dây cho giá trị 0, chương trình hiểu là "áp suất bằng 0", và ⚠ **máy phản ứng như thể áp

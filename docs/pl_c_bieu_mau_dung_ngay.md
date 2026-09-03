@@ -276,7 +276,7 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 |---|---|---|
 | Đặc tả | C.3 · C.4 · C.5 | 23, 25, 32 |
 | Bảng I/O & phần cứng | ⭐ **C.1** | 23 |
-| Viết chương trình | C.2 | 24 |
+| Viết chương trình | C.2 | 22 |
 | Kiểm thử | C.6 · C.7 | 50, 52 |
 | ⚠ Nghiệm thu an toàn | ⚠ **C.8** | 48 |
 | Bàn giao | ⭐ **C.9** | 52, 54 |
