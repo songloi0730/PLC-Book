@@ -35,48 +35,59 @@
 | Nguồn | Trang | Mục lục | Nhật ký đã nhắc? |
 |---|--:|--:|:--:|
 | Mitsubishi FX5 — Instructions/FB | 1470 | 651 | ✔ |
-| Rockwell — khác | 1432 | 788 | ✔ |
+| Inovance H5U/Easy — lệnh | 1113 | 642 | ✔ |
+| Siemens Safety programming | 579 | 405 | ✔ |
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
-| Tài liệu PLC tiếng Việt | 367 | 0 | ✔ |
-| Mitsubishi FX5 — Positioning | 302 | 158 | ✔ |
-| AutomationDirect PLC Handbook | 85 | 0 | ✔ |
+| Kuphaldt — Instrumentation Technician | 163 | 90 | ✔ |
+| AutomationDirect PLC Handbook | 85 | 0 | ⚠ **chưa** |
+| PLCopen XML exchange | 80 | 103 | ✔ |
 | PPSA / khí nén | 71 | 65 | ⚠ **chưa** |
+| PLCopen Safe Motion | 45 | 30 | ✔ |
 | Siemens S7-1500 / TIA | 37 | 0 | ✔ |
+| Rockwell — IEC 61131-3 compliance | 30 | 17 | ✔ |
+| IO-Link — mô tả hệ thống | 25 | 4 | ✔ |
+| PLCopen — Structuring Program Development | 4 | 0 | ✔ |
 
 ---
 
-## 3. Nguồn đã được dẫn — dẫn ở chương nào
+## 2b. ⚠ Nguồn chỉ được dẫn bằng TÊN CHUNG
+
+⭐ Các nguồn này **có được dẫn**, nhưng chương chỉ nêu **tên chung** (ví dụ *"Petruzella"*)
+mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy được **bản nào** đã dùng.
+⚠ Sửa bằng cách nêu rõ bản/ấn bản trong danh sách nguồn của chương.
+
+| Nguồn | Trang | Chương dẫn chung |
+|---|--:|---|
+| Inovance H5U/Easy — lập trình | 808 | 24, 30, 55 |
+| Inovance H3U — lệnh & lập trình | 731 | 24, 30, 55 |
+| Petruzella — PLC (2025) | 441 | 16, 18, 19, 51 |
+| Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
+| Petruzella — Activities Manual | 401 | 16, 18, 19, 51 |
+| Mitsubishi FX5 — MODBUS | 86 | 39 |
+| Modbus — đặc tả | 50 | 39 |
+
+---
+
+## 3. Nguồn đã được dẫn ĐÍCH DANH — dẫn ở chương nào
 
 | Nguồn | Trang | Chương dẫn |
 |---|--:|---|
 | Kuphaldt — Industrial Instrumentation | 3311 | 38 |
-| Kuphaldt — Electric Circuits | 2354 | 38, 47 |
-| Petruzella — PLC (2025) | 441 | 16, 18, 19, 51 |
-| Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
-| Petruzella — Activities Manual | 401 | 16, 18, 19, 51 |
+| Kuphaldt — Electric Circuits | 2354 | 47 |
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30 |
-| Hanssen — IEC 61131-3 / CoDeSys | 419 | 12, 14, 19, 20, 21 |
-| Siemens S7-1200 System Manual | 864 | 12, 19, 25, 26, 27, 30, 51 |
-| Siemens Safety programming | 579 | 47 |
-| Mitsubishi FX5 — Program Design | 136 | 14, 16, 18, 19, 20, 21, 23, 25, 26, 27, 51, 52 |
-| Mitsubishi FX5 — MODBUS | 86 | 35, 39 |
-| Rockwell — IEC 61131-3 compliance | 30 | 12, 14, 20, 21 |
-| Inovance H5U/Easy — lập trình | 808 | 19, 21, 24, 30, 43, 55 |
-| Inovance H5U/Easy — lệnh | 1113 | 19 |
-| Inovance H3U — lệnh & lập trình | 731 | 19, 21, 24, 30, 43, 55 |
+| Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21 |
+| Siemens S7-1200 System Manual | 864 | 12, 51 |
+| Mitsubishi FX5 — Program Design | 136 | 25, 26 |
+| Rockwell — khác | 1432 | 35 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
-| IO-Link — đặc tả giao diện | 294 | 12 |
-| IO-Link — mô tả hệ thống | 25 | 12 |
-| Modbus — đặc tả | 50 | 35, 39 |
+| IO-Link — đặc tả giao diện | 294 | 37, 38, 41, 43, 54 |
 | SICK — an toàn | 322 | 47 |
 | Schneider — an toàn máy | 33 | 47 |
 | DGUV / IFA | 324 | 47 |
-| PLCopen Safety Part 1 | 194 | 37, 47 |
-| PLCopen Safe Motion | 45 | 37, 47 |
-| PLCopen Motion Control | 213 | 14, 16, 18, 19, 20, 21, 23, 37, 47, 51, 52 |
-| PLCopen — Structuring Program Development | 4 | 14, 16, 18, 19, 20, 21, 23, 27, 37, 47, 51, 52 |
-| PLCopen XML exchange | 80 | 37, 47 |
-| Kuphaldt — Instrumentation Technician | 163 | 38 |
+| PLCopen Safety Part 1 | 194 | 47 |
+| PLCopen Motion Control | 213 | 28, 37 |
+| Mitsubishi FX5 — Positioning | 302 | 28 |
+| Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
 | Bryan — Theory and Implementation | 1047 | 23, 51, 52 |
 
 ---
@@ -153,28 +164,13 @@ nhưng thiếu bí danh (thêm vào `bi_danh_tep`).
 | Thông tin về vòng đời sản phẩm và thông báo ngừng sản xuất,  | 1 |
 | ⚠ **Giới hạn của bảng 4 tổ hợp** (mục 15.3): nó chỉ phủ **hỏ | 1 |
 | OIML R 60 \| OIML R 60 — *Metrological regulation for load ce | 1 |
-| Tài liệu **khối PID** của hệ đang dùng \| Tài liệu **khối PID | 1 |
-| Tài liệu biến tần \| **Tài liệu biến tần** của dòng đang dùng | 1 |
-| Tài liệu servo drive \| **Tài liệu servo drive** của hệ đang  | 1 |
-| TIA/EIA-232 \| **TIA/EIA-232**, **TIA/EIA-422**, **TIA/EIA-48 | 1 |
-| Tài liệu thiết bị tớ \| **Tài liệu thiết bị tớ** — dùng cho ⚠ | 1 |
-| Tài liệu mạng của hệ PLC đang dùng \| **Tài liệu mạng của hệ  | 1 |
-| Đặc tả giao diện SMEMA \| **Đặc tả giao diện SMEMA** — chuẩn  | 1 |
-| ⚠ **Tài liệu của máy hàng xóm** \| ⚠ **Tài liệu của máy hàng  | 1 |
 | ISO/IEC 16022 \| **ISO/IEC 16022** — *Data Matrix bar code sy | 1 |
 | ISO/IEC 15415 \| **ISO/IEC 15415** và **ISO/IEC 29158** — chấ | 1 |
-| Tài liệu hệ HMI/SCADA \| **Tài liệu hệ HMI/SCADA** đang dùng  | 1 |
-| Mô hình Purdue \| **Mô hình Purdue** — mô hình phân tầng kiến | 1 |
-| Tài liệu bảo mật của hệ PLC đang dùng \| **Tài liệu bảo mật c | 1 |
 | ISO/TS 15066 \| **ISO/TS 15066** — *Robots and robotic device | 1 |
-| Tài liệu robot \| **Tài liệu robot** của hãng đang dùng — dùn | 1 |
 | Hướng dẫn lắp đặt của nhà sản xuất biến tần và PLC \| **Hướng | 1 |
 | Hướng dẫn của nhà sản xuất PLC, biến tần, HMI \| **Hướng dẫn  | 1 |
-| Hợp đồng và điều khoản bàn giao \| Hợp đồng và điều khoản bàn | 1 |
 | Quy định pháp luật tại thị trường của bạn \| **Quy định pháp  | 1 |
-| Tài liệu vòng đời sản phẩm của nhà sản xuất PLC \| **Tài liệu | 1 |
 | Toàn bộ các chương được dẫn trong bảng ở mục 57.3–57.10 \| To | 1 |
-| Tài liệu và khoá đào tạo của các nhà sản xuất thiết bị \| **T | 1 |
 
 ---
 

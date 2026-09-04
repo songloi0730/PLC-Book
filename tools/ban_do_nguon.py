@@ -65,20 +65,47 @@ def sap_xep_khoa(k):
     return (0, int(k)) if k.isdigit() else (1, k)
 
 
-def co_tu_khoa(ten_thap, nhan):
-    """Khớp thô giữa tên nguồn trong sách và bí danh.
+def tach_tu(chuoi):
+    return [t for t in re.split(r"[^\wÀ-ỹ]+", chuoi.lower()) if t]
 
-    Hai đường khớp, vì bí danh có hai dạng:
-      - tên dài  ("Hugh Jack — Automating Manufacturing")  -> khớp theo TỪ đặc trưng
-      - tên viết tắt ngắn ("SICK — an toàn", "DGUV / IFA") -> khớp theo CỤM đầu
+
+def tu_phan_biet(bi_danh):
+    """Với mỗi nhãn, lấy tập từ CHỈ nó có — bỏ từ dùng chung với nhãn khác.
+
+    Vì sao cần: các nhãn cùng hãng chia nhau nhiều từ ("Mitsubishi FX5 —
+    Instructions/FB" và "… — Positioning" cùng có "mitsubishi", "fx5"). Nếu khớp
+    theo bất kỳ từ dài nào thì MỘT dẫn chiếu sẽ được tính cho MỌI nhãn cùng hãng,
+    và bản đồ sẽ báo THIẾU lỗ hổng — sai nguy hiểm hơn báo thừa.
     """
+    dem = collections.Counter()
+    for nhan in bi_danh:
+        for tu in set(tach_tu(nhan)):
+            dem[tu] += 1
+    kq = {}
+    for nhan in bi_danh:
+        rieng = {t for t in tach_tu(nhan) if len(t) >= 4 and dem[t] == 1}
+        kq[nhan] = rieng
+    return kq
+
+
+def co_tu_khoa(ten_thap, nhan, rieng=None):
+    """Khớp tên nguồn trong sách với một bí danh.
+
+    Khi có `rieng` (tập từ phân biệt), BẮT BUỘC khớp ít nhất một từ trong đó —
+    đây là đường dùng cho việc quy kết "chương nào dẫn nguồn nào".
+    Không có `rieng` thì dùng lối khớp lỏng (dùng cho việc dò nhật ký).
+
+    ⚠ So khớp theo TỪ, không theo chuỗi con: "control" không được phép khớp vào
+    "Programmable Logic Controllers" — lỗi đó từng làm một dẫn chiếu Petruzella
+    bị quy cho nhãn PLCopen.
+    """
+    tu_trong_ten = set(tach_tu(ten_thap))
+    if rieng is not None:
+        return bool(rieng & tu_trong_ten)
     dau = nhan.split("—")[0].strip().lower()
     if len(dau) >= 4 and dau in ten_thap:
         return True
-    for tu in re.split(r"[^\wÀ-ỹ]+", nhan.lower()):
-        if len(tu) >= 5 and tu in ten_thap:
-            return True
-    return False
+    return any(len(t) >= 5 and t in tu_trong_ten for t in tach_tu(nhan))
 
 
 def doc_nguon_cac_chuong():
@@ -124,8 +151,10 @@ def main():
         da_gan.update(khop)
     tep_khong_nhan = sorted(k for k in chi_muc if k not in da_gan)
 
+    rieng = tu_phan_biet(bi_danh)
     nguon_chuong = doc_nguon_cac_chuong()
-    nhan_duoc_dan = collections.defaultdict(list)
+    nhan_duoc_dan = collections.defaultdict(list)   # dẫn ĐÍCH DANH
+    nhan_dan_chung = collections.defaultdict(list)  # chỉ khớp tên họ, chưa nêu bản
     ngoai_bo = collections.Counter()
     khong_khop = collections.Counter()
     for ch, ds in sorted(nguon_chuong.items(), key=lambda x: sap_xep_khoa(x[0])):
@@ -133,11 +162,20 @@ def main():
             if any(m.search(ten) for m in mau_ngoai):
                 ngoai_bo[ten[:60]] += 1
                 continue
-            trung = [n for n in bi_danh if co_tu_khoa(ten.lower(), n)]
+            thap = ten.lower()
+            trung = [n for n in bi_danh if co_tu_khoa(thap, n, rieng[n])]
             if trung:
                 for n in trung:
                     if ch not in nhan_duoc_dan[n]:
                         nhan_duoc_dan[n].append(ch)
+                continue
+            # Không khớp từ phân biệt: thử khớp lỏng. Nếu trúng nhiều nhãn cùng
+            # họ, nghĩa là sách dẫn tên chung mà KHÔNG nêu bản cụ thể.
+            long = [n for n in bi_danh if co_tu_khoa(thap, n)]
+            if long:
+                for n in long:
+                    if ch not in nhan_dan_chung[n]:
+                        nhan_dan_chung[n].append(ch)
             else:
                 khong_khop[ten[:60]] += 1
 
@@ -148,7 +186,10 @@ def main():
         if (dau and dau in nk.lower()) or co_tu_khoa(nk.lower(), n):
             nhan_trong_nk.add(n)
 
-    chua_dan = [n for n, t in nhan_to_tep.items() if t and not nhan_duoc_dan.get(n)]
+    chua_dan = [n for n, t in nhan_to_tep.items()
+                if t and not nhan_duoc_dan.get(n) and not nhan_dan_chung.get(n)]
+    dan_chung = [n for n, t in nhan_to_tep.items()
+                 if t and not nhan_duoc_dan.get(n) and nhan_dan_chung.get(n)]
     tong_tr_chua = sum(chi_muc[t]["so_trang"] for n in chua_dan for t in nhan_to_tep[n])
 
     xp("Bo tai lieu       : %d tep - %d trang"
@@ -159,18 +200,21 @@ def main():
     xp("CHUA CHUONG NAO DAN: %d nhan (~%d trang)" % (len(chua_dan), tong_tr_chua))
     for n in chua_dan:
         xp("   ! %s" % n)
+    xp("Dan CHUNG (chua neu ban cu the): %d nhan" % len(dan_chung))
+    for n in dan_chung:
+        xp("   ~ %s" % n)
     xp("Ten nguon khong khop nhan : %d" % len(khong_khop))
 
     if chi_kiem:
         return 0
 
-    ghi_bao_cao(chi_muc, nhan_to_tep, nhan_duoc_dan, nhan_trong_nk,
+    ghi_bao_cao(chi_muc, nhan_to_tep, nhan_duoc_dan, nhan_dan_chung, nhan_trong_nk,
                 tep_khong_nhan, ngoai_bo, khong_khop)
     xp("Da ghi: %s" % os.path.relpath(DICH, GOC))
     return 0
 
 
-def ghi_bao_cao(chi_muc, nhan_to_tep, nhan_duoc_dan, nhan_trong_nk,
+def ghi_bao_cao(chi_muc, nhan_to_tep, nhan_duoc_dan, nhan_dan_chung, nhan_trong_nk,
                 tep_khong_nhan, ngoai_bo, khong_khop):
     d = []
     A = d.append
@@ -214,7 +258,10 @@ def ghi_bao_cao(chi_muc, nhan_to_tep, nhan_duoc_dan, nhan_trong_nk,
     A("**không chương nào dẫn** — nghĩa là hoặc nó thật sự không liên quan, hoặc ⚠ **có nội dung**")
     A("**bị bỏ sót**. Cột cuối cho biết nhật ký đối chiếu đã từng nhắc tới nó chưa.")
     A("")
-    chua = [(n, t) for n, t in nhan_to_tep.items() if t and not nhan_duoc_dan.get(n)]
+    chua = [(n, t) for n, t in nhan_to_tep.items()
+            if t and not nhan_duoc_dan.get(n) and not nhan_dan_chung.get(n)]
+    chung = [(n, t) for n, t in nhan_to_tep.items()
+             if t and not nhan_duoc_dan.get(n) and nhan_dan_chung.get(n)]
     if not chua:
         A("✅ Không còn nguồn nào chưa được dẫn.")
     else:
@@ -228,7 +275,25 @@ def ghi_bao_cao(chi_muc, nhan_to_tep, nhan_duoc_dan, nhan_trong_nk,
     A("")
     A("---")
     A("")
-    A("## 3. Nguồn đã được dẫn — dẫn ở chương nào")
+    A("## 2b. ⚠ Nguồn chỉ được dẫn bằng TÊN CHUNG")
+    A("")
+    A("⭐ Các nguồn này **có được dẫn**, nhưng chương chỉ nêu **tên chung** (ví dụ *\"Petruzella\"*)")
+    A("mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy được **bản nào** đã dùng.")
+    A("⚠ Sửa bằng cách nêu rõ bản/ấn bản trong danh sách nguồn của chương.")
+    A("")
+    if not chung:
+        A("✅ Không có nguồn nào bị dẫn chung.")
+    else:
+        A("| Nguồn | Trang | Chương dẫn chung |")
+        A("|---|--:|---|")
+        for n, tep in sorted(chung, key=lambda x: -sum(chi_muc[t]["so_trang"] for t in x[1])):
+            tr = sum(chi_muc[t]["so_trang"] for t in tep)
+            chs = sorted(nhan_dan_chung[n], key=sap_xep_khoa)
+            A("| %s | %d | %s |" % (n, tr, ", ".join(chs)))
+    A("")
+    A("---")
+    A("")
+    A("## 3. Nguồn đã được dẫn ĐÍCH DANH — dẫn ở chương nào")
     A("")
     A("| Nguồn | Trang | Chương dẫn |")
     A("|---|--:|---|")

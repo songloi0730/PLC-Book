@@ -955,6 +955,47 @@ nguồn đang nằm trong bộ mà chưa chương nào dẫn** — cho Ch.12.
 
 ---
 
+## Đợt 28 — 2026-09-04 · Ch.28 (về gốc trục) + ⚠⚠ SỬA LỖI TRONG CHÍNH BẢN ĐỒ
+
+⭐ Bản đồ chỉ ra **FX5 Positioning — 302 trang, 158 mục — chưa chương nào dẫn**, và mục lục nó có
+**§3.2 OPR Control**: đúng chủ đề về gốc của Ch.28.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 152 | ⭐⭐ Ch.28 §28.4b — **về gốc cho TRỤC** | Ch.28 phủ về gốc cho **xy-lanh** (hai tư thế, cảm biến báo là xong). ⚠ Với **trục** — dừng được ở **vô số vị trí** — sách **không có gì**. FX5 §3.2 cho trình tự đầy đủ | ➕➕ |
+| 153 | Ch.28 — **hai tín hiệu, hai vai trò** | ⭐ **Cữ báo gần gốc**: *"sắp tới, giảm tốc"* — thô. ⭐⭐ **Tín hiệu điểm không**: *"đúng điểm này"* — tinh, thường là **kênh Z encoder** (Ch.18 §18.5b). ⚠⚠ Đây là **quyết định mua sắm và đấu tủ**, không sửa được bằng phần mềm | ➕➕ |
+| 154 | Ch.28 — vì sao có **tốc độ bò** | ⭐ Quãng đường dừng từ tốc độ cao phụ thuộc **tốc độ, tải, ma sát** — ba thứ đều đổi. Bò chậm làm nó nhỏ tới mức không đáng kể → **độ lặp lại**. Cùng lý do: ⚠ **luôn về gốc cùng một chiều** (khe hở cơ khí) | ➕ |
+| 155 | ⚠⚠ Ch.28 — **về gốc nhanh** và điều kiện hợp lệ | Sau khi đã về gốc bằng cảm biến, hệ **biết địa chỉ gốc** → định vị tuyệt đối tới đó, ⭐ **không dùng cữ và điểm không**. ⚠⚠ **Chỉ đúng khi vị trí CHƯA từng mất** — sau mất điện với encoder gia số thì **bắt buộc** về gốc bằng cảm biến. Đề xuất cờ *"vị trí còn tin được"* | ➕➕ |
+| 156 | ⚠⚠ **Lỗi trong `ban_do_nguon.py` — bản đồ báo THIẾU lỗ hổng** | Bộ so khớp dùng **chuỗi con**: từ phân biệt `"control"` của nhãn *PLCopen Motion Control* khớp **bên trong** `"Programmable Logic Controllers"` → ⚠ mọi dẫn chiếu **Petruzella** bị quy nhầm cho **PLCopen**. Đã sửa sang **so khớp theo TỪ** | ⚠⚠ |
+| 157 | ⚠ Bản đồ — quy kết quá rộng | Một dẫn chiếu FX5 Positioning bị tính cho **cả bốn** nhãn Mitsubishi vì chúng chia nhau từ *"mitsubishi"*, *"fx5"*. Đã sửa: chỉ khớp bằng **từ CHỈ nhãn đó có** | ⚠ |
+| 158 | ⭐ Bản đồ — thêm tầng *"dẫn chung"* | Sách dẫn *"Petruzella"* mà bộ có **ba** bản khác nhau → không truy được **bản nào**. Nay báo riêng thành mục **2b** | ➕ |
+
+### Kết quả đợt 28
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **7** |
+| ➕➕ Bổ sung giá trị cao | 3 |
+| ⚠⚠ **Lỗi công cụ, đã sửa** | 2 |
+| ⭐ **Chỉ số bản đồ (đã sửa)** | **13 chưa dẫn** (~4.148 tr.) · **7 dẫn chung** |
+
+> ⚠⚠ **Mục 156 là bài học đắt nhất của đợt này, và nó nhằm vào chính công cụ tôi vừa dựng.**
+>
+> Bản đồ nguồn được lập để **chống việc tự trấn an mình rằng đã đọc đủ**. ⚠ Nhưng vì một lỗi so khớp
+> chuỗi con, ⚠⚠ **chính nó lại trấn an tôi**: các đợt trước tôi báo *"8 nguồn / 4.210 trang"* rồi
+> *"6 nguồn / 2.438 trang"* — ⭐ **cả hai con số đều SAI theo hướng lạc quan**. Con số thật ở cùng thời
+> điểm là **13 chưa dẫn + 7 dẫn chung**.
+>
+> ⭐⭐ **Bài học: công cụ đo độ phủ cũng phải bị nghi ngờ như nội dung nó đo** — và cách nghi ngờ là
+> **kiểm một trường hợp mình đã BIẾT đáp án**. Tôi biết chắc Ch.16, 18, 19 có dẫn Petruzella; thấy
+> bản đồ báo *"Petruzella chưa được dẫn"* là dấu hiệu đủ để đi tìm lỗi trong công cụ, thay vì tin
+> con số.
+>
+> ⚡ Và tầng *"dẫn chung"* mới lại lộ ra một vấn đề thật của sách: ⚠ dẫn *"Petruzella"* trong khi bộ
+> có **ba** bản của tác giả đó thì **người đọc không tra lại được**.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -968,7 +1009,7 @@ kiểm**, không phải "không có lỗi".
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; 14 đợt 22; **12 đợt 27**)* | ⭐ **Bryan ch.5–8** chưa dùng | Vừa |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
-| Thiết kế | 22, 28, 29 *(25 đợt 23; 24, 26, 27, 30 đợt 24; **23 đợt 27**)* | Hugh Jack, ⭐ **Bryan ch.11** | Vừa |
+| Thiết kế | 22, 29 *(25 đợt 23; 24, 26, 27, 30 đợt 24; 23 đợt 27; **28 đợt 28**)* | Hugh Jack, Bryan ch.11 | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 53, 55 *(51, 52 đợt 18 và **đợt 26**)* | ⭐ **Bryan ch. 20** đã dùng; Kuphaldt, IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 
