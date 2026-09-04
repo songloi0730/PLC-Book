@@ -691,6 +691,47 @@ tắc *tiếp điểm vật lý NC + lệnh `┤ ├`*. ⭐ **Mọi câu đều 
 
 ---
 
+## Đợt 21–22 — 2026-09-03 · Ch.21 (SFC/FBD) và Ch.14 (POU) — Hanssen
+
+⭐ Hai đợt gộp chung vì cùng một nguồn (**Hanssen**, *IEC 61131-3 using CoDeSys*) và cùng một kiểu
+phát hiện: ⚠ **sách bỏ sót những thứ chuẩn CÓ**, chứ không phải nói sai những thứ chuẩn không có.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 112 | ⭐⭐ Ch.21 §21.3 — biến của bước SFC | Hanssen §12.3.1: mỗi bước tự có **`TênBước.X`** (BOOL) và ⭐⭐ **`TênBước.T`** (TIME) — **timer nội, tự chạy khi vào bước, tự về `t#0s` khi rời**. Cả hai **chỉ đọc** | ➕➕ |
+| 113 | Ch.21 — nối với Ch.17 | ⭐ Ch.17 §17.4 dạy mỗi bước chờ phải có timeout, ở LD/ST là **một `TON` cho từng bước**. Trong SFC ⭐ **không phải khai gì** — và `.T` tự về 0, tránh đúng lỗi quên đặt lại (Ch.17 Bẫy 2) | ➕ |
+| 114 | Ch.21 — bổ ngữ hành động | Sách chỉ có `N`/`S`/`R`. Hanssen bảng 12.2: thêm ⭐ **`P`** (một lần mỗi lần vào bước) · **`L`** (tự dừng sau khoảng) · **`D`** (bắt đầu sau khoảng) — ⭐ mỗi cái **thay được một khối chức năng** | ➕ |
+| 115 | ⚠⚠ Ch.21 §21.2 — thứ tự thực thi FBD | Tiêu đề mục nói *"luồng tín hiệu đi từ trái sang phải"* như một sự thật. Hanssen §10.3: ⚠ **chuẩn KHÔNG quy định** cách xử lý hồi tiếp — **tuỳ hiện thực**; trái-sang-phải chỉ là *"giả định hợp lý"*, và ⭐ **có hãng không cho vẽ hồi tiếp tường minh** chính vì lý do đó | ⚠➕ |
+| 116 | Ch.21 — luật cấu trúc | Hanssen: ⚠ **không được đặt hai bước liền nhau không có bước chuyển**; ⭐ nhưng **nhiều bước được phép cùng hoạt động** (cơ chế nhánh song song) | ➕ |
+| 117 | ⭐⭐ Ch.14 — `VAR_IN_OUT` | ⚠⚠ **Không xuất hiện MỘT LẦN NÀO trong cả cuốn sách** — trong khi Ch.27 và Ch.29 dùng `VAR_INPUT`/`VAR_OUTPUT` và là **đúng chỗ cần nó**. Hanssen §6.6: POU được gọi nhận ⭐ **chính vị trí bộ nhớ**, sửa thẳng biến bên gọi | ➕➕ |
+| 118 | Ch.14 — `VAR_TEMP` | ⭐ Khởi tạo lại **mỗi lần gọi POU** → *"FB có bộ nhớ"* đúng với **thể hiện**, ⚠ **không đúng với mọi biến bên trong nó**. Bẫy: biến đếm khai `VAR_TEMP` **không bao giờ cộng được**, không báo lỗi | ➕ |
+| 119 | ⭐ Bộ kiểm bắt lỗi của tôi | Bản nháp Ch.21 nhắc *"màn hình vận hành"* — ⚠ khái niệm **lát cắt 4** trong chương **lát cắt 1**. `kiem_tra_chuong.py` báo CẢNH BÁO B8, đã sửa | ⚠ |
+
+### Kết quả đợt 21–22
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **8** |
+| ➕➕ Bổ sung giá trị cao | 2 |
+| ➕ Bổ sung có nguồn | 4 |
+| ⚠➕ Nói chắc hơn mức chuẩn bảo đảm, đã siết | 1 |
+| ⚠ Lỗi kỷ luật lát cắt (máy bắt) | 1 |
+
+> ⭐⭐ **Hai mục ➕➕ có chung một đặc điểm: chúng là thứ người đọc KHÔNG BIẾT MÌNH ĐANG CÓ.**
+>
+> `Step.T` — người viết SFC vẫn khai `TON` cho từng bước, vì không ai nói cho họ biết mỗi bước đã có
+> sẵn một timer. `VAR_IN_OUT` — người ta chép `STRUCT` vào rồi chép ra, tạo hai bản dễ lệch nhau, vì
+> không ai nói cho họ biết có hướng tham số thứ ba.
+>
+> ⚠ **Đây là loại thiếu sót mà không bộ kiểm nào bắt được**, vì sách không hề mâu thuẫn — nó chỉ
+> **không nhắc tới**. ⭐ Chỉ có đọc nguồn có hệ thống mới tìm ra.
+>
+> ⚡ Và đó chính là lập luận cho việc **lập bảng ánh xạ nguồn ↔ chương** (đợt tiếp theo): ⚠ tôi tìm ra
+> `VAR_IN_OUT` **do tình cờ** grep một từ khoá khác. ⭐ Không có gì bảo đảm những chỗ tương tự trong
+> 112 tài liệu còn lại sẽ được tình cờ như vậy.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -702,8 +743,8 @@ kiểm**, không phải "không có lỗi".
 | Đo lường & analog | ⭐ **Đã đối chiếu** (đợt 5–7, 14) | — | — |
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
-| Nền tảng PLC | 7, 12, 14 *(8, 9, 18 đợt 4, 10; **11, 19 đợt 15**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
-| Ngôn ngữ | 21 *(17 đợt 16; 16 đợt 17; 20 đợt 19; **15 đợt 20**)* | Hugh Jack, Rockwell PM006/007/008/009 | Vừa |
+| Nền tảng PLC | 7, 12 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; **14 đợt 22**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
+| Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
 | Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 53, 55 *(**51, 52 đã đối chiếu đợt 18**)* | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |

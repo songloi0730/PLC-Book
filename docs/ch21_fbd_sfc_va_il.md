@@ -54,6 +54,22 @@ của khối này vào chân vào của khối kia. Tín hiệu chảy từ trá
 | Rẽ nhánh phức tạp | Không có `IF/ELSE` — phải mô phỏng bằng khối chọn, rất rườm |
 | Tính toán chuỗi dài | Mỗi phép một khối; một công thức năm phép thành năm khối nối nhau, ST viết một dòng |
 | Sơ đồ lớn | Đường nối chằng chịt còn khó đọc hơn code |
+| ⚠⚠ **Có hồi tiếp** | ⭐ **Chuẩn KHÔNG quy định thứ tự thực thi** — xem cảnh báo dưới |
+
+> ⚠⚠ **"Trái sang phải, trên xuống dưới" là GIẢ ĐỊNH HỢP LÝ, không phải bảo đảm của chuẩn.**
+>
+> Khi ngõ ra của một khối được đưa ngược lại làm ngõ vào cho khối **đứng trước nó**, ⭐ chuẩn
+> **không** nói bộ xử lý phải làm gì — điều đó **tuỳ hiện thực của từng hãng**.
+>
+> ⚠ Hệ quả: cùng một sơ đồ FBD có hồi tiếp **có thể cho kết quả khác nhau trên hai hệ khác nhau**, và
+> khác biệt đó ⚠⚠ **không lộ ra khi đọc sơ đồ**.
+>
+> ⭐ Chính vì vậy **có hãng không cho vẽ đường hồi tiếp tường minh** — để thứ tự thực thi luôn rõ ràng.
+>
+> ⭐⭐ **Quy tắc thực dụng:** cần hồi tiếp thì ⭐ **đưa nó qua một biến trung gian có tên**, đừng vẽ
+> đường vòng lại. Khi đó thứ tự đọc–ghi rõ ràng, và nó trở về đúng bài toán quen thuộc ở Chương 10
+> (thứ tự trong vòng quét). ⚠ Và **tra tài liệu hãng** trước khi tin vào bất kỳ giả định nào về thứ
+> tự thực thi FBD.
 
 ### So sánh trực tiếp với ladder
 
@@ -165,6 +181,59 @@ Chuẩn có nhiều **bổ ngữ hành động** *(action qualifier)*; ba cái b
 
 > ⚠ Dùng `S` mà quên `R` là biến thể SFC của bẫy SET/RESET ở Chương 16: một thứ được bật rồi không ai
 > tắt. Quy tắc giống hệt — **mỗi `S` phải có một `R` tương ứng**, và bạn phải chỉ ra được nó ở đâu.
+
+**Ba bổ ngữ nữa đáng biết, vì mỗi cái thay được cả một khối chức năng:**
+
+| Bổ ngữ | Nghĩa | ⭐ Nó thay cho cái gì |
+|---|---|---|
+| **P** — *pulse* | Chạy **đúng một lần** mỗi khi bước được kích hoạt | ⭐ Khối bắt cạnh `R_TRIG` (Chương 16) |
+| **L** — *time limited* | Chạy rồi **tự dừng sau một khoảng**, hoặc khi rời bước | ⭐ Một `TP` (Chương 17) |
+| **D** — *time delayed* | ⭐ **Bắt đầu sau một khoảng**, nếu lúc đó vẫn còn ở bước | ⭐ Một `TON` |
+
+Chuẩn còn vài bổ ngữ kết hợp nữa (lưu kèm trễ…). ⚠ Số bổ ngữ **thực sự được hiện thực** khác nhau
+theo hãng — tra tài liệu trước khi dùng cái ngoài `N`/`S`/`R`.
+
+> ⭐⭐ **Ý quan trọng hơn danh sách: SFC gói sẵn ba mẫu mà ở ngôn ngữ khác bạn phải tự dựng.**
+> *"Làm đúng một lần"* · *"làm trong 2 giây rồi thôi"* · *"chờ 500 ms rồi mới làm"* — ở LD hay ST là
+> ba khối chức năng kèm ba thể hiện riêng; ở SFC là **ba chữ cái**.
+
+### ⭐⭐ Mỗi bước tự có hai biến — và một trong hai là timer miễn phí
+
+Đây là thứ hữu ích nhất của SFC mà người mới không biết mình đang có. ⭐ Mỗi bước được cấp **hai biến,
+tự động, không phải khai báo**:
+
+| Biến | Kiểu | Nội dung |
+|---|---|---|
+| `TênBước.X` | `BOOL` | ⭐ **TRUE khi bước đang hoạt động**, FALSE khi không |
+| ⭐⭐ `TênBước.T` | `TIME` | ⭐ **Thời gian đã ở trong bước** — chạy từ lúc vào bước, **về `t#0s`** khi rời bước |
+
+> ⚠ **Cả hai chỉ đọc.** Chương trình không sửa được; sửa thì trình biên dịch báo lỗi. Đó là điều tốt —
+> chúng luôn nói đúng sự thật về trạng thái trình tự.
+
+> ⭐⭐ **Công dụng một — timeout của bước gần như miễn phí.**
+>
+> Chương 17 mục 17.4 dạy: mỗi bước chờ cơ cấu phải có **timeout để báo lỗi**. Ở LD/ST điều đó nghĩa là
+> một `TON` riêng cho **từng** bước. ⭐ Trong SFC thì không phải khai báo gì:
+>
+> ```iecst
+> IF Step30_Clamp.T > T#3s THEN
+>     M_Alarm_ClampTimeout := TRUE;      // bước 30 chờ kẹp quá 3 giây
+> END_IF;
+> ```
+>
+> ⚡ Và vì `.T` **tự về 0 khi rời bước**, bạn không phải nhớ đặt lại timer — ⚠ đúng cái hay quên nhất
+> khi tự dựng bằng `TON` (Chương 17, Bẫy 2).
+
+> ⭐ **Công dụng hai — `.X` là cách đúng để phần còn lại của chương trình biết trình tự đang ở đâu.**
+>
+> Dùng cho đèn báo, cho điều kiện liên động, cho chẩn đoán — ⚠ **thay vì tự nuôi một biến "bước hiện
+> tại" song song**, thứ chắc chắn sẽ lệch với thực tế vào một ngày nào đó.
+
+> ⚠ **Một luật cấu trúc dễ vi phạm khi vẽ: không được đặt hai bước liền nhau mà không có bước chuyển
+> ở giữa.** Nghe hiển nhiên, nhưng khi **chèn thêm bước vào sơ đồ có sẵn** thì đây là lỗi hay gặp —
+> ⭐ may là trình biên dịch bắt được, nên nó chỉ tốn thời gian chứ không nguy hiểm.
+>
+> ⚡ Ngược lại, ⭐ **nhiều bước được phép hoạt động cùng lúc** — đó chính là cơ chế của nhánh song song.
 
 ### SFC mạnh ở đâu, yếu ở đâu
 
@@ -404,6 +473,10 @@ thực bằng ngôn ngữ nào cũng được (mục 21.3, Chương 26).
 | GRAFCET với SFC | GRAFCET là **cách mô tả**, SFC là **ngôn ngữ**. Không bắt buộc đi cùng nhau |
 | IL | ⚠ Đã bị **rút khỏi chuẩn** — chỉ đọc, không viết mới |
 | Siemens STL | Phương ngữ riêng, mạnh hơn IL chuẩn; phổ biến ở S7-300/400 đời cũ |
+| ⭐⭐ Mỗi bước SFC tự có | `TênBước.X` (đang ở bước) và ⭐ **`TênBước.T` — timer sẵn, tự về 0** |
+| Timeout bước trong SFC | ⭐ **Không phải khai `TON`** — dùng thẳng `.T` |
+| Bổ ngữ `P` / `L` / `D` | Thay cho `R_TRIG` / `TP` / `TON` |
+| ⚠⚠ Thứ tự thực thi FBD khi có hồi tiếp | ⭐ **Chuẩn KHÔNG quy định** — tuỳ hãng; đưa hồi tiếp qua **biến trung gian có tên** |
 | Khi bảng kỹ thuật mâu thuẫn với người bảo trì | ⭐ **Người bảo trì thắng** |
 
 ---
@@ -423,6 +496,11 @@ thực bằng ngôn ngữ nào cũng được (mục 21.3, Chương 26).
 9. Siemens STL khác IL chuẩn ở điểm nào, và vì sao điều đó quan trọng khi tiếp quản máy Siemens cũ?
 10. ⭐ Với DP-01 có hai trạm gần giống nhau, vì sao sách chọn `CASE` thay vì SFC cho trình tự? Trong
     tình huống nào thì SFC lại là lựa chọn tốt hơn?
+11. ⭐⭐ Mỗi bước SFC tự có hai biến nào? Nêu **hai** việc mà `.T` làm được và giải thích vì sao nó tiện
+    hơn tự dựng một `TON` cho từng bước.
+12. ⭐ Bổ ngữ `P`, `L`, `D` mỗi cái thay cho khối chức năng nào ở LD/ST?
+13. ⚠⚠ Một sơ đồ FBD có đường hồi tiếp chạy đúng trên hệ A, sai trên hệ B. ⭐ Vì sao điều này **không**
+    phải lỗi của hãng nào? Cách viết nào tránh được hẳn?
 
 > Câu 3, 5 và 10 là ba câu phân loại. Câu 10 là tinh thần của cả chương: **không có ngôn ngữ nào tốt
 > nhất — chỉ có ngôn ngữ hợp với bài toán này, cỗ máy này, và đội ngũ này.**
@@ -442,6 +520,11 @@ có tài liệu, và phải sửa nó mà không làm hỏng thứ đang chạy.
 - Tài liệu về **GRAFCET** — phương pháp mô tả trình tự mà SFC bắt nguồn từ đó, có tiêu chuẩn riêng.
 - Tài liệu lập trình của từng hệ trong Phụ lục A — dùng cho bảng ở mục 21.7: tên gói SFC của từng
   hãng, tình trạng bản quyền, và đặc điểm của Siemens STL.
+- **Hanssen, Dag H.** — *Programmable Logic Controllers: A Practical Approach to IEC 61131-3 using
+  CoDeSys*, §10.3 và ch. 12: ⭐ **chuẩn không quy định thứ tự thực thi FBD khi có hồi tiếp** (tuỳ hiện
+  thực; có hãng không cho vẽ hồi tiếp tường minh); ⭐⭐ **`Step.X` và `Step.T`** — mọi bước SFC có sẵn
+  cờ trạng thái và **timer nội**, cả hai chỉ đọc; bảng **bổ ngữ hành động** `N`/`S`/`R`/`P`/`L`/`D`;
+  và luật **không đặt hai bước liền nhau không có bước chuyển**.
 
 > ⚡ Nhận định "IL đã bị rút khỏi bản mới của chuẩn" là **thay đổi giữa các phiên bản tiêu chuẩn**.
 > Khi cần dẫn chiếu chính thức, kiểm phiên bản IEC 61131-3 đang hiệu lực tại thị trường của bạn —

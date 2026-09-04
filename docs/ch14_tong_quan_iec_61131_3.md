@@ -112,6 +112,48 @@ Khối chức năng là **bản thiết kế**; thể hiện là **cái máy đ�
 Ba thể hiện dùng chung một bản thiết kế, nhưng **mỗi cái nhớ việc của mình**. Nếu bạn chỉ tạo một thể
 hiện rồi dùng cho cả ba chỗ, cả ba cùng ghi vào một mẩu bộ nhớ — và không cái nào đúng.
 
+### ⚠ "FB có bộ nhớ" đúng với THỂ HIỆN, không đúng với mọi biến bên trong nó
+
+Có một loại biến ⭐ **không nhớ gì cả, kể cả khi nằm trong một FB**:
+
+| Từ khoá | Hành vi giữa hai lần gọi |
+|---|---|
+| `VAR` (trong FB) | ⭐ **Giữ giá trị** — đây là bộ nhớ của thể hiện |
+| ⚠⚠ `VAR_TEMP` | ⭐ **Khởi tạo lại mỗi lần gọi POU** — giá trị lần trước **mất sạch** |
+
+> ⚠⚠ **Bẫy:** khai một biến đếm bằng `VAR_TEMP` rồi cộng dồn vào nó. Nó **không bao giờ cộng được** —
+> mỗi lần gọi, biến quay về giá trị khởi tạo của kiểu. ⚠ Không có báo lỗi; chỉ có một con số mãi
+> không tăng.
+>
+> ⭐ Ngược lại, `VAR_TEMP` là **lựa chọn đúng** cho biến trung gian dùng xong bỏ — biến đếm vòng lặp,
+> kết quả tạm của một phép tính. Nó nói rõ ý định *"cái này không mang thông tin sang lần sau"*, và
+> ⭐ **tránh được đúng loại lỗi ở Chương 11 mục 11.7** (hai POU vô tình chia nhau một biến).
+
+### ⭐ Ba hướng tham số — và hướng thứ ba ít ai biết
+
+Khi khai báo giao diện của một POU, chuẩn có **ba** hướng, không phải hai:
+
+| Từ khoá | Chiều | ⭐ Truyền cái gì |
+|---|---|---|
+| `VAR_INPUT` | Vào | **Bản sao giá trị** — POU được gọi không sửa được biến gốc |
+| `VAR_OUTPUT` | Ra | Kết quả trả về cho bên gọi |
+| ⭐⭐ `VAR_IN_OUT` | **Vào và ra cùng lúc** | ⭐ **Chính vị trí bộ nhớ** — POU được gọi **sửa thẳng biến của bên gọi** |
+
+> ⭐⭐ **Vì sao `VAR_IN_OUT` quan trọng khi chương trình lớn lên:**
+>
+> | Tình huống | Với `VAR_INPUT`/`VAR_OUTPUT` | ⭐ Với `VAR_IN_OUT` |
+> |---|---|---|
+> | FB cần **sửa một `STRUCT`** của bên gọi | Phải chép vào, sửa, chép ra — ⚠ hai bản dễ lệch nhau | Sửa thẳng, **một bản duy nhất** |
+> | Truyền một **mảng lớn** | ⚠ Chép cả mảng mỗi lần gọi | ⭐ Chỉ truyền chỗ nó nằm |
+>
+> ⭐ Đây chính là công cụ cho mẫu **"một FB trạm, dùng cho nhiều trạm"** ở Chương 27, và cho việc
+> ⭐ **truyền cả bản ghi công thức vào một khối xử lý** ở Chương 29 — thay vì liệt kê ba mươi tham số
+> đầu vào rời rạc.
+>
+> ⚠ **Cái giá:** vì POU sửa thẳng biến gốc, ⭐ **bạn mất tính chất "gọi hàm không có tác dụng phụ"**.
+> Khi đọc code người khác, một tham số `VAR_IN_OUT` nghĩa là ⚠ **giá trị của bạn có thể đã bị đổi sau
+> lời gọi** — điều mà `VAR_INPUT` bảo đảm là không.
+
 ### Khi nào viết FB của riêng mình
 
 Khi bạn thấy mình **chép đi chép lại cùng một đoạn logic cho nhiều đối tượng giống nhau**.
@@ -339,6 +381,10 @@ có bộ nhớ (mục 14.3).
 | Hai tác vụ cùng ghi một biến | ❌ Không được — lỗi khó tái hiện |
 | Chuẩn làm gì khả chuyển | ⭐ **Kỹ năng và thiết kế** — không phải tệp dự án |
 | Ngõ ra nên ghi ở đâu | **Đúng một POU**, chạy cuối cùng |
+| ⚠⚠ `VAR_TEMP` | ⭐ **Khởi tạo lại mỗi lần gọi** — FB có bộ nhớ, biến này thì không |
+| ⭐⭐ Hướng tham số thứ ba | **`VAR_IN_OUT`** — truyền **vị trí bộ nhớ**, POU sửa thẳng biến bên gọi |
+| Khi nào cần `VAR_IN_OUT` | ⭐ FB sửa một `STRUCT` · truyền **mảng lớn** không muốn chép (Ch.27, Ch.29) |
+| ⚠ Cái giá của `VAR_IN_OUT` | ⭐ **Mất bảo đảm "gọi xong biến của tôi không đổi"** |
 | Chia POU theo gì | Theo **cơ cấu và chức năng**, không theo bước trình tự |
 
 ---
@@ -359,6 +405,12 @@ có bộ nhớ (mục 14.3).
    ghi vào các tag `DO_`?
 10. ⭐ Vì sao chia POU theo **cơ cấu** tốt hơn chia theo **bước trình tự**? Nêu hậu quả cụ thể của
     cách chia sai.
+11. ⚠⚠ Bạn khai một biến đếm bằng `VAR_TEMP` rồi cộng dồn. Nó không bao giờ tăng. ⭐ Vì sao, và
+    `VAR_TEMP` thì **đúng** cho loại biến nào?
+12. ⭐⭐ Nêu **ba** hướng tham số của một POU. Hướng thứ ba truyền cái gì khác hai hướng kia, và điều
+    đó cho phép làm gì mà hai hướng kia không làm được?
+13. ⭐ Nêu cái giá phải trả khi dùng `VAR_IN_OUT`. Khi **đọc code người khác**, thấy tham số kiểu này
+    thì phải cảnh giác điều gì?
 
 > Câu 2, 4 và 7 là ba câu phân loại. Câu 4 là tinh thần của cả chương: **nhiều bẫy trông khác nhau
 > thật ra là một khái niệm chưa nắm chắc.**
@@ -377,6 +429,10 @@ bằng ngôn ngữ chiếm ưu thế ở tầng máy và cũng là ngôn ngữ c
 - IEC 61131-1 — *Programmable controllers, Part 1: General information*: mô hình phần mềm tổng thể.
 - Tài liệu lập trình của từng hệ trong Phụ lục A — dùng cho bảng đối chiếu ở mục 14.8: tên gọi POU,
   cách khai báo tác vụ, cơ chế bộ nhớ thể hiện, và tên gói SFC của từng hãng.
+- **Hanssen, Dag H.** — *Programmable Logic Controllers: A Practical Approach to IEC 61131-3 using
+  CoDeSys*, §6.6: ba hướng tham số `VAR_INPUT` / `VAR_OUTPUT` / ⭐ **`VAR_IN_OUT`** (POU được gọi nhận
+  **chính vị trí bộ nhớ** nên sửa được biến của bên gọi), và ⚠ **`VAR_TEMP`** — khởi tạo lại ở mỗi
+  lần gọi POU nên **không mang được giá trị sang lần sau**.
 
 > ⚡ Nhận định ở mục 14.6 về tính khả chuyển là **quan sát thực tế của nghề**, không phải phát biểu
 > của tiêu chuẩn. Bản thân chuẩn không hứa hẹn khả chuyển ở mức tệp dự án; kỳ vọng đó đến từ cách
