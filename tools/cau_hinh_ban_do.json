@@ -1,42 +1,159 @@
 {
   "_ghi_chu": "Ánh xạ tên nguồn xuất hiện trong sách -> tệp thật trong bộ tài liệu. Khoá là bí danh ngắn; giá trị là các mảnh chuỗi khớp tên tệp (không phân biệt hoa thường).",
   "bi_danh_tep": {
-    "Kuphaldt — Industrial Instrumentation": ["Kuphaldt_Lessons_In_Industrial"],
-    "Kuphaldt — Electric Circuits": ["Kuphaldt_Lessons_In_Electric"],
-    "Petruzella — PLC (2025)": ["2025 release"],
-    "Petruzella — PLC 6th ed": ["6th Edition"],
-    "Petruzella — Activities Manual": ["Activities Manual"],
-    "Hugh Jack — Automating Manufacturing": ["HughJack"],
-    "Hanssen — IEC 61131-3 / CoDeSys": ["Hanssen"],
-    "Rabiee — Hardware and Programming": ["Max Rabiee"],
-    "AutomationDirect PLC Handbook": ["AutomationDirect_PLC_Handbook"],
-    "Siemens S7-1200 System Manual": ["Siemens_S7-1200_System_Manual"],
-    "Siemens S7-1500 / TIA": ["s71500", "Hoc tia portal", "S7 1200"],
-    "Siemens Safety programming": ["safety_conf_prog"],
-    "Mitsubishi FX5 — Instructions/FB": ["FX5_Programming_Instructions"],
-    "Mitsubishi FX5 — Program Design": ["FX5_Programming_Program_Design"],
-    "Mitsubishi FX5 — MODBUS": ["FX5_MODBUS"],
-    "Rockwell — IEC 61131-3 compliance": ["1756-pm018"],
-    "Rockwell — khác": ["1756-", "1769-", "rockwell"],
-    "Inovance H5U/Easy — lập trình": ["H5U&Easy Series Programmable Logic Controllers Prog"],
-    "Inovance H5U/Easy — lệnh": ["H5U&Easy Series Programmable Logic Controllers Inst"],
-    "Inovance H3U — lệnh & lập trình": ["H3U H3S Series"],
-    "Inovance InoProShop / CODESYS": ["en/User Manual", "en/Command Manual"],
-    "IO-Link — đặc tả giao diện": ["IO-Link_Interface"],
-    "IO-Link — mô tả hệ thống": ["IO-Link_System_Description"],
-    "Modbus — đặc tả": ["Modbus_Application_Protocol", "modbus"],
-    "SICK — an toàn": ["sick", "SICK"],
-    "Schneider — an toàn máy": ["schneider"],
-    "DGUV / IFA": ["dguv", "ifa", "IFA_Report"],
-    "PPSA / khí nén": ["ppsa", "pneumatic"]
+    "Kuphaldt — Industrial Instrumentation": [
+      "Kuphaldt_Lessons_In_Industrial"
+    ],
+    "Kuphaldt — Electric Circuits": [
+      "Kuphaldt_Lessons_In_Electric"
+    ],
+    "Petruzella — PLC (2025)": [
+      "2025 release"
+    ],
+    "Petruzella — PLC 6th ed": [
+      "6th Edition"
+    ],
+    "Petruzella — Activities Manual": [
+      "Activities Manual"
+    ],
+    "Hugh Jack — Automating Manufacturing": [
+      "HughJack"
+    ],
+    "Hanssen — IEC 61131-3 / CoDeSys": [
+      "Hanssen"
+    ],
+    "Rabiee — Hardware and Programming": [
+      "Max Rabiee"
+    ],
+    "AutomationDirect PLC Handbook": [
+      "AutomationDirect_PLC_Handbook"
+    ],
+    "Siemens S7-1200 System Manual": [
+      "Siemens_S7-1200_System_Manual"
+    ],
+    "Siemens S7-1500 / TIA": [
+      "s71500",
+      "Hoc tia portal",
+      "S7 1200"
+    ],
+    "Siemens Safety programming": [
+      "safety_conf_prog"
+    ],
+    "Mitsubishi FX5 — Instructions/FB": [
+      "FX5_Programming_Instructions"
+    ],
+    "Mitsubishi FX5 — Program Design": [
+      "FX5_Programming_Program_Design"
+    ],
+    "Mitsubishi FX5 — MODBUS": [
+      "FX5_MODBUS"
+    ],
+    "Rockwell — IEC 61131-3 compliance": [
+      "1756-pm018"
+    ],
+    "Rockwell — khác": [
+      "1756-",
+      "1769-",
+      "rockwell"
+    ],
+    "Inovance H5U/Easy — lập trình": [
+      "H5U&Easy Series Programmable Logic Controllers Prog"
+    ],
+    "Inovance H5U/Easy — lệnh": [
+      "H5U&Easy Series Programmable Logic Controllers Inst"
+    ],
+    "Inovance H3U — lệnh & lập trình": [
+      "H3U H3S Series"
+    ],
+    "Inovance InoProShop / CODESYS": [
+      "en/User Manual",
+      "en/Command Manual"
+    ],
+    "IO-Link — đặc tả giao diện": [
+      "IO-Link_Interface"
+    ],
+    "IO-Link — mô tả hệ thống": [
+      "IO-Link_System_Description"
+    ],
+    "Modbus — đặc tả": [
+      "Modbus_Application_Protocol"
+    ],
+    "SICK — an toàn": [
+      "sick",
+      "SICK"
+    ],
+    "Schneider — an toàn máy": [
+      "schneider"
+    ],
+    "DGUV / IFA": [
+      "dguv",
+      "ifa",
+      "IFA_Report"
+    ],
+    "PPSA / khí nén": [
+      "ppsa",
+      "pneumatic"
+    ],
+    "PLCopen Safety Part 1": [
+      "PLCopen_Safety_Part1"
+    ],
+    "PLCopen Safe Motion": [
+      "PLCopen_Safe_Motion"
+    ],
+    "PLCopen Motion Control": [
+      "PLCopen_Function_Blocks_for_Motion",
+      "PLCopen_Motion_Control_Part3"
+    ],
+    "PLCopen — Structuring Program Development": [
+      "PLCopen_Structuring"
+    ],
+    "PLCopen XML exchange": [
+      "PLCopen_XML"
+    ],
+    "Kuphaldt — Instrumentation Technician": [
+      "So_You_Want_To_Be_An_Instrumentation"
+    ],
+    "Mitsubishi FX5 — Positioning": [
+      "FX5_Positioning"
+    ],
+    "Tài liệu PLC tiếng Việt": [
+      "Huong dan lap trinh PLC Mitsubishi",
+      "plc s7-1200.pdf",
+      "Gioi thieu chung",
+      "Giới thiệu chung"
+    ]
   },
   "nguon_ngoai_bo_tai_lieu": [
-    "^IEC ", "^ISO ", "^EN ", "^ANSI", "^NFPA", "^UL ", "^SEMI", "^GS1", "^NAMUR",
-    "Datasheet", "datasheet", "Catalogue", "catalogue",
-    "DP-01", "Phụ lục", "Tài liệu hãng", "Tài liệu lập trình của từng hệ",
-    "Tài liệu module", "Tài liệu đầu đọc", "Tài liệu bộ điều khiển",
-    "Tài liệu kỹ thuật", "Tài liệu giao diện", "Quy định an toàn",
-    "Hướng dẫn GS1", "Tư liệu lịch sử", "Các tiêu chuẩn", "Đặc tả IO-Link",
-    "Sổ tay", "Bảng I/O", "Cấu hình I/O", "Số liệu"
+    "^IEC ",
+    "^ISO ",
+    "^EN ",
+    "^ANSI",
+    "^NFPA",
+    "^UL ",
+    "^SEMI",
+    "^GS1",
+    "^NAMUR",
+    "Datasheet",
+    "datasheet",
+    "Catalogue",
+    "catalogue",
+    "DP-01",
+    "Phụ lục",
+    "Tài liệu hãng",
+    "Tài liệu lập trình của từng hệ",
+    "Tài liệu module",
+    "Tài liệu đầu đọc",
+    "Tài liệu bộ điều khiển",
+    "Tài liệu kỹ thuật",
+    "Tài liệu giao diện",
+    "Quy định an toàn",
+    "Hướng dẫn GS1",
+    "Tư liệu lịch sử",
+    "Các tiêu chuẩn",
+    "Đặc tả IO-Link",
+    "Sổ tay",
+    "Bảng I/O",
+    "Cấu hình I/O",
+    "Số liệu"
   ]
 }

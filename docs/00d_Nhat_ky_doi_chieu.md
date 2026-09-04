@@ -815,6 +815,67 @@ Logic Design*, §32.4.1 *Developing a Program Structure*, §32.5 *Documentation*
 
 ---
 
+## Đợt 25 — 2026-09-04 · Khảo sát nguồn quốc tế + ⭐⭐ Ch.47 (lập trình PLC an toàn)
+
+⭐ Đợt này bắt đầu từ ngoài: khảo sát các cộng đồng PLC (Anh, Trung) xem tài liệu kinh điển của ngành
+là gì, và **tải về những gì tải được hợp pháp**.
+
+### Kết quả khảo sát
+
+| Tài liệu | Trạng thái |
+|---|---|
+| ⚠ **Bryan & Bryan** — *Programmable Controllers: Theory and Implementation* | Kinh điển, cộng đồng Anh ngữ nhắc nhiều nhất. ⚠⚠ **Có bản quyền, ghi rõ cấm sao chép** — mọi bản *"free download"* trên mạng là bản lậu. ⭐ **KHÔNG tải.** Muốn có phải mua |
+| ⚠ **Kelvin T. Erickson** — *PLC: An Emphasis on Design and Application* | Thương mại — phải mua |
+| Giáo trình Trung ngữ (西门子/三菱 hướng) | Thương mại; ⭐ nội dung không vượt các tài liệu hãng đã có trong bộ |
+| ⭐ **PLCopen — 5 đặc tả** | ⭐⭐ **PLCopen phát hành chính thức, miễn phí — ĐÃ TẢI** |
+
+**Đã tải (từ `plcopen.org/downloads`, bản chính thức):**
+
+| Tệp | Trang | Dùng cho |
+|---|--:|---|
+| ⭐ `PLCopen_Safety_Part1_v2.10.pdf` | **194** | ⭐⭐ Ch.47, Ch.48 |
+| `PLCopen_Safe_Motion_v1.0.pdf` | 45 | Ch.37, Ch.47 |
+| `PLCopen_Motion_Control_Part3_v2.0.pdf` | 94 | Ch.37 |
+| `PLCopen_XML_technical_doc_v2.01.pdf` | 80 | Ch.30 |
+| `PLCopen_Structuring_Program_Development_IEC61131-3.pdf` | 4 | Ch.14, Ch.27 |
+
+⭐ Bộ tài liệu: **63 → 68 tệp · 23.139 → 23.556 trang**. Cả 5 tệp trích được text và có mục lục.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 133 | ⭐⭐ Ch.47 §47.4b — **lập trình PLC an toàn** | Bảng §47.4 ghi *"lập trình an toàn có quy trình riêng"* rồi ⚠ **bỏ lửng**. PLCopen Safety §4: đó là ⭐ **tập con bị cắt bớt có chủ ý** của IEC 61131-3 — và ⭐ **công cụ cưỡng chế**, không phải người tự giữ kỷ luật | ➕➕ |
+| 134 | ⚠⚠ Ch.47 — **ba mức người dùng và ranh giới chi phí** | Mức **cơ bản** chỉ nối khối **đã chứng nhận** → nghiệm thu nhanh. ⚠⚠ Ngay khi **tự viết một khối** → sang mức **mở rộng**, và **cả chương trình** phải qua kiểm định đầy đủ. ⭐ *"Tự viết một khối nhỏ thôi mà"* là **câu hỏi ngân sách, không phải câu hỏi kỹ thuật** | ➕➕ |
+| 135 | Ch.47 — giới hạn ngôn ngữ | ⭐ **FBD/LD ưu tiên** (một tập con đã định) · **ST chỉ ở mức mở rộng** · ⚠ **IL và SFC không được đặt vấn đề**. Lý do: kiểm thử và thẩm định ngôn ngữ **văn bản** phức tạp và dễ sai hơn ngôn ngữ **đồ hoạ** | ➕ |
+| 136 | Ch.47 — nối với Ch.20 | ⚡ Đây là một trong số ít chỗ **ladder thắng ST dứt khoát**, và lý do **trùng đúng** nguyên tắc ở §20.6: *thứ người khác phải đọc và xác nhận được thì viết bằng cái họ đọc được* — ở đây "người khác" là ⭐ **người thẩm định** | ➕ |
+| 137 | ⭐ Hai tệp Rockwell 1 trang | `1756-pm001` và `1756-qs001` chỉ có **trang bìa** — không hỏng, Rockwell phát hành kiểu đó. ⭐ Ghi nhận để **không tính chúng là nguồn** | ✅ |
+| 138 | Bản đồ — mở rộng theo dõi | Thêm 9 bí danh: 36 nhãn / 56 tệp (trước: 28 / 46). ⚠ Số chưa dẫn **tăng** 8 → 10 — ⭐ **đúng như mong đợi**: theo dõi kỹ hơn thì lộ ra nhiều lỗ hơn | ➕ |
+
+### Kết quả đợt 25
+
+| | Số lượng |
+|---|---|
+| Tài liệu mới tải về | **5** (417 trang) |
+| Tài liệu xác định **không tải được hợp pháp** | 2 (Bryan & Bryan · Erickson) |
+| ➕➕ Bổ sung giá trị cao | 2 |
+| ➕ Bổ sung có nguồn | 3 |
+| Nơi đã sửa | Ch.47 (§47.4b mới + 2 dòng danh mục + 3 câu Tự kiểm + nguồn) |
+
+> ⭐⭐ **Phát hiện của đợt này thuộc loại chưa từng gặp: một CÂU BỎ LỬNG.**
+>
+> Bảng §47.4 có ô ghi *"lập trình an toàn có quy trình riêng"* — ⭐ **đúng, nhưng nói xong rồi thôi**.
+> Người đọc chọn cột *"PLC an toàn"* mang theo một mô hình sai: *"giống lập trình thường, chỉ cẩn thận
+> hơn"*. ⚠⚠ Thực tế là **ngôn ngữ bị cắt bớt** và **chi phí nhảy vọt ở một ranh giới không ai nói cho
+> họ biết trước**.
+>
+> ⚡ **Bài học quy trình:** ngoài *"chỗ này đúng không"* và *"người đọc dựng mô hình gì"* (đợt 18), nay
+> thêm câu thứ ba — ⭐ **"chỗ nào sách nêu một khác biệt rồi KHÔNG giải thích nó?"** Những ô bảng ghi
+> *"có quy trình riêng"*, *"khác nhau tuỳ hệ"*, *"cần đào tạo thêm"* là **danh sách việc còn nợ**.
+>
+> ⭐ **Và về nguồn:** khảo sát ngoài xác nhận bộ tài liệu **đã đủ mạnh** — thứ kinh điển còn thiếu đều
+> có bản quyền, còn thứ tải được hợp pháp thì lấp đúng lỗ hổng lớn nhất còn lại (lập trình an toàn).
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

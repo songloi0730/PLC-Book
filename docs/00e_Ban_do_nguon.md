@@ -13,9 +13,9 @@
 
 | Chỉ số | Giá trị |
 |---|---|
-| Tài liệu PDF | **63** |
-| Tổng số trang | **23 139** |
-| Mục lục nhúng đọc được | **11 231 mục** trên 47 tài liệu |
+| Tài liệu PDF | **68** |
+| Tổng số trang | **23 556** |
+| Mục lục nhúng đọc được | **11 613 mục** trên 51 tài liệu |
 | ⚠ Không trích được text | **3** |
 
 > ⚠⚠ **Tài liệu không trích được text — coi như KHÔNG CÓ cho tới khi OCR.**
@@ -36,8 +36,9 @@
 |---|--:|--:|:--:|
 | Mitsubishi FX5 — Instructions/FB | 1470 | 651 | ✔ |
 | Rockwell — khác | 1432 | 788 | ✔ |
-| Siemens Safety programming | 579 | 405 | ✔ |
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
+| Tài liệu PLC tiếng Việt | 367 | 0 | ✔ |
+| Mitsubishi FX5 — Positioning | 302 | 158 | ✔ |
 | IO-Link — đặc tả giao diện | 294 | 535 | ✔ |
 | AutomationDirect PLC Handbook | 85 | 0 | ✔ |
 | PPSA / khí nén | 71 | 65 | ⚠ **chưa** |
@@ -58,6 +59,7 @@
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30 |
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 19, 20, 21 |
 | Siemens S7-1200 System Manual | 864 | 19, 25, 26, 27, 30 |
+| Siemens Safety programming | 579 | 47 |
 | Mitsubishi FX5 — Program Design | 136 | 14, 16, 18, 19, 20, 21, 25, 26, 27, 51 |
 | Mitsubishi FX5 — MODBUS | 86 | 35, 39 |
 | Rockwell — IEC 61131-3 compliance | 30 | 14, 20, 21 |
@@ -65,10 +67,16 @@
 | Inovance H5U/Easy — lệnh | 1113 | 19 |
 | Inovance H3U — lệnh & lập trình | 731 | 19, 21, 24, 30, 43, 55 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
-| Modbus — đặc tả | 136 | 35, 39 |
+| Modbus — đặc tả | 50 | 35, 39 |
 | SICK — an toàn | 322 | 47 |
 | Schneider — an toàn máy | 33 | 47 |
 | DGUV / IFA | 324 | 47 |
+| PLCopen Safety Part 1 | 194 | 37, 47 |
+| PLCopen Safe Motion | 45 | 37, 47 |
+| PLCopen Motion Control | 213 | 14, 16, 18, 19, 20, 21, 37, 47, 51 |
+| PLCopen — Structuring Program Development | 4 | 14, 16, 18, 19, 20, 21, 27, 37, 47, 51 |
+| PLCopen XML exchange | 80 | 37, 47 |
+| Kuphaldt — Instrumentation Technician | 163 | 38 |
 
 ---
 
@@ -83,12 +91,7 @@ Bổ sung bí danh nếu tài liệu có giá trị; bỏ qua nếu không.
 | `Manual/H5U&Easy_Manual/H5U&Easy系列可编程逻辑控制器编程手册.pdf` | 894 |
 | `Manual/H1UH2UH3U_Manual/H3U系列可编程逻辑控制器指令及编程手册.pdf` | 744 |
 | `en/Motion Control.pdf` | 344 |
-| `reference/03_Vendor_Manuals/Mitsubishi_MELSEC_iQ-F_FX5_Positioning_Control.pdf` | 302 |
-| `Huong dan lap trinh PLC Mitsubishi voi cac lenh co ban.pdf` | 200 |
-| `reference/01_Instrumentation/Kuphaldt_So_You_Want_To_Be_An_Instrumentation_Technician.pdf` | 163 |
-| `plc s7-1200.pdf` | 130 |
 | `Manual/H5U&Easy_Manual/Easy系列可编程逻辑控制器用户手册.PDF` | 123 |
-| `reference/08_Open_Specs/PLCopen_Function_Blocks_for_Motion_Control.pdf` | 119 |
 | `Manual/H5U&Easy_Manual/Easy321&Easy511可编程逻辑控制器用户手册.PDF` | 117 |
 | `reference/03_Vendor_Manuals/Siemens_Programming_Guideline_S7-1200_1500_v14.pdf` | 109 |
 | `reference/03_Vendor_Manuals/Siemens_Programming_Styleguide_S7-1200_1500_v12.pdf` | 44 |
@@ -151,7 +154,6 @@ nhưng thiếu bí danh (thêm vào `bi_danh_tep`).
 | OIML R 60 \| OIML R 60 — *Metrological regulation for load ce | 1 |
 | Tài liệu **khối PID** của hệ đang dùng \| Tài liệu **khối PID | 1 |
 | Tài liệu biến tần \| **Tài liệu biến tần** của dòng đang dùng | 1 |
-| Đặc tả PLCopen Motion Control \| **Đặc tả PLCopen Motion Cont | 1 |
 | Tài liệu servo drive \| **Tài liệu servo drive** của hệ đang  | 1 |
 | TIA/EIA-232 \| **TIA/EIA-232**, **TIA/EIA-422**, **TIA/EIA-48 | 1 |
 | Tài liệu thiết bị tớ \| **Tài liệu thiết bị tớ** — dùng cho ⚠ | 1 |
