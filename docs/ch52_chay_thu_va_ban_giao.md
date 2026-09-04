@@ -184,6 +184,43 @@ bước tiếp. Chỉ khi cả chu trình đã đi qua từng bước an toàn m
 > Trước khi chạy khô lần đầu, **kiểm cờ `M_DryRun` và mọi cưỡng bức đã ở trạng thái đúng**, và kiểm
 > **cờ mô phỏng đã tắt** (Chương 50). Máy chạy với cờ mô phỏng còn bật là máy chạy mù.
 
+### ⭐ Ba công cụ của chính bộ điều khiển — kiểm tra trước khi tự dựng cờ
+
+Cờ `M_DryRun` là giải pháp **phần mềm tự viết**. ⚠ Nhưng nhiều bộ điều khiển đã có sẵn công cụ làm
+đúng việc đó, an toàn hơn vì **không phụ thuộc chương trình của bạn chạy đúng**:
+
+| Công cụ | Nó làm gì | ⭐ Vì sao tốt hơn cờ tự viết |
+|---|---|---|
+| ⭐ **Chế độ thử** *(TEST mode)* | Chạy và gỡ lỗi chương trình **với ngõ ra bị vô hiệu** | ⭐⭐ Ngõ ra tắt **ở tầng hệ thống** — không có cách nào một lỗi logic bật nhầm được |
+| ⭐ **Quét đơn** *(single scan)* | Thực thi **đúng một vòng quét** rồi dừng | ⭐ Quan sát **từng nấc ở từng vòng quét** — công cụ mạnh nhất cho lỗi phụ thuộc thứ tự (Chương 10) |
+| Cô lập ngõ ra tại chỗ | Tháo/ngắt riêng các ngõ ra chưa thử | Dùng khi bắt buộc phải ở chế độ RUN để cập nhật ngõ ra |
+
+> ⭐ **Tra tài liệu bộ điều khiển của bạn TRƯỚC khi tự dựng cờ chạy khô.** Nếu có chế độ thử, dùng nó
+> cho vòng kiểm logic đầu tiên; cờ `M_DryRun` vẫn giữ vai trò riêng — nó cho phép chạy khô **trong chế
+> độ RUN bình thường** về sau, khi máy đã bàn giao.
+
+> ⚠⚠ **BẪY — nấc thang tạm để thử.**
+>
+> Trong lúc thử, người ta hay chèn **logic tạm**: một nấc bỏ qua một bước, một lệnh chặn nhóm ngõ ra
+> chưa sẵn sàng, một điều kiện luôn đúng để đi tiếp. Chúng hữu ích và **hoàn toàn chính đáng**.
+>
+> ⚠⚠ **Nhưng chúng phải được gỡ hết trước khi chạy tổng thể** — và đây là **cùng một loại nguy hiểm
+> với cưỡng bức quên gỡ** (Chương 51, mục 51.7), chỉ khác một điểm khiến nó **tệ hơn**:
+>
+> ⭐ **Cưỡng bức thì có danh sách để kiểm. Nấc thang tạm thì KHÔNG** — nó trông y hệt code thật.
+>
+> ⭐ **Cách phòng, làm ngay từ lúc chèn:**
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Đánh dấu thống nhất** — comment mở đầu `*** TAM — GO TRUOC KHI BAN GIAO ***`, dễ tìm bằng tham chiếu chéo |
+> | 2 | ⭐ Ghi vào **một danh sách** ngay khi chèn, cùng chỗ với danh sách cưỡng bức |
+> | 3 | ⚠ **Đối chiếu chương trình với bản trước khi thử** — chức năng so sánh dự án (Chương 30) chỉ ra mọi thứ đã thêm |
+> | 4 | ⚠⚠ Ghi vào **danh mục nghiệm thu** ở mục 52.9 như một mục riêng |
+
+> ⭐ **Và ngay sau khi sửa bất cứ gì trong lúc chạy thử: ghi lại NGAY và cập nhật tài liệu gốc.**
+> Không để tới cuối đợt — lúc đó không ai nhớ nổi đã sửa những gì (Chương 30).
+
 ---
 
 ## 52.7 Bước 7 — thử tạo lỗi cố ý ⭐
@@ -256,6 +293,7 @@ viết ra, có người chịu trách nhiệm và có hạn, chứ không phải
 | # | Kiểm | Vì sao |
 |---|---|---|
 | 1 | ⭐ **Không còn cưỡng bức I/O nào** — ⚠⚠ kể cả loại **đã cài nhưng đang tắt** | Chương 51 — nguyên nhân tai nạn phổ biến |
+| 1b | ⚠⚠ **Không còn nấc thang / logic tạm** nào của đợt thử | ⭐ Không có danh sách sẵn như cưỡng bức — phải **so sánh dự án** |
 | 2 | ⭐ **Cờ mô phỏng đã tắt** và không giữ qua mất điện | Chương 50 |
 | 3 | ⭐ **Cờ chạy khô đã tắt** | Chương 28 |
 | 4 | **Chương trình đang chạy khớp với bản sao lưu** | Dùng chức năng so sánh — không tin trí nhớ |
@@ -390,6 +428,10 @@ thay đổi đều diễn ra trên một cỗ máy không được phép dừng 
   mục 52.2, và yêu cầu về hồ sơ kèm theo từng mốc.
 - Biểu mẫu **biên bản kiểm I/O 1-1**, **biên bản nghiệm thu** và **phiếu bàn giao** — Phụ lục C.
 - Bảng I/O, đặc tả và bảng trạng thái an toàn của DP-01 — Phụ lục J.
+- **Bryan, L.A. & Bryan, E.A.** — *Programmable Controllers: Theory and Implementation*, ch. 20 §20-5 *PLC Start-Up and
+  Checking Procedures*: ⭐ **chế độ thử** *(TEST mode)* chạy chương trình với **ngõ ra bị vô hiệu**;
+  **quét đơn** để soát từng nấc; cô lập ngõ ra chưa thử; ⚠⚠ **gỡ mọi nấc thang tạm** trước khi chạy
+  tổng thể; và ⭐ **ghi lại mọi thay đổi NGAY**, cập nhật tài liệu gốc — nền cho mục 52.6.
 
 > ⚠⚠ Mục 52.5 là **danh mục tối thiểu để bạn biết cái gì phải được thử**, không phải quy trình kiểm
 > định. Kiểm định chức năng an toàn phải do người có thẩm quyền thực hiện theo tiêu chuẩn hiện hành

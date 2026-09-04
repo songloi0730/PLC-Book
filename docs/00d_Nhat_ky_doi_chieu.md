@@ -876,6 +876,47 @@ là gì, và **tải về những gì tải được hợp pháp**.
 
 ---
 
+## Đợt 26 — 2026-09-04 · ⭐ Bryan & Bryan vào bộ — Ch.51, Ch.52
+
+⭐ Chủ dự án đã bổ sung **Bryan & Bryan, *Programmable Controllers: Theory and Implementation*** —
+cuốn mà đợt 25 xác định là kinh điển nhưng **không tải hợp pháp được**. ⭐ **1.047 trang, 194 mục,
+trích được text.** Bộ tài liệu: **69 tệp · 24.603 trang**.
+
+⭐ Mục lục nó có hẳn **ch. 20 *PLC Start-Up and Maintenance*** — đúng hai chương còn nợ (51, 52).
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 139 | ⭐⭐ Ch.52 §52.6 — **chế độ thử của bộ điều khiển** | Sách dựng cờ `M_DryRun` **tự viết**. Bryan §20-5: nhiều bộ điều khiển có sẵn ⭐ **TEST mode — chạy chương trình với ngõ ra bị VÔ HIỆU**. ⭐⭐ An toàn hơn vì ngõ ra tắt **ở tầng hệ thống**, không phụ thuộc chương trình của bạn chạy đúng | ➕➕ |
+| 140 | ⚠⚠ Ch.52 — **nấc thang tạm** | Bryan: *"remove all of the temporary rungs that may have been used"*. ⭐ Sách phủ **cưỡng bức** rất kỹ nhưng ⚠ **không hề nhắc logic tạm** — cùng loại nguy hiểm, và **tệ hơn một điểm**: ⚠⚠ **cưỡng bức có danh sách để kiểm, nấc tạm thì không** — nó trông y hệt code thật | ➕➕ |
+| 141 | Ch.52 — cách phòng | 4 bước, làm **ngay lúc chèn**: đánh dấu comment thống nhất · ghi vào danh sách cùng chỗ với cưỡng bức · ⭐ **so sánh dự án** với bản trước khi thử · thêm mục riêng vào danh mục nghiệm thu | ➕ |
+| 142 | ⭐⭐ Ch.51 §51.7 — **quét đơn** | Bryan: *single scan* — thực thi **đúng một vòng quét** rồi dừng. ⭐⭐ **Công cụ duy nhất cho lỗi phụ thuộc THỨ TỰ**: xem trực tuyến chỉ cho giá trị **sau khi cả vòng quét chạy xong**, nên lỗi *"nấc 5 đọc giá trị vòng trước"* (Ch.10, Ch.15) ⚠ **trông hoàn toàn bình thường** trên màn hình | ➕➕ |
+| 143 | Ch.51 §51.11 — **bảo trì cho chính PLC** | Bảng sẵn có là PLC **giám sát máy**. Bryan §20-6 bổ sung chiều ngược lại: phin lọc tủ · ⚠⚠ **bụi bám cánh tản nhiệt chặn thoát nhiệt** (CPU và I/O **không được thiết kế kín bụi**) · siết đầu nối · thay pin | ➕ |
+| 144 | Ch.51 — hai nguyên tắc lập lịch | ⭐ **Ghép lịch PLC vào lịch máy** để máy chỉ dừng một lần; ⭐ **tần suất theo MÔI TRƯỜNG chứ không theo PLC** — cùng một CPU trong phòng sạch và cạnh máy cắt là **hai lịch khác hẳn** | ➕ |
+
+### Kết quả đợt 26
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ➕➕ Bổ sung giá trị cao | 3 |
+| ➕ Bổ sung có nguồn | 3 |
+| Nơi đã sửa | Ch.52 (mục mới + 1 dòng danh mục + nguồn) · Ch.51 (2 dòng bảng công cụ + mục mới + nguồn) |
+
+> ⭐⭐ **Mục 140 là loại phát hiện đắt nhất: một khoảng trống nằm NGAY CẠNH chỗ sách làm rất kỹ.**
+>
+> Sách dành hẳn một mục cho **cưỡng bức I/O**, có quy trình bốn bước, có cảnh báo ⚠⚠, có mục trong
+> danh mục nghiệm thu. Nhưng **nấc thang tạm** — thứ cùng loại nguy hiểm và **khó phát hiện hơn** —
+> ⚠ **không xuất hiện một lần nào trong cả cuốn sách**.
+>
+> ⭐ Lý do rất người: cưỡng bức **có tên riêng và có nút bấm trong phần mềm**, nên nó *"trông giống một
+> chủ đề"*. Nấc tạm thì chỉ là **code bạn tự gõ thêm** — nó không có tên, nên không ai nghĩ nó là một
+> chủ đề cần bàn.
+>
+> ⚡ **Bài học quy trình:** ⭐ **chỗ nào sách làm rất kỹ, hãy hỏi ngay *"còn thứ gì cùng loại mà KHÔNG
+> có tên gọi riêng không?"*** — thứ không có tên là thứ không ai đi tìm.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -890,7 +931,7 @@ kiểm**, không phải "không có lỗi".
 | Nền tảng PLC | 7, 12 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; **14 đợt 22**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
 | Thiết kế | 22, 23, 28, 29 *(25 đợt 23; **24, 26, 27, 30 đợt 24**)* | ⭐ Hugh Jack | Vừa |
-| Chẩn đoán & vận hành | 43, 49, 53, 55 *(**51, 52 đã đối chiếu đợt 18**)* | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
+| Chẩn đoán & vận hành | 43, 49, 53, 55 *(51, 52 đợt 18 và **đợt 26**)* | ⭐ **Bryan ch. 20** đã dùng; Kuphaldt, IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 
 ---

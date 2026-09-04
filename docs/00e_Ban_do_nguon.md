@@ -13,9 +13,9 @@
 
 | Chỉ số | Giá trị |
 |---|---|
-| Tài liệu PDF | **68** |
-| Tổng số trang | **23 556** |
-| Mục lục nhúng đọc được | **11 613 mục** trên 51 tài liệu |
+| Tài liệu PDF | **69** |
+| Tổng số trang | **24 603** |
+| Mục lục nhúng đọc được | **11 807 mục** trên 52 tài liệu |
 | ⚠ Không trích được text | **3** |
 
 > ⚠⚠ **Tài liệu không trích được text — coi như KHÔNG CÓ cho tới khi OCR.**
@@ -58,9 +58,9 @@
 | Petruzella — Activities Manual | 401 | 16, 18, 19, 51 |
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30 |
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 19, 20, 21 |
-| Siemens S7-1200 System Manual | 864 | 19, 25, 26, 27, 30 |
+| Siemens S7-1200 System Manual | 864 | 19, 25, 26, 27, 30, 51 |
 | Siemens Safety programming | 579 | 47 |
-| Mitsubishi FX5 — Program Design | 136 | 14, 16, 18, 19, 20, 21, 25, 26, 27, 51 |
+| Mitsubishi FX5 — Program Design | 136 | 14, 16, 18, 19, 20, 21, 25, 26, 27, 51, 52 |
 | Mitsubishi FX5 — MODBUS | 86 | 35, 39 |
 | Rockwell — IEC 61131-3 compliance | 30 | 14, 20, 21 |
 | Inovance H5U/Easy — lập trình | 808 | 19, 21, 24, 30, 43, 55 |
@@ -73,10 +73,11 @@
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 37, 47 |
 | PLCopen Safe Motion | 45 | 37, 47 |
-| PLCopen Motion Control | 213 | 14, 16, 18, 19, 20, 21, 37, 47, 51 |
-| PLCopen — Structuring Program Development | 4 | 14, 16, 18, 19, 20, 21, 27, 37, 47, 51 |
+| PLCopen Motion Control | 213 | 14, 16, 18, 19, 20, 21, 37, 47, 51, 52 |
+| PLCopen — Structuring Program Development | 4 | 14, 16, 18, 19, 20, 21, 27, 37, 47, 51, 52 |
 | PLCopen XML exchange | 80 | 37, 47 |
 | Kuphaldt — Instrumentation Technician | 163 | 38 |
+| Bryan — Theory and Implementation | 1047 | 51, 52 |
 
 ---
 

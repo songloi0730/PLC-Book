@@ -217,6 +217,16 @@ Khi đã xác định lỗi nằm ở phần mềm (bước ③ ở mục 51.2),
 | **Đồ thị xu hướng** *(trend)* | Ghi giá trị theo thời gian | "Giá trị này nhảy lúc nào, có trùng với sự kiện gì?" |
 | **Thống kê thời gian quét** | Xem quét nhỏ nhất / lớn nhất | "Có phải chương trình vừa phình ra không?" (Chương 10) |
 | **Bộ đệm lỗi hệ thống** | Danh sách lỗi CPU có dấu thời gian | "CPU đã ghi nhận chuyện gì?" |
+| ⭐ **Quét đơn** *(single scan)* | Thực thi **đúng một vòng quét** rồi dừng | ⭐⭐ *"Ở vòng quét này, nấc nào đổi trạng thái?"* |
+| ⭐ **Chế độ thử** *(TEST mode)* | Chạy chương trình **với ngõ ra bị vô hiệu** | *"Logic có đúng không — mà máy không động?"* |
+
+> ⭐⭐ **Quét đơn là công cụ duy nhất cho lỗi phụ thuộc THỨ TỰ.**
+>
+> Xem trực tuyến cho bạn giá trị **sau khi cả vòng quét đã chạy xong** — nên với lỗi kiểu *"nấc 5 đọc
+> giá trị của vòng quét trước"* (Chương 15, Chương 10), ⚠ **màn hình trực tuyến trông hoàn toàn bình
+> thường**. Chỉ khi cho chạy **từng vòng quét một** và nhìn giá trị đổi sau mỗi lần, thứ tự mới lộ ra.
+>
+> ⚠ Nhiều người không biết mình có công cụ này — ⭐ **tra tài liệu phần mềm lập trình của bạn**.
 
 **Tham chiếu chéo là chức năng bị dùng ít nhất so với giá trị của nó.** Nó trả lời trong ba giây câu
 hỏi mà đọc code mất một giờ: *ngoài chỗ này, còn ai ghi vào biến này nữa không?* — tức là phát hiện
@@ -450,6 +460,28 @@ PLC biết nhiều thứ về sức khoẻ của máy mà không ai hỏi tới.
 Điểm chung: cả bốn đều là **xu hướng theo thời gian**, không phải giá trị tức thời. Một xy-lanh mất
 0,8 giây thay vì 0,5 giây không phải lỗi — nhưng xu hướng tăng đều trong ba tháng là dấu hiệu rõ ràng.
 
+### ⚠ Và bảo trì cho chính bộ điều khiển — thứ hay bị quên vì "PLC có hỏng bao giờ đâu"
+
+Bảng trên là PLC **giám sát máy**. Còn bản thân PLC cũng cần bảo trì, chỉ vài việc nhưng bỏ qua thì
+hỏng theo kiểu khó đoán:
+
+| Việc | Vì sao | ⭐ Tần suất |
+|---|---|---|
+| ⭐ **Kiểm và thay phin lọc của tủ** | Không khí sạch lưu thông trong tủ | ⚠ **Đừng chờ tới kỳ bảo trì máy mới kiểm** — tuỳ độ bụi khu vực |
+| ⚠⚠ **Không để bụi bám lên module** | ⭐ CPU và module I/O **không được thiết kế kín bụi**; bụi bám cánh tản nhiệt **chặn thoát nhiệt** → mạch hoạt động sai | Theo môi trường |
+| Kiểm siết lại đầu nối | Chu kỳ nóng–nguội làm mỏi mối nối (mục 51.8) | Theo lịch máy |
+| Thay pin nuôi bộ nhớ | Hết pin → mất dữ liệu giữ được, âm thầm (Chương 18, mục 18.6) | Theo khuyến cáo hãng |
+
+> ⭐⭐ **Hai nguyên tắc lập lịch, và cả hai đều thực dụng:**
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Ghép lịch bảo trì PLC vào lịch bảo trì máy** — để máy chỉ dừng **một lần**, không dừng hai lần |
+> | 2 | ⚠ **Tần suất phụ thuộc MÔI TRƯỜNG, không phải phụ thuộc PLC** — ⭐ môi trường càng khắc nghiệt thì càng phải thường xuyên |
+>
+> ⚡ Nguyên tắc 2 giải thích vì sao không có con số chung: cùng một CPU đặt trong phòng điều khiển
+> sạch và đặt cạnh máy cắt kim loại là **hai lịch bảo trì khác hẳn nhau** (Chương 7, Chương 8).
+
 ---
 
 ## 51.12 Khi nào dừng tự sửa và gọi người khác
@@ -604,6 +636,10 @@ lớn những lỗi đó ngay từ lúc chạy thử — bằng một thứ mà 
   ⭐ **sự khác nhau giữa cưỡng bức ngõ vào và ngõ ra**: ép ngõ vào tác động vào **bảng ảnh ngõ vào**
   nên **lan khắp chương trình**; ép ngõ ra chỉ tác động **đúng chân ra**, bảng ảnh ngõ ra không đổi
   nên chương trình chạy y như cũ (mục 51.7).
+- **Bryan, L.A. & Bryan, E.A.** — *Programmable Controllers: Theory and Implementation*, ch. 20 §20-6 *PLC System
+  Maintenance*: ⭐ **bảo trì phòng ngừa cho chính bộ điều khiển** — phin lọc tủ, ⚠⚠ bụi bám cánh tản
+  nhiệt **chặn thoát nhiệt**, và hai nguyên tắc lập lịch: ⭐ **ghép vào lịch bảo trì máy** và ⭐ **tần
+  suất theo môi trường**. §20-7 cho công cụ **quét đơn** *(single scan)* — nền cho mục 51.7 và 51.11.
 
 > ⚠ Bảng triệu chứng ở mục 51.9 là **điểm khởi đầu**, không phải danh sách đầy đủ. Cách mở rộng tốt
 > nhất: sau mỗi lần sửa xong, thêm một dòng vào bảng của chính bạn — triệu chứng thật, nguyên nhân
