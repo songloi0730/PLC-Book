@@ -38,11 +38,11 @@
 | Inovance H5U/Easy — lệnh | 1113 | 642 | ✔ |
 | Siemens Safety programming | 579 | 405 | ✔ |
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
+| Petruzella — Activities Manual | 401 | 22 | ✔ |
 | Kuphaldt — Instrumentation Technician | 163 | 90 | ✔ |
 | AutomationDirect PLC Handbook | 85 | 0 | ⚠ **chưa** |
 | PLCopen XML exchange | 80 | 103 | ✔ |
 | PLCopen Safe Motion | 45 | 30 | ✔ |
-| Siemens S7-1500 / TIA | 37 | 0 | ✔ |
 | Rockwell — IEC 61131-3 compliance | 30 | 17 | ✔ |
 | IO-Link — mô tả hệ thống | 25 | 4 | ✔ |
 | PLCopen — Structuring Program Development | 4 | 0 | ✔ |
@@ -59,9 +59,6 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 |---|--:|---|
 | Inovance H5U/Easy — lập trình | 808 | 24, 30, 55 |
 | Inovance H3U — lệnh & lập trình | 731 | 24, 30, 55 |
-| Petruzella — PLC (2025) | 441 | 16, 18, 19, 51 |
-| Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
-| Petruzella — Activities Manual | 401 | 16, 18, 19, 51 |
 | Mitsubishi FX5 — MODBUS | 86 | 39 |
 | Modbus — đặc tả | 50 | 39 |
 
@@ -73,21 +70,24 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 |---|--:|---|
 | Kuphaldt — Industrial Instrumentation | 3311 | 38 |
 | Kuphaldt — Electric Circuits | 2354 | 47 |
+| Petruzella — PLC (2025) | 441 | 16, 18, 19, 51 |
+| Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30 |
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21 |
 | Siemens S7-1200 System Manual | 864 | 12, 51 |
+| Siemens S7-1500 / TIA | 37 | 38 |
 | Mitsubishi FX5 — Program Design | 136 | 25, 26 |
 | Rockwell — khác | 1432 | 35 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
 | IO-Link — đặc tả giao diện | 294 | 37, 38, 41, 43, 54 |
 | SICK — an toàn | 322 | 47 |
-| Schneider — an toàn máy | 33 | 47 |
+| Schneider — an toàn máy | 33 | 41, 47, 56 |
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 47 |
 | PLCopen Motion Control | 213 | 28, 37 |
 | Mitsubishi FX5 — Positioning | 302 | 28 |
 | Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
-| Bryan — Theory and Implementation | 1047 | 8, 23, 49, 51, 52 |
+| Bryan — Theory and Implementation | 1047 | 8, 22, 23, 49, 51, 52 |
 | IRSST — Prevention of Mechanical Hazards | 71 | 47 |
 
 ---
@@ -169,7 +169,6 @@ nhưng thiếu bí danh (thêm vào `bi_danh_tep`).
 | ISO/TS 15066 \| **ISO/TS 15066** — *Robots and robotic device | 1 |
 | Hướng dẫn lắp đặt của nhà sản xuất biến tần và PLC \| **Hướng | 1 |
 | Hướng dẫn của nhà sản xuất PLC, biến tần, HMI \| **Hướng dẫn  | 1 |
-| Quy định pháp luật tại thị trường của bạn \| **Quy định pháp  | 1 |
 | Toàn bộ các chương được dẫn trong bảng ở mục 57.3–57.10 \| To | 1 |
 
 ---

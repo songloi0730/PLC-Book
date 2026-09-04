@@ -83,7 +83,8 @@ def tu_phan_biet(bi_danh):
             dem[tu] += 1
     kq = {}
     for nhan in bi_danh:
-        rieng = {t for t in tach_tu(nhan) if len(t) >= 4 and dem[t] == 1}
+        # Ngưỡng 3 để giữ được các từ phân biệt ngắn nhưng đặc trưng ("6th", "xml").
+        rieng = {t for t in tach_tu(nhan) if len(t) >= 3 and dem[t] == 1}
         kq[nhan] = rieng
     return kq
 

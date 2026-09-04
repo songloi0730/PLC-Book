@@ -587,7 +587,7 @@ phản hồi thật.
 - Bảng I/O và đặc tả trình tự của DP-01 — Phụ lục J.
 - Tài liệu lập trình của từng hệ trong Phụ lục A — dùng cho phần khai báo biến giữ được ở mục 16.7,
   vì đây là chỗ khác nhau nhiều nhất giữa các hãng.
-- **Petruzella**, *Programmable Logic Controllers* — bảng lệnh Logix: `OTE` **không giữ**, `OTL`/`OTU`
+- **Petruzella, Frank D.** — *Programmable Logic Controllers* *(nội dung dẫn có ở **cả bản 6th ed. lẫn bản 2025**)* — bảng lệnh Logix: `OTE` **không giữ**, `OTL`/`OTU`
   ⭐ **giữ được**; mạch chốt lập trình là **retentive**, giữ trạng thái qua mất điện (mục 16.7).
 
 > ⚡ Quy tắc chọn giữ / không giữ ở mục 16.4 là **quy tắc thiết kế**, không phải yêu cầu tiêu chuẩn —

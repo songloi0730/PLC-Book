@@ -113,6 +113,54 @@ Trước khi lao vào chi tiết, dành hai mươi phút dựng bản đồ. Nó
 
 ---
 
+## 22.4b ⭐⭐ Thứ lẽ ra bạn phải nhận được — và việc nên làm khi không có
+
+Mục trên dựng bản đồ chương trình **từ con số không**. Đáng hỏi tiếp: ⭐ *vì sao phải dựng lại thứ
+lẽ ra đã có sẵn?*
+
+Một bộ hồ sơ đầy đủ luôn mở đầu bằng một **bản tóm tắt hệ thống** — vài trang mô tả toàn cảnh, gồm
+ba phần:
+
+| Phần | Trả lời câu hỏi |
+|---|---|
+| ⭐ **Phát biểu bài toán điều khiển** | *Máy này giải quyết việc gì?* |
+| ⭐⭐ **Chiến lược thiết kế** | *Các khối phần cứng và phần mềm chính làm gì — và ⭐ **VÌ SAO chọn chúng**?* |
+| **Mục tiêu phải đạt** | *Đo bằng gì thì gọi là đạt?* |
+
+> ⭐⭐ **Phần thứ hai là phần đắt nhất, và cũng là phần luôn mất trước.**
+>
+> Sơ đồ đấu dây và bảng địa chỉ thì còn — vì thiếu chúng thì **không đấu được máy**. ⚠ Nhưng
+> *"vì sao chọn cách này"* thì ⭐ **không ai cần tới để máy chạy**, nên nó không được viết ra, và
+> người sau phải **đoán** (Chương 30).
+>
+> ⚡ Đó chính là lý do mục 22.5 tồn tại: đọc code không chú thích **là hệ quả của việc này**, không
+> phải một kỹ năng đáng tự hào.
+
+### ⭐ Khi bạn đã dựng xong bản đồ — hãy viết bản tóm tắt đó ra
+
+Đây là đề nghị thực dụng nhất của cả chương:
+
+> ⭐⭐ **Bạn vừa phải bỏ công dựng lại hiểu biết về cỗ máy. Đừng để công đó chết trong đầu bạn.**
+>
+> Viết ra **hai tới ba trang** theo đúng ba phần trên, kèm những gì bạn đã **suy ra** và ⚠ **đánh dấu
+> rõ chỗ nào là suy đoán chưa xác nhận**.
+
+| Bạn được gì | Người sau được gì |
+|---|---|
+| ⭐ Viết ra mới phát hiện chỗ mình **tưởng đã hiểu mà chưa** | ⭐ **Không phải làm lại từ đầu** việc bạn vừa làm |
+| Có căn cứ khi cần giải trình một thay đổi | Biết chỗ nào là **sự thật** và chỗ nào là **suy đoán của bạn** |
+| ⭐ Người bàn giao đọc lại có thể **đính chính** cho bạn | Có cái để đính chính tiếp |
+
+> ⭐ **Và một mục nữa nên có ngay từ đầu: người và thời điểm.** Ai viết chương trình gốc, ai đã sửa,
+> sửa khi nào. ⚠ Với chương trình *"chắp vá qua nhiều đời"* ở mục 22.6, ⭐ **biết được đời nào làm gì
+> đã là nửa lời giải**.
+
+> ⚡ **Vì sao đây không phải việc thừa:** hồ sơ tồn tại để trả lời câu hỏi, chẩn đoán sự cố, và ⭐ **sửa
+> chương trình khi yêu cầu thay đổi** — ba việc mà **chính bạn** sẽ phải làm lần sau, trên cùng cỗ
+> máy này. ⚠ Người bạn đang giúp trước hết là **bạn của sáu tháng tới**.
+
+---
+
 ## 22.5 Đọc code không có chú thích
 
 Đây là tình huống phổ biến nhất. Không có chú thích, hoặc chú thích bằng ngôn ngữ bạn không đọc được,
@@ -423,6 +471,10 @@ nó, hay đổi để chữa cái gì.
 | Sửa xong | Ghi **ngày · tên · lý do**, trong code và trong nhật ký |
 | Sửa trực tuyến | Chỉ cho giá trị đặt và chẩn đoán. ⚠ Chạm chuyển động hoặc an toàn → **dừng máy** |
 | Tài liệu mâu thuẫn chương trình | **Chương trình thắng**, rồi cập nhật tài liệu |
+| ⭐⭐ Hồ sơ lẽ ra phải có | **Bản tóm tắt hệ thống**: bài toán · ⭐ **chiến lược và VÌ SAO chọn** · mục tiêu |
+| Phần luôn mất trước | ⭐ **"Vì sao chọn cách này"** — vì không cần tới nó thì máy vẫn chạy |
+| ⭐ Dựng xong bản đồ thì làm gì | **Viết ra 2–3 trang**, ⚠ **đánh dấu rõ chỗ nào là suy đoán** |
+| Ghi thêm mục nào | ⭐ **Ai viết, ai sửa, sửa khi nào** — nửa lời giải cho code chắp vá |
 | Trước khi nhận bảo trì một máy | Hỏi: **có file dự án gốc không?** |
 
 ---
@@ -442,6 +494,10 @@ nó, hay đổi để chữa cái gì.
    tiên nên làm là gì?
 10. ⭐ Vì sao câu hỏi *"có file dự án gốc không?"* lại quan trọng tới mức phải hỏi **trước khi** nhận
     bảo trì một máy?
+11. ⭐⭐ Nêu **ba phần** của một bản tóm tắt hệ thống. ⭐ Phần nào đắt nhất, và vì sao nó **luôn mất
+    trước** trong khi sơ đồ đấu dây thì còn?
+12. ⭐ Sau khi dựng xong bản đồ chương trình của người khác, việc nên làm tiếp là gì? Nêu **hai** cái
+    lợi cho chính bạn, không phải cho người sau.
 
 > Câu 2, 5 và 9 là ba câu phân loại. Câu 9 là tinh thần của cả chương: **làm cho triệu chứng biến mất
 > không phải là sửa — và đôi khi nó còn tệ hơn không làm gì, vì nó tắt luôn bộ phát hiện.**
@@ -462,6 +518,10 @@ lỗi code: viết đúng cái không ai cần.
 - IEC 60204-1 — *Safety of machinery — Electrical equipment of machines*: yêu cầu về tài liệu kỹ
   thuật đi kèm máy — nền cho việc đòi hỏi file dự án gốc khi bàn giao. *(tiêu chuẩn có bản quyền)*
 - Biểu mẫu **nhật ký thay đổi chương trình** — Phụ lục C.
+- **Bryan, L.A. & Bryan, E.A.** — *Programmable Controllers: Theory and Implementation*, ch. 12
+  *PLC System Documentation* §12-1 và §12-2: các thành phần của một bộ hồ sơ đầy đủ, và ⭐⭐ **bản tóm
+  tắt hệ thống** gồm **phát biểu bài toán · chiến lược thiết kế kèm LÝ DO chọn · mục tiêu phải đạt**;
+  hồ sơ tồn tại để **trả lời câu hỏi, chẩn đoán, và sửa khi yêu cầu thay đổi** — nền cho mục 22.4b.
 
 > ⚡ Các quy tắc trong chương này là **thực hành nghề**, không phải yêu cầu tiêu chuẩn — trừ phần tài
 > liệu bàn giao. Cơ sở của bạn có thể có quy định chặt hơn về việc sửa chương trình trên máy đang

@@ -667,7 +667,7 @@ là quyết định **tệ** dù nó gọn hơn.
   chỉ báo bằng **đèn LED nhấp nháy**.
 - **Tài liệu InoProShop (nền CODESYS)** — nguồn cho ⭐ **ba nguyên nhân** làm mẫu số bằng 0, cơ chế
   *"POU for implicit checks" → Division Checks*, và ⭐ **ngưỡng 1e-6 / 1e-15** cho mẫu số số thực.
-- **Petruzella**, *Programmable Logic Controllers* — hành vi **cờ lỗi nhẹ** *(minor fault)* khi chia
+- **Petruzella, Frank D.** — *Programmable Logic Controllers* *(nội dung dẫn có ở **cả bản 6th ed. lẫn bản 2025**)* — hành vi **cờ lỗi nhẹ** *(minor fault)* khi chia
   cho 0.
 - **Hugh Jack**, *Automating Manufacturing Systems with PLCs* — chương trình xử lý lỗi
   *(fault handler)* chạy khi có lỗi như chia cho 0.

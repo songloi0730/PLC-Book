@@ -632,7 +632,7 @@ lớn những lỗi đó ngay từ lúc chạy thử — bằng một thứ mà 
 - Tài liệu hãng về **mã lỗi hệ thống và ý nghĩa đèn trạng thái** — ⚠ khác nhau đáng kể giữa các hãng,
   **bắt buộc tra đúng CPU đang dùng**; số hiệu tài liệu ghi trong Phụ lục A1.
 - Cấu hình I/O và bảng thời gian bước của DP-01 — Phụ lục J.
-- **Petruzella**, *Programmable Logic Controllers* §9.6 *Forcing External I/O Addresses* — nguồn cho
+- **Petruzella, Frank D.** — *Programmable Logic Controllers* *(nội dung dẫn có ở **cả bản 6th ed. lẫn bản 2025**)* §9.6 *Forcing External I/O Addresses* — nguồn cho
   ⭐ **sự khác nhau giữa cưỡng bức ngõ vào và ngõ ra**: ép ngõ vào tác động vào **bảng ảnh ngõ vào**
   nên **lan khắp chương trình**; ép ngõ ra chỉ tác động **đúng chân ra**, bảng ảnh ngõ ra không đổi
   nên chương trình chạy y như cũ (mục 51.7).

@@ -1077,6 +1077,43 @@ Wiring, and Precautions* — đúng chủ đề Ch.49 và Ch.8.
 
 ---
 
+## Đợt 31 — 2026-09-04 · Ch.22, và sửa truy vết nguồn Petruzella
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 173 | ⭐⭐ Ch.22 §22.4b — **thứ lẽ ra bạn phải nhận được** | §22.4 dạy dựng bản đồ chương trình **từ con số không**. ⚠ Sách không hỏi câu tiếp theo: *vì sao phải dựng lại thứ lẽ ra đã có?* Bryan §12-2: hồ sơ đầy đủ mở đầu bằng **bản tóm tắt hệ thống** — bài toán · ⭐ **chiến lược kèm LÝ DO chọn** · mục tiêu | ➕➕ |
+| 174 | Ch.22 — phần luôn mất trước | ⭐ Sơ đồ đấu dây và bảng địa chỉ thì **còn**, vì thiếu chúng thì không đấu được máy. ⚠ *"Vì sao chọn cách này"* thì **không cần tới để máy chạy** → không ai viết. ⚡ Đó là lý do §22.5 (đọc code không chú thích) tồn tại — nó là **hệ quả**, không phải kỹ năng đáng tự hào | ➕ |
+| 175 | ⭐ Ch.22 — đề nghị thực dụng | Dựng xong bản đồ thì ⭐ **viết ra 2–3 trang**, ⚠ **đánh dấu rõ chỗ nào là suy đoán chưa xác nhận**. Lợi cho chính người viết: viết ra mới lộ chỗ *tưởng đã hiểu mà chưa*; và người bàn giao đọc lại có thể **đính chính** | ➕ |
+| 176 | ⭐ Ch.29 — kiểm rồi, **không sửa** | Rà công thức sản phẩm: kiểm tra hợp lệ, đổi khi đang chạy, phiên bản, phân quyền — ⭐ **sách đã phủ đủ**. Không ép thêm | ✅ |
+| 177 | ⚠ Truy vết **Petruzella** — bản đồ báo đúng | Bộ có **ba** cuốn Petruzella; sách dẫn *"Petruzella, Programmable Logic Controllers"* ở 4 chỗ mà **không nêu bản nào**. Kiểm cả ba bản: ⭐ **năm khẳng định đều có ở CẢ 6th ed. lẫn bản 2025**, ⚠ **không có** trong *Activities Manual* (đó là sách bài tập). Đã ghi rõ vào 4 danh sách nguồn | ⚠ |
+| 178 | ⚠ Bản đồ — ngưỡng từ phân biệt | Nhãn *"Petruzella — PLC 6th ed"* không có từ phân biệt nào ≥4 ký tự → **không bao giờ khớp được**. Hạ ngưỡng xuống **3** để giữ các từ ngắn nhưng đặc trưng (`6th`, `xml`) | ⚠ |
+
+### Kết quả đợt 31
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ➕➕ Bổ sung giá trị cao | 1 |
+| ➕ Bổ sung có nguồn | 2 |
+| ✅ Kiểm ra đủ, giữ nguyên | 1 |
+| ⚠ Sửa truy vết / công cụ | 2 |
+| ⭐ **Chỉ số bản đồ** | **12 chưa dẫn** (~4.441 tr.) · **dẫn chung 7 → 4** |
+
+> ⭐⭐ **Mục 177 là loại cải thiện mà chỉ bản đồ mới đề xuất được — và nó không phải "thêm nội dung".**
+>
+> Sách dẫn *"Petruzella"* bốn lần. Với người viết thì rõ ràng; ⚠ với **người đọc muốn tra lại** thì
+> vô nghĩa — họ phải đoán trong ba cuốn. ⭐ Việc sửa không thêm chữ nào vào kiến thức, nhưng nó biến
+> một dẫn chiếu **không dùng được** thành một dẫn chiếu **dùng được**.
+>
+> ⚡ Và cách kiểm cũng đáng ghi: thay vì chọn bừa một bản, tôi ⭐ **tìm cùng một câu trong cả ba bản**
+> — kết quả là *"có ở cả hai bản chính, không có trong sách bài tập"*, chính xác hơn bất kỳ phỏng đoán
+> nào.
+>
+> ⭐ **Và mục 176 giữ đúng kỷ luật đã lập từ đợt 24:** Ch.29 rà xong, kết luận **không sửa**. Ghi lại
+> việc đó cũng là kết quả.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -1090,7 +1127,7 @@ kiểm**, không phải "không có lỗi".
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; 14 đợt 22; **12 đợt 27**)* | ⭐ **Bryan ch.5–8** chưa dùng | Vừa |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
-| Thiết kế | 22, 29 *(25 đợt 23; 24, 26, 27, 30 đợt 24; 23 đợt 27; **28 đợt 28**)* | Hugh Jack, Bryan ch.11 | Vừa |
+| Thiết kế | ⭐ **Đã đối chiếu hết** — 22–30 (đợt 23, 24, 27, 28, **31**) | — | — |
 | Chẩn đoán & vận hành | 43, 53, 55 *(51, 52 đợt 18, 26; **49 đợt 30**)* | Kuphaldt, IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 

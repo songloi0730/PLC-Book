@@ -592,7 +592,7 @@ sau làm việc với **giá trị**: so sánh, tính toán, và những chỗ p
 - Tài liệu CPU và module của từng hệ trong Phụ lục A — dùng cho số kênh HSC, tần số tối đa, chế độ
   đếm, và hành vi khi tràn. Đây là các thông số **phải tra theo đúng dòng sản phẩm**, không suy đoán.
 - Bảng I/O của DP-01 — Phụ lục J.
-- **Petruzella**, *Programmable Logic Controllers* — ⭐ bộ đếm PLC **thường là giữ được**: giá trị lúc
+- **Petruzella, Frank D.** — *Programmable Logic Controllers* *(nội dung dẫn có ở **cả bản 6th ed. lẫn bản 2025**)* — ⭐ bộ đếm PLC **thường là giữ được**: giá trị lúc
   CPU dừng được khôi phục khi cấp nguồn lại, ⚠ trừ khi **điều kiện đặt lại đang tác động** lúc đó; và
   ⭐ **cực tính điều kiện đặt lại khác nhau giữa các hãng** — nền cho mục 18.6b.
 
