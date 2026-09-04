@@ -194,6 +194,44 @@ và mỗi câu quên là một lần sửa đắt về sau.
 
 ---
 
+## 23.5b ⭐⭐ Viết mãi không xong trình tự — đó là chẩn đoán, không phải kém cỏi
+
+Có một tín hiệu rất đáng tin mà ít ai đọc đúng. Bạn ngồi viết mô tả trình tự ở mục 23.4, viết được
+vài bước rồi **tắc**; sửa đi sửa lại, mỗi lần đọc lại thấy vẫn thiếu chỗ nào đó.
+
+> ⭐⭐ **Phản xạ sai: cố viết tiếp cho xong.**
+> ⭐ **Phản xạ đúng: quay lại mục 23.5 và hỏi thêm.**
+
+Vì thứ tự thật sự của công việc là ba bước, và **bước sau phụ thuộc bước trước**:
+
+| Bước | Việc | Nếu bước này thiếu |
+|---|---|---|
+| 1 | ⭐ **Định nghĩa nhiệm vụ** — *máy phải làm gì* | ⚠ Bước 2 **không thể** viết được |
+| 2 | **Trình tự các bước** — *làm theo thứ tự nào* | ⚠ Bước 3 sẽ phải viết lại nhiều lần |
+| 3 | Viết chương trình | — |
+
+> ⭐ **Nói cách khác: viết trình tự khó không phải vì bạn nghĩ chậm, mà vì bài toán chưa đủ dữ kiện.**
+>
+> Không ai chỉ được đường từ đây tới một nơi mà **cả hai đầu đều chưa xác định** — và cũng không chỉ
+> được nếu chưa biết ⚠ **phải đi bằng gì** và ⚠ **có hạn thời gian không**. Trình tự cũng vậy: nó
+> không viết ra được khi còn thiếu điều kiện biên.
+
+⭐ **Ba câu hỏi để tìm chỗ thiếu**, khi thấy mình tắc:
+
+| | Hỏi |
+|---|---|
+| 1 | ⭐ Bước này kết thúc khi nào — và **tôi đo bằng gì**? *(nếu không đo được: Chương 26, mục 26.2b)* |
+| 2 | ⚠ Nếu bước này **không xong** thì máy làm gì? *(nếu chưa có đáp án: quay lại mục 23.5 nhóm A)* |
+| 3 | ⚠⚠ Ai quyết định điều đó — **tôi hay khách hàng**? *(nếu là khách hàng thì đừng tự quyết)* |
+
+> ⭐⭐ **Nguyên tắc gói cả mục này trong bốn chữ: NGHĨ TRƯỚC, LẬP TRÌNH SAU.**
+>
+> Cân nhắc vài cách giải khác nhau và **để thời gian mài lại trình tự** trước khi mở phần mềm — đúng
+> tinh thần Bẫy 1 ở mục 23.7. ⚡ Thời gian bỏ ra ở đây **rẻ hơn nhiều lần** so với sửa cùng vấn đề đó
+> ở bước 3.
+
+---
+
 ## 23.6 Tiêu chí nghiệm thu — viết từ đầu, không viết cuối
 
 Tiêu chí nghiệm thu là **định nghĩa của "xong"**. Viết nó ở đầu dự án có ba tác dụng, và tác dụng thứ
@@ -284,6 +322,7 @@ Tiêu chí phải viết **trước**, khi bạn còn chưa biết máy sẽ kh�
 | 6 | **Tiêu chí nghiệm thu** | Mọi tiêu chí **đo được**: làm gì · kỳ vọng gì · đo bao lâu |
 | 7 | Đã hỏi **4 nhóm câu** ở mục 23.5 | Có câu trả lời bằng văn bản, không phải bằng trí nhớ |
 | 8 | Đã **đi qua trực tiếp** với người vận hành | Có biên bản, có người ký |
+| 9 | ⭐⭐ Không còn bước nào **viết mãi không xong** | Mỗi chỗ tắc đã quay lại mục 23.5 hỏi thêm, không cố viết tiếp |
 
 ---
 
@@ -299,6 +338,8 @@ Tiêu chí phải viết **trước**, khi bạn còn chưa biết máy sẽ kh�
 7. Vì sao hỏi *"anh có yêu cầu gì về xử lý lỗi không?"* thường không ra kết quả? Cách hỏi nào hiệu quả
    hơn?
 8. Vì sao tiêu chí nghiệm thu phải viết **trước** khi máy chạy, chứ không phải sau?
+9. ⭐⭐ Bạn viết mô tả trình tự, viết vài bước rồi tắc, sửa mãi vẫn thấy thiếu. ⭐ Đó là dấu hiệu của
+    cái gì? Nêu **ba câu hỏi** để tìm chỗ thiếu.
 
 Câu 3 và câu 5 là hai câu phân loại. Câu 3 là công cụ bạn sẽ dùng ở mọi dự án; câu 5 kiểm tra bạn nhận
 ra được **đặc tả đang phát hiện thiếu sót phần cứng** — một trong những giá trị lớn nhất của việc viết
@@ -322,6 +363,10 @@ và biết khi nào **không** nên rút gọn chúng.
   đi trước thiết kế — cơ sở cho cảnh báo ở mục 23.5.
 - Biểu mẫu bảng I/O, mẫu mô tả trình tự và mẫu biên bản nghiệm thu — **Phụ lục C**.
 - Hồ sơ đặc tả đầy đủ của DP-01 — Phụ lục J.
+- **Bryan, L.A. & Bryan, E.A.** — *Programmable Controllers: Theory and Implementation*, ch. 11
+  §11-1 và §11-2: ⭐ **định nghĩa nhiệm vụ → chiến lược điều khiển → lập trình**, và quy tắc ⭐ **khi
+  xây trình tự thấy khó thì quay lại định nghĩa lại bài toán**; nguyên tắc *think first, program later*
+  — nền cho mục 23.5b.
 
 > ⚡ Danh sách câu hỏi ở mục 23.5 là **điểm khởi đầu, không phải danh sách đầy đủ**. Mỗi ngành có thêm
 > những câu riêng. Cách tốt nhất để mở rộng danh sách này: sau mỗi dự án, ghi lại những câu mà lẽ ra

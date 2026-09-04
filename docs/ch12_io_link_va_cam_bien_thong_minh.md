@@ -96,7 +96,8 @@ Hai loại sau là thứ mà lớp đấu nối truyền thống **hoàn toàn k
 
 ### Cách hoạt động
 
-Cổng IO-Link chủ **giữ một bản sao tham số** của thiết bị cắm vào nó. Khi phát hiện một thiết bị mới:
+Cổng IO-Link chủ **giữ một bản sao tham số** của thiết bị cắm vào nó — cơ chế này trong đặc tả gọi là
+**kho tham số** *(Data Storage)*. Khi phát hiện một thiết bị mới:
 
 ```text
    1. Thiết bị mới cắm vào cổng
@@ -131,6 +132,40 @@ Cơ chế này **không tự có** — nó phải được cấu hình:
   master là mất toàn bộ tham số của mọi cảm biến trên nó.
 
 Gạch đầu dòng cuối là bẫy mà người ta chỉ phát hiện khi đã muộn.
+
+---
+
+## 12.4b ⭐⭐ Một thiết bị IO-Link vẫn chạy được như cảm biến thường
+
+Đây là tính chất quyết định khi **mua sắm**, và nó hay bị bỏ qua vì nghe quá đơn giản.
+
+> ⭐⭐ **Thiết bị IO-Link có hai chế độ, và chế độ thứ hai là cảm biến số bình thường.**
+
+| Chế độ | Thiết bị làm gì |
+|---|---|
+| ⭐ **IO-Link** *(SDCI)* | Truyền thông đầy đủ — tham số, chẩn đoán, danh tính (các mục trên) |
+| ⭐⭐ **SIO** — *Standard Input/Output* | ⭐ **Bỏ qua toàn bộ tầng truyền thông**, đưa thẳng tín hiệu DI hoặc DO ra ngoài như một cảm biến số thường |
+
+**Ba hệ quả thực tế:**
+
+| | |
+|---|---|
+| 1 | ⭐⭐ **Cắm được vào module DI thường.** Đặc tính điện của chân DI/DO ở chế độ SIO lấy theo **IEC 61131-2 kiểu 1** — đúng loại ngõ vào ở Chương 9. Không cần cổng IO-Link chủ |
+| 2 | ⭐ **Chọn chế độ bằng CẤU HÌNH, không bằng đấu dây.** Cùng một thiết bị, cùng một sợi cáp 3 dây — chuyển chế độ là việc của cấu hình master |
+| 3 | ⭐ **Nâng cấp được theo giai đoạn.** Mua cảm biến có IO-Link ngay bây giờ, dùng như cảm biến thường; khi nào cần chẩn đoán và tự nạp tham số thì **đổi module, giữ nguyên thiết bị và dây** |
+
+> ⭐⭐ **Hệ quả 3 làm đổi hẳn phép tính chi phí ở mục 12.7.**
+>
+> Câu hỏi *"có nên dùng IO-Link không"* thường được đặt thành **một quyết định phải chốt ngay**. Nhưng
+> với chế độ SIO, ⭐ **nó không phải quyết định một lần** — chênh lệch giá cảm biến có IO-Link so với
+> cảm biến thường thường nhỏ, và nó **giữ cửa mở** cho việc nâng cấp sau này.
+>
+> ⚡ Ngược lại, ⚠ mua cảm biến **không** có IO-Link để tiết kiệm hôm nay nghĩa là ⚠⚠ **muốn nâng cấp
+> phải thay cả thiết bị hiện trường** — công việc nằm ngoài tủ điện, tốn hơn nhiều lần.
+
+> ⚠ **Điều SIO KHÔNG cho bạn:** ở chế độ đó thiết bị **chỉ là một cảm biến số**. ⚠ Không có tham số
+> tự nạp (mục 12.4), không có dữ liệu chẩn đoán (mục 12.5), không có kiểm danh tính. ⭐ Nó là **đường
+> lui và bước đệm**, không phải cách dùng IO-Link.
 
 ---
 
@@ -351,6 +386,10 @@ biết thông báo đó nghĩa là gì**. Thời gian dừng máy dài hơn cả
 | Không đáng dùng khi | Cảm biến không tham số · máy nhỏ · cần rất nhanh · khoảng cách xa |
 | ⚠ Không được dùng cho | ⚠⚠ **Tín hiệu an toàn** |
 | Đi kèm quyết định triển khai | **Đào tạo và tài liệu** cho đội bảo trì |
+| ⭐⭐ Thiết bị IO-Link có mấy chế độ | **Hai** — IO-Link đầy đủ, và ⭐ **SIO: cảm biến số thường** |
+| Ở chế độ SIO cắm vào đâu | ⭐ **Module DI thường** — đặc tính điện theo **IEC 61131-2 kiểu 1** (Chương 9) |
+| Chọn chế độ bằng gì | ⭐ **Cấu hình**, không phải đấu dây — cùng một sợi cáp 3 dây |
+| ⭐ Hệ quả mua sắm | **Không phải quyết định một lần** — mua thiết bị có IO-Link, nâng cấp module sau |
 | Cách áp dụng hợp lý | Trộn — IO-Link cho cảm biến hưởng lợi, ngõ vào thường cho phần còn lại |
 
 ---
@@ -372,6 +411,11 @@ biết thông báo đó nghĩa là gì**. Thời gian dừng máy dài hơn cả
    vì sao?
 10. ⭐ Vì sao "đội bảo trì chưa quen" là lý do nghiêm túc để cân nhắc, và nghĩa vụ nào đi kèm quyết
     định triển khai IO-Link?
+11. ⭐⭐ Nêu **hai chế độ** của một thiết bị IO-Link. Ở chế độ thứ hai nó cắm vào loại module nào, và
+    theo đặc tính điện của tiêu chuẩn nào?
+12. ⭐ Vì sao chế độ SIO làm câu hỏi *"có nên dùng IO-Link không"* **không còn là quyết định một lần**?
+    ⚠ Nêu cái giá của việc mua cảm biến **không** có IO-Link để tiết kiệm hôm nay.
+13. ⚠ Ở chế độ SIO, **ba** tính năng nào của IO-Link **không** còn?
 
 > Câu 2, 4, 6 và 10 là bốn câu phân loại. Câu 4 là tinh thần của cả chương: **giá trị thật của lớp
 > cảm biến thông minh không phải là dữ liệu — mà là biến những hỏng hóc im lặng thành thứ phát hiện
@@ -396,6 +440,10 @@ thật, và mua gì để tự học.
 - Datasheet của từng cảm biến IO-Link — dùng cho cách diễn giải byte dữ liệu quá trình và danh sách
   tham số chẩn đoán có sẵn.
 - Bảng I/O của DP-01 — Phụ lục J; bảng đánh giá ở mục 12.8 lấy danh sách cảm biến từ đó.
+- ⭐ **IO-Link Interface and System Specification v1.1.3** *(IEC 61131-9 / SDCI)* — §6 *Standard Input
+  and Output (SIO)*: thiết bị **bỏ qua tầng truyền thông** và đưa thẳng tín hiệu DI/DO ra ngoài; chuyển
+  chế độ bằng **cấu hình người dùng**; ⭐ đặc tính DI/DO lấy theo **IEC 61131-2 kiểu 1**. §12 *Holistic
+  view on Data Storage* — tên chuẩn của cơ chế **kho tham số** ở mục 12.4.
 
 > ⚡ Bảng ở mục 12.8 là **kết quả cân nhắc cho máy mẫu DP-01**, không phải khuyến nghị chung. Với máy
 > có nhiều cảm biến cần chỉnh tham số, hoặc cảm biến nằm ở chỗ khó với tới, cán cân nghiêng về IO-Link

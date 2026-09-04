@@ -917,6 +917,44 @@ trích được text.** Bộ tài liệu: **69 tệp · 24.603 trang**.
 
 ---
 
+## Đợt 27 — 2026-09-04 · Ch.23 (đặc tả) và Ch.12 (IO-Link)
+
+⭐ Hai chương còn nợ, hai nguồn khác nhau: Bryan ch.11 cho Ch.23, và ⭐ **đặc tả IO-Link 294 trang —
+nguồn đang nằm trong bộ mà chưa chương nào dẫn** — cho Ch.12.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 145 | ⭐⭐ Ch.23 §23.5b — **tắc khi viết trình tự là CHẨN ĐOÁN** | Bryan §11-2: nếu xây thuật toán thấy khó thì ⭐ **quay lại định nghĩa lại bài toán**. Sách dạy *cách viết* đặc tả nhưng ⚠ **không nói người viết phải làm gì khi tắc** — mà đó là tình huống ai cũng gặp | ➕➕ |
+| 146 | Ch.23 — ba câu hỏi tìm chỗ thiếu | *Bước này kết thúc khi nào, đo bằng gì?* · *Không xong thì máy làm gì?* · ⚠⚠ *Ai quyết định — tôi hay khách hàng?* | ➕ |
+| 147 | Ch.23 — nguyên tắc bốn chữ | ⭐ **Nghĩ trước, lập trình sau** — Bryan phát biểu thành quy tắc nền, khớp đúng Bẫy 1 sẵn có | ✅➕ |
+| 148 | ⭐ Ch.23 — kiểm rồi, **không sửa** | Bryan §11-1 nói *ai* định nghĩa nhiệm vụ và *"đừng chép lại logic rơ-le cũ"* — ⭐ sách **đã có đủ** ở Bẫy 4 và Bẫy 5. Không thêm | ✅ |
+| 149 | ⭐⭐ Ch.12 §12.4b — **chế độ SIO** | Đặc tả IO-Link §6: thiết bị ⭐ **bỏ qua toàn bộ tầng truyền thông**, đưa thẳng DI/DO ra ngoài như cảm biến số thường; ⭐ đặc tính điện theo **IEC 61131-2 kiểu 1**; chọn chế độ bằng ⭐ **cấu hình, không phải đấu dây**. ⚠ Sách **không nhắc một lần nào** | ➕➕ |
+| 150 | Ch.12 — hệ quả mua sắm | ⭐⭐ Câu hỏi *"có nên dùng IO-Link không"* ⚠ **không còn là quyết định một lần**: mua thiết bị có IO-Link, dùng như cảm biến thường, nâng cấp module sau mà **giữ nguyên thiết bị và dây**. Ngược lại, tiết kiệm hôm nay nghĩa là ⚠⚠ **nâng cấp phải thay cả thiết bị hiện trường** | ➕➕ |
+| 151 | Ch.12 §12.4 — tên chuẩn của cơ chế | Cơ chế "master giữ bản sao tham số" trong đặc tả gọi là ⭐ **kho tham số** *(Data Storage)* — bổ sung tên để tra được về bản gốc | ➕ |
+
+### Kết quả đợt 27
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **7** |
+| ➕➕ Bổ sung giá trị cao | 3 |
+| ➕ Bổ sung có nguồn | 2 |
+| ✅ Kiểm ra đủ, giữ nguyên | 2 |
+| ⭐ **Chỉ số bản đồ** | **10 → 8 nguồn chưa dẫn** (~4.529 → ~4.210 trang) |
+
+> ⭐⭐ **Mục 149 là bằng chứng rõ nhất cho giá trị của bản đồ nguồn.**
+>
+> Đặc tả IO-Link nằm trong bộ tài liệu **từ đầu**, 294 trang, và Ch.12 viết về đúng chủ đề đó — nhưng
+> ⚠ **chưa chương nào dẫn nó**. Kết quả: sách bỏ sót một tính chất mà ⭐ **ai chọn mua cảm biến cũng
+> cần biết**, và nó nằm ở **mục 6 của đặc tả** — không hề khó tìm, chỉ là **không ai đi tìm**.
+>
+> ⚡ Nếu không có bản đồ, tôi sẽ không bao giờ mở tệp đó — vì Ch.12 *"trông đã đầy đủ"*.
+>
+> ⭐ **Và mục 148 nhắc lại kỷ luật của đợt 24:** Bryan §11-1 có hai ý hay, kiểm ra sách **đã có cả
+> hai**. Ghi *"không sửa"* vào nhật ký cũng là một kết quả — nó chứng minh vòng kiểm có thật.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -928,9 +966,9 @@ kiểm**, không phải "không có lỗi".
 | Đo lường & analog | ⭐ **Đã đối chiếu** (đợt 5–7, 14) | — | — |
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
-| Nền tảng PLC | 7, 12 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; **14 đợt 22**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
+| Nền tảng PLC | 7 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; 14 đợt 22; **12 đợt 27**)* | ⭐ **Bryan ch.5–8** chưa dùng | Vừa |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
-| Thiết kế | 22, 23, 28, 29 *(25 đợt 23; **24, 26, 27, 30 đợt 24**)* | ⭐ Hugh Jack | Vừa |
+| Thiết kế | 22, 28, 29 *(25 đợt 23; 24, 26, 27, 30 đợt 24; **23 đợt 27**)* | Hugh Jack, ⭐ **Bryan ch.11** | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 53, 55 *(51, 52 đợt 18 và **đợt 26**)* | ⭐ **Bryan ch. 20** đã dùng; Kuphaldt, IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 

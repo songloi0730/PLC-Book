@@ -39,11 +39,9 @@
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
 | Tài liệu PLC tiếng Việt | 367 | 0 | ✔ |
 | Mitsubishi FX5 — Positioning | 302 | 158 | ✔ |
-| IO-Link — đặc tả giao diện | 294 | 535 | ✔ |
 | AutomationDirect PLC Handbook | 85 | 0 | ✔ |
 | PPSA / khí nén | 71 | 65 | ⚠ **chưa** |
 | Siemens S7-1500 / TIA | 37 | 0 | ✔ |
-| IO-Link — mô tả hệ thống | 25 | 4 | ✔ |
 
 ---
 
@@ -57,27 +55,29 @@
 | Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
 | Petruzella — Activities Manual | 401 | 16, 18, 19, 51 |
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30 |
-| Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 19, 20, 21 |
-| Siemens S7-1200 System Manual | 864 | 19, 25, 26, 27, 30, 51 |
+| Hanssen — IEC 61131-3 / CoDeSys | 419 | 12, 14, 19, 20, 21 |
+| Siemens S7-1200 System Manual | 864 | 12, 19, 25, 26, 27, 30, 51 |
 | Siemens Safety programming | 579 | 47 |
-| Mitsubishi FX5 — Program Design | 136 | 14, 16, 18, 19, 20, 21, 25, 26, 27, 51, 52 |
+| Mitsubishi FX5 — Program Design | 136 | 14, 16, 18, 19, 20, 21, 23, 25, 26, 27, 51, 52 |
 | Mitsubishi FX5 — MODBUS | 86 | 35, 39 |
-| Rockwell — IEC 61131-3 compliance | 30 | 14, 20, 21 |
+| Rockwell — IEC 61131-3 compliance | 30 | 12, 14, 20, 21 |
 | Inovance H5U/Easy — lập trình | 808 | 19, 21, 24, 30, 43, 55 |
 | Inovance H5U/Easy — lệnh | 1113 | 19 |
 | Inovance H3U — lệnh & lập trình | 731 | 19, 21, 24, 30, 43, 55 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
+| IO-Link — đặc tả giao diện | 294 | 12 |
+| IO-Link — mô tả hệ thống | 25 | 12 |
 | Modbus — đặc tả | 50 | 35, 39 |
 | SICK — an toàn | 322 | 47 |
 | Schneider — an toàn máy | 33 | 47 |
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 37, 47 |
 | PLCopen Safe Motion | 45 | 37, 47 |
-| PLCopen Motion Control | 213 | 14, 16, 18, 19, 20, 21, 37, 47, 51, 52 |
-| PLCopen — Structuring Program Development | 4 | 14, 16, 18, 19, 20, 21, 27, 37, 47, 51, 52 |
+| PLCopen Motion Control | 213 | 14, 16, 18, 19, 20, 21, 23, 37, 47, 51, 52 |
+| PLCopen — Structuring Program Development | 4 | 14, 16, 18, 19, 20, 21, 23, 27, 37, 47, 51, 52 |
 | PLCopen XML exchange | 80 | 37, 47 |
 | Kuphaldt — Instrumentation Technician | 163 | 38 |
-| Bryan — Theory and Implementation | 1047 | 51, 52 |
+| Bryan — Theory and Implementation | 1047 | 23, 51, 52 |
 
 ---
 
