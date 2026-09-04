@@ -291,6 +291,62 @@ bạn không có mặt? Viết cho người đó đọc.
 
 ---
 
+## 25.5b ⭐⭐ Bất biến nằm dưới mọi cách hiện thực — và câu hỏi ưu tiên
+
+Hai cách ở mục trên trông rất khác nhau, nhưng ⭐ **cả hai đang cưỡng chế cùng một bất biến**. Phát
+biểu nó thành một câu là cách chắc nhất để kiểm code của mình — và của người khác:
+
+> ⭐⭐ **Một trạng thái đang BẬT nếu: nó đã bật sẵn, HOẶC vừa được một chuyển tiếp đưa vào —**
+> **và nó chưa bị một chuyển tiếp nào đưa ra.**
+
+| Vế của bất biến | Nếu quên vế này |
+|---|---|
+| *"đã bật sẵn"* | ⚠ Trạng thái **tắt ngay vòng quét sau** khi điều kiện vào không còn đúng |
+| *"vừa được chuyển tiếp đưa vào"* | ⚠ Không bao giờ vào được trạng thái |
+| ⚠⚠ *"chưa bị chuyển tiếp nào đưa ra"* | ⚠⚠ **Vào được nhưng không ra được** — đúng Bẫy 2 ở dưới |
+
+⭐ Mỗi trạng thái cần **một** biểu thức như vậy. Khi rà code người khác, hãy tìm đủ ba vế cho từng
+trạng thái — thiếu vế nào thì lỗi thuộc đúng loại ở bảng trên.
+
+### ⚠⚠ Câu hỏi ưu tiên: hai chuyển tiếp cùng đúng trong MỘT vòng quét thì sao?
+
+Bảng chuyển trạng thái ở mục 25.4 liệt kê các chuyển tiếp hợp lệ, nhưng nó **không trả lời** câu hỏi
+này: ⚠ từ một trạng thái có hai đường ra, và **cả hai điều kiện cùng đúng ở cùng một vòng quét**.
+
+Tình huống này **không hiếm**: nút Dừng bị nhấn đúng lúc cảm biến báo xong; báo lỗi xuất hiện đúng lúc
+bước hoàn tất.
+
+| Cách hiện thực | Chuyện gì xảy ra |
+|---|---|
+| ⭐ Biến + `CASE` | **Nhánh `IF` nào viết trước thì thắng** — ưu tiên có sẵn, do **thứ tự code** |
+| ⚠⚠ Bit trạng thái (ladder) | ⚠ Không có ưu tiên tự nhiên — ⭐ **có thể bật hai bit, hoặc tắt cả hai** |
+
+> ⭐⭐ **Quy tắc: ưu tiên phải là một quyết định được viết ra, không phải hệ quả tình cờ của thứ tự
+> gõ code.**
+>
+> Với `CASE`, ⚠ **thứ tự các nhánh `IF` CHÍNH LÀ bảng ưu tiên của bạn** — dù bạn có ý thức hay không.
+> ⭐ Hãy **ghi thứ tự đó ra thành comment**, và đặt chuyển tiếp *về lỗi* lên **trên cùng**.
+>
+> Với bit trạng thái, ⭐ phải **cưỡng chế tường minh**: điều kiện của đường ra ưu tiên thấp phải kèm
+> *"và đường ưu tiên cao không đúng"*.
+
+> ⭐ **Thứ tự ưu tiên mặc định đáng dùng**, từ cao xuống thấp:
+>
+> | | Chuyển tiếp |
+> |---|---|
+> | 1 | ⚠⚠ **Về `Alarm`** — từ bất kỳ trạng thái nào |
+> | 2 | **Về `Stopping`** — người vận hành yêu cầu dừng |
+> | 3 | Chuyển tiếp bình thường của quy trình |
+>
+> ⚡ Lý do thứ tự này: ⭐ **an toàn và ý muốn của người vận hành luôn thắng tiến độ sản xuất.**
+
+> ⚡ **Về cái giá của cách "bit trạng thái":** nó tạo ra chương trình **dài hơn và kém hiệu quả hơn**
+> so với cách viết bằng biểu thức gọn. ⭐ Nhưng nó **dễ hiểu và dễ gỡ lỗi hơn hẳn** — và với phần mềm
+> máy, đó là đánh đổi **đúng**, đúng theo tiêu chí tổ chức ở mục trên: *ai sửa cỗ máy này lúc hai giờ
+> sáng?*
+
+---
+
 ## 25.6 Trạng thái máy tổng và trạng thái từng trạm
 
 DP-01 có **hai trạm**. Câu hỏi tự nhiên: một máy trạng thái hay ba?
@@ -451,6 +507,9 @@ Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
 | 6 | Chọn cách hiện thực | Theo tiêu chí *ai sẽ bảo trì*, không theo sở thích |
 | 7 | Nối **đèn tháp và màn hình** thẳng vào biến trạng thái | Không có logic đèn riêng |
 | 8 | Soát **mọi chỗ ghi vào biến trạng thái** | Khớp đúng số dòng của bảng |
+| 9 | ⭐⭐ Kiểm **bất biến** đủ ba vế cho từng trạng thái | Đã bật · vừa được đưa vào · chưa bị đưa ra |
+| 10 | ⚠⚠ **Viết ra thứ tự ưu tiên** của các chuyển tiếp | `Alarm` → `Stopping` → quy trình; có comment |
+| 11 | Với bit trạng thái: **cưỡng chế ưu tiên tường minh** | Đường ưu tiên thấp kèm *"và đường cao không đúng"* |
 
 ---
 
@@ -466,6 +525,12 @@ Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
    trạng thái không quay lại đúng vấn đề của cờ rải rác là gì?
 7. Máy đang `Hold` mà đèn xanh vẫn sáng. Nguyên nhân gốc nằm ở đâu, và sửa thế nào cho lỗi này **không
    thể** tái diễn?
+8. ⭐⭐ Phát biểu **bất biến** mà mọi cách hiện thực máy trạng thái đều phải cưỡng chế. Thiếu mỗi
+    trong ba vế thì sinh ra lỗi gì?
+9. ⚠⚠ Từ một trạng thái có hai đường ra, cả hai điều kiện cùng đúng ở **cùng một vòng quét**. Với
+    `CASE` thì cái nào thắng? Với **bit trạng thái** thì sao? ⭐ Nêu cách cưỡng chế ưu tiên cho cách
+    thứ hai.
+10. ⭐ Vì sao chuyển tiếp **về `Alarm`** phải đứng trên cùng trong thứ tự ưu tiên?
 
 Câu 1 và câu 3 là hai câu phân loại. Câu 1 kiểm tra bạn hiểu *vì sao* chứ không chỉ *làm thế nào*; câu
 3 kiểm tra bạn có phản xạ về an toàn khi khởi động lại — thứ Chương 28 sẽ khai triển.
@@ -487,6 +552,11 @@ song song và cách phát hiện bế tắc bằng timeout từng bước.
 - IEC 60204-1 — *Safety of machinery — Electrical equipment of machines*: phân biệt các loại lệnh dừng
   và yêu cầu về khởi động lại có chủ ý — cơ sở cho quyết định `Resetting → Homing` ở mục 25.3.
 - Đặc tả trình tự và danh sách chức năng an toàn của DP-01 — Phụ lục J.
+- **Hugh Jack** — *Automating Manufacturing Systems with PLCs*, ch. 12 *State Based Design*: ba cách
+  chuyển sơ đồ trạng thái sang ladder (**block logic** · **state equations** · **state-transition
+  equations**), ⭐⭐ **bất biến của phương trình trạng thái** (mục 25.5b), và ⚠ **ladder có ưu tiên**
+  khi nhiều chuyển tiếp cùng đúng. Cũng là nguồn cho đánh đổi *"dài hơn và kém hiệu quả hơn, nhưng dễ
+  hiểu và dễ gỡ lỗi hơn"* của cách bit trạng thái.
 
 > ⚡ Bảy trạng thái ở mục 25.3 là **mô hình thực dụng đã được rút gọn cho máy tự động hoá rời rạc**,
 > không phải một mô hình chuẩn hoá bắt buộc. Máy của bạn có thể cần bớt hoặc thêm — điều bắt buộc là

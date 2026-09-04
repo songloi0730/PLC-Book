@@ -66,7 +66,15 @@ def sap_xep_khoa(k):
 
 
 def co_tu_khoa(ten_thap, nhan):
-    """Khớp thô: một từ đặc trưng (>=5 ký tự) của nhãn có trong tên nguồn."""
+    """Khớp thô giữa tên nguồn trong sách và bí danh.
+
+    Hai đường khớp, vì bí danh có hai dạng:
+      - tên dài  ("Hugh Jack — Automating Manufacturing")  -> khớp theo TỪ đặc trưng
+      - tên viết tắt ngắn ("SICK — an toàn", "DGUV / IFA") -> khớp theo CỤM đầu
+    """
+    dau = nhan.split("—")[0].strip().lower()
+    if len(dau) >= 4 and dau in ten_thap:
+        return True
     for tu in re.split(r"[^\wÀ-ỹ]+", nhan.lower()):
         if len(tu) >= 5 and tu in ten_thap:
             return True
@@ -90,7 +98,9 @@ def doc_nguon_cac_chuong():
             dong = dong.strip()
             mm = re.match(r"\*\*(.+?)\*\*", dong)
             ten = mm.group(1) if mm else dong.split("—")[0].strip()
-            ds.append(re.sub(r"\s+", " ", ten)[:120])
+            # Giữ CẢ DÒNG để so khớp: tên in đậm thường quá ngắn ("Hugh Jack")
+            # trong khi từ đặc trưng của bí danh nằm ở phần tiêu đề phía sau.
+            ds.append(re.sub(r"\s+", " ", ten + " | " + dong)[:300])
         kq[ten_chuong(p)] = ds
     return kq
 

@@ -732,6 +732,50 @@ phát hiện: ⚠ **sách bỏ sót những thứ chuẩn CÓ**, chứ không ph
 
 ---
 
+## Đợt 23 — 2026-09-03 · ⭐⭐ ĐỢT ĐẦU TIÊN ĐƯỢC BẢN ĐỒ DẪN ĐƯỜNG — Ch.25
+
+⭐⭐ **Khác mọi đợt trước ở một điểm quyết định: tôi không chọn chương này.** Bản đồ nguồn mới lập
+(`docs/00e_Ban_do_nguon.md`) chỉ ra ⚠ **Hugh Jack — 860 trang — chưa được chương nào dẫn**, và mục lục
+nhúng của nó có hẳn **chương 12 *State Based Design* dài 58 trang** — đúng chủ đề Ch.25.
+
+⚠⚠ **Và nhật ký này, ngay ở bảng cuối, đã xếp nhóm chương thiết kế vào diện *"chủ yếu là phương pháp
+và kinh nghiệm nghề, ít đối chiếu được bằng tài liệu"*. Kết luận đó SAI.** Nguồn tốt nhất cho đúng
+nhóm đó vẫn nằm nguyên, chưa mở.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 120 | ⭐⭐ Ch.25 §25.5b — bất biến | Hugh Jack §12.1.2.2 phát biểu bằng **một câu**: *trạng thái BẬT nếu đã bật sẵn, HOẶC vừa được một chuyển tiếp đưa vào — và chưa bị chuyển tiếp nào đưa ra*. ⭐ Sách có **hai cách hiện thực** nhưng chưa từng nêu **cái mà cả hai đang cưỡng chế** | ➕➕ |
+| 121 | Ch.25 — ba vế, ba loại lỗi | Thiếu vế *"đã bật sẵn"* → tắt ngay vòng sau · thiếu vế *"vừa được đưa vào"* → không vào được · ⚠⚠ thiếu vế *"chưa bị đưa ra"* → **vào được không ra được** = đúng Bẫy 2 sẵn có | ➕ |
+| 122 | ⚠⚠ Ch.25 — **hai chuyển tiếp cùng đúng** | ⭐ Sách **không phủ** trường hợp này. Hugh Jack có hẳn *Ladder Logic with Prioritization*. Với `CASE` thì ⚠ **nhánh `IF` viết trước thắng** — ưu tiên tồn tại **dù tác giả có ý thức hay không**; với bit trạng thái thì ⚠⚠ **có thể bật hai bit hoặc tắt cả hai** | ➕➕ |
+| 123 | Ch.25 — thứ tự ưu tiên mặc định | ⭐ `Alarm` → `Stopping` → chuyển tiếp quy trình. Lý do: **an toàn và ý muốn người vận hành thắng tiến độ sản xuất** | ➕ |
+| 124 | Ch.25 — đánh đổi của cách bit trạng thái | Hugh Jack: block logic *"produce larger programs… much larger and less efficient"* nhưng *"simple to understand, and easy to debug"*. ⭐ Củng cố đúng kết luận sách đã có ở §25.5 — nay **có nguồn**, không còn là ý kiến | ✅➕ |
+| 125 | ⭐ Ch.47 — nguồn an toàn bị tổng quát hoá | Bản đồ báo SICK/DGUV *"chưa dẫn"*. Kiểm: thân chương **nêu đích danh**, danh sách nguồn lại viết *"nhà sản xuất thiết bị an toàn"*. ⭐ **Đã sửa thành tên thật** | ⚠ |
+
+### Kết quả đợt 23
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ➕➕ Bổ sung giá trị cao | 2 |
+| ➕ Bổ sung có nguồn | 2 |
+| ✅➕ Nguồn xác nhận kết luận sẵn có | 1 |
+| ⚠ Sửa truy vết nguồn | 1 |
+| Nơi đã sửa | Ch.25 (§25.5b mới + 3 dòng Bảng chốt + 3 câu Tự kiểm + nguồn) · Ch.47 (danh sách nguồn) |
+
+> ⭐⭐ **Bài học lớn nhất của cả quy trình tới giờ, và nó nằm ở CÁCH chọn việc, không ở nội dung.**
+>
+> Suốt 22 đợt, tôi chọn chương để kiểm bằng **trực giác** — chương nào *nghe có vẻ* dễ sai. Trực giác
+> đó có ích, nhưng nó ⚠ **chỉ nhìn được vào chỗ tôi đã biết là có gì ở đó**.
+>
+> Bản đồ nhìn từ **phía ngược lại**: không hỏi *"chương nào đáng ngờ"* mà hỏi ⭐ **"tài liệu nào đang
+> có trong tay mà chưa ai mở?"** — và câu hỏi đó lập tức chỉ ra một cuốn **860 trang** mà tôi đã tự
+> tay ghi vào nhật ký là *"khó đối chiếu"*.
+>
+> ⚡ **Đo được thì cải thiện được:** số nguồn chưa dẫn là **9 nguồn / ~4.439 trang** sau đợt này. ⭐ Con
+> số đó phải **giảm dần qua từng đợt** — nếu nó đứng yên, đợt đó chỉ đào sâu chỗ đã quen.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -745,7 +789,7 @@ kiểm**, không phải "không có lỗi".
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7, 12 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; **14 đợt 22**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
-| Thiết kế | 22–30 | ⭐ Hugh Jack (mạnh nhất mảng này) | Vừa |
+| Thiết kế | 22–24, 26–30 *(**25 đợt 23**)* | ⭐ Hugh Jack — ⚠ **đã xác nhận là nguồn thật, còn 6 chương chưa dùng tới** | ⭐ Cao |
 | Chẩn đoán & vận hành | 43, 49, 53, 55 *(**51, 52 đã đối chiếu đợt 18**)* | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 
