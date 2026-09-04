@@ -1114,6 +1114,42 @@ Wiring, and Precautions* — đúng chủ đề Ch.49 và Ch.8.
 
 ---
 
+## Đợt 32 — 2026-09-04 · Ch.7 (ESD) và Ch.32 (analog) — hai hướng bị bỏ quên
+
+⭐ Đợt này dựng lại bộ đệm tìm kiếm cho **6 tài liệu mới** (Bryan + 5 đặc tả PLCopen), rồi tra hai
+chương còn nợ.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 179 | ⭐⭐ Ch.7 §7.7b — **ESD hỏng chính bộ điều khiển** | Cả Ch.7 nói ESD hỏng **sản phẩm**. ⚠ Tài liệu Siemens S7-1200 cảnh báo lặp lại một hướng thứ hai: **cắm/rút thẻ nhớ** và **chạm chân đầu nối** có thể hỏng **thẻ nhớ hoặc khe cắm trên CPU**. Biện pháp: ⭐ **chạm bề mặt dẫn đã nối đất, hoặc đeo vòng tay nối đất** | ➕➕ |
+| 180 | ⚠⚠ Ch.7 — vì sao hướng này khó truy | ⭐ Giống board sản phẩm ở §7.2, module bị phóng tĩnh điện thường **hỏng tiềm ẩn** — lỗi chập chờn xuất hiện vài tuần sau, ⚠ **không ai liên hệ với lần thay thẻ nhớ**. Đã nối vào danh sách nguyên nhân lỗi chập chờn ở Ch.51 §51.8 | ➕ |
+| 181 | ⭐ Ch.7 — lỗ hổng nhất quán | ⚠ Công ty đầu tư đường thoát tĩnh điện cho **sản phẩm** mà **bàn sửa module** không có gì — ⭐ đó là mâu thuẫn nội tại, đã thêm vào danh mục kiểm | ➕ |
+| 182 | ⭐⭐ Ch.32 §32.6b — **trễ là tổng BA khoản** | §32.6 nói bộ lọc gây trễ. ⚠ Nhưng đó chỉ là **một** khoản. Hanssen §3.6.2: tổng = **đáp ứng cảm biến** + **cập nhật module (có lọc)** + **chu kỳ quét**. ⭐ Khoản lớn nhất thường là **cảm biến**, trong khi người ta hay đi tối ưu **chương trình** — khoản nhỏ nhất | ➕➕ |
+| 183 | ⚠⚠ Ch.32 — **dùng ít kênh KHÔNG làm module nhanh hơn** | Phân biệt **thời gian một kênh** với **chu kỳ cả module**; ⭐ chu kỳ module **không giảm** dù có kênh không dùng. Mẹo *"chỉ đấu 2 trong 8 kênh cho nhanh"* ⚠ **không có tác dụng** — muốn nhanh thì **đổi module** | ➕➕ |
+| 184 | Ch.32 — khi PLC vừa đọc analog vừa chạy PID | Hai đường: đổi module nhanh hơn, hoặc ⭐⭐ **bộ điều khiển rời và PLC chỉ đặt điểm đặt** — ⚡ đúng kiến trúc bộ điều khiển nhiệt rời của máy mẫu (Ch.38 §38.11) | ➕ |
+
+### Kết quả đợt 32
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ➕➕ Bổ sung giá trị cao | 3 |
+| ➕ Bổ sung có nguồn | 3 |
+
+> ⭐⭐ **Cả hai mục ➕➕ chính đều là "hướng thứ hai" của một chủ đề sách đã bàn kỹ.**
+>
+> Ch.7 bàn ESD suốt 11 mục — nhưng **luôn theo một chiều**: tĩnh điện từ máy hỏng sản phẩm. ⚠ Chiều
+> ngược lại — **tay người hỏng module** — không xuất hiện, dù nó xảy ra ngay trên bàn của người đọc.
+>
+> Ch.32 bàn trễ do lọc — nhưng chỉ **khoản của mình**. ⚠ Hai khoản kia (cảm biến, module) lớn hơn và
+> **không nằm trong tầm sửa của người lập trình**, nên chúng bị bỏ khỏi câu chuyện.
+>
+> ⚡ **Bài học quy trình, nối tiếp đợt 26:** ngoài *"còn thứ gì cùng loại mà không có tên riêng?"*, nay
+> thêm ⭐ **"chủ đề này có CHIỀU NGƯỢC LẠI không, và sách có kể chiều đó không?"** — nguồn gây hại đổi
+> chỗ cho đối tượng bị hại, hoặc khoản chi phí nằm ngoài tầm kiểm soát của người viết.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -1125,7 +1161,7 @@ kiểm**, không phải "không có lỗi".
 | Đo lường & analog | ⭐ **Đã đối chiếu** (đợt 5–7, 14) | — | — |
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
-| Nền tảng PLC | 7 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; 14 đợt 22; **12 đợt 27**)* | ⭐ **Bryan ch.5–8** chưa dùng | Vừa |
+| Nền tảng PLC | ⭐ **Đã đối chiếu hết** — 7–12, 14, 18, 19 (đợt 4, 10, 15, 22, 27, **32**) | — | — |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
 | Thiết kế | ⭐ **Đã đối chiếu hết** — 22–30 (đợt 23, 24, 27, 28, **31**) | — | — |
 | Chẩn đoán & vận hành | 43, 53, 55 *(51, 52 đợt 18, 26; **49 đợt 30**)* | Kuphaldt, IEC 62381 | Vừa |

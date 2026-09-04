@@ -234,6 +234,43 @@ Chương này không chỉ là chuyện chọn vật liệu. Nó đổi cả cá
 
 ---
 
+## 7.7b ⚠ ESD còn làm hỏng CHÍNH BỘ ĐIỀU KHIỂN — không chỉ sản phẩm
+
+Cả chương tới đây nói về tĩnh điện làm hỏng **sản phẩm**. ⭐ Nhưng có một hướng thứ hai, gần bạn hơn
+nhiều: ⚠ **chính module PLC trong tay bạn cũng nhạy với ESD** — và tài liệu hãng cảnh báo điều đó ở
+những chỗ rất cụ thể.
+
+| Thao tác | Cái gì hỏng |
+|---|---|
+| ⚠⚠ **Cắm / rút thẻ nhớ** | ⭐ Hỏng **thẻ nhớ** hoặc **chính khe cắm trên CPU** |
+| ⚠ **Chạm vào chân của đầu nối module** | Hỏng module |
+| Cầm module chưa lắp | Hỏng linh kiện bên trong |
+
+> ⭐⭐ **Hai biện pháp mà tài liệu hãng nêu — đơn giản tới mức dễ bị bỏ qua:**
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Chạm vào một bề mặt dẫn điện đã nối đất** trước khi cầm module hoặc thẻ nhớ |
+> | 2 | ⭐ Hoặc **đeo vòng đeo tay tiêu tán tĩnh điện đã nối đất** |
+>
+> ⚡ Cùng nguyên lý với đường thoát tĩnh điện của cỗ máy ở mục 7.5 — ⭐ **xả điện tích của bạn về cùng
+> một điểm quy chiếu trước khi tiếp xúc**, thay vì để nó phóng qua linh kiện.
+
+> ⚠⚠ **Vì sao hướng này nguy hiểm hơn vẻ ngoài của nó.**
+>
+> Hỏng do ESD **hiếm khi hỏng ngay**. Giống board sản phẩm ở mục 7.2, module PLC bị phóng tĩnh điện
+> thường ⭐ **hỏng tiềm ẩn**: chạy tiếp vài tuần rồi bắt đầu lỗi chập chờn — ⚠ và lúc đó **không ai
+> liên hệ nó với lần thay thẻ nhớ ba tuần trước**.
+>
+> ⭐ Đây chính là **một mục nữa cho danh sách bốn nguyên nhân vật lý của lỗi chập chờn** ở Chương 51
+> mục 51.8: ⚠ *"module này đã từng bị ai cầm mà không xả tĩnh điện chưa?"*
+
+> ⭐ **Hệ quả tổ chức:** khu vực bảo trì tủ điện nên có sẵn **một điểm nối đất và một vòng đeo tay**,
+> đúng như khu vực thao tác sản phẩm. ⚠ Nếu công ty đã đầu tư đường thoát tĩnh điện cho **sản phẩm**
+> mà bàn sửa chữa module thì không có gì, ⭐ **đó là một lỗ hổng nhất quán**.
+
+---
+
 ## 7.8 Môi trường: độ ẩm và phòng sạch
 
 ### Độ ẩm
@@ -326,6 +363,7 @@ vấn đề (bụi) lấy một vấn đề nặng hơn (tĩnh điện). Nếu p
 | 8 | **Độ ẩm** được theo dõi và nằm trong dải | Có |
 | 9 | Cơ cấu thiết kế theo **năm nguyên tắc** ở mục 7.7 | Đã rà soát |
 | 10 | Khí nén thổi sản phẩm đều **có ion hoá** | Có |
+| 11 | ⚠ **Bàn sửa chữa module** cũng có điểm nối đất và vòng đeo tay | ⭐ Có — ESD hỏng **cả module PLC**, không chỉ sản phẩm (mục 7.7b) |
 
 ---
 
@@ -342,6 +380,10 @@ vấn đề (bụi) lấy một vấn đề nặng hơn (tĩnh điện). Nếu p
 8. Vì sao **tín hiệu tình trạng của ionizer phải là điều kiện cho phép chạy**, không chỉ là dòng hiển thị?
 9. Một ionizer lệch cân bằng nguy hiểm thế nào so với không có ionizer?
 10. Câu hỏi nào dùng để rà soát một thiết kế cơ cấu về mặt ESD?
+11. ⚠ Ngoài sản phẩm, ESD còn làm hỏng cái gì trong tủ điện? ⭐ Nêu **hai** thao tác rủi ro nhất và
+    **hai** biện pháp phòng.
+12. ⭐⭐ Vì sao hỏng module do ESD **khó truy nguyên nhân** hơn hỏng ngay? Liên hệ với danh sách nguyên
+    nhân lỗi chập chờn ở Chương 51.
 
 Câu 4, 6 và 8 là ba câu phân loại. Câu 4 quyết định bạn chọn đúng biện pháp cho máy tự động hay áp
 nhầm biện pháp của lắp ráp thủ công; câu 6 là câu về **an toàn cho người**; câu 8 là chỗ chương này
@@ -366,6 +408,10 @@ nối vào phần lập trình.
   dùng cho mục 7.3.
 - Tài liệu kỹ thuật của nhà sản xuất thiết bị ion hoá và vật liệu chống tĩnh điện — dùng cho phần
   diễn giải nguyên lý ở mục 7.4 và 7.6.
+- **Siemens S7-1200 System Manual** — cảnh báo ESD lặp lại ở các thao tác **cắm/rút thẻ nhớ** và
+  **chạm chân đầu nối module**: ⭐ *phóng tĩnh điện có thể làm hỏng thẻ nhớ hoặc khe cắm trên CPU*;
+  biện pháp nêu là ⭐ **chạm bề mặt dẫn điện đã nối đất và/hoặc đeo vòng tay nối đất** — nền cho
+  mục 7.7b.
 
 > ⚠ Chương này diễn giải khái niệm ở mức đủ để **thiết kế máy có tính tới ESD** và **trao đổi với
 > người phụ trách chương trình kiểm soát tĩnh điện** của nhà máy. Việc xây dựng và kiểm định một khu

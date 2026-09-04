@@ -73,8 +73,8 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Petruzella — PLC (2025) | 441 | 16, 18, 19, 51 |
 | Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30 |
-| Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21 |
-| Siemens S7-1200 System Manual | 864 | 12, 51 |
+| Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21, 32 |
+| Siemens S7-1200 System Manual | 864 | 7, 12, 51 |
 | Siemens S7-1500 / TIA | 37 | 38 |
 | Mitsubishi FX5 — Program Design | 136 | 25, 26 |
 | Rockwell — khác | 1432 | 35 |
