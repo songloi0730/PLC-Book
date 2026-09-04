@@ -543,8 +543,10 @@ tin lệnh** là nguyên tắc xuyên suốt cả cuốn sách.
   với thiết bị dừng khẩn cấp, khởi động lại có chủ ý (mục 47.6).
 - IEC 61800-5-2 — *Adjustable speed electrical power drive systems — Safety requirements*: định nghĩa
   các chức năng an toàn của truyền động, trong đó có STO (mục 47.8).
-- Tài liệu hướng dẫn của nhà sản xuất thiết bị an toàn và báo cáo kỹ thuật của viện nghiên cứu an toàn
-  lao động — dùng cho phần diễn giải khái niệm và ví dụ kiến trúc.
+- **Tài liệu hướng dẫn của SICK và Schneider Electric** về thiết bị an toàn — dùng cho phần diễn giải
+  khái niệm và ví dụ kiến trúc; nguồn cho định nghĩa **OSSD** và hành vi ngõ ra an toàn (mục 47.7).
+- **DGUV / IFA Report 2/2017e** — báo cáo kỹ thuật của viện nghiên cứu an toàn lao động; nguồn cho
+  ⭐ **yêu cầu phát hiện chập chéo** trên ngõ ra an toàn (mục 47.7).
 
 > ⚠⚠ **Toàn bộ tiêu chuẩn liệt kê ở trên đều có bản quyền và phải mua từ tổ chức phát hành.** Chương
 > này diễn giải khái niệm ở mức đủ để trao đổi chuyên môn; **nó không trích dẫn nội dung tiêu chuẩn và

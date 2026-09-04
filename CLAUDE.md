@@ -250,6 +250,7 @@ chương là xong, và trước khi kết luận bất cứ điều gì bằng c
 python tools/kiem_tra_chuong.py        # TỪNG chương có đúng khung không (B1–B14)
 python tools/kiem_nhat_quan.py         # các chương có KHỚP NHAU không (trôi dạt)
 npx markdownlint-cli2 "docs/**/*.md"   # cấu trúc markdown, liên kết, bảng
+python tools/ban_do_nguon.py           # ĐỘ PHỦ: nguồn nào chưa chương nào dẫn
 ```
 
 ⭐⭐ **Ba bộ kiểm bắt ba loại lỗi tách biệt — không cái nào thay được cái nào:**
@@ -259,9 +260,26 @@ npx markdownlint-cli2 "docs/**/*.md"   # cấu trúc markdown, liên kết, bả
 | `kiem_tra_chuong.py` | ⭐ Một chương **thiếu khung** | Ch.2, 13 thiếu *Bẫy thường gặp*; Ch.56 thiếu dòng miễn trừ |
 | `kiem_nhat_quan.py` | ⭐⭐ Các chương **lệch nhau** | 40 dẫn chiếu tới `Phụ lục J §7.x` không tồn tại; `DO_SmemaInReady` ×12 lệch bảng I/O |
 | ⭐ **Đối chiếu nguồn** (skill) | ⚠⚠ Câu **đúng khung, nghe thuyết phục, SAI SỰ THẬT** | Độ phân giải timer Mitsubishi; ISO 6431 đã thu hồi |
+| ⭐⭐ `ban_do_nguon.py` | ⚠⚠ **Nguồn có trong tay mà CHƯA AI MỞ** | Hugh Jack 860 trang — nguồn mạnh nhất cho nhóm chương thiết kế — chưa chương nào dẫn |
 
 ⚠⚠ **Loại thứ ba là loại nguy hiểm nhất và KHÔNG máy nào bắt được.** Nó chỉ lộ ra khi so với tài
 liệu gốc — xem mục *Đối chiếu nguồn* bên dưới.
+
+⭐⭐ **Ba bộ đầu kiểm bản thảo VỚI CHÍNH NÓ. Bộ thứ tư kiểm bản thảo VỚI BỘ NGUỒN** — nó trả lời câu
+hỏi mà không bộ nào khác hỏi được: ⚠ *"tài liệu nào đang có trong tay mà chưa chương nào dẫn?"*
+
+```bash
+python tools/lap_chi_muc_nguon.py   # lập lại chỉ mục khi bộ tài liệu thay đổi (vài giây)
+python tools/ban_do_nguon.py        # ghi docs/00e_Ban_do_nguon.md
+python tools/ban_do_nguon.py --kiem # chỉ in tóm tắt
+```
+
+> ⭐ **Chạy sau mỗi đợt đối chiếu.** Số nguồn *chưa dẫn* phải **giảm dần**; nếu nó đứng yên nghĩa là
+> đợt đó chỉ đào sâu chỗ đã quen. Xem `docs/design-notes/0004-*.md` để biết vì sao chọn cách này
+> thay vì chuyển cả bộ PDF sang Markdown.
+>
+> ⚠ Bản đồ **cố tình báo thừa**: nguồn dẫn bằng tên tổng quát (*"tài liệu nhà sản xuất"*) sẽ hiện ra
+> như chưa dẫn. Đó là **hành vi mong muốn** — nó ép danh sách nguồn nêu đích danh thứ đã thật sự đọc.
 
 `kiem_tra_chuong.py` kiểm: mục bắt buộc (B12), bẫy có đặt tên (B5), tên phần mềm hãng lọt vào thân
 sách (B1), khai báo và kỷ luật lát cắt (B8), song ngữ (B11), hình tồn tại + XML hợp lệ + có chú

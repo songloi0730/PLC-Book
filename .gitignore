@@ -9,3 +9,6 @@ tools/.cache_nguon/
 
 # ban gop — sinh lai duoc bang tools/gop_sach.sh
 output/So tay Lap trinh PLC*
+
+# chi muc nguon — sinh lai bang tools/lap_chi_muc_nguon.py trong vai giay
+tools/chi_muc_nguon.json
