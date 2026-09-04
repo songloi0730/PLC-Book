@@ -1039,6 +1039,44 @@ không chỉ chưa dẫn, mà **chưa từng mở**. Nội dung: che chắn cơ 
 
 ---
 
+## Đợt 30 — 2026-09-04 · Ch.49 và Ch.8 — Bryan ch.20, phần lắp đặt
+
+⭐ Bryan ch.20 còn hai mục chưa dùng: §20-3 *Noise, Heat, and Voltage* và §20-4 *I/O Installation,
+Wiring, and Precautions* — đúng chủ đề Ch.49 và Ch.8.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 166 | ⭐⭐ Ch.8 §8.7b — **bảng khoảng cách lắp có GIẢ ĐỊNH NGẦM** | Con số milimét của hãng tính cho **tình huống điển hình**: ~60 % ngõ vào BẬT · ⭐ **~30 % ngõ ra BẬT** · dòng trong đặc tả · ⭐ **không khí 40 °C**. ⚠⚠ Máy nhiều van **giữ bật liên tục** vượt xa mức 30 % → **phải nới khoảng cách** | ➕➕ |
+| 167 | Ch.8 — chiều so sánh nhiệt độ | ⭐ Điển hình là **40 °C**, nên tủ ở 45 °C ⚠ **đã khắc nghiệt hơn điển hình** — không phải *"vẫn còn xa giới hạn 55 °C"* | ➕ |
+| 168 | Ch.8 — quạt và phin lọc | ⚠⚠ Gió quạt **phải qua phin lọc trước**: ⭐ bụi bám bề mặt tản nhiệt **làm giảm chính khả năng thoát nhiệt** mà quạt đang cố cải thiện. Nối với Ch.51 §51.11 | ➕ |
+| 169 | ⚠⚠ Ch.49 §49.6b — **cắt nguồn trước khi lắp/tháo module** | ⭐ Thay nóng là **tính năng phải ghi rõ trong tài liệu của đúng module đó**, không mặc định. ⚠ Rút module không hỗ trợ có thể làm **ngõ ra khác nhảy trạng thái**. ⭐ Và ngay cả khi hỗ trợ, câu hỏi tiếp theo vẫn là *"ngõ ra này đang giữ cái gì?"* | ➕➕ |
+| 170 | Ch.49 — **bó dây theo module** | ⭐ Là việc **bảo trì**, không phải thẩm mỹ: tháo module = rút **một bó**; nhìn là biết bó nào của module nào. ⚠ **Không thay thế** quy tắc tách cáp — bó theo module, rồi các bó vẫn đi đúng máng theo loại tín hiệu | ➕ |
+| 171 | Ch.49 — tiết diện dây và mã màu | ⚠⚠ Kiểm theo **dòng lớn nhất có thể**, không theo dòng lúc chạy. ⭐ Mã màu giúp **thấy sai từ xa** nhưng **không thay số dây** — hai sợi cùng màu thì không truy vết được | ➕ |
+| 172 | ⚠ Lỗi gõ của tôi | Bản nháp Ch.8 có *"bụi bám vào bám vào bề mặt tản nhiệt"* — lặp từ. Đã sửa | ⚠ |
+
+### Kết quả đợt 30
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **7** |
+| ➕➕ Bổ sung giá trị cao | 2 |
+| ➕ Bổ sung có nguồn | 4 |
+| ⚠ Lỗi gõ, đã sửa | 1 |
+
+> ⭐⭐ **Mục 166 là biến thể thứ ba của bài học "bảng ngầm giả định gì" (đợt 20) — và lần này giả định
+> nằm trong tài liệu của CHÍNH HÃNG.**
+>
+> Đợt 20: bảng 4 tổ hợp của sách ngầm giả định chỉ có **một kiểu hỏng**.
+> Đợt 25: một ô bảng nêu khác biệt rồi **bỏ lửng**.
+> ⭐ Đợt này: **bảng khoảng cách lắp của nhà sản xuất** ngầm giả định máy của bạn *"điển hình"* — và
+> ⚠ **con số 30 % ngõ ra là thứ máy thật vi phạm thường xuyên nhất mà không ai kiểm**.
+>
+> ⚡ Điểm chung của cả ba: ⭐ **một bảng có con số cụ thể trông như sự thật tuyệt đối**, trong khi nó
+> luôn là **kết luận có điều kiện**. Câu hỏi đáng hỏi ở mọi bảng — của sách hay của hãng — là ⭐ *"con
+> số này đúng KHI NÀO?"*
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -1053,7 +1091,7 @@ kiểm**, không phải "không có lỗi".
 | Nền tảng PLC | 7 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; 14 đợt 22; **12 đợt 27**)* | ⭐ **Bryan ch.5–8** chưa dùng | Vừa |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
 | Thiết kế | 22, 29 *(25 đợt 23; 24, 26, 27, 30 đợt 24; 23 đợt 27; **28 đợt 28**)* | Hugh Jack, Bryan ch.11 | Vừa |
-| Chẩn đoán & vận hành | 43, 49, 53, 55 *(51, 52 đợt 18 và **đợt 26**)* | ⭐ **Bryan ch. 20** đã dùng; Kuphaldt, IEC 62381 | Vừa |
+| Chẩn đoán & vận hành | 43, 53, 55 *(51, 52 đợt 18, 26; **49 đợt 30**)* | Kuphaldt, IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 
 ---

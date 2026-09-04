@@ -277,6 +277,37 @@ Module PLC toả nhiệt và dựa vào **đối lưu tự nhiên** — không k
 | ⚠ **Môi trường rung mạnh** | ⭐ Lắp bằng **vít vào tấm đế** chắc hơn lắp trên **ray DIN** |
 | ⭐ **Cấp bảo vệ của chính module** | ⚠ Module PLC thường chỉ đạt cấp **chống vật rắn lớn, không chống nước** |
 
+### ⚠⚠ Khoảng cách lắp trong tài liệu hãng có GIẢ ĐỊNH NGẦM — và máy của bạn dễ vi phạm
+
+⭐ Con số milimét ở bảng trên **không phải hằng số vật lý**. Nhà sản xuất tính nó cho một **tình huống
+điển hình**, và tình huống đó có bốn điều kiện:
+
+| Điều kiện điển hình | Nghĩa là |
+|---|---|
+| ⭐ **~60 % ngõ vào** BẬT tại một thời điểm | Không phải mọi cảm biến cùng tác động |
+| ⭐⭐ **~30 % ngõ ra** BẬT tại một thời điểm | ⚠ **Đây là điều kiện dễ vi phạm nhất** |
+| Tổng dòng các module nằm trong đặc tả | Mục 8.7 |
+| ⭐ Nhiệt độ không khí khoảng **40 °C** | ⚠ Không phải 25 °C như người ta hay hình dung |
+
+> ⚠⚠ **Máy của bạn có thể không "điển hình" mà không ai để ý.**
+>
+> Một máy có nhiều van giữ **bật liên tục** trong suốt chu trình, hoặc dàn đèn báo luôn sáng, dễ dàng
+> vượt xa mức 30 % ngõ ra. ⭐ Khi đó **khoảng cách lắp phải LỚN HƠN** con số trong tài liệu — chứ
+> không phải vừa đủ theo bảng.
+>
+> ⭐ Và nhớ chiều so sánh: điều kiện điển hình là **40 °C**, nên tủ ở 45 °C **đã là khắc nghiệt hơn
+> điển hình**, không phải "vẫn còn xa giới hạn 55 °C".
+
+> ⭐ **Ba việc rẻ tiền khi máy không điển hình:**
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Nới khoảng cách** giữa các module — rẻ nhất, làm lúc thiết kế tủ |
+> | 2 | ⭐ **Quạt tuần hoàn** để phá điểm nóng cục bộ quanh PLC |
+> | 3 | ⚠⚠ **Gió của quạt phải qua phin lọc trước** — ⭐ bụi bám vào bề mặt tản nhiệt làm **giảm chính khả năng thoát nhiệt** mà quạt đang cố cải thiện (Chương 51, mục 51.11) |
+>
+> ⚡ Ba việc trên xử lý được phần lớn trường hợp. Nhiệt cao **kéo dài** thì mới tính tới điều hoà tủ.
+
 > ⭐⭐ **Hàng cuối là điều dễ hiểu nhầm: bản thân module PLC gần như không chống được bụi mịn và
 > nước.** Cái chống là **vỏ tủ**. ⚠ Nghĩa là cấp bảo vệ ghi trên tủ mới là cấp bảo vệ thật của hệ —
 > và mở cửa tủ để "cho mát" là **bỏ luôn lớp bảo vệ đó**, đồng thời đưa bụi dẫn điện vào trong.
@@ -443,6 +474,8 @@ do người có thẩm quyền thiết kế.
 | Nguồn 24 V | Tính theo **trường hợp xấu nhất** × 1,3–1,5; tách nhánh theo nhóm | Lỗi chập chờn rất tốn thời gian tìm |
 | Ngõ ra khi CPU sang STOP | Cấu hình **có chủ ý** từng kênh theo Chương 48 | Có thể gây hỏng sản phẩm hoặc thương tích |
 | Sao lưu | Có bản ngoài máy, **đã thử khôi phục** | Mất chương trình = dựng lại từ đầu |
+| ⚠⚠ Khoảng cách lắp trong tài liệu hãng | ⭐ Tính cho **tình huống điển hình** | ~60 % DI · ⭐ **~30 % DO** · **40 °C** |
+| ⭐ Máy không điển hình | **Nới khoảng cách** + quạt tuần hoàn | ⚠⚠ Gió **phải qua phin lọc** |
 | Pin | Thay theo lịch, khi CPU còn điện | Mất số liệu sản xuất |
 
 ---
@@ -462,6 +495,10 @@ do người có thẩm quyền thiết kế.
    thành lỗi phần mềm. Đo bằng dụng cụ gì để xác nhận, và vì sao không dùng đồng hồ vạn năng?
 9. Vì sao chuyển CPU sang STOP **không phải** là cách dừng máy? Nêu hai hậu quả cụ thể trên DP-01.
 10. ⭐ Vì sao chương này nằm **trước** mọi chương lập trình trong sách?
+11. ⚠⚠ Khoảng cách lắp module trong tài liệu hãng dựa trên **bốn điều kiện điển hình** nào? ⭐ Điều
+    kiện nào dễ bị máy thật vi phạm nhất, và vì sao?
+12. ⭐ Tủ điện ở **45 °C** — so với điều kiện điển hình thì đó là **khắc nghiệt hơn** hay **vẫn thoải
+    mái**? Giải thích.
 
 > Câu 3, 8 và 10 là ba câu phân loại. Câu 10 là tinh thần của cả chương: **quyết định phần cứng đến
 > trước, và sửa nó đắt hơn sửa code rất nhiều.**
@@ -490,6 +527,11 @@ của DP-01.
   số kênh, dung lượng bộ nhớ, dòng tiêu thụ module, số module tối đa, quy tắc đánh địa chỉ, vai trò
   thẻ nhớ, ý nghĩa đèn trạng thái.
 - Bảng I/O của DP-01 — Phụ lục J.
+- **Bryan, L.A. & Bryan, E.A.** — *Programmable Controllers: Theory and Implementation*, ch. 20 §20-3
+  *Noise, Heat, and Voltage Requirements*: PLC làm mát bằng **đối lưu**, và ⭐ **khuyến nghị khoảng
+  cách lắp của hãng dựa trên tình huống điển hình** — ~60 % ngõ vào và ~30 % ngõ ra BẬT, không khí
+  ~40 °C; ⚠ ngoài điều kiện đó **phải nới khoảng cách**. Gió quạt phải **qua phin lọc** vì bụi làm
+  giảm chính khả năng thoát nhiệt (mục 8.7b).
 
 > ⚡ **Về các con số trong chương này.** Hệ số dự phòng 20 % (I/O) và 1,3–1,5 (nguồn) là **quy tắc
 > thực dụng của nghề**, không phải giá trị chuẩn hoá. Chúng là điểm khởi đầu hợp lý, không phải kết

@@ -232,6 +232,53 @@ Việc nhàm chán nhất, và là việc quyết định thời gian sửa máy
 
 ---
 
+## 49.6b ⭐ Ba việc lúc lắp module — nhỏ, nhưng bỏ qua thì trả giá lâu dài
+
+**Một — ⚠⚠ cắt nguồn trước khi lắp hoặc tháo module**
+
+> ⚠⚠ **Cắt nguồn cấp cho module (hoặc cả giá) TRƯỚC khi cắm, rút, hay đấu dây vào module.**
+>
+> ⭐ Một số dòng PLC cho phép **thay nóng** *(hot swap)* — nhưng đó là **tính năng phải được ghi rõ
+> trong tài liệu của đúng module đó**, không phải mặc định. ⚠ Rút một module không hỗ trợ thay nóng
+> có thể hỏng module, hỏng giá, hoặc ⚠⚠ **làm các ngõ ra khác nhảy trạng thái trong khoảnh khắc**.
+>
+> ⭐ Và ngay cả khi module **có** hỗ trợ thay nóng, câu hỏi tiếp theo vẫn còn: ⚠ *"máy đang chạy —
+> ngõ ra của module này đang giữ cái gì?"* (Chương 53).
+
+**Hai — ⭐ bó dây theo MODULE**
+
+Các sợi dây đi tới **cùng một module** được bó lại thành một bó rồi mới đi vào máng. Nghe như việc
+thẩm mỹ, nhưng nó là việc **bảo trì**:
+
+| Có bó theo module | Không bó |
+|---|---|
+| ⭐ Tháo một module → **rút một bó** | ⚠ Lần theo từng sợi trong máng chung |
+| ⭐ Nhìn là biết bó nào của module nào | Phải đọc số dây từng sợi |
+| ⭐ Thay module → cắm lại **một lần** | ⚠ Nhiều lần cắm, nhiều cơ hội cắm nhầm |
+
+> ⚡ Bó dây **không** thay thế quy tắc tách cáp ở mục 49.3 — ⭐ **bó theo module, rồi các bó vẫn phải
+> đi đúng máng theo loại tín hiệu.**
+
+**Ba — ⚠ kiểm tiết diện dây theo dòng LỚN NHẤT, không theo dòng bình thường**
+
+Mỗi chân module nhận được dây trong một dải tiết diện nhất định. ⭐ Hai điều phải kiểm, và người ta
+thường chỉ kiểm điều thứ nhất:
+
+| | |
+|---|---|
+| 1 | ⭐ Dây có **vừa chân đấu** không — dải tiết diện ghi trong tài liệu module |
+| 2 | ⚠⚠ Dây có **chịu nổi dòng lớn nhất có thể** không — ⭐ **không phải dòng lúc chạy bình thường** |
+
+> ⭐ Cùng tinh thần với việc chọn bộ nguồn ở mục 49.5: ⚠ **tính theo trường hợp xấu nhất**, không tính
+> theo trường hợp thường gặp.
+
+> 💡 **MẸO — mã màu theo loại tín hiệu, dùng KÈM số dây chứ không thay số dây.**
+> Ví dụ AC một màu, DC một màu, dây chung một màu. ⭐ Màu giúp **thấy sai từ xa** — một sợi màu lạ nằm
+> trong bó là dấu hiệu nhìn ra ngay, trước cả khi đọc số. ⚠ Nhưng màu **không đủ để truy vết**: vẫn
+> phải có số dây (mục 49.6), vì hai sợi cùng màu thì không phân biệt được.
+
+---
+
 ## 49.7 ⚠ Đi dây trên máng xích động
 
 Cáp đi theo cơ cấu chuyển động là điểm hỏng **được lập trình sẵn** nếu chọn sai.
@@ -433,6 +480,10 @@ tĩnh vẫn tốt.
 | Cáp gãy lõi — triệu chứng | Chập chờn theo tư thế; ⚠ **đo tĩnh vẫn tốt** |
 | Xác nhận cáp gãy lõi | **Lắc cáp** trong lúc theo dõi tín hiệu |
 | ⭐⭐ Lỗi chập chờn không tái hiện | **Nghi lắp đặt trước khi nghi logic** |
+| ⚠⚠ Trước khi lắp/tháo module | ⭐ **Cắt nguồn** — thay nóng là **tính năng phải ghi rõ**, không mặc định |
+| ⭐ Bó dây | **Theo module** — rồi các bó vẫn đi đúng máng theo loại tín hiệu |
+| Kiểm tiết diện dây theo | ⚠⚠ **Dòng lớn nhất có thể**, không phải dòng lúc chạy bình thường |
+| Mã màu theo loại tín hiệu | ⭐ Dùng **kèm** số dây — thấy sai từ xa, nhưng **không thay** số dây |
 | Lúc nghiệm thu phải ghi gì | ⭐ **Mốc**: điện áp 24 V tải nặng, dòng động cơ, số lỗi mạng |
 
 ---
@@ -454,6 +505,11 @@ tĩnh vẫn tốt.
 11. Nêu tám sai lầm lắp đặt gây lỗi "ngẫu nhiên". Điểm chung của chúng là gì?
 12. ⭐⭐ Khi gặp lỗi chập chờn không tái hiện được, nên nghi vào đâu trước? Vì sao quy tắc này tiết
     kiệm nhiều thời gian nhất?
+13. ⚠⚠ Vì sao phải **cắt nguồn** trước khi lắp/tháo module? ⭐ Nếu module **có** hỗ trợ thay nóng thì
+    câu hỏi tiếp theo là gì?
+14. ⭐ Nêu **ba** lợi ích của việc bó dây theo module khi bảo trì. ⚠ Bó dây có thay được quy tắc tách
+    cáp ở mục 49.3 không?
+15. ⚠ Kiểm tiết diện dây phải theo dòng nào? ⭐ Vì sao mã màu **không đủ** để truy vết một sợi dây?
 
 > Câu 3, 5, 9 và 12 là bốn câu phân loại. Câu 12 là tinh thần của cả chương: **lỗi do lắp đặt không
 > giống lỗi lắp đặt — nó giống lỗi phần mềm, và đó là lý do người ta đi tìm nhầm chỗ.**
@@ -480,6 +536,10 @@ việc tìm lỗi ở nơi rẻ nhất: trên bàn, trước khi có phần cứ
 - **Hướng dẫn lắp đặt của nhà sản xuất biến tần và PLC** — dùng cho nối đất và chống nhiễu; ⭐ **họ đã
   tính cho sản phẩm của họ**.
 - Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J.
+- **Bryan, L.A. & Bryan, E.A.** — *Programmable Controllers: Theory and Implementation*, ch. 20 §20-4 *I/O Installation,
+  Wiring, and Precautions*: ⚠ **cắt nguồn trước khi lắp/đấu module**; ⭐ **bó dây theo module**; kiểm
+  **tiết diện theo dòng lớn nhất**; và **mã màu theo loại tín hiệu** dùng kèm nhãn số dây — nền cho
+  mục 49.6b.
 
 > ⚠⚠ **Nhắc lại giới hạn.** Chương này giúp bạn **hiểu và kiểm tra**, không phải để tự thiết kế tủ
 > điện. Thiết kế điện — chọn tiết diện dây, tính toán bảo vệ, bố trí nối đất, và toàn bộ phần mạch an

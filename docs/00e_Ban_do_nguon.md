@@ -87,7 +87,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | PLCopen Motion Control | 213 | 28, 37 |
 | Mitsubishi FX5 — Positioning | 302 | 28 |
 | Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
-| Bryan — Theory and Implementation | 1047 | 23, 51, 52 |
+| Bryan — Theory and Implementation | 1047 | 8, 23, 49, 51, 52 |
 | IRSST — Prevention of Mechanical Hazards | 71 | 47 |
 
 ---
