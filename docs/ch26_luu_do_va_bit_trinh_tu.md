@@ -121,6 +121,54 @@ Cần chèn một bước giữa 20 và 30? Dùng 25. Không phải sửa gì kh
 
 ---
 
+## 26.2b ⭐ Phương pháp thứ hai — và biết KHI NÀO nó hợp lệ mới là phần khó
+
+Cách ở mục trên — lưu đồ rồi bit bước — là cách **mặc định đúng** cho máy tự động hoá. Nhưng có một
+phương pháp thiết kế thứ hai, và bạn sẽ gặp nó trong tài liệu lẫn trong code người khác:
+
+> ⭐ **Thiết kế theo sơ đồ thời gian** *(timing diagram)*: vẽ các ngõ ra theo trục thời gian, đánh dấu
+> các mốc quan trọng, rồi đặt một timer cho mỗi mốc.
+
+**Năm bước:**
+
+| | Việc |
+|---|---|
+| 1 | Hiểu quy trình |
+| 2 | ⭐ Xác định **ngõ ra nào phụ thuộc thời gian** |
+| 3 | Vẽ **sơ đồ thời gian** cho các ngõ ra đó |
+| 4 | Gán **một timer cho mỗi mốc** ngõ ra bật hoặc tắt |
+| 5 | Viết logic đọc giá trị timer để bật/tắt ngõ ra |
+
+### ⚠⚠ Điều kiện áp dụng — đọc kỹ dòng này trước khi dùng
+
+> ⭐⭐ **Sơ đồ thời gian chỉ hợp lệ cho quy trình PHỤ THUỘC DUY NHẤT VÀO THỜI GIAN.**
+>
+> ⚠ Nếu quy trình có **phản hồi thật** — cảm biến báo cơ cấu đã tới nơi, công tắc hành trình, tín hiệu
+> xong việc — thì ⚠⚠ **dùng sơ đồ thời gian là quay lại đúng sai lầm lớn nhất ở Chương 17**:
+> *"chờ 2 giây chắc kẹp xong rồi"*.
+
+| Loại quy trình | Ví dụ | Phương pháp đúng |
+|---|---|---|
+| ⭐ Có phản hồi thật | ⭐ **DP-01** — mọi bước đều có cảm biến xác nhận | ⭐ **Lưu đồ → bit bước** (mục 26.2) |
+| Thuần thời gian, **không có gì để đo** | Cửa tự động không cảm biến vị trí · đèn giao thông · chu trình xả rửa theo thời gian | Sơ đồ thời gian |
+
+> ⭐ **Phép thử một câu:** ⚠ *"Có cảm biến nào cho tôi biết bước này đã xong chưa?"*
+>
+> | Trả lời | Kết luận |
+> |---|---|
+> | **Có** | ⭐ Dùng phản hồi đó. Timer chỉ để **báo lỗi** (mục 26.4) |
+> | **Không, và không lắp được** | Sơ đồ thời gian là hợp lệ — ⚠ nhưng **ghi rõ trong đặc tả rằng bước này không được xác nhận** |
+> | *"Có nhưng lắp thêm thì tốn"* | ⚠⚠ **Đây là quyết định của người trả tiền, không phải của người lập trình** (Chương 23) |
+
+> ⚡ **Vì sao vẫn phải biết phương pháp này dù hiếm dùng:** bạn sẽ **đọc phải nó** trong chương trình
+> của người khác. Thấy một chuỗi timer nối tiếp không kèm phản hồi nào, ⭐ câu hỏi đầu tiên không phải
+> *"viết lại thế nào"* mà là ⚠ **"quy trình này có gì để đo không?"**
+>
+> ⭐ Nếu **có** mà tác giả cũ không dùng — đó là **nợ kỹ thuật cần trả** (Chương 22).
+> Nếu **không có** — thiết kế đó **đúng**, và bạn suýt viết lại một thứ vốn không sai.
+
+---
+
 ## 26.3 Trên máy mẫu DP-01
 
 Trình tự trạm 1, viết bằng biến số bước:
@@ -437,6 +485,8 @@ lần nhánh kia chậm bất thường.
 | 4 | Bước chờ vô hạn có được **giám sát ở tầng máy**? | Có |
 | 5 | Thông báo lỗi nói được **bước nào · chờ gì · kiểm tra gì**? | Đủ ba |
 | 6 | Số bước đánh **cách 10**? | Có |
+| 7 | ⭐ Đã hỏi *"có cảm biến nào cho biết bước này xong chưa?"* cho **từng** bước? | Có, và ghi lại câu trả lời |
+| 8 | ⚠ Bước nào **không** có phản hồi thật đã được **ghi vào đặc tả**? | Có — không để im lặng |
 | 7 | Có biến giữ **bước bị kẹt** lúc lỗi? | Có, chỉ xoá khi Reset |
 | 8 | Trình tự có kiểm **tầng máy cho phép** trước khi tiến bước? | Có, và `RETURN` giữ nguyên bước |
 | 9 | Điểm hợp nhất nhánh song song dùng **AND**? | Có |
@@ -457,6 +507,10 @@ lần nhánh kia chậm bất thường.
    từ bên ngoài?
 7. Vì sao `RETURN` khi máy không cho phép lại **giữ nguyên bước** thay vì đặt về 0?
 8. Điểm hợp nhất nhánh song song dùng `OR` thay vì `AND`. Vì sao lỗi này **khó phát hiện khi thử nghiệm**?
+9. ⭐ Nêu phương pháp thiết kế **thứ hai** ngoài lưu đồ → bit bước. ⚠⚠ Điều kiện áp dụng duy nhất của
+    nó là gì, và vì sao dùng sai điều kiện là quay lại sai lầm ở Chương 17?
+10. ⭐ Bạn đọc chương trình của người khác và thấy **một chuỗi timer nối tiếp, không có phản hồi nào**.
+    Câu hỏi đầu tiên phải đặt là gì? Nêu hai kết luận có thể, và mỗi kết luận dẫn tới hành động nào.
 
 Câu 2 và câu 6 là hai câu phân loại. Câu 2 là nguyên tắc trung tâm của chương; câu 6 kiểm tra bạn hiểu
 rằng "chờ" và "kẹt" nhìn từ ngoài **giống hệt nhau**, nên phải thiết kế cách phân biệt.
@@ -477,6 +531,10 @@ hai trạm chạy song song, dùng chung một chuyền — và chương này đ
   tiếp, nhánh song song và nhánh lựa chọn) — mô hình khái niệm cho chương này; lệnh `CASE` và khối
   `TON`. *(tiêu chuẩn có bản quyền; chương này chỉ diễn giải ở mức khái niệm)*
 - Đặc tả trình tự hai trạm và bảng thời gian bước của DP-01 — Phụ lục J.
+- **Hugh Jack** — *Automating Manufacturing Systems with PLCs*, ch. 10 *Structured Logic Design*:
+  phương pháp **bit trình tự** theo các bước đánh số, và ⭐ **thiết kế theo sơ đồ thời gian** kèm
+  ⚠⚠ **điều kiện áp dụng**: chỉ hợp lệ cho quy trình *"phụ thuộc duy nhất vào thời gian"* — nền cho
+  mục 26.2b.
 
 > ⚡ Các con số thời gian trong chương (3 giây cho hành trình xy-lanh, 60 giây cho bước xử lý) là **giá
 > trị minh hoạ của máy mẫu**. Thời gian thật phải đo trên máy của bạn rồi cộng biên an toàn — đặt quá

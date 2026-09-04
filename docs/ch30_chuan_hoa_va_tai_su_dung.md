@@ -243,6 +243,31 @@ Kiểu thứ ba là kiểu hay xảy ra nhất trong thực tế, và nó tệ h
 
 ---
 
+### ⚠⚠ Thời điểm viết tài liệu — thứ quyết định chất lượng của nó
+
+Comment tốt viết lúc nào? Cùng lúc viết code. ⭐ **Nguyên tắc đó đúng cho cả hồ sơ dự án**, và đây là
+lý do:
+
+> ⚠⚠ **Tài liệu để dồn tới cuối dự án thì KHÔNG BAO GIỜ tốt được — không phải vì lười, mà vì đến lúc
+> đó chi tiết đã quên mất rồi.**
+>
+> Người viết phải **nhớ lại**, nên vừa mất nhiều thời gian hơn, vừa ra một bản luôn thiếu. ⚠ Và thứ
+> bị quên trước nhất luôn là ⭐ **lý do** — *vì sao chọn cách này thay vì cách kia* — đúng thứ người
+> đọc sau cần nhất (mục 30.4).
+
+| Thời điểm | Ghi cái gì |
+|---|---|
+| Trước khi viết | Bảng I/O · đặc tả trình tự (Chương 23) |
+| ⭐ **Trong khi viết** | ⭐ **Lý do của mọi quyết định lạ** · con số lấy từ đâu · cái đã thử mà không được |
+| Khi chạy thử | Giá trị đo thật thay cho giá trị giả định (Chương 52) |
+| ⚠ Sau khi xong | ⭐ **Chỉ còn dọn dẹp và đóng gói** — không phải lúc bắt đầu viết |
+
+> ⭐ **Hệ quả tổ chức:** hồ sơ nên ở dạng **biểu mẫu để sẵn** (Phụ lục C) chứ không phải một bản báo
+> cáo viết một lần. Biểu mẫu đặt tại chỗ mọi người lấy được và **cập nhật được khi máy thay đổi** —
+> tài liệu chỉ sống nếu người bảo trì sửa được nó (Chương 53).
+
+---
+
 ## 30.6 Quản lý phiên bản chương trình PLC
 
 ### Cái gì so sánh được, cái gì không
@@ -357,6 +382,7 @@ Cột **vì sao** là cột duy nhất không suy ra được từ chương trì
 | 7 | Có comment cho **những cách đã thử mà không được** | Có ở những chỗ từng mất thời gian |
 | 8 | Khối trong thư viện có **ghi rõ giả định an toàn** | Có |
 | 9 | **Nhật ký thay đổi** trong chương trình, có cột *vì sao* | Có |
+| ⚠⚠ Viết tài liệu lúc nào | ⭐ **Trong khi làm**, không dồn tới cuối | Đến cuối thì chi tiết đã quên, và **lý do** quên trước nhất |
 | 10 | Phiên bản **hiển thị trên màn hình** và đọc được khi xem trực tuyến | Có |
 
 ---
@@ -374,6 +400,8 @@ Cột **vì sao** là cột duy nhất không suy ra được từ chương trì
 8. Cái gì trong dự án PLC **so sánh được** bằng công cụ và cái gì không? Hệ quả với việc sao lưu?
 9. Vì sao viết `M_Out := (A AND NOT B) OR …` gọn trong một dòng lại là lựa chọn tệ?
 10. Nhật ký thay đổi ghi *"v1.4 — sửa timeout"*. Thiếu gì, và vì sao thứ thiếu đó quan trọng nhất?
+11. ⚠⚠ Vì sao tài liệu dồn tới cuối dự án *"không bao giờ tốt được"* — và lý do đó **không phải** là
+    lười? ⭐ Thứ gì bị quên trước nhất, và vì sao đúng thứ đó lại quan trọng nhất?
 
 Câu 2, 6 và 7 là ba câu phân loại. Câu 7 là câu về an toàn — dùng lại code là chỗ giả định cũ đi theo
 mà không ai để ý.
@@ -395,6 +423,9 @@ một lớp: analog và chuyển động.
   tài liệu này bàn đúng về cấu trúc chương trình, khối tái dùng và tối ưu vùng nhớ. Số hiệu cụ thể
   ghi trong Phụ lục A1.
 - Quy ước đặt tên và cấu trúc dùng trong sách — Phụ lục C.
+- **Hugh Jack** — *Automating Manufacturing Systems with PLCs*, §32.5 *Documentation*: ⭐ tài liệu
+  phải **phát triển cùng dự án**, để tới cuối thì chi tiết đã quên nên vừa lâu hơn vừa thiếu; và cách
+  dùng **biểu mẫu để sẵn**, đặt nơi mọi người truy cập và cập nhật được khi máy thay đổi.
 
 > ⚡ Quy ước đặt tên ở mục 30.2 là **quy ước của cuốn sách này**, không phải chuẩn ngành. Dự án của bạn
 > có thể dùng quy ước khác — điều bắt buộc là **có một quy ước, viết ra thành văn, và dùng nhất quán**.

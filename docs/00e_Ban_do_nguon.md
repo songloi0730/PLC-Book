@@ -55,10 +55,10 @@
 | Petruzella — PLC (2025) | 441 | 16, 18, 19, 51 |
 | Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
 | Petruzella — Activities Manual | 401 | 16, 18, 19, 51 |
-| Hugh Jack — Automating Manufacturing | 860 | 19, 25 |
+| Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30 |
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 19, 20, 21 |
-| Siemens S7-1200 System Manual | 864 | 19, 25 |
-| Mitsubishi FX5 — Program Design | 136 | 14, 16, 18, 19, 20, 21, 25, 51 |
+| Siemens S7-1200 System Manual | 864 | 19, 25, 26, 27, 30 |
+| Mitsubishi FX5 — Program Design | 136 | 14, 16, 18, 19, 20, 21, 25, 26, 27, 51 |
 | Mitsubishi FX5 — MODBUS | 86 | 35, 39 |
 | Rockwell — IEC 61131-3 compliance | 30 | 14, 20, 21 |
 | Inovance H5U/Easy — lập trình | 808 | 19, 21, 24, 30, 43, 55 |

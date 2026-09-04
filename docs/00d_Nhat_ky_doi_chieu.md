@@ -776,6 +776,45 @@ nhóm đó vẫn nằm nguyên, chưa mở.
 
 ---
 
+## Đợt 24 — 2026-09-04 · Ch.26, 27, 30 — khai thác tiếp Hugh Jack theo bản đồ
+
+⭐ Bản đồ chỉ tiếp: Hugh Jack còn **ba chương chưa dùng** ứng với nhóm thiết kế — ch.10 *Structured
+Logic Design*, §32.4.1 *Developing a Program Structure*, §32.5 *Documentation*.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 126 | ⭐⭐ Ch.26 §26.2b — phương pháp thứ hai | Sách chỉ dạy **lưu đồ → bit bước**. Hugh Jack ch.10 có **thiết kế theo sơ đồ thời gian** kèm ⚠⚠ **điều kiện áp dụng**: chỉ hợp lệ cho quy trình *"phụ thuộc duy nhất vào thời gian"* | ➕➕ |
+| 127 | Ch.26 — nối với bài học Ch.17 | ⭐ Điều kiện đó **củng cố** thay vì mâu thuẫn luận điểm trung tâm của sách: dùng sơ đồ thời gian khi CÓ phản hồi thật là ⚠⚠ **quay lại đúng sai lầm lớn nhất ở Chương 17** | ➕ |
+| 128 | Ch.26 — phép thử một câu | *"Có cảm biến nào cho tôi biết bước này xong chưa?"* — ba đáp án, ba hành động. ⭐ Đáp án thứ ba (*"có nhưng lắp thêm tốn"*) là ⚠⚠ **quyết định của người trả tiền, không phải của người lập trình** | ➕ |
+| 129 | ⭐⭐ Ch.27 §27.2 — cách **suy ra** kiến trúc | Sách **cho sẵn** ba tầng nhưng không dạy cách tự chia cho máy khác. Hugh Jack §32.4.1 có **bốn câu hỏi**: chạy cùng lúc? · độc lập? · có trình tự rõ? · ⭐ **có ranh giới vật lý?** | ➕➕ |
+| 130 | Ch.27 — câu đáng tin nhất | ⭐ **Ranh giới vật lý** là ranh giới đã được thực tế kiểm chứng; chia theo nó thì chương trình **soi gương** cấu trúc máy. ⚡ Áp bốn câu vào DP-01 **ra đúng ba tầng sách đã có** — kiến trúc nay **suy ra được**, không còn là dictum | ➕ |
+| 131 | Ch.30 §30.5b — thời điểm viết tài liệu | Hugh Jack §32.5: tài liệu dồn tới cuối ⚠⚠ **không bao giờ tốt được** — không phải vì lười mà vì **chi tiết đã quên**. ⭐ Thứ quên trước nhất là **lý do**, đúng thứ người đọc sau cần nhất | ➕ |
+| 132 | ⭐ Ch.24 — kiểm rồi, **không sửa** | Đối chiếu Hugh Jack ch.6–7 (Boolean, Karnaugh): sách đã phủ đủ, và §24.7 *"khi nào KHÔNG nên tối ưu"* còn **chín hơn** cách trình bày kinh điển | ✅ |
+
+### Kết quả đợt 24
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **7** |
+| ➕➕ Bổ sung giá trị cao | 2 |
+| ➕ Bổ sung có nguồn | 4 |
+| ✅ Kiểm ra đủ, giữ nguyên | 1 |
+| Nơi đã sửa | Ch.26 (§26.2b + 2 dòng Bảng chốt + 2 câu Tự kiểm + nguồn) · Ch.27 (mục mới + 2 dòng + 3 câu + nguồn) · Ch.30 (mục mới + 1 dòng + 1 câu + nguồn) |
+
+> ⭐⭐ **Hai mục ➕➕ có chung một dạng: sách đưa KẾT QUẢ đúng nhưng giấu mất CÁCH ĐI TỚI nó.**
+>
+> Ch.27 cho ba tầng kiến trúc — đúng, đã kiểm chứng — nhưng người đọc có máy khác DP-01 thì ⚠ **không
+> suy ra được gì**. Ch.26 dạy một phương pháp thiết kế và không nói có phương pháp thứ hai, nên người
+> đọc gặp nó trong code người khác sẽ ⚠ **tưởng đó là code sai**.
+>
+> ⭐ Nguồn tốt bổ khuyết đúng chỗ này: nó không thêm sự kiện mới, nó **thêm con đường**.
+>
+> ⚡ **Và mục 132 cũng đáng ghi ngang các mục kia:** đối chiếu ra kết luận *"sách đã đủ, không sửa"*.
+> ⚠ Một đợt đối chiếu mà **mục nào cũng phải sửa** là dấu hiệu đáng ngờ — hoặc bản thảo rất kém, hoặc
+> người đối chiếu đang sửa cho có.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -789,7 +828,7 @@ kiểm**, không phải "không có lỗi".
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |
 | Nền tảng PLC | 7, 12 *(8, 9, 18 đợt 4, 10; 11, 19 đợt 15; **14 đợt 22**)* | Hugh Jack, AutomationDirect, Siemens/Rockwell | Vừa |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
-| Thiết kế | 22–24, 26–30 *(**25 đợt 23**)* | ⭐ Hugh Jack — ⚠ **đã xác nhận là nguồn thật, còn 6 chương chưa dùng tới** | ⭐ Cao |
+| Thiết kế | 22, 23, 28, 29 *(25 đợt 23; **24, 26, 27, 30 đợt 24**)* | ⭐ Hugh Jack | Vừa |
 | Chẩn đoán & vận hành | 43, 49, 53, 55 *(**51, 52 đã đối chiếu đợt 18**)* | Kuphaldt (ch. chẩn đoán), IEC 62381 | Vừa |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 

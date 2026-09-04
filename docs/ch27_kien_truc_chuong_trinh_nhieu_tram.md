@@ -43,6 +43,40 @@ Cách tổ chức đã được kiểm chứng là chia chương trình thành *
 | **Trạm** *(station)* | Trình tự xử lý **sản phẩm đang ở trạm đó** | *Board ở trạm này đang ở bước nào?* | Trạm tra keo, trạm sấy |
 | **Cơ cấu** *(device)* | Điều khiển **một** thiết bị vật lý | *Xy-lanh này ra hay vào?* | Kẹp trạm 1, chặn trạm 1, chuyền |
 
+### ⭐⭐ Bốn câu hỏi để tự suy ra cách chia — dùng khi máy không giống DP-01
+
+Ba tầng ở trên là **kết quả**, không phải xuất phát điểm. Với một cỗ máy khác — một trạm, hoặc mười
+trạm, hoặc một dây chuyền không có "sản phẩm" rõ ràng — bạn phải tự chia. ⭐ Bốn câu hỏi này làm việc đó:
+
+| # | Câu hỏi | Trả lời **CÓ** nghĩa là |
+|:-:|---|---|
+| 1 | ⭐ *Hai việc này có bao giờ xảy ra **cùng lúc** không?* | ⭐ **Phải tách** — gộp lại thì một việc chặn việc kia |
+| 2 | *Việc này có xảy ra **bất kể** các việc khác không?* | ⭐ **Tách** — nó độc lập, đừng buộc nó vào trình tự nào |
+| 3 | *Có một **trình tự rõ ràng** không?* | Phần đó là **một** khối trình tự (Chương 26) |
+| 4 | ⭐ *Có **ranh giới vật lý** trong quy trình hoặc trong máy không?* | ⭐ **Chia theo đúng ranh giới đó** |
+
+> ⭐⭐ **Câu 4 là câu đáng tin nhất, và cũng là câu hay bị bỏ qua nhất.**
+>
+> Ranh giới vật lý — hai trạm cách nhau, hai cụm cơ khí độc lập, hai tủ điện — ⭐ **là ranh giới đã
+> được thực tế kiểm chứng**. Chia phần mềm theo nó thì cấu trúc chương trình **soi gương** cấu trúc
+> máy, và người bảo trì đứng trước máy biết ngay phải mở khối nào.
+>
+> ⚠ Ngược lại, chia theo thứ tự khác — theo loại thiết bị chẳng hạn, *"tất cả xy-lanh vào một khối"* —
+> tạo ra chương trình mà ⚠⚠ **không ai đứng trước máy suy ra được**.
+
+> ⭐ **Thứ tự dùng:** hỏi câu 4 **trước**. Nếu máy có ranh giới vật lý rõ, phần lớn việc chia đã xong.
+> Ba câu còn lại dùng để xử lý phần không có ranh giới vật lý.
+>
+> ⚡ Trên DP-01, câu 4 cho ngay **hai trạm**; câu 1 cho biết hai trạm chạy đồng thời nên **không được**
+> gộp; câu 3 cho biết bên trong mỗi trạm là một trình tự; câu 2 tách ra những thứ chạy độc lập —
+> ⭐ **và đó chính là ba tầng ở bảng trên.**
+
+> ⚠ **Điều kiện tiên quyết cho cả bốn câu: hiểu quy trình trước đã.** Khi quy trình mới hiểu một
+> nửa, việc chia sẽ **phải làm đi làm lại** — và mỗi lần chia lại là viết lại. ⭐ Đây là lý do
+> Chương 23 (từ yêu cầu tới đặc tả) đứng **trước** chương này.
+
+---
+
 ### Ba quy tắc gọi — vi phạm là kiến trúc hỏng
 
 > **Q1 — Chỉ gọi xuống, không gọi lên.**
@@ -384,6 +418,8 @@ Dùng bảng này khi rà soát chương trình của mình hoặc của ngườ
 | 7 | Tài nguyên dùng chung có **đúng một chủ** không? | Có, ở tầng máy |
 | 8 | Thứ tự gọi có đúng **cơ cấu → máy → trạm → ghi ngõ ra** không? | Có |
 | 9 | Có bao nhiêu tác vụ? Mỗi tác vụ thêm có **lý do định lượng** không? | Một, trừ khi có con số biện minh |
+| 11 | ⭐ Cách chia có **soi gương ranh giới vật lý** của máy không? | Có — người đứng trước máy suy ra được |
+| 12 | ⚠ Hai việc chạy **cùng lúc** có bị gộp vào một khối không? | Không |
 | 10 | Điều kiện "hết việc" có kiểm **mọi trạm** không? | Có — không chỉ trạm đầu |
 
 ---
@@ -400,6 +436,11 @@ Dùng bảng này khi rà soát chương trình của mình hoặc của ngườ
 6. Mô tả tình huống **xả cạn** và cho biết điều kiện đúng để máy coi là đã hết việc.
 7. Hai trạm cùng cần chuyền chạy. Ai được ghi vào `DO_ConvRun`, và hai trạm làm gì?
 8. Khi nào tách tác vụ là chính đáng? Nêu **một lý do đúng** và **một lý do sai** thường gặp.
+9. ⭐⭐ Nêu **bốn câu hỏi** để tự chia một bài toán điều khiển. ⭐ Câu nào đáng tin nhất, và vì sao?
+10. ⚠ Một chương trình chia theo **loại thiết bị** (*"mọi xy-lanh vào một khối"*). Nêu vì sao cách chia
+    đó gây khó cho người bảo trì, dù bản thân code có thể chạy đúng.
+11. ⭐ Vì sao Chương 23 (từ yêu cầu tới đặc tả) phải đứng **trước** chương này? Chuyện gì xảy ra khi
+    chia kiến trúc lúc mới hiểu một nửa quy trình?
 
 Câu 2 và câu 5 là hai câu phân loại. Câu 2 kiểm tra bạn phân biệt được *chạy đúng* với *thiết kế đúng*;
 câu 5 kiểm tra bạn hiểu nút cổ chai — thứ quyết định mọi quyết định cải tiến năng suất về sau.
@@ -422,6 +463,10 @@ chưa trả lời: khi máy dừng giữa chừng ở một tư thế bất kỳ
 - Tài liệu hãng về tổ chức tác vụ, chương trình và khối tái dùng — dùng để đối chiếu khác biệt; số hiệu
   cụ thể ghi trong Phụ lục A1.
 - Cấu hình cơ cấu và đặc tả trình tự hai trạm của DP-01 — Phụ lục J.
+- **Hugh Jack** — *Automating Manufacturing Systems with PLCs*, §32.4.1 *Developing a Program
+  Structure*: ⭐ **bốn câu hỏi để chia bài toán điều khiển** (chạy cùng lúc? · độc lập? · có trình tự
+  rõ? · ⭐ **có ranh giới vật lý?**), và ⚠ điều kiện tiên quyết *hiểu quy trình trước* — nền cho
+  mục 27.2.
 
 > ⚡ Ba tầng ở mục 27.2 là **cách tổ chức thực dụng đã được kiểm chứng cho máy tự động hoá rời rạc**,
 > không phải một kiến trúc chuẩn hoá bắt buộc. Máy rất nhỏ có thể gộp tầng trạm vào tầng máy; máy rất
