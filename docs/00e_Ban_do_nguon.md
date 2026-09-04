@@ -41,7 +41,6 @@
 | Kuphaldt — Instrumentation Technician | 163 | 90 | ✔ |
 | AutomationDirect PLC Handbook | 85 | 0 | ⚠ **chưa** |
 | PLCopen XML exchange | 80 | 103 | ✔ |
-| PPSA / khí nén | 71 | 65 | ⚠ **chưa** |
 | PLCopen Safe Motion | 45 | 30 | ✔ |
 | Siemens S7-1500 / TIA | 37 | 0 | ✔ |
 | Rockwell — IEC 61131-3 compliance | 30 | 17 | ✔ |
@@ -89,6 +88,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Mitsubishi FX5 — Positioning | 302 | 28 |
 | Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
 | Bryan — Theory and Implementation | 1047 | 23, 51, 52 |
+| IRSST — Prevention of Mechanical Hazards | 71 | 47 |
 
 ---
 

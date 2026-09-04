@@ -189,7 +189,7 @@
 | Tiếng Việt | English | Ghi chú | Chương |
 |---|---|---|---|
 | Đánh giá rủi ro | risk assessment | ⭐ Làm ở **giai đoạn 1** | 47, 57 |
-| Mối nguy | hazard | | 6 |
+| Mối nguy | hazard | | 47 |
 | Rủi ro | risk | | 6 |
 | Giảm rủi ro theo thứ tự ưu tiên | hierarchy of risk reduction | | 6 |
 | Chức năng an toàn | safety function | | 47 |

@@ -996,6 +996,49 @@ nguồn đang nằm trong bộ mà chưa chương nào dẫn** — cho Ch.12.
 
 ---
 
+## Đợt 29 — 2026-09-04 · Ch.47 — nguồn cuối cùng chưa ai đụng tới
+
+⭐ Bản đồ chỉ ra **PPSA (IRSST RG-597, 71 trang) là nguồn DUY NHẤT chưa hề được nhắc trong nhật ký** —
+không chỉ chưa dẫn, mà **chưa từng mở**. Nội dung: che chắn cơ khí, khoảng cách an toàn, chống kẹp,
+điểm cuốn.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 159 | ⭐⭐ Ch.47 §47.7 — **hình học quyết định trước phần mềm** | Bảng §47.7 liệt kê **thiết bị**. ⚠ Nhưng phần lớn việc bảo vệ do **hình học** quyết định, và nó nằm **trước** mọi thiết bị lẫn mọi dòng code | ➕➕ |
+| 160 | Ch.47 — **kích thước lỗ ↔ khoảng cách** | PPSA §5.3: khoảng cách an toàn phụ thuộc ⭐ **cạnh NHỎ NHẤT của lỗ** trên che chắn (cạnh ngắn của khe · một cạnh lỗ vuông · đường kính lỗ tròn). ⚠⚠ Hệ quả: **đổi lưới sang mắt to hơn cho dễ nhìn** có thể **làm mất hiệu lực** khoảng cách đang có | ➕➕ |
+| 161 | Ch.47 — chống kẹp có **hai** cách | ⭐ **Khe hở tối thiểu** = **loại bỏ** mối nguy, an toàn tự thân, thuần cơ khí, ⭐ **không hỏng được**. **Giảm lực/năng lượng** = chỉ **giảm** rủi ro, mối nguy vẫn còn | ➕ |
+| 162 | ⚠⚠ Ch.47 — **điểm cuốn** | Bốn cấu hình sinh ra nó, trong đó ⚠⚠ **cấu hình 4 (con lăn tiếp xúc băng tải) là cấu hình của MỌI băng tải — kể cả DP-01**. ⭐ Điều đáng sợ với người làm phần mềm: **không cảm biến nào, không logic nào bảo vệ được** — khi đã bị cuốn thì dừng máy cũng muộn | ➕➕ |
+| 163 | ⭐ Ch.47 — vì sao mục này ở trong sách PLC | Để người đọc ⭐ **nhận ra khi bài toán KHÔNG phải bài toán của mình**: với ba tình huống trên, câu trả lời đúng là ⚠ *"không lập trình, mà sửa cơ khí"* | ➕ |
+| 164b | ⚠ Bản đồ — **nhãn của chính tôi đặt sai** | Tệp `PPSA_Prevention_of_Mechanical_Hazards` bị tôi gán nhãn *"PPSA / khí nén"* — ⚠ **đọc tên viết tắt rồi đoán nội dung**. Thực chất là hướng dẫn **cơ khí** của IRSST. Đã đổi nhãn | ⚠ |
+| 164 | ⭐ Phụ lục F — **bộ kiểm bắt lỗi thật** | Sau khi thêm nội dung, `kiem_nhat_quan.py` báo GLOS: *"Mối nguy"* dẫn **Chương 6**. Kiểm: thuật ngữ xuất hiện ⚠ **0 lần ở Ch.6**, **21 lần ở Ch.47**. Đã sửa dẫn chiếu | ⚠ |
+
+### Kết quả đợt 29
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **6** |
+| ➕➕ Bổ sung giá trị cao | 3 |
+| ➕ Bổ sung có nguồn | 2 |
+| ⚠ Sai, đã sửa | 2 (Phụ lục F · nhãn bản đồ) |
+| ⭐ **Chỉ số bản đồ** | **13 → 12 chưa dẫn** (~4.148 → ~4.077 trang) |
+
+> ⭐⭐ **Mục 162 là phát hiện có sức nặng nhất về an toàn trong cả quá trình, và nó đến từ đúng nguồn
+> mà không ai mở.**
+>
+> Máy mẫu của sách **có băng tải**, tức là ⚠⚠ **có điểm cuốn** — một mối nguy mà sách bàn về an toàn
+> suốt cả chương lại **không nhắc tới lần nào**. Và nó thuộc loại mối nguy mà ⭐ **toàn bộ nghề nghiệp
+> của người đọc cuốn sách này — viết logic — hoàn toàn bất lực**.
+>
+> ⚡ **Bài học quy trình:** ⭐ tài liệu nằm ngoài chuyên môn hẹp của cuốn sách (đây là tài liệu **cơ
+> khí**, không phải tài liệu PLC) ⚠ **chính là chỗ dễ bỏ sót nhất** — vì nó không nằm trong danh sách
+> *"những thứ một cuốn sách PLC cần đọc"*. ⭐ Bản đồ không biết chuyên môn, nên nó không thiên vị: nó
+> chỉ nói **"tệp này chưa ai mở"**.
+>
+> ⭐ **Và mục 164 cho thấy ba bộ kiểm vẫn đang làm việc**: chỉ vì tôi thêm nội dung vào Ch.47 mà một
+> dẫn chiếu sai **có sẵn từ trước** trong Phụ lục F mới lộ ra.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

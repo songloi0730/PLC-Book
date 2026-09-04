@@ -90,10 +90,6 @@
       "ifa",
       "IFA_Report"
     ],
-    "PPSA / khí nén": [
-      "ppsa",
-      "pneumatic"
-    ],
     "PLCopen Safety Part 1": [
       "PLCopen_Safety_Part1"
     ],
@@ -124,6 +120,9 @@
     ],
     "Bryan — Theory and Implementation": [
       "THEORY AND IMPLEMENTATION"
+    ],
+    "IRSST — Prevention of Mechanical Hazards": [
+      "PPSA_Prevention"
     ]
   },
   "nguon_ngoai_bo_tai_lieu": [
