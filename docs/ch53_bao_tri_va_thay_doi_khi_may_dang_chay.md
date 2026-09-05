@@ -84,6 +84,59 @@ Nó không phải điều cấm tuyệt đối — có những lúc nó là lự
 
 ---
 
+## 53.2b ⚠⚠ Hai điều về sửa trực tuyến mà tài liệu hãng nói, còn người ta thì không
+
+Mục trên bàn **có nên** sửa trực tuyến. Mục này bàn hai chuyện xảy ra **khi bạn đã quyết định sửa** —
+và cả hai đều có thể biến một sửa đổi nhỏ thành một lần dừng máy ngoài kế hoạch.
+
+### ⚠⚠ Một — sửa trực tuyến CÓ THỂ BỊ TỪ CHỐI, và khi đó bạn buộc phải nạp lại toàn bộ
+
+⭐ Sửa trực tuyến hoạt động được là nhờ **vùng nhớ dự phòng** mà trình biên dịch chừa sẵn: thêm một
+nhãn cục bộ, một lệnh, một thể hiện khối chức năng — tất cả phải **vừa vào chỗ trống đã chừa**.
+
+> ⚠⚠ **Khi chỗ trống đó không đủ, sửa trực tuyến KHÔNG thực hiện được, và toàn bộ chương trình phải
+> được biên dịch lại và gán lại địa chỉ.**
+>
+> ⭐ Nghĩa là: **nạp lại toàn bộ → dừng máy.** Không phải lựa chọn của bạn nữa.
+
+| Hệ quả thực tế | |
+|---|---|
+| ⚠ *"Chỉ thêm một dòng thôi mà"* | ⭐ **Không bảo đảm là sửa trực tuyến được** |
+| ⚠⚠ Phát hiện lúc nào | **Đúng lúc bạn bấm nút**, khi đã đứng cạnh máy đang chạy |
+| ⭐ Cách phòng | **Thử trên máy mô phỏng hoặc máy dự phòng TRƯỚC** (Chương 50) — biết trước là dừng có kế hoạch, không phải dừng đột ngột |
+
+> ⚡ Và nó **tích luỹ**: mỗi lần sửa trực tuyến ăn thêm vào chỗ trống dự phòng. ⭐ Máy càng bị sửa
+> nhiều lần thì lần sửa sau càng dễ bị từ chối — ⚠ **đúng lúc bạn ít mong nhất**.
+
+### ⚠⚠ Hai — sau khi nạp, trình tự chạy tiếp từ đâu?
+
+Với chương trình **có trình tự** (Chương 26, Chương 21), câu hỏi này quan trọng hơn cả bản thân sửa đổi:
+
+| Cách vào | Trình tự chạy tiếp thế nào |
+|---|---|
+| ⭐ **Dừng CPU rồi cho chạy lại**, không nạp gì | Khôi phục **đúng trạng thái trước khi dừng** — chạy tiếp giữa chừng |
+| ⚠⚠ **Nạp chương trình trong lúc STOP** rồi cho chạy | ⭐ Thường khởi động **từ đầu** — nhưng ⚠ **có thể vẫn chạy tiếp giữa chừng nếu công cụ coi là "không có thay đổi"** |
+
+> ⚠⚠ **Chỗ nguy hiểm nằm ở chữ "thường" và chữ "có thể".**
+>
+> Hai hành vi khác nhau **một trời một vực** — chạy tiếp giữa chừng **với logic vừa đổi** là tình
+> huống chưa ai thử. Và ⚠ **cái quyết định lại là việc công cụ có coi lần ghi của bạn là một thay đổi
+> hay không** — thứ bạn không kiểm soát và không nhìn thấy.
+
+> ⭐⭐ **Quy tắc rút ra, áp cho mọi hệ:**
+>
+> | | |
+> |---|---|
+> | 1 | ⚠⚠ **Sau khi nạp chương trình có trình tự, ĐỪNG cho chạy tiếp giữa chừng.** Đưa máy về gốc rồi bắt đầu lại (Chương 28) |
+> | 2 | ⭐ **Kiểm bằng mắt trước khi cho chạy**: bước hiện tại đang là bước nào — đúng cái bạn mong đợi không? |
+> | 3 | ⭐ Nếu hệ có tham số chọn *"chạy tiếp"* hay *"bắt đầu lại"*, ⚠ **biết nó đang đặt gì**, và biết **thao tác nào ghi đè nó** |
+>
+> ⚡ Chi tiết thao tác khác nhau theo hãng — có hệ yêu cầu **reset CPU sau khi nạp** rồi mới chạy, có
+> hệ dùng một bit hệ thống để chọn chế độ khởi động. ⭐ **Tra tài liệu của đúng hệ**, và ⚠ **thử trên
+> máy mô phỏng** trước khi làm trên máy thật.
+
+---
+
 ## 53.3 Quy trình thay đổi có kiểm soát
 
 "Có kiểm soát" nghe nặng nề, nhưng thực chất chỉ là **năm câu hỏi** trả lời được trước khi sửa.
@@ -407,6 +460,12 @@ mọi mục; chương sau nói **sao lưu cái gì, để ở đâu, và làm sa
 - **Datasheet thiết bị** — dùng cho tuổi thọ đóng cắt, giờ chạy đèn UV, và ngưỡng ở mục 53.5.
 - Số liệu chu trình DP-01 — Phụ lục J §J.1; các phép tính tuổi thọ ở Chương 9 mục 9.3 và Chương 49
   mục 49.7.
+- **Mitsubishi MELSEC iQ-F FX5 Programming Manual — Program Design**: ⚠⚠ sửa trực tuyến phụ thuộc
+  **vùng nhớ dự phòng** — khi không đủ chỗ thì **không thực hiện được** và toàn bộ chương trình phải
+  **biên dịch lại, gán lại địa chỉ** (tức là nạp lại toàn bộ); và ⭐ **chế độ khởi động của chương
+  trình trình tự sau khi nạp** khác nhau tuỳ cách vào — dừng rồi chạy lại thì **khôi phục trạng thái
+  trước đó**, còn nạp trong lúc STOP thì thường **bắt đầu lại từ đầu**, ⚠ trừ khi công cụ coi là
+  *"không có thay đổi"* — nền cho mục 53.2b.
 
 > ⚠ **Nhắc lại giới hạn.** Mục 53.3 mô tả **cách tổ chức công việc**, không phải một tiêu chuẩn cụ
 > thể. Cơ sở của bạn có thể có quy định riêng — và nếu máy thuộc ngành có quản lý chặt (dược phẩm,

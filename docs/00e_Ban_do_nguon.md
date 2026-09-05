@@ -76,7 +76,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21, 32 |
 | Siemens S7-1200 System Manual | 864 | 7, 12, 51 |
 | Siemens S7-1500 / TIA | 37 | 38 |
-| Mitsubishi FX5 — Program Design | 136 | 25, 26 |
+| Mitsubishi FX5 — Program Design | 136 | 25, 26, 53 |
 | Rockwell — khác | 1432 | 35 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
 | IO-Link — đặc tả giao diện | 294 | 37, 38, 41, 43, 54 |
@@ -84,7 +84,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Schneider — an toàn máy | 33 | 41, 47, 56 |
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 47 |
-| PLCopen Motion Control | 213 | 28, 37 |
+| PLCopen Motion Control | 213 | 28, 37, 43 |
 | Mitsubishi FX5 — Positioning | 302 | 28 |
 | Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
 | Bryan — Theory and Implementation | 1047 | 8, 22, 23, 49, 51, 52 |
@@ -169,6 +169,7 @@ nhưng thiếu bí danh (thêm vào `bi_danh_tep`).
 | ISO/TS 15066 \| **ISO/TS 15066** — *Robots and robotic device | 1 |
 | Hướng dẫn lắp đặt của nhà sản xuất biến tần và PLC \| **Hướng | 1 |
 | Hướng dẫn của nhà sản xuất PLC, biến tần, HMI \| **Hướng dẫn  | 1 |
+| ⚠ **SEMI E10** \| ⚠ **SEMI E10** — *Specification for Definit | 1 |
 | Toàn bộ các chương được dẫn trong bảng ở mục 57.3–57.10 \| To | 1 |
 
 ---

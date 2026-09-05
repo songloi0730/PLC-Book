@@ -1150,6 +1150,47 @@ chương còn nợ.
 
 ---
 
+## Đợt 33 — 2026-09-05 · ⭐ BA CHƯƠNG CUỐI — Ch.43, Ch.53, Ch.55
+
+⭐ Ba chương khó đối chiếu nhất, mỗi chương một loại nguồn khác nhau.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 185 | ⭐⭐ Ch.53 §53.2b — **sửa trực tuyến có thể BỊ TỪ CHỐI** | FX5 Program Design: sửa trực tuyến sống nhờ **vùng nhớ dự phòng**. ⚠⚠ Không đủ chỗ → **không thực hiện được**, toàn bộ chương trình phải biên dịch lại và gán lại địa chỉ → **nạp lại toàn bộ, dừng máy**. ⭐ Và nó **tích luỹ**: sửa càng nhiều lần thì lần sau càng dễ bị từ chối | ➕➕ |
+| 186 | ⚠⚠ Ch.53 — **sau khi nạp, trình tự chạy tiếp từ đâu** | Dừng rồi chạy lại → **khôi phục trạng thái trước đó**; nạp trong lúc STOP → **thường bắt đầu lại**, ⚠ **trừ khi công cụ coi là "không có thay đổi"**. ⭐ Hai hành vi khác nhau một trời một vực, và thứ quyết định lại **không nhìn thấy được** | ➕➕ |
+| 187 | ⭐ Ch.43 §43.5b — **bit CHO PHÉP KÍCH** | Camera có bit *trigger enable* riêng; ⚠⚠ chưa bật thì **bỏ qua mọi lệnh kích và không báo lỗi**. ⭐ Cùng loại với cưỡng bức quên gỡ: **trạng thái do người đặt, vô hình, không có gì nhắc lại** | ➕➕ |
+| 188 | Ch.43 — **số liệu trễ đo được** | ~**55 ms** (kiểm đơn giản) · ~**59 ms** (phức tạp) · trễ tăng **<6 %** khi mạng chiếm 50 % băng thông. ⭐ Cho **bậc độ lớn** khi tính nhịp máy: hàng chục mili-giây | ➕ |
+| 189 | ⭐⭐ Ch.43 — biểu quyết đa số, và **chiều của nó** | Ba lần chụp + biểu quyết 2/3 ở tầng PLC giảm báo lỗi giả **7,5 % → 5,4 %**. ⚠⚠ Nhưng nó làm hệ **khoan dung hơn** — có thể **lọt lỗi thật**; và giá là **ba lần chụp**. ⭐ Nguyên nhân gốc gần như luôn là **chiếu sáng dao động** | ➕➕ |
+| 190 | ⭐ Ch.43 §43.5 — kiểm ra **sách MẠNH HƠN nguồn** | Bài báo ⚠ **không hề bàn** việc ghép kết quả với đúng sản phẩm — không có đánh dấu danh tính, không tương quan thời gian, không xử lý kết quả về sai thứ tự. ⭐ **Sách đã có đủ** ở §43.5 bằng **số thứ tự ảnh**, và gọi đó là *"chi tiết quan trọng nhất của mục"* | ✅ |
+| 191 | ⚠⚠ Ch.55 §55.7b — **OEE không so sánh được** | Cùng một máy, cùng một ca có thể ra **72 %** hay **91 %** tuỳ tính gì vào *"thời gian dự định"*. ⭐ *"Máy phải đạt OEE 85 %"* mà chưa chốt định nghĩa thì **chưa phải yêu cầu nghiệm thu** | ➕➕ |
+| 192 | Ch.55 — có tiêu chuẩn để khỏi tự định nghĩa | ⭐ **SEMI E10** (trạng thái thiết bị) và **SEMI E79** (năng suất, gồm OEE) — bộ định nghĩa của ngành điện tử. ⚠ **Có bản quyền, phải mua**; sách chỉ nêu tên để hỏi đúng câu | ➕ |
+| 193 | ⭐ Ch.55 — **sáu nhóm tổn thất** | Từ vựng khách hàng sẽ dùng, ánh xạ sang danh sách thực dụng ở §55.6. ⭐⭐ Nhóm **dừng vặt** là nhóm PLC giúp nhiều nhất — mỗi lần vài giây nên **không ai ghi sổ**, nhưng **PLC biết chính xác** | ➕ |
+
+### Kết quả đợt 33
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **9** |
+| ➕➕ Bổ sung giá trị cao | 5 |
+| ➕ Bổ sung có nguồn | 3 |
+| ✅ Kiểm ra **sách mạnh hơn nguồn** | 1 |
+
+> ⭐⭐ **Mục 190 là kết quả đáng ghi nhất, và nó ngược chiều mọi đợt trước.**
+>
+> Suốt 32 đợt, nguồn luôn **bổ khuyết cho sách**. Lần này một bài báo bình duyệt về đúng chủ đề Ch.43
+> lại ⚠ **bỏ trống chính bài toán trung tâm** — ghép kết quả với đúng sản phẩm — trong khi sách đã
+> giải nó bằng số thứ tự ảnh và còn gọi đó là chi tiết quan trọng nhất.
+>
+> ⭐ Điều này **không** có nghĩa sách hơn bài báo: bài báo là **một nghiên cứu tình huống trên một hệ**,
+> còn sách là **sổ tay cho nhiều hệ**. ⚡ Nhưng nó nhắc một điều: ⚠ **"có nguồn hàn lâm" không đồng
+> nghĩa với "phủ đủ"** — và đối chiếu là **hai chiều**.
+>
+> ⭐ **Về nguồn cho ba chương này:** vision có **một bài truy cập mở CC-BY** dùng được; OEE thì bộ định
+> nghĩa chuẩn (**SEMI E10/E79**) ⚠ **có bản quyền và phải mua** — sách xử lý bằng cách **nêu tên và
+> nêu câu hỏi phải hỏi**, thay vì tự chế định nghĩa.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -1164,7 +1205,7 @@ kiểm**, không phải "không có lỗi".
 | Nền tảng PLC | ⭐ **Đã đối chiếu hết** — 7–12, 14, 18, 19 (đợt 4, 10, 15, 22, 27, **32**) | — | — |
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
 | Thiết kế | ⭐ **Đã đối chiếu hết** — 22–30 (đợt 23, 24, 27, 28, **31**) | — | — |
-| Chẩn đoán & vận hành | 43, 53, 55 *(51, 52 đợt 18, 26; **49 đợt 30**)* | Kuphaldt, IEC 62381 | Vừa |
+| Chẩn đoán & vận hành | ⭐ **Đã đối chiếu hết** — 43, 49, 51, 52, 53, 55 (đợt 18, 26, 30, **33**) | — | — |
 | Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
 
 ---

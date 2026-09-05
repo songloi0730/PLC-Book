@@ -219,6 +219,80 @@ END_IF;
 
 ---
 
+## 43.5b ⭐ Ba thứ chỉ lộ ra khi đo trên máy thật
+
+Ba mục trên là **cơ chế**. Mục này là ba con số và một cái bẫy mà chỉ hệ chạy thật mới cho thấy.
+
+### ⚠⚠ Bẫy — camera có bit CHO PHÉP KÍCH riêng, và khi nó tắt thì kích không có tác dụng
+
+Nhiều hệ vision có **hai** thứ khác nhau:
+
+| Tín hiệu | Vai trò |
+|---|---|
+| ⭐ **Cho phép kích** *(trigger enable)* | Bật chế độ nhận lệnh kích. ⚠ Phải **đặt lên 1 trước** |
+| **Kích** *(trigger)* | Lệnh chụp thật, thường theo **cạnh lên** |
+
+> ⚠⚠ **Khi bit cho phép chưa bật, camera BỎ QUA mọi lệnh kích — và không báo lỗi gì.**
+>
+> ⭐ Triệu chứng: mọi thứ trông đúng — dây đúng, địa chỉ đúng, PLC vẫn phát xung kích đều đặn — mà
+> **không có ảnh nào được chụp**. Người ta đi kiểm cáp và cấu hình mạng, trong khi nguyên nhân là
+> **một bit chưa bật**.
+>
+> ⭐ **Cách phòng:** đưa bit cho phép kích vào **trình tự khởi động** của máy (Chương 28) và **giám
+> sát nó** như một điều kiện cho phép chạy — thay vì đặt tay một lần rồi quên.
+>
+> ⚡ Đây là cùng loại lỗi với **cưỡng bức quên gỡ** (Chương 51): ⭐ **một trạng thái do người đặt, tồn
+> tại vô hình, và không có gì nhắc lại.**
+
+### ⭐ Độ trễ thật của một vòng kích–kết quả
+
+Số đo từ một hệ camera thông minh nối PLC qua Ethernet công nghiệp, chế độ trao đổi tuần hoàn:
+
+| Loại kiểm tra | Thời gian từ kích tới có kết quả ở PLC |
+|---|---|
+| Kiểm đơn giản | ⭐ **~55 ms** (độ lệch ~6 ms) |
+| Phân loại phức tạp hơn | ⭐ **~59 ms** (độ lệch ~8 ms) |
+| ⭐ Khi mạng bị chiếm ~50 % băng thông | Trễ tăng ⭐ **dưới 6 %** |
+
+> ⭐ **Dùng con số này thế nào:** không phải để chép vào thiết kế của bạn, mà để có **bậc độ lớn** khi
+> tính nhịp máy ở mục 43.8 — ⭐ **hàng chục mili-giây**, không phải vài mili-giây và cũng không phải
+> vài trăm.
+>
+> ⚠ Và lưu ý cột cuối: nó cho thấy mạng công nghiệp **giữ được tính tất định** ở mức tải đó — nhưng
+> ⭐ **đó là một phép đo trên một hệ cụ thể**, không phải bảo đảm cho hệ của bạn (Chương 40).
+
+### ⭐⭐ Giảm báo lỗi giả bằng cách chụp nhiều lần — và cái giá của nó
+
+⚠ **Báo lỗi giả** *(false positive)* — hàng tốt bị kết luận là lỗi — tốn tiền theo cách âm thầm:
+sản phẩm tốt bị loại, và lòng tin vào hệ thống giảm dần cho tới lúc có người tắt nó đi.
+
+⭐ Một cách xử lý ở **tầng PLC**, không đụng vào chương trình camera:
+
+```text
+   Kích 3 lần trên CÙNG một sản phẩm
+        → PLC đệm 3 kết quả liên tiếp
+        → Kết luận theo ĐA SỐ  (2/3)
+```
+
+| | |
+|---|---|
+| ⭐ Kết quả đo được | Tỉ lệ báo lỗi giả giảm từ **7,5 %** xuống **5,4 %** — giảm khoảng **28 %** |
+| ⚠⚠ Cái giá | **Ba lần chụp thay vì một** — cộng thẳng vào chu kỳ (mục 43.8) |
+| ⭐ Khi nào đáng | Khi **loại nhầm hàng tốt đắt hơn** thời gian chu kỳ tăng thêm |
+| ⚠ Khi nào KHÔNG đáng | Khi nhịp máy là nút cổ chai (Chương 55) — ⭐ lúc đó hãy **sửa nguyên nhân**: chiếu sáng, gá, ngưỡng |
+
+> ⚠⚠ **Đọc kỹ chiều của phép đo này: nó giảm báo lỗi GIẢ, không phải giảm bỏ sót lỗi thật.**
+>
+> ⭐ Biểu quyết theo đa số làm hệ **khoan dung hơn** — nên nó cũng có thể ⚠ **cho lọt một lỗi thật xuất
+> hiện ở một trong ba ảnh**. Với hàng mà lọt lỗi là không chấp nhận được, ⭐ **đây là đánh đổi sai
+> hướng**, và câu hỏi đúng vẫn là *"vì sao ba ảnh của cùng một vật lại cho ba kết quả khác nhau?"*
+
+> ⭐ **Nguyên nhân gốc của kết quả không ổn định gần như luôn nằm ở đây:** ⚠ **chiếu sáng dao động**.
+> Trong phép đo trên, ánh sáng thay đổi làm báo lỗi giả tăng thêm **2–3 %**. ⭐ Bao che chắn sáng và
+> khống chế nguồn sáng rẻ hơn nhiều so với mọi thủ thuật ở tầng PLC.
+
+---
+
 ## 43.6 Hiệu chỉnh toạ độ camera và toạ độ máy
 
 Hệ vision đo bằng **pixel**. Cơ cấu chuyển động theo **mi-li-mét**. Cần một phép chuyển đổi.
@@ -447,6 +521,10 @@ lỗi nào.
 | ⭐⭐ "NG" và "không trả lời được" | **Hai thứ khác nhau** — xử lý khác nhau |
 | "Không biết" xử lý thế nào | ⚠ Không phải OK, không phải NG — **dừng và báo người** |
 | Thời gian xử lý ảnh | ⭐ **Đo trên vật thật**, không lấy catalogue |
+| ⚠⚠ Kích không có tác dụng, không báo lỗi | ⭐ Kiểm **bit CHO PHÉP KÍCH** — đưa vào trình tự khởi động |
+| ⭐ Bậc độ lớn của một vòng kích–kết quả | **Hàng chục mili-giây** (đo được ~55–59 ms) |
+| Giảm báo lỗi giả bằng chụp nhiều lần | ⭐ Biểu quyết 2/3 giảm ~28 % — ⚠⚠ **giá là ba lần chụp** |
+| ⚠⚠ Biểu quyết đa số làm hệ | **Khoan dung hơn** — có thể **lọt lỗi thật**; sai hướng nếu lọt lỗi là không chấp nhận được |
 | Ảnh sản phẩm NG | ⭐ **Lưu lại** — rất quý khi phân tích nguyên nhân |
 
 ---
@@ -469,6 +547,10 @@ lỗi nào.
     — coi là OK và coi là NG — đều có vấn đề?
 11. Vì sao **không** nên để hệ vision điều khiển cơ cấu trực tiếp?
 12. Vì sao thời gian xử lý ảnh phải **đo** thay vì lấy từ catalogue?
+13. ⚠⚠ PLC phát xung kích đều đặn, dây và địa chỉ đều đúng, mà **không có ảnh nào được chụp**, cũng
+    không có lỗi. ⭐ Nghi gì đầu tiên, và cách phòng lâu dài là gì?
+14. ⭐ Biểu quyết 2/3 giảm báo lỗi giả khoảng 28 %. ⚠⚠ Nêu **hai** cái giá, và một loại sản phẩm mà
+    đánh đổi này **đi sai hướng**.
 
 > Câu 1, 4, 7 và 10 là bốn câu phân loại. Câu 10 là tinh thần của cả chương: **"hỏng" và "không biết"
 > là hai trạng thái khác nhau — và gộp chúng lại là cách chắc chắn để đưa ra quyết định sai.**
@@ -489,6 +571,13 @@ thứ đều báo động" nghĩa là không có báo động nào.
   *(tiêu chuẩn có bản quyền)*
 - Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J §J.1, mục 3 (quyết định không đưa vision vào máy
   mẫu).
+- ⭐ **Maślanka, Jancarczyk & Rysinski** — *Integration of Machine Vision and PLC-Based Control for
+  Scalable Quality Inspection in Industry 4.0*, **Sensors** 25(20):6383, 2025 *(truy cập mở, CC BY;
+  DOI 10.3390/s25206383)*: nghiên cứu tình huống camera thông minh nối PLC qua Ethernet công nghiệp —
+  ⚠ **bit cho phép kích** phải bật trước, ⭐ **độ trễ đo được ~55–59 ms** và tăng dưới 6 % khi mạng
+  chiếm 50 % băng thông, và ⭐⭐ **biểu quyết đa số ba lần chụp ở tầng PLC** giảm báo lỗi giả từ 7,5 %
+  xuống 5,4 %. ⚠ Nhóm tác giả cũng nêu giới hạn: bộ dữ liệu nhỏ, **nhạy với dao động chiếu sáng**
+  (+2–3 % báo lỗi giả), chưa kiểm chứng ở quy mô dây chuyền đầy đủ — nền cho mục 43.5b.
 
 > ⚡ Nội dung về **hiệu chỉnh toạ độ** ở mục 43.6 được trình bày **ở mức khái niệm** — đủ để bạn hiểu
 > chuyện gì đang xảy ra, biết khi nào nó mất hiệu lực, và biết phải kiểm gì. Phép toán đầy đủ của

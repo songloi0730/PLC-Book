@@ -307,6 +307,71 @@ OEE       = 0,90 × 0,89 × 0,98 = 0,78  →  78 %
 
 ---
 
+## 55.7b ⚠⚠ OEE của hai máy KHÔNG so sánh được nếu chưa chung định nghĩa
+
+Công thức ở mục trên đúng. ⚠ Nhưng con số nó cho ra **chỉ có nghĩa bên trong một bộ định nghĩa** —
+và đây là chỗ OEE bị dùng sai nhiều nhất.
+
+> ⭐⭐ **Cùng một cỗ máy, cùng một ca, có thể cho OEE 72 % hay 91 % — chỉ khác nhau ở chỗ bạn tính
+> những gì vào "thời gian dự định".**
+
+| Câu hỏi định nghĩa | Hai cách trả lời đều "có lý" |
+|---|---|
+| ⭐ Giờ ăn ca | Trừ khỏi thời gian dự định · hay tính là dừng có kế hoạch |
+| ⭐ Đổi lô, đổi công thức | Tổn thất khả dụng · hay thời gian không thuộc trách nhiệm máy |
+| ⚠⚠ **Chờ máy trước/sau** | ⭐ **Tổn thất của máy này** · hay của **chuyền** |
+| Chạy thử đầu ca | Sản lượng · hay không tính |
+| Sản phẩm làm lại được | Tính vào chất lượng · hay không |
+
+> ⚠⚠ **Hệ quả rất thực tế:** khách hàng nói *"máy của anh phải đạt OEE 85 %"* mà **chưa chốt các định
+> nghĩa trên** thì ⭐ **đó chưa phải một yêu cầu nghiệm thu** — nó là một con số không kiểm chứng được,
+> và sẽ thành tranh cãi đúng lúc bàn giao (Chương 23, Chương 52).
+>
+> ⭐ **Việc phải làm: chốt bằng văn bản, TRƯỚC khi ký, từng dòng một** — cái gì tính vào thời gian dự
+> định, cái gì tính là dừng, ai chịu tổn thất do chuyền.
+
+### ⭐ Có tiêu chuẩn để khỏi phải tự định nghĩa
+
+Với **sản xuất điện tử và bán dẫn**, ngành đã có bộ định nghĩa chung — và nếu khách hàng của bạn ở
+ngành đó, ⭐ **họ nhiều khả năng đang dùng nó**:
+
+| Tiêu chuẩn | Định nghĩa cái gì |
+|---|---|
+| ⭐ **SEMI E10** | **Trạng thái thiết bị** — độ tin cậy, khả dụng, khả bảo trì; nền cho mọi phép tính bên trên |
+| ⭐⭐ **SEMI E79** | **Năng suất thiết bị** — trong đó có **OEE** và thông lượng |
+
+> ⚠ **Cả hai là tiêu chuẩn có bản quyền, phải mua từ SEMI.** ⭐ Sách này **không dẫn số điều khoản
+> hay công thức nguyên văn** — mục đích ở đây chỉ là để bạn **biết chúng tồn tại** và hỏi đúng câu:
+> ⭐ *"Ta tính OEE theo định nghĩa nào?"*
+>
+> ⚡ Nếu khách hàng trả lời *"theo SEMI E10/E79"* thì tranh cãi kết thúc trước khi bắt đầu — ⭐ **bộ
+> định nghĩa đã có sẵn, chỉ việc áp**.
+
+### ⭐ Sáu nhóm tổn thất — từ vựng khách hàng sẽ dùng
+
+Danh sách ở mục 55.6 là cách nhìn của **người làm máy**. ⭐ Người làm sản xuất thường nhóm tổn thất
+theo sáu loại kinh điển, và ⚠ **họ sẽ dùng từ đó khi nói chuyện với bạn**:
+
+| Thuộc | Nhóm tổn thất | Ứng với mục 55.6 |
+|---|---|---|
+| Khả dụng | ⭐ **Hỏng hóc** *(breakdown)* | Dừng do lỗi |
+| Khả dụng | **Cài đặt và điều chỉnh** *(setup)* | Đổi lô, đổi công thức |
+| Hiệu suất | ⚠ **Dừng vặt** *(minor stop)* | ⭐ Kẹt nhẹ, chờ vật tư — **hay bị bỏ sót vì mỗi lần chỉ vài giây** |
+| Hiệu suất | **Chạy chậm** *(speed loss)* | Chu kỳ thật dài hơn thiết kế (mục 55.4) |
+| Chất lượng | **Lỗi lúc khởi động** *(startup)* | Chạy thử đầu ca |
+| Chất lượng | **Lỗi khi sản xuất** *(production defect)* | Board NG |
+
+> ⭐⭐ **Nhóm "dừng vặt" là nhóm PLC giúp được nhiều nhất, và cũng là nhóm không ai đo được bằng tay.**
+>
+> Mỗi lần chỉ 5–20 giây nên không ai ghi vào sổ; cộng lại một ca thì lớn hơn cả một lần hỏng máy.
+> ⭐ Nhưng **PLC biết chính xác** — nó thấy từng lần chờ, từng lần timeout, từng lần thao tác lại
+> (Chương 51, mục 51.11).
+>
+> ⚡ Đây là chỗ **đóng góp rẻ nhất và lớn nhất** mà người lập trình mang lại cho sản lượng: ⭐ **đếm và
+> phân loại các lần dừng vặt**, thay vì chỉ đếm sản phẩm.
+
+---
+
 ## 55.8 Trên máy mẫu DP-01
 
 Số liệu đã chốt: **300 board/giờ** → chu kỳ **12,0 giây** (Phụ lục J §J.1).
@@ -437,6 +502,10 @@ trung bình che mất.
 | ⭐ Giá trị của OEE nằm ở đâu | **Ba con số thành phần**, không phải con số gộp |
 | ⚠⚠ Cách bóp méo phổ biến nhất | **Lấy chu kỳ thực tế làm chu kỳ thiết kế** → hiệu suất luôn ~100 % |
 | ⭐ OEE dùng để làm gì | **Tìm chỗ cải tiến** — không phải chấm điểm người |
+| ⚠⚠ *"Máy phải đạt OEE 85 %"* | ⭐ **Chưa phải yêu cầu nghiệm thu** nếu chưa chốt định nghĩa |
+| Phải chốt bằng văn bản trước khi ký | Giờ ăn ca · đổi lô · ⭐ **chờ máy trước/sau** · chạy thử · hàng làm lại |
+| ⭐ Ngành điện tử có sẵn định nghĩa | **SEMI E10** (trạng thái thiết bị) · **SEMI E79** (năng suất, OEE) — ⚠ có bản quyền |
+| ⭐⭐ Nhóm tổn thất PLC giúp nhiều nhất | **Dừng vặt** — mỗi lần vài giây, không ai ghi sổ, nhưng **PLC biết chính xác** |
 | ⚠ Nút cổ chai của DP-01 | ⭐ **Trạm 2 — sấy UV (6–12 s)**; với công thức 12 s thì **chỉ vừa đủ** 300 board/giờ |
 
 ---
@@ -460,6 +529,10 @@ trung bình che mất.
     phẩm, 50 sản phẩm lỗi. Ba thành phần nói gì về nơi cần cải tiến?
 13. ⚠⚠ Nêu năm cách bóp méo OEE. Cách nào nguy hiểm nhất, và vì sao nó trông hợp lý?
 14. ⭐⭐ Vì sao trên DP-01 việc rút thời gian sấy UV **không phải** việc của người lập trình?
+15. ⚠⚠ Vì sao OEE của hai máy **không so sánh được** nếu chưa chung định nghĩa? ⭐ Nêu **ba** câu hỏi
+    định nghĩa phải chốt trước khi ký hợp đồng.
+16. ⭐ Nêu **sáu nhóm tổn thất** và cho biết mỗi nhóm thuộc thành phần nào của OEE. ⭐⭐ Nhóm nào người
+    lập trình PLC giúp được nhiều nhất, và vì sao không ai đo được nó bằng tay?
 
 > Câu 5, 7, 10 và 13 là bốn câu phân loại. Câu 1 và 14 gắn với nhau: ⭐ **cả hai đều nói rằng công
 > sức đặt sai chỗ không tạo ra kết quả, dù công sức đó rất thật.**
@@ -482,6 +555,11 @@ lớn công việc thực tế là **sửa máy đã có** — thường là má
   con số **so sánh được giữa các nhà máy**.
 - Phép đo thời gian bước và bộ đếm — Chương 11 (vùng nhớ giữ được), Chương 21 (trình tự), Chương 43
   (báo động), Chương 53 mục 53.5 (bảo trì).
+- ⚠ **SEMI E10** — *Specification for Definition and Measurement of Equipment Reliability,
+  Availability, and Maintainability* và ⭐ **SEMI E79** — *Specification for Definition and Measurement
+  of Equipment Productivity* (gồm **OEE**): bộ định nghĩa chuẩn dùng trong **sản xuất điện tử và bán
+  dẫn**. ⚠⚠ **Tiêu chuẩn có bản quyền, phải mua từ SEMI** — sách này chỉ **nêu tên để bạn hỏi đúng
+  câu**, không dẫn công thức hay số điều khoản (mục 55.7b).
 
 > ⚠ **Giới hạn.** Công thức OEE ở mục 55.7 là dạng phổ biến nhất, nhưng ⚠ **định nghĩa chi tiết khác
 > nhau giữa các nơi** — cái gì tính là "thời gian dự định", dừng ngắn bao nhiêu thì bỏ qua, hàng sửa
