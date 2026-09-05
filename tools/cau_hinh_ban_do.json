@@ -123,6 +123,12 @@
     ],
     "IRSST — Prevention of Mechanical Hazards": [
       "PPSA_Prevention"
+    ],
+    "SEMI — bộ tiêu chuẩn (E10, E79…)": [
+      "SECS_SemiStandard"
+    ],
+    "Sensors — vision & PLC (CC BY)": [
+      "sensors-25-06383"
     ]
   },
   "nguon_ngoai_bo_tai_lieu": [

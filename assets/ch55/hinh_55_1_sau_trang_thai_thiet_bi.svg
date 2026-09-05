@@ -1,0 +1,50 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 530' width='900' height='530'>
+<rect width='900' height='530' fill='#FFFFFF'/>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 55.1 — Sáu trạng thái thiết bị và các khối thời gian</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Mọi khoảnh khắc của thiết bị phải rơi vào ĐÚNG MỘT trong sáu trạng thái. Phân loại theo CHỨC NĂNG, không theo ai làm.</text>
+<rect x='26' y='92' width='430' height='50' rx='3' fill='#DFF0E4' stroke='#2E7D4F' stroke-width='1.5'/>
+<text x='40' y='113' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Đang sản xuất</text>
+<text x='143' y='113' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(productive)</text>
+<text x='40' y='131' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>Chạy đúng chức năng · nạp và dỡ · làm lại hàng</text>
+<rect x='26' y='150' width='430' height='50' rx='3' fill='#EAF1F6' stroke='#565E66' stroke-width='1.5'/>
+<text x='40' y='171' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Chờ</text>
+<text x='71' y='171' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(standby)</text>
+<text x='40' y='189' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>Chạy được nhưng không chạy: hết người, hết hàng, hết đồ gá, chờ lệnh cấp trên</text>
+<rect x='26' y='208' width='430' height='50' rx='3' fill='#EDE7F6' stroke='#5B4B8A' stroke-width='1.5'/>
+<text x='40' y='229' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Kỹ thuật</text>
+<text x='107' y='229' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(engineering)</text>
+<text x='40' y='247' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>Chạy được, nhưng đang dùng để thử nghiệm quá trình hoặc thiết bị</text>
+<rect x='26' y='266' width='430' height='50' rx='3' fill='#FDF6E7' stroke='#B8860B' stroke-width='1.5'/>
+<text x='40' y='287' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Dừng CÓ kế hoạch</text>
+<text x='165' y='287' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(scheduled downtime)</text>
+<text x='40' y='305' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>Bảo trì phòng ngừa · cài đặt đổi lô · thay vật tư tiêu hao · chờ bảo trì</text>
+<rect x='26' y='324' width='430' height='50' rx='3' fill='#FBE9E7' stroke='#B03A2E' stroke-width='1.5'/>
+<text x='40' y='345' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Dừng NGOÀI kế hoạch</text>
+<text x='186' y='345' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(unscheduled downtime)</text>
+<text x='40' y='363' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>Sửa chữa · đầu vào ngoài quy cách · sự cố hạ tầng · chờ người hoặc phụ tùng</text>
+<rect x='26' y='382' width='430' height='50' rx='3' fill='#F0F0F0' stroke='#9AA3AB' stroke-width='1.5'/>
+<text x='40' y='403' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Không xếp lịch</text>
+<text x='150' y='403' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(non-scheduled)</text>
+<text x='40' y='421' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>Ca không làm · lắp đặt, nâng cấp · đào tạo ngoài giờ · tắt và khởi động lại</text>
+<line x1='462' y1='92' x2='474' y2='92' stroke='#2E7D4F' stroke-width='1.6'/>
+<line x1='474' y1='92' x2='474' y2='258' stroke='#2E7D4F' stroke-width='1.6'/>
+<line x1='462' y1='258' x2='474' y2='258' stroke='#2E7D4F' stroke-width='1.6'/>
+<text x='482' y='179' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#2E7D4F' text-anchor='start'>Thiết bị LÊN MÁY</text>
+<text x='600' y='179' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(uptime)</text>
+<line x1='462' y1='266' x2='474' y2='266' stroke='#B03A2E' stroke-width='1.6'/>
+<line x1='474' y1='266' x2='474' y2='374' stroke='#B03A2E' stroke-width='1.6'/>
+<line x1='462' y1='374' x2='474' y2='374' stroke='#B03A2E' stroke-width='1.6'/>
+<text x='482' y='324' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#B03A2E' text-anchor='start'>Thiết bị XUỐNG MÁY</text>
+<text x='618' y='324' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(downtime)</text>
+<line x1='640' y1='92' x2='652' y2='92' stroke='#1A1D21' stroke-width='1.6'/>
+<line x1='652' y1='92' x2='652' y2='374' stroke='#1A1D21' stroke-width='1.6'/>
+<line x1='640' y1='374' x2='652' y2='374' stroke='#1A1D21' stroke-width='1.6'/>
+<text x='660' y='237' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Thời gian VẬN HÀNH</text>
+<text x='660' y='253' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>(operations time)</text>
+<line x1='862' y1='86' x2='862' y2='432' stroke='#9AA3AB' stroke-width='1.2' stroke-dasharray='4,3'/>
+<text x='854' y='406' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='end'>Tổng thời gian</text>
+<text x='854' y='421' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='end'>(total time)</text>
+<rect x='26' y='452' width='848' height='48' rx='3' fill='#FDF6E7' stroke='#B8860B' stroke-width='1.2'/>
+<text x='40' y='472' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#7A5B08' text-anchor='start'>⚠  Thời gian SẢN XUẤT (manufacturing time) = thời gian vận hành TRỪ thời gian kỹ thuật — đó là mẫu số của phần lớn phép tính khả dụng.</text>
+<text x='40' y='490' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#7A5B08' text-anchor='start'>⭐  Hai cỗ máy chỉ so sánh được khi cùng xếp một khoảnh khắc vào cùng một dải. Đó là lý do bộ định nghĩa chung tồn tại.</text>
+</svg>

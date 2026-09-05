@@ -13,16 +13,17 @@
 
 | Chỉ số | Giá trị |
 |---|---|
-| Tài liệu PDF | **69** |
-| Tổng số trang | **24 603** |
-| Mục lục nhúng đọc được | **11 807 mục** trên 52 tài liệu |
-| ⚠ Không trích được text | **3** |
+| Tài liệu PDF | **72** |
+| Tổng số trang | **29 916** |
+| Mục lục nhúng đọc được | **13 024 mục** trên 55 tài liệu |
+| ⚠ Không trích được text | **4** |
 
 > ⚠⚠ **Tài liệu không trích được text — coi như KHÔNG CÓ cho tới khi OCR.**
 >
 > - `Manual/H5U&Easy_Manual/H5U USB驱动安装操作说明.pdf` — 7 trang
 > - `Manual/H5U&Easy_Manual/H5U&Easy系列可编程逻辑控制器指令手册.PDF` — 1037 trang
 > - `Programmable Logic Controllers Hardware and Programming (Max Rabiee).pdf` — 446 trang
+> - `reference/09_Papers/v.pdf` — 1 trang
 
 ---
 
@@ -89,6 +90,8 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
 | Bryan — Theory and Implementation | 1047 | 8, 22, 23, 49, 51, 52 |
 | IRSST — Prevention of Mechanical Hazards | 71 | 47 |
+| SEMI — bộ tiêu chuẩn (E10, E79…) | 5292 | 21, 37, 38, 41, 55 |
+| Sensors — vision & PLC (CC BY) | 20 | 43 |
 
 ---
 
@@ -111,6 +114,7 @@ Bổ sung bí danh nếu tài liệu có giá trị; bỏ qua nếu không.
 | `Manual/H5U&Easy_Manual/H5U系列可编程逻辑控制器用户手册.pdf` | 19 |
 | `reference/07_Networks_Whitepapers/EtherCAT_Technology_Group_EtherCAT_and_TSN_Whitepaper.pdf` | 8 |
 | `Manual/H5U&Easy_Manual/H5U USB驱动安装操作说明.pdf` | 7 |
+| `reference/09_Papers/v.pdf` | 1 |
 
 ---
 
@@ -169,7 +173,6 @@ nhưng thiếu bí danh (thêm vào `bi_danh_tep`).
 | ISO/TS 15066 \| **ISO/TS 15066** — *Robots and robotic device | 1 |
 | Hướng dẫn lắp đặt của nhà sản xuất biến tần và PLC \| **Hướng | 1 |
 | Hướng dẫn của nhà sản xuất PLC, biến tần, HMI \| **Hướng dẫn  | 1 |
-| ⚠ **SEMI E10** \| ⚠ **SEMI E10** — *Specification for Definit | 1 |
 | Toàn bộ các chương được dẫn trong bảng ở mục 57.3–57.10 \| To | 1 |
 
 ---

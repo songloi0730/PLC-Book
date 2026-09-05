@@ -223,6 +223,11 @@ END_IF;
 
 Ba mục trên là **cơ chế**. Mục này là ba con số và một cái bẫy mà chỉ hệ chạy thật mới cho thấy.
 
+![Sơ đồ thời gian một vòng kích ảnh](../assets/ch43/hinh_43_1_vong_kich_anh.svg)
+
+*Hình 43.1 — Một vòng kích–kết quả. Ba việc phải đúng cùng lúc: bit cho phép đã bật, kích theo cạnh
+lên, và kết quả mang đúng số thứ tự.*
+
 ### ⚠⚠ Bẫy — camera có bit CHO PHÉP KÍCH riêng, và khi nó tắt thì kích không có tác dụng
 
 Nhiều hệ vision có **hai** thứ khác nhau:
@@ -573,7 +578,7 @@ thứ đều báo động" nghĩa là không có báo động nào.
   mẫu).
 - ⭐ **Maślanka, Jancarczyk & Rysinski** — *Integration of Machine Vision and PLC-Based Control for
   Scalable Quality Inspection in Industry 4.0*, **Sensors** 25(20):6383, 2025 *(truy cập mở, CC BY;
-  DOI 10.3390/s25206383)*: nghiên cứu tình huống camera thông minh nối PLC qua Ethernet công nghiệp —
+  DOI 10.3390/s25206383 — bản PDF có trong bộ tài liệu)*: nghiên cứu tình huống camera thông minh nối PLC qua Ethernet công nghiệp —
   ⚠ **bit cho phép kích** phải bật trước, ⭐ **độ trễ đo được ~55–59 ms** và tăng dưới 6 % khi mạng
   chiếm 50 % băng thông, và ⭐⭐ **biểu quyết đa số ba lần chụp ở tầng PLC** giảm báo lỗi giả từ 7,5 %
   xuống 5,4 %. ⚠ Nhóm tác giả cũng nêu giới hạn: bộ dữ liệu nhỏ, **nhạy với dao động chiếu sáng**

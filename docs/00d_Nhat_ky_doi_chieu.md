@@ -1191,6 +1191,52 @@ chương còn nợ.
 
 ---
 
+## Đợt 34 — 2026-09-05 · ⭐⭐ CÓ BẢN GỐC SEMI — viết lại Ch.55, thêm hai hình
+
+⭐ Chủ dự án bổ sung **bộ tiêu chuẩn SEMI (5.292 trang, có E10 và E79)** và **bài báo Sensors** vào bộ
+tài liệu. Bộ nguồn: **72 tệp · 29.916 trang**.
+
+⚠⚠ **Điều này làm đổi một quy tắc của dự án.** Quy tắc *"không dẫn số điều khoản"* có lý do ghi rõ ở
+bảng cuối nhật ký: ⭐ **"chỉ có tài liệu diễn giải của hãng"**. Với SEMI thì lý do đó **không còn** —
+nay dẫn được số mục để người đọc tra lại bản gốc. ⭐ Với ISO/IEC vẫn giữ nguyên quy tắc cũ.
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 194 | ⭐⭐ Ch.55 §55.7b — **sáu trạng thái thiết bị** | E10 mục 5: mọi khoảnh khắc phải rơi vào **đúng một** trong sáu trạng thái. ⭐ Thay bảng *"hai cách trả lời đều có lý"* bằng **đáp án dứt khoát của tiêu chuẩn** cho từng dòng | ➕➕ |
+| 195 | ⭐⭐ Ch.55 — quy tắc cắt tranh cãi | E10 mục 5.2: ⭐ **phân loại theo CHỨC NĂNG, không theo TỔ CHỨC** — một việc bảo trì xếp cùng loại **dù ai làm**. ⚠ Nghĩa là *"cái này thuộc bộ phận nào"* **không phải câu hỏi đúng** | ➕➕ |
+| 196 | ⚠⚠ Ch.55 — máy đứng vì chuyền | E10 xếp *"hết hàng để làm"* vào **CHỜ**, không phải dừng máy — thiết bị vẫn ở tình trạng thực hiện được chức năng. ⭐ Xếp nó vào dừng máy là **đổ lỗi sai chỗ** | ➕➕ |
+| 197 | ⚠⚠ Ch.55 — **ngay CÔNG THỨC cũng khác** | E79 mục 5.2.1: khả dụng = **thiết bị lên máy ÷ TỔNG thời gian**, không phải ÷ thời gian **dự định** như cách phổ biến (và như mục 55.7). ⭐ Cùng một tuần có thể ra **85 %** hay **40 %** mà **không ai tính sai** — hai câu hỏi khác nhau | ➕➕ |
+| 198 | ⭐ Ch.55 — tách "hiệu suất" làm hai | E79 mục 5.2.2: **hiệu suất vận hành** (có chạy không) × **hiệu suất nhịp độ** (chạy nhanh không). ⭐ Một con số *"70 %"* không nói phải làm gì; ⚠ **máy đứng nhiều** và **máy chạy chậm** là hai bệnh khác hẳn | ➕➕ |
+| 199 | Ch.55 — sáu biến thể OEE | E79 định nghĩa **sáu** biến thể cho các mục đích khác nhau — ⭐ riêng chi tiết đó đã chứng minh *"OEE không phải MỘT con số"* | ➕ |
+| 200 | ⚠⚠ Ch.55 — **tách chờ bảo trì khỏi thời gian sửa** | E10 mục 5.9: sửa chữa = chẩn đoán + khắc phục + thử thiết bị + **chạy xác nhận**; và ⭐ **chờ người/phụ tùng phải theo dõi RIÊNG**. ⚠ Gộp vào thì **MTTR đo kho vật tư chứ không đo khả năng sửa** — rồi người ta đi đào tạo thợ trong khi vấn đề là hết phụ tùng | ➕➕ |
+| 201 | ⭐ **Hình 55.1** (mới) | Sáu trạng thái và các khối thời gian, kèm hai ngoặc nhóm lên máy/xuống máy. ⚠ Đã render PNG và **sửa hai lỗi bố cục** phát hiện bằng mắt: dải cuối bị hộp chú thích đè, nhãn tràn mép phải | ➕ |
+| 202 | ⭐ **Hình 43.1** (mới) | Sơ đồ thời gian một vòng kích ảnh — bit cho phép, cạnh lên, camera xử lý, gói kết quả kèm số thứ tự, dải đo ~55–59 ms, và hai hộp cảnh báo. ⭐ Ch.43 trước đó **không có hình nào** | ➕ |
+
+### Kết quả đợt 34
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **9** |
+| ➕➕ Bổ sung giá trị cao | 6 |
+| ➕ Bổ sung / hình mới | 3 |
+| ⭐ Hình mới | **2** (Hình 55.1, Hình 43.1) |
+
+> ⭐⭐ **Mục 197 là phát hiện đắt nhất, và nó làm luận điểm của §55.7b từ "cảnh báo" thành "chứng minh".**
+>
+> Đợt 33 tôi viết *"OEE của hai máy không so sánh được nếu chưa chung định nghĩa"* — dựa trên lập luận
+> về cách ghi sổ. ⭐ Có bản gốc rồi mới thấy vấn đề **sâu hơn nhiều**: ⚠⚠ **ngay công thức cũng khác**.
+> Cách phổ biến chia cho **thời gian dự định**; E79 chia cho **TỔNG thời gian**. Chênh lệch có thể là
+> 85 % so với 40 % trên cùng một cỗ máy.
+>
+> ⚡ **Bài học quy trình:** ⚠ **lập luận đúng không thay được bản gốc.** Tôi đã lập luận đúng hướng ở
+> đợt 33, nhưng ⭐ **thiếu đúng cái làm nó thuyết phục** — và cái đó chỉ có trong tài liệu gốc.
+>
+> ⭐ **Và mục 194–196 cho thấy chiều ngược lại của cùng một chuyện:** đợt 33 tôi viết *"hai cách trả
+> lời đều có lý"* cho năm câu hỏi định nghĩa. ⚠ **Sai** — tiêu chuẩn trả lời dứt khoát cả năm. Tôi
+> đã trình bày một vấn đề **đã được giải** như thể nó còn mở, chỉ vì chưa đọc được lời giải.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -1226,6 +1272,7 @@ kiểm**, không phải "không có lỗi".
 | Mảng | Hệ quả với sách |
 |---|---|
 | ⚠⚠ **Bản gốc tiêu chuẩn ISO/IEC** | Chỉ có tài liệu diễn giải của hãng → ⚠ **không được dẫn số điều khoản** ở bất kỳ chương nào |
+| ⭐ **SEMI (E10, E79…)** | ⭐⭐ **ĐÃ CÓ BẢN GỐC** từ 2026-09-05 → **dẫn được số mục**; vẫn ⚠ **không sao chép bảng/công thức nguyên văn** |
 | Thị trường thiết bị hiện hành | Hai giả định của máy mẫu (đầu đọc mã 2D Ethernet · bộ điều khiển nhiệt rời RS-485) vẫn **chưa xác minh** — Phụ lục J §J.9 |
 | ⚠ IO-Link System Description | ⭐ **File PDF trong bộ không trích được text** — nếu cần đối chiếu Ch.12 phải mở tay |
 

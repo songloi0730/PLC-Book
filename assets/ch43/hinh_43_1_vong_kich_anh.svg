@@ -1,0 +1,49 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 452' width='900' height='452'>
+<rect width='900' height='452' fill='#FFFFFF'/>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 43.1 — Một vòng kích ảnh, từ lệnh tới lúc PLC dám dùng kết quả</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Ba việc phải đúng: bit CHO PHÉP đã bật · kích theo CẠNH LÊN · kết quả mang ĐÚNG số thứ tự.</text>
+<text x='24' y='108' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#565E66' text-anchor='start'>PLC — cho phép kích</text>
+<line x1='168' y1='104' x2='866' y2='104' stroke='#9AA3AB' stroke-width='1.1' stroke-dasharray='3,3'/>
+<text x='24' y='156' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#565E66' text-anchor='start'>PLC — lệnh kích</text>
+<line x1='168' y1='152' x2='866' y2='152' stroke='#9AA3AB' stroke-width='1.1' stroke-dasharray='3,3'/>
+<text x='24' y='204' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#565E66' text-anchor='start'>Camera — chụp &amp; xử lý</text>
+<line x1='168' y1='200' x2='866' y2='200' stroke='#9AA3AB' stroke-width='1.1' stroke-dasharray='3,3'/>
+<text x='24' y='252' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#565E66' text-anchor='start'>Mạng — kết quả về</text>
+<line x1='168' y1='248' x2='866' y2='248' stroke='#9AA3AB' stroke-width='1.1' stroke-dasharray='3,3'/>
+<text x='24' y='300' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#565E66' text-anchor='start'>PLC — dùng kết quả</text>
+<line x1='168' y1='296' x2='866' y2='296' stroke='#9AA3AB' stroke-width='1.1' stroke-dasharray='3,3'/>
+<line x1='168' y1='104' x2='214' y2='104' stroke='#9AA3AB' stroke-width='1.6'/>
+<line x1='214' y1='104' x2='214' y2='92' stroke='#2E7D4F' stroke-width='2'/>
+<line x1='214' y1='92' x2='866' y2='92' stroke='#2E7D4F' stroke-width='2.4'/>
+<text x='220' y='86' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#2E7D4F' text-anchor='start'>bật TRƯỚC — và giữ nguyên</text>
+<line x1='168' y1='152' x2='300' y2='152' stroke='#9AA3AB' stroke-width='1.6'/>
+<line x1='300' y1='152' x2='300' y2='140' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='300' y1='140' x2='326' y2='140' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='326' y1='140' x2='326' y2='152' stroke='#C0392B' stroke-width='2.4'/>
+<line x1='326' y1='152' x2='866' y2='152' stroke='#9AA3AB' stroke-width='1.6'/>
+<text x='296' y='132' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#C0392B' text-anchor='start'>cạnh lên</text>
+<rect x='300' y='186' width='260' height='28' rx='3' fill='#EAF1F6' stroke='#1A1D21' stroke-width='1.4'/>
+<text x='430' y='204' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1A1D21' text-anchor='middle'>phơi sáng  →  xử lý ảnh</text>
+<rect x='560' y='234' width='76' height='28' rx='3' fill='#DFF0E4' stroke='#2E7D4F' stroke-width='1.4'/>
+<text x='598' y='252' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#1A1D21' text-anchor='middle'>gói kết quả</text>
+<text x='644' y='246' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#2E7D4F' text-anchor='start'>kèm SỐ THỨ TỰ</text>
+<line x1='168' y1='296' x2='668' y2='296' stroke='#9AA3AB' stroke-width='1.6'/>
+<line x1='668' y1='296' x2='668' y2='284' stroke='#2E7D4F' stroke-width='2.4'/>
+<line x1='668' y1='284' x2='866' y2='284' stroke='#2E7D4F' stroke-width='2.4'/>
+<text x='674' y='278' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#2E7D4F' text-anchor='start'>chỉ dùng khi SỐ THỨ TỰ khớp</text>
+<line x1='300' y1='214' x2='300' y2='330' stroke='#9AA3AB' stroke-width='1.1' stroke-dasharray='3,3'/>
+<line x1='668' y1='296' x2='668' y2='330' stroke='#9AA3AB' stroke-width='1.1' stroke-dasharray='3,3'/>
+<line x1='300' y1='330' x2='658' y2='330' stroke='#565E66' stroke-width='1.6'/>
+<polygon points='668.0,330.0 658.0,335.0 658.0,325.0' fill='#565E66'/>
+<line x1='668' y1='330' x2='310' y2='330' stroke='#565E66' stroke-width='1.6'/>
+<polygon points='300.0,330.0 310.0,325.0 310.0,335.0' fill='#565E66'/>
+<text x='484' y='322' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1A1D21' text-anchor='middle'>toàn vòng ~55–59 ms  (số đo trên một hệ thật)</text>
+<rect x='24' y='352' width='418' height='76' rx='3' fill='#FBE9E7' stroke='#B03A2E' stroke-width='1.2'/>
+<text x='38' y='372' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#B03A2E' text-anchor='start'>⚠⚠  Nếu bit CHO PHÉP chưa bật:</text>
+<text x='38' y='390' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#7A2E24' text-anchor='start'>camera bỏ qua mọi lệnh kích — và KHÔNG báo lỗi gì.</text>
+<text x='38' y='408' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#7A2E24' text-anchor='start'>Triệu chứng: dây đúng, địa chỉ đúng, mà không có ảnh nào.</text>
+<rect x='456' y='352' width='418' height='76' rx='3' fill='#FDF6E7' stroke='#B8860B' stroke-width='1.2'/>
+<text x='470' y='372' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#7A5B08' text-anchor='start'>⚠  Nếu xử lý chậm hơn nhịp máy:</text>
+<text x='470' y='390' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#7A5B08' text-anchor='start'>gói về có thể là kết quả của SẢN PHẨM TRƯỚC.</text>
+<text x='470' y='408' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#7A5B08' text-anchor='start'>Số thứ tự không khớp → VỨT BỎ, không dùng.</text>
+</svg>
