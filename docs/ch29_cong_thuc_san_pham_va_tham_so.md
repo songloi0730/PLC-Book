@@ -323,6 +323,65 @@ màn hình có thể bị thay, bị bỏ qua, hoặc công thức có thể đ�
 
 ---
 
+## 29.6b ⭐⭐ "Được duyệt" và "đã chứng thực" là HAI câu hỏi khác nhau
+
+Mục trên lo việc **ghi vết ai sửa gì**. Còn một câu hỏi nữa mà công thức phải trả lời được trước khi
+đem ra chạy hàng — và ⚠ nhiều hệ gộp nó làm một, gây ra đúng loại sự cố khó truy.
+
+| Câu hỏi | Ai trả lời | Ý nghĩa |
+|---|---|---|
+| ⭐ **Công thức này ĐÃ ĐƯỢC DUYỆT chưa?** | Kỹ thuật quá trình, quản lý sản xuất | Nội dung công thức là **đúng về mặt công nghệ** |
+| ⭐⭐ **Nó ĐÃ ĐƯỢC CHỨNG THỰC trên MÁY NÀY chưa?** | Người chạy thử trên chính cỗ máy đó | Đã chạy thật ở đây và **cho kết quả đạt** |
+
+> ⚠⚠ **Hai câu này độc lập, và đó là điểm mấu chốt.**
+>
+> Một công thức được kỹ thuật duyệt hoàn toàn có thể ⚠ **chưa từng chạy trên máy số 3** — vì máy số 3
+> có gá khác, đèn khác, hoặc vừa thay một cơ cấu. ⭐ *"Đã duyệt"* **không suy ra được** *"chạy được ở
+> đây"*.
+>
+> ⭐ Ngược lại cũng vậy: ai đó chỉnh tham số cho chạy được trên máy số 3 thì ⚠ **đó chưa phải công
+> thức đã duyệt** — nó chỉ là một bản vá tại chỗ.
+
+### ⭐ Mức duyệt là một CON SỐ, không phải một dấu tích
+
+Cách làm quen thuộc là một cờ *"đã duyệt: có/không"*. ⭐ Cách chặt hơn: **mức duyệt là một con số**,
+và **khoá được suy ra từ con số đó**:
+
+```text
+Công thức có  Mức duyệt  ≥  Ngưỡng chỉ-đọc của kho   →  KHOÁ, không sửa được
+```
+
+| | |
+|---|---|
+| ⭐⭐ Vì sao hơn hẳn cờ có/không | **Khoá là HỆ QUẢ**, không phải việc ai đó phải nhớ bật |
+| ⭐ Đặt ngưỡng bằng 0 | ⭐ **Mọi công thức đều bị khoá** — mặc định an toàn cho môi trường sản xuất |
+| ⭐ Nhiều mức | Nháp · đã kiểm nội bộ · đã duyệt sản xuất — mỗi mức mở ra quyền khác nhau |
+
+> ⭐ **Đây là cùng tinh thần với "làm cho hỏng hóc trở nên phát hiện được"** ở Chương 48: ⚠ thay vì
+> trông vào việc **người ta nhớ khoá công thức**, hãy để trạng thái khoá **tự suy ra** từ một thuộc
+> tính mà quy trình bắt buộc phải điền.
+
+### ⭐ Vòng đời một công thức — các trạng thái đáng có
+
+| Trạng thái | Nghĩa | Được làm gì |
+|---|---|---|
+| **Tạo / sửa** | Bản nháp trong kho | Sửa tự do |
+| ⭐ **Đã duyệt** | Nội dung được người có thẩm quyền chấp nhận | ⚠ **Khoá** nếu mức duyệt vượt ngưỡng |
+| ⭐⭐ **Đã chứng thực trên máy này** | Đã chạy thật ở đây, kết quả đạt | ⭐ **Được phép chạy sản xuất** |
+| ⚠ **Bị rút chứng thực** | Máy thay đổi, hoặc kết quả không còn đạt | ⚠⚠ **Phải chứng thực lại trước khi chạy tiếp** |
+
+> ⚠⚠ **Trạng thái cuối là trạng thái hay bị bỏ quên nhất, và nó bảo vệ đúng lúc nguy hiểm nhất.**
+>
+> Sau khi **thay cơ cấu, đổi cảm biến, hay sửa cơ khí** (Chương 53), ⭐ chứng thực cũ **không còn giá
+> trị** — dù công thức không đổi một chữ. ⚠ Hệ nào không có trạng thái này thì sau mỗi lần bảo trì,
+> máy chạy tiếp với một chứng thực **đã hết hiệu lực mà không ai biết**.
+>
+> ⭐ **Cách làm tối thiểu nếu hệ của bạn không có sẵn:** giữ hai trường trong bản ghi công thức —
+> *"mức duyệt"* và *"lần chứng thực gần nhất trên máy này (ngày, người, kết quả)"* — và ⭐ **xoá trường
+> thứ hai trong quy trình bảo trì**, cùng chỗ với việc gỡ cưỡng bức (Chương 51, mục 51.7).
+
+---
+
 ## 29.7 Trên máy mẫu DP-01
 
 Bảng công thức cho ba mã hàng:
@@ -465,6 +524,9 @@ Cơ chế bảo vệ bị vô hiệu hoá từ bên trong.
 | Chưa nạp công thức thì | ⚠ **Không cho vào `Running`** |
 | Ghi vết | Thời gian · người · công thức cũ → mới, ghi **tại điểm nạp** |
 | Phân quyền | Chọn / sửa tham số / sửa dải hợp lệ là **ba cấp khác nhau** |
+| ⭐⭐ Hai câu hỏi độc lập | **Đã duyệt** (nội dung đúng) và ⭐ **đã chứng thực trên MÁY NÀY** |
+| ⭐ Mức duyệt nên là gì | **Một con số**, và **khoá tự suy ra** khi vượt ngưỡng — không phải cờ ai đó nhớ bật |
+| ⚠⚠ Sau khi bảo trì đổi cơ cấu | ⭐ **Chứng thực cũ hết hiệu lực** — phải chứng thực lại dù công thức không đổi |
 | Trước khi thiết kế bảng công thức | ⚠ Kiểm **dung lượng vùng nhớ giữ được** của CPU |
 
 ---
@@ -485,6 +547,12 @@ Cơ chế bảo vệ bị vô hiệu hoá từ bên trong.
 9. Nêu ba mức chính sách đổi công thức khi đang chạy. Mức nào là mặc định đúng cho DP-01 và vì sao?
 10. ⭐ Người vận hành gặp thông báo "vượt giới hạn" và nới dải hợp lệ ra. Vì sao đó là vấn đề nghiêm
     trọng, và cơ chế nào ngăn được nó?
+11. ⭐⭐ Nêu **hai câu hỏi độc lập** phải trả lời trước khi cho một công thức chạy hàng. ⚠ Vì sao
+    *"đã duyệt"* **không suy ra được** *"chạy được ở đây"*?
+12. ⭐ Vì sao để **mức duyệt là một con số** và **khoá tự suy ra** thì chặt hơn một cờ *"đã duyệt:
+    có/không"*? Liên hệ với nguyên tắc ở Chương 48.
+13. ⚠⚠ Máy vừa thay một cơ cấu, công thức **không đổi một chữ**. ⭐ Có được chạy tiếp ngay không, vì
+    sao? Nêu việc tối thiểu phải làm.
 
 > Câu 3, 5 và 10 là ba câu phân loại. Câu 10 là tinh thần của cả chương: **một cơ chế bảo vệ mà người
 > dùng tự nới được thì không phải cơ chế bảo vệ.**
@@ -507,6 +575,10 @@ lại, và quản lý phiên bản.
   kiểm trước khi thiết kế bảng công thức.
 - Bảng công thức và đặc tả tham số của DP-01 — Phụ lục J; bảng ở mục 29.7 lấy từ đó.
 - Biểu mẫu **nhật ký thay đổi công thức** — Phụ lục C.
+- ⭐ **SEMI E42** — *Recipe Management Standard: Concepts, Behavior, and Message Services*: vòng đời
+  công thức (mục 8.1) và các thao tác **duyệt · bảo vệ · chứng thực / rút chứng thực** (mục 8.2.4–8.2.8);
+  ⭐⭐ cơ chế **khoá suy ra từ ngưỡng mức duyệt** (mục 8.2.5) thay cho một cờ đặt tay — nền cho
+  mục 29.6b.
 
 > ⚡ Các dải hợp lệ ở mục 29.7 là **giá trị của máy mẫu DP-01**, không phải giá trị áp dụng chung. Dải
 > của máy bạn đến từ **giới hạn vật lý của cơ cấu** và từ **yêu cầu công nghệ của sản phẩm** — hai

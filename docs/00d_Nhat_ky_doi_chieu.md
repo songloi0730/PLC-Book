@@ -1237,6 +1237,67 @@ nay dẫn được số mục để người đọc tra lại bản gốc. ⭐ V
 
 ---
 
+## Đợt 35 — 2026-09-06 · Rà nhất quán toàn sách · SEMI E42 và E30 · hai hình mới
+
+⭐ Đợt này ba việc: **rà nhất quán trình bày**, **khai thác tiếp bộ SEMI**, và **thêm hình ở chỗ chữ
+không diễn đạt được**.
+
+### A — Rà nhất quán (viết script quét toàn bộ 58 chương)
+
+| # | Phát hiện | Xử lý |
+|---|:--|:--:|
+| 203 | ⭐ **Đánh số mục: sạch** — không chương nào sai số chương trong tiêu đề, không mục nào nhảy cóc | ✅ |
+| 204 | ⚠ **Ch.5 có HAI mục tên "Bảng chốt"** — §5.8 là bảng nội dung, §5.10 là mục khung. ⭐ Trùng tên với một mục khung là gây nhầm | ⚠ |
+| 205 | ⚠ **Ch.4, Ch.10, Ch.15 KHÔNG có "Bảng chốt"** — trong khi **54/58 chương có**. Bộ kiểm không báo vì mục này **không bắt buộc**, nhưng ⭐ thiếu ở đúng ba chương nền tảng là bất nhất về trải nghiệm đọc | ⚠ |
+
+⭐ Đã sửa: đổi tên §5.8 thành *"Chọn gì cho tải nào"*; viết **ba Bảng chốt mới** cho Ch.4, Ch.10, Ch.15.
+⚠ Kiểm trước khi đánh số lại: mục bị đẩy số (Tự kiểm) **không có dẫn chiếu nào** trỏ tới — an toàn.
+
+### B — Khai thác tiếp bộ SEMI
+
+| # | Nơi | Việc đã làm | KQ |
+|---|---|:--|:--:|
+| 206 | ⭐⭐ Ch.29 §29.6b — **"đã duyệt" ≠ "đã chứng thực"** | E42 mục 8.1–8.2.8: vòng đời công thức có **hai thuộc tính độc lập** — *mức duyệt* (nội dung đúng) và *đã chứng thực trên **máy này***. ⚠ Vòng 31 tôi kết luận Ch.29 *"đã phủ đủ"* — đúng với nguồn khi đó, nhưng ⭐ **thiếu hẳn chiều thứ hai này** | ➕➕ |
+| 207 | ⭐⭐ Ch.29 — khoá là **hệ quả**, không phải cờ | E42 mục 8.2.5: công thức bị khoá khi **mức duyệt ≥ ngưỡng chỉ-đọc của kho**. ⭐ Thay vì trông vào việc ai đó **nhớ bật cờ khoá**, trạng thái khoá **tự suy ra** — cùng tinh thần *"làm cho hỏng hóc trở nên phát hiện được"* (Ch.48) | ➕➕ |
+| 208 | ⚠⚠ Ch.29 — **rút chứng thực sau bảo trì** | Sau khi thay cơ cấu, chứng thực cũ **hết giá trị dù công thức không đổi một chữ**. ⭐ Đề xuất: xoá trường *"lần chứng thực gần nhất"* trong quy trình bảo trì, cùng chỗ với việc gỡ cưỡng bức | ➕➕ |
+| 209 | ⭐ Ch.45 §45.4b — **SECS/GEM** | ⚠ Không xuất hiện lần nào trong sách, dù DP-01 là máy **điện tử** và khách hàng ngành đó sẽ hỏi đích danh. Thêm mục gọn: **ba tầng** (vận chuyển · nội dung bản tin **SECS-II** · ⭐ **hành vi thiết bị GEM**) | ➕ |
+| 210 | ⭐⭐ Ch.45 — bất đối xứng của GEM | E30 mục 1.2: GEM quy định hành vi của **THIẾT BỊ**, ⚠ **không** quy định hành vi của **cấp trên** — cấp trên khởi xướng bất kỳ kịch bản nào, bất kỳ lúc nào. ⭐ Nên *"máy chúng tôi hỗ trợ GEM"* là **cam kết một chiều**; vẫn phải hỏi cấp trên sẽ gọi gì | ➕➕ |
+
+### C — Hình mới
+
+| # | Hình | Vì sao cần hình |
+|---|---|:--|
+| 211 | ⭐ **Hình 35.1** — ba đường đáp ứng P / P+I / P quá lớn | ⚠ Khối ASCII **không vẽ được đường cong**. Sai lệch tĩnh là khái niệm **thị giác thuần tuý** |
+| 212 | ⭐ **Hình 21.1** — vạch đôi và vạch đơn của SFC | ⭐ Sách nói khác biệt này *"sống còn"* và vẽ nhầm thì **máy đứng im vĩnh viễn**. ⚡ Đúng loại khác biệt mà **nhìn thì không thể nhầm, đọc thì rất dễ nhầm** |
+
+⚠ Cả hai đều render PNG và soát bằng mắt. ⭐ Hình 35.1 phải sửa **ba lần**: đường đỏ vọt khỏi khung ·
+nhãn chồng đường vàng · và ⚠⚠ **đường đỏ xuất phát sai từ 66 % thay vì 0** — lỗi mô hình, không phải
+lỗi bố cục. Đã thay bằng **đáp ứng bậc hai đúng dạng**.
+
+### Kết quả đợt 35
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **10** |
+| ➕➕ Bổ sung giá trị cao | 4 |
+| ⚠ Sửa nhất quán | 2 nhóm (4 chương) |
+| ⭐ Hình mới | **2** — sách nay có **13 hình** trên 58 chương |
+
+> ⭐⭐ **Mục 206 đáng ghi vì nó lật một kết luận cũ của chính tôi.**
+>
+> Vòng 31 tôi rà Ch.29 và ghi *"sách đã phủ đủ, KHÔNG SỬA"* — và đó là **kết luận đúng với nguồn tôi
+> có lúc đó**. ⚠ Nhưng E42 cho thấy còn một chiều hẳn: sách lo *"công thức này có đúng không"*, mà
+> không lo *"nó đã được chứng minh trên CỖ MÁY NÀY chưa"*.
+>
+> ⭐ **Bài học: "đã kiểm, không sửa" luôn có kèm một mệnh đề ngầm — "với những gì tôi đọc được tính
+> tới lúc đó".** Nguồn mới vào thì kết luận cũ phải mở lại, ⚠ **kể cả những chương đã đóng**.
+>
+> ⚡ **Và mục 211 nhắc một điều về hình:** XML hợp lệ, script báo OK, ba bộ kiểm đều xanh — nhưng
+> ⚠⚠ **đường cong bắt đầu sai chỗ**. ⭐ Chỉ có **nhìn bằng mắt** mới bắt được, đúng như quy ước hình
+> của dự án đã cảnh báo.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

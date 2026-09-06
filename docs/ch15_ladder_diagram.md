@@ -437,7 +437,23 @@ Nhưng những chi tiết sau **khác nhau thật** và sẽ làm bạn vấp kh
 
 ---
 
-## 15.7 Tự kiểm
+## 15.7 Bảng chốt
+
+| Câu hỏi | Trả lời |
+|---|---|
+| ⭐ "Dòng năng lượng" trong ladder là gì | **Ẩn dụ**, không phải điện — nó là **thứ tự đánh giá logic** |
+| Hai lệnh tiếp điểm | ⭐ Kiểm bit **bằng 1** · kiểm bit **bằng 0** — ⚠ tên gọi "NO/NC" trong phần mềm gây hại |
+| ⭐⭐ Bảng bốn tổ hợp — đáp án | **Tiếp điểm vật lý NC, trong code dùng tiếp điểm kiểm-bằng-1** |
+| ⚠⚠ Tổ hợp nguy hiểm nhất | ⭐ **NO + kiểm-bằng-0**: chạy đúng mọi lần thử, hỏng đúng ngày đứt dây |
+| ⚠⚠ Giới hạn của bảng 4 tổ hợp | ⭐ Chỉ phủ **hỏng kiểu HỞ** — **không** phủ hỏng kiểu **CHẬP** (mục 15.3) |
+| Cuộn dây trùng | ⭐ **Nấc cuối thắng** — và lỗi này im lặng |
+| Thứ tự nấc thang | ⚠ **Là logic**, không phải cách sắp xếp cho đẹp |
+| Một nấc nên chứa bao nhiêu | ⭐ Đủ để **đọc hiểu trong một lần nhìn** — nhồi nhiều là nợ cho người bảo trì |
+| ⭐ Trước khi kết luận về đấu nối | **Đo thật**, đừng suy từ nhãn trên thiết bị |
+
+---
+
+## 15.8 Tự kiểm
 
 1. **Viết lại bảng 4 tổ hợp từ trí nhớ.** Chỉ ra tổ hợp đúng và giải thích vì sao tổ hợp 2 nguy hiểm
    dù nó chạy đúng khi thử nghiệm.

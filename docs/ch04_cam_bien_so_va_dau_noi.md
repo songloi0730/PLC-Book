@@ -359,7 +359,22 @@ vào chân tín hiệu có thể làm hỏng cả cảm biến lẫn ngõ vào m
 
 ---
 
-## 4.8 Tự kiểm
+## 4.8 Bảng chốt
+
+| Câu hỏi | Trả lời |
+|---|---|
+| ⭐⭐ "Trạng thái NORMAL" nghĩa là gì | **Lúc không có kích thích** — chưa ai nhấn, chưa thấy vật |
+| Cảm biến 2 dây khác 3 dây ở đâu | 2 dây mắc **nối tiếp với tải**; 3 dây có **nguồn riêng** cho phần điện tử |
+| ⚠⚠ PNP/NPN — bốn tổ hợp | ⭐ **Hai tổ hợp KHÔNG BAO GIỜ chạy**, dù thiết bị tốt và dây đúng màu |
+| Cách nhớ | ⭐ Cảm biến **cấp dòng** thì module phải **nhận dòng**, và ngược lại |
+| ⚠ Đấu sai kiểu thì | Không phải "chạy sai" mà là **không chạy** — và trông y hệt hỏng cảm biến |
+| Chọn kiểu đầu ra lúc nào | ⭐ **Lúc mua sắm**, theo bảng 4 tổ hợp — không phải lúc đấu dây |
+| ⭐ Tín hiệu mất là phải dừng | Tiếp điểm vật lý **NC** (Chương 15, mục 15.3) |
+| Cảm biến quang chọn loại nào | Theo **vật cần phát hiện** và khoảng cách — thu-phát riêng, phản xạ gương, phản xạ khuếch tán |
+
+---
+
+## 4.9 Tự kiểm
 
 1. **Viết lại bảng 4 tổ hợp từ trí nhớ**, kèm giải thích đường đi của dòng cho hai tổ hợp chạy được.
 2. Một cảm biến PNP, đèn trên thân sáng khi có vật, nhưng bit PLC không lên. **Ba bước kiểm tra đầu

@@ -1,0 +1,59 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 486' width='900' height='486'>
+<rect width='900' height='486' fill='#FFFFFF'/>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 21.1 — Vạch đôi và vạch đơn: hai nét vẽ, hai nghĩa ngược nhau</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Vẽ nhầm một nét là máy đứng im vĩnh viễn mà không báo gì. Đếm số vạch trước khi kết luận về luồng.</text>
+<rect x='24' y='84' width='412' height='330' rx='3' fill='#FFFFFF' stroke='#9AA3AB' stroke-width='1.2'/>
+<text x='236' y='108' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>NHÁNH SONG SONG — vạch ĐÔI</text>
+<text x='236' y='126' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='middle'>chạy cùng lúc, đi tiếp khi CẢ HAI xong</text>
+<rect x='184' y='136' width='104' height='34' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='236' y='158' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Bước trước</text>
+<line x1='236' y1='170' x2='236' y2='176' stroke='#1A1D21' stroke-width='2'/>
+<polygon points='236.0,186.0 231.0,176.0 241.0,176.0' fill='#1A1D21'/>
+<line x1='96' y1='190' x2='376' y2='190' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='96' y1='196' x2='376' y2='196' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='146' y1='196' x2='146' y2='214' stroke='#1A1D21' stroke-width='1.8'/>
+<line x1='326' y1='196' x2='326' y2='214' stroke='#1A1D21' stroke-width='1.8'/>
+<rect x='98' y='214' width='96' height='34' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='146' y='236' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Trạm 1</text>
+<rect x='278' y='214' width='96' height='34' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='326' y='236' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Trạm 2</text>
+<line x1='146' y1='248' x2='146' y2='272' stroke='#1A1D21' stroke-width='1.8'/>
+<line x1='326' y1='248' x2='326' y2='272' stroke='#1A1D21' stroke-width='1.8'/>
+<line x1='96' y1='272' x2='376' y2='272' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='96' y1='278' x2='376' y2='278' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='236' y1='278' x2='236' y2='286' stroke='#1A1D21' stroke-width='2'/>
+<polygon points='236.0,296.0 231.0,286.0 241.0,286.0' fill='#1A1D21'/>
+<rect x='184' y='296' width='104' height='34' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='236' y='318' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Bước sau</text>
+<rect x='44' y='344' width='372' height='56' rx='3' fill='#DFF0E4' stroke='#2E7D4F' stroke-width='1.2'/>
+<text x='58' y='364' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1E5B37' text-anchor='start'>⭐  Cả hai nhánh CÙNG chạy.</text>
+<text x='58' y='382' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#1E5B37' text-anchor='start'>Bước sau chỉ bắt đầu khi nhánh CHẬM NHẤT đã xong.</text>
+<rect x='464' y='84' width='412' height='330' rx='3' fill='#FFFFFF' stroke='#9AA3AB' stroke-width='1.2'/>
+<text x='682' y='108' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>NHÁNH LỰA CHỌN — vạch ĐƠN</text>
+<text x='682' y='126' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='middle'>chọn MỘT đường, tuỳ điều kiện nào đúng</text>
+<rect x='630' y='136' width='104' height='34' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='682' y='158' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Bước trước</text>
+<line x1='682' y1='170' x2='682' y2='176' stroke='#1A1D21' stroke-width='2'/>
+<polygon points='682.0,186.0 677.0,176.0 687.0,176.0' fill='#1A1D21'/>
+<line x1='542' y1='192' x2='822' y2='192' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='592' y1='192' x2='592' y2='214' stroke='#1A1D21' stroke-width='1.8'/>
+<line x1='772' y1='192' x2='772' y2='214' stroke='#1A1D21' stroke-width='1.8'/>
+<text x='586' y='208' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#2E7D4F' text-anchor='end'>OK</text>
+<text x='778' y='208' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#B03A2E' text-anchor='start'>NG</text>
+<rect x='544' y='214' width='96' height='34' rx='3' fill='#DFF0E4' stroke='#2E7D4F' stroke-width='1.5'/>
+<text x='592' y='236' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Chuyển tiếp</text>
+<rect x='724' y='214' width='96' height='34' rx='3' fill='#FBE9E7' stroke='#B03A2E' stroke-width='1.5'/>
+<text x='772' y='236' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Loại bỏ</text>
+<line x1='592' y1='248' x2='592' y2='272' stroke='#1A1D21' stroke-width='1.8'/>
+<line x1='772' y1='248' x2='772' y2='272' stroke='#1A1D21' stroke-width='1.8'/>
+<line x1='542' y1='272' x2='822' y2='272' stroke='#1A1D21' stroke-width='2.6'/>
+<line x1='682' y1='272' x2='682' y2='286' stroke='#1A1D21' stroke-width='2'/>
+<polygon points='682.0,296.0 677.0,286.0 687.0,286.0' fill='#1A1D21'/>
+<rect x='630' y='296' width='104' height='34' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='682' y='318' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>Bước sau</text>
+<rect x='490' y='344' width='372' height='56' rx='3' fill='#EAF1F6' stroke='#565E66' stroke-width='1.2'/>
+<text x='504' y='364' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1A1D21' text-anchor='start'>⭐  Chỉ MỘT nhánh chạy.</text>
+<text x='504' y='382' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='start'>Nhánh còn lại không bao giờ được kích hoạt lần này.</text>
+<rect x='24' y='426' width='852' height='42' rx='3' fill='#FBE9E7' stroke='#B03A2E' stroke-width='1.3'/>
+<text x='38' y='452' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#7A2E24' text-anchor='start'>⚠⚠  Vẽ nhầm vạch ĐƠN thành vạch ĐÔI: trình tự sẽ CHỜ một nhánh không bao giờ chạy — máy đứng im vĩnh viễn, và không có báo động nào.</text>
+</svg>

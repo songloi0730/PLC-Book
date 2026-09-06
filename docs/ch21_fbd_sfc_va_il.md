@@ -137,6 +137,11 @@ bước, đi theo đường nào, quay lại chỗ nào. Với người đọc l
 
 ### Hai kiểu nhánh
 
+![Hai kiểu nhánh trong SFC](../assets/ch21/hinh_21_1_hai_kieu_nhanh_sfc.svg)
+
+*Hình 21.1 — Vạch đôi và vạch đơn. Hai nét vẽ gần giống nhau, nghĩa ngược nhau, và vẽ nhầm thì máy
+đứng im vĩnh viễn mà không báo gì.*
+
 **Nhánh song song** *(parallel / simultaneous divergence)* — hai nhánh chạy **cùng lúc**, và trình tự
 chỉ đi tiếp khi **cả hai** đã xong:
 

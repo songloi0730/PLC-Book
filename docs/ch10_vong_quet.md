@@ -357,7 +357,23 @@ Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
 
 ---
 
-## 10.6 Tự kiểm
+## 10.6 Bảng chốt
+
+| Câu hỏi | Trả lời |
+|---|---|
+| ⭐⭐ Bốn giai đoạn của vòng quét | **Đọc ảnh vào → chạy chương trình → ghi ảnh ra → việc hệ thống** |
+| PLC nhìn ngõ vào mấy lần một vòng | ⭐ **Một lần**, ở đầu vòng — giữa chừng nó không biết gì |
+| ⚠ Xung ngắn hơn một vòng quét | ⭐ **Mất hoàn toàn** — cần bắt cạnh hoặc bộ đếm tốc độ cao (Chương 18) |
+| ⭐⭐ Vì sao thứ tự nấc thang đổi kết quả | Nấc sau đọc **giá trị nấc trước vừa ghi**, trong **cùng** một vòng |
+| Truy cập trực tiếp dùng khi nào | ⚠ **Chỉ khi đã đo được** rằng độ trễ một vòng quét là không chấp nhận được |
+| ⚠⚠ Watchdog kích thì | **Mọi ngõ ra tắt cùng lúc, giữa chu trình** — kiểu dừng tệ nhất |
+| Thời gian quét con số nào quan trọng | ⭐ **Lớn nhất**, không phải trung bình |
+| Chương trình phình ra thì | Quét dài ra → biên an toàn của mọi tính toán thời gian **hẹp lại** |
+| Hai POU cùng ghi một biến | ⚠ **Tranh chấp** — kết quả phụ thuộc thứ tự gọi, rất khó tái hiện |
+
+---
+
+## 10.7 Tự kiểm
 
 Làm được những việc sau thì coi như hiểu chương này:
 

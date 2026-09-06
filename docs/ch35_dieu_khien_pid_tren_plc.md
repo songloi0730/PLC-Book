@@ -116,6 +116,11 @@ CV = Kp × e
 
 Sai lệch lớn → tác động mạnh. Sai lệch nhỏ → tác động nhẹ. Trực giác, và hiệu quả.
 
+![Ba đường đáp ứng của bộ điều khiển](../assets/ch35/hinh_35_1_ba_duong_dap_ung.svg)
+
+*Hình 35.1 — Cùng một quá trình, cùng một điểm đặt, ba cách chỉnh. Đường vàng dừng lại dưới điểm đặt
+và ở lại đó; đường xanh tới đúng nơi; đường đỏ là hậu quả của việc tăng P để bù sai lệch tĩnh.*
+
 ### ⭐ Vì sao P thuần luôn để lại sai lệch tĩnh
 
 Đây là điểm mà nhiều người dùng PID nhiều năm vẫn không nắm chắc, và nó suy ra trực tiếp từ công thức.

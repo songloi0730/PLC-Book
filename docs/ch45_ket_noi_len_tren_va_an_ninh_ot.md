@@ -106,6 +106,45 @@ Hai cách phổ biến để đưa dữ liệu từ tầng máy lên tầng trê
 
 ---
 
+## 45.4b ⭐ Nếu khách hàng làm điện tử: họ sẽ hỏi về SECS/GEM
+
+Hai giao thức ở mục trên là lựa chọn chung cho công nghiệp. ⚠ Nhưng trong **bán dẫn và điện tử** —
+đúng ngành của máy mẫu DP-01 — có một bộ tiêu chuẩn riêng, và khách hàng sẽ **hỏi đích danh nó**.
+
+Bộ này chia làm **ba tầng tách bạch**, và hiểu đúng chỗ chia là đủ để nói chuyện được:
+
+| Tầng | Trả lời câu hỏi | Tên thường gặp |
+|---|---|---|
+| **Vận chuyển** | Bản tin đi qua đường nào | Nối tiếp điểm–điểm, hoặc **trên nền TCP/IP** |
+| ⭐ **Nội dung bản tin** | Bản tin **gồm những gì** — cấu trúc, kiểu dữ liệu | **SECS-II** |
+| ⭐⭐ **Hành vi thiết bị** | ⭐ **Dùng bản tin nào, trong tình huống nào, và máy phải làm gì sau đó** | **GEM** |
+
+> ⭐ **Tầng thứ ba mới là tầng đắt.** Hai tầng dưới chỉ nói *"nói bằng gì"*; ⭐⭐ GEM nói *"cư xử thế
+> nào"* — trạng thái xử lý, sự kiện thu thập, báo động, lệnh từ xa, biến dữ liệu.
+>
+> ⚡ Nói cách khác, nó là **đặc tả hành vi của máy nhìn từ đầu dây bên kia** — đúng thứ mà Chương 42
+> gọi là *"giao diện MES"*, nhưng đã được chuẩn hoá sẵn thay vì mỗi nhà máy tự định nghĩa.
+
+> ⚠⚠ **Bất đối xứng quan trọng nhất, và nó quyết định cách bạn viết hợp đồng:**
+>
+> ⭐ **GEM quy định hành vi của THIẾT BỊ, không quy định hành vi của HỆ THỐNG CẤP TRÊN.** Cấp trên có
+> quyền khởi xướng bất kỳ kịch bản nào, **bất kỳ lúc nào** — và máy của bạn **phải đáp đúng như chuẩn
+> mô tả**.
+>
+> ⚠ Hệ quả: câu *"máy chúng tôi hỗ trợ GEM"* là **một cam kết một chiều — về phía bạn**. ⭐ Nó **không**
+> cho bạn biết cấp trên sẽ làm gì, gọi gì, gọi lúc nào. ⚠⚠ Vẫn phải hỏi **đúng những câu ở Chương 42
+> mục 42.8** — và hỏi **sớm**.
+
+> ⭐ **Mức độ chi tiết cần biết, tuỳ vai trò của bạn:**
+>
+> | | |
+> |---|---|
+> | Người lập trình PLC ở máy **không** thuộc ngành này | ⭐ Biết **tên và ba tầng** là đủ |
+> | Máy sẽ bán vào nhà máy điện tử/bán dẫn | ⚠⚠ **Hỏi ngay từ khâu đặc tả**: có yêu cầu GEM không, mức nào |
+> | Đã chốt là có | ⭐ Phần này thường do **một mô-đun phần mềm chuyên dụng** đảm nhiệm, không viết tay trong PLC — nhưng ⚠ **PLC phải cấp đủ dữ liệu và trạng thái** cho nó (mục 45.2) |
+
+---
+
 ## 45.5 ⭐⭐ Vì sao không cho hệ IT truy cập trực tiếp PLC
 
 Đây là mục quan trọng nhất chương.
@@ -478,6 +517,10 @@ hệ quả của lựa chọn đó lên toàn bộ cách viết chương trình.
 - **Tài liệu bảo mật của hệ PLC đang dùng** — dùng cho ⚠ **khả năng xác thực và mã hoá của dòng CPU
   cụ thể**, cơ chế khoá chương trình, và ghi vết truy cập.
 - Bảng I/O và số liệu đã chốt của DP-01 — Phụ lục J.
+- ⭐ **SEMI E30** — *Generic Model for Communications and Control of Manufacturing Equipment (GEM)*,
+  mục 1.2–1.3: GEM định nghĩa ⭐⭐ **hành vi của thiết bị nhìn qua đường truyền** — dùng bản tin nào,
+  trong tình huống nào, và kết quả phải ra sao — trên nền **SEMI E5 (SECS-II)** vốn chỉ định nghĩa
+  **nội dung bản tin**; ⚠ và GEM **không quy định hành vi của hệ thống cấp trên** — nền cho mục 45.4b.
 
 > ⚠⚠ **Giới hạn của chương này.** Nội dung ở đây là **định hướng để bạn không tự tạo ra lỗ hổng và
 > biết phải hỏi gì**. Nó **không** đủ để thiết kế kiến trúc an ninh cho một nhà máy.

@@ -280,7 +280,7 @@ ra**, và nó nằm trong mô tả trình tự.
 
 ---
 
-## 5.8 Bảng chốt — chọn gì cho tải nào
+## 5.8 ⭐ Chọn gì cho tải nào — bảng tra khi thiết kế
 
 | Tải | Kiểu ngõ ra | Mạch dập | Rơ-le trung gian |
 |---|---|---|---|
