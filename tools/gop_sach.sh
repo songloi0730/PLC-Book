@@ -73,6 +73,10 @@ sed -i -E "s/v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]{6}/${VERSION}/g" output/cover.md out
 echo "-- Da ghep .md: $(wc -l < "$OUT_MD") dong"
 
 # 3. Markdown -> HTML tho (GitHub-flavored)
+# Nhung anh ../assets/*.svg thanh data-URI base64 -> ban .md va .html TU DUNG MOT MINH.
+# Kho phat hanh KHONG co thu muc assets/; de nguyen ../assets thi anh se VO khi chia se file le.
+python tools/nhung_anh.py "$OUT_MD"
+
 npx marked --gfm -i "$OUT_MD" -o "$TMP/body_raw.html"
 
 # 4. Sinh muc luc + gan id vao h1/h2
