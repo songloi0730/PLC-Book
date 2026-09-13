@@ -1298,6 +1298,62 @@ lỗi bố cục. Đã thay bằng **đáp ứng bậc hai đúng dạng**.
 
 ---
 
+## Đợt 36 — 2026-09-13 · Phụ lục L (thư viện mẫu code) và ⚠⚠ chỗ mù của bộ kiểm
+
+⭐ Đợt này khác mọi đợt trước: **không đối chiếu sách với nguồn ngoài, mà đối chiếu một tài liệu MỚI
+với chính cuốn sách**. Phụ lục L gom 14 mẫu code thường dùng — và bản nháp đầu của nó **mâu thuẫn với
+sáu chỗ trong thân sách**.
+
+### A — Bản nháp Phụ lục L mâu thuẫn với thân sách
+
+| # | Chỗ mâu thuẫn | Sách nói gì | KQ |
+|---|:--|:--|:--:|
+| 213 | ⚠⚠ Mẫu analog viết bằng **số thực**, và **ghi cứng** dải thô `3200…32000` | Ch.32 mục 32.4: dùng **`DINT` đơn vị nhỏ**, **nhân trước chia sau**, và ⚠⚠ `RAW_MAX` là **con số đầu tiên phải TRA DATASHEET** — ghi cứng một dải là dạy đúng cái bẫy Ch.32 Bẫy 4 | ⚠ |
+| 214 | ⚠⚠ Ngưỡng báo động lấy **giá trị ĐÃ LỌC** | Ch.32 mục 32.9: lọc **chỉ cho hiển thị và ghi log**; ngưỡng dùng giá trị **chưa lọc**, vì bộ lọc cộng thêm trễ vào chuỗi trễ của cả máy (mục 32.6) | ⚠ |
+| 215 | ⚠ Timeout từng bước **tự cộng mili-giây** mỗi vòng quét | Ch.26: **một `TON` dùng chung** với `Stn1_StepLimit : TIME`, tự đặt lại khi bước đổi. ⭐ Cộng tay là tự viết lại một khối chuẩn đã có, và sai khi tác vụ bị trượt nhịp | ⚠ |
+| 216 | ⚠ Đặt ra cờ mới `M_PositionTrusted` | Ch.37 mục 37.3 đã có `M_Homed`, và nói rõ nó **không được giữ qua mất điện**. ⭐ Hai tên cho một khái niệm chính là định nghĩa của trôi dạt | ⚠ |
+| 217 | ⚠ Dùng `M_AnyAlarm` làm cờ gom lỗi | `M_AnyFault` là tên dùng ở **17 chương**; `M_AnyAlarmActive` + `FirstAlarmCode` là tên của Ch.44. ⭐ `M_AnyAlarm` không tồn tại ở đâu khác | ⚠ |
+| 218 | ⚠ Gọi nút vật lý là `M_StartPB` / `M_StopPB` | Bảng I/O chính thức J.2 có `DI_StartPB`, `DI_StopPB`. ⭐ Tiền tố `M_` để dành cho **bit nội bộ**, không phải ngõ vào | ⚠ |
+
+⭐ Cả sáu đều đã sửa; Phụ lục L bản cuối dùng đúng khối chuẩn, đúng tên biến và đúng hằng của sách.
+
+### B — ⚠⚠ Bộ kiểm KHÔNG nhìn thấy sáu lỗi trên
+
+| # | Phát hiện | Hệ quả |
+|---|:--|:--:|
+| 219 | ⚠⚠ **`kiem_nhat_quan.py` cố ý xoá mọi khối code trước khi kiểm** (hàm `bo_code_block`) — để số dòng khớp file thật. Nên mọi tên tag, tên biến, hằng số **nằm trong ```` ```iecst ```` đều vô hình với nó** | ⚠ |
+| 220 | ⭐ Ngược lại, `kiem_tra_chuong.py` **bắt được** một lỗi mà mắt tôi bỏ qua: dẫn chiếu mới ở Ch.30 nhắc *"servo"* — thiết bị **lát cắt 3** trong một chương **lát cắt 2**, vi phạm B8 | ✅ |
+
+⭐ Đã thêm dẫn chiếu tới Phụ lục L từ Phụ lục B, E, J, K và Ch.30 mục 30.5 — chỗ nói về **ba yêu cầu
+của một khối đáng đưa vào thư viện**, vì Phụ lục L chính là hiện thực của yêu cầu số 3
+(*"có ghi rõ giả định"*).
+
+### Kết quả đợt 36
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **8** |
+| ⚠ Sửa mâu thuẫn nội bộ | **6** (đều trong bản nháp, chưa từng phát hành) |
+| ⭐ Tài liệu mới | Phụ lục L — **14 mẫu**, sách nay có **13 phụ lục** |
+
+> ⭐⭐ **Bài học lớn nhất của đợt này: bộ kiểm có một chỗ mù đúng bằng kích thước của code.**
+>
+> Bốn công cụ đều xanh trong khi bản nháp mâu thuẫn với Ch.26, Ch.32, Ch.37 và Ch.44 ở sáu chỗ. ⚠ Lý
+> do không phải công cụ hỏng — mà vì `kiem_nhat_quan.py` **cố ý** bỏ khối code, và cuốn sách này có
+> **165 khối `iecst` trên 35 chương**. ⭐ Nghĩa là phần **dễ bị chép nguyên nhất** cũng là phần
+> **không ai canh**.
+>
+> ⚡ Sáu lỗi trên chỉ lộ ra vì tôi tra thẳng trong sách *"chương nào đã DẠY thứ này?"* trước khi viết —
+> đúng quy trình đã ghi ở đợt 24. ⚠ Nếu viết theo trí nhớ thì cả sáu đã vào bản phát hành, và chúng
+> **nguy hiểm hơn một câu văn sai**: mẫu code là thứ người đọc chép nguyên.
+>
+> ⚠ **Đề xuất chưa làm (cần quyết định):** cho `kiem_nhat_quan.py` quét **tên tag và tên hằng bên
+> trong khối code** như một nhóm kiểm riêng. ⭐ Lợi: bịt đúng chỗ mù vừa phát hiện. ⚠ Giá: code minh
+> hoạ cố ý dùng tên tổng quát (`Axis1`, `SensWork`) sẽ báo giả hàng loạt — phải có danh sách cho phép,
+> và danh sách đó lại là một thứ phải bảo trì.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

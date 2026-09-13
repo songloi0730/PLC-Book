@@ -323,6 +323,7 @@ Mạch tự giữ — mẫu cơ bản nhất:
 | Vì sao lệnh này tồn tại, dùng khi nào | Chương được dẫn ở mỗi bảng |
 | ⭐ **Lệnh tương ứng trên hãng bạn dùng** | **Phụ lục A2** |
 | Công thức tính kèm điều kiện áp dụng | **Phụ lục K** |
+| ⭐ **Mẫu code cho mạch thường dùng** (tự giữ, dừng khẩn cấp, tạm dừng, tuần hoàn, servo…) | **Phụ lục L** |
 | Thuật ngữ Việt–Anh | **Phụ lục F** |
 
 > ⚠ **Giới hạn.** Bảng này theo **IEC 61131-3**. ⭐ Từng hãng có thể: đặt tên lệnh khác, thêm chân cho

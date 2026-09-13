@@ -73,7 +73,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Kuphaldt — Electric Circuits | 2354 | 47 |
 | Petruzella — PLC (2025) | 441 | 16, 18, 19, 51 |
 | Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
-| Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30 |
+| Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30, 45 |
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21, 32 |
 | Siemens S7-1200 System Manual | 864 | 7, 12, 51 |
 | Siemens S7-1500 / TIA | 37 | 38 |
@@ -85,12 +85,12 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Schneider — an toàn máy | 33 | 41, 47, 56 |
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 47 |
-| PLCopen Motion Control | 213 | 28, 37, 43 |
+| PLCopen Motion Control | 213 | 28, 37, 43, 45 |
 | Mitsubishi FX5 — Positioning | 302 | 28 |
 | Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
 | Bryan — Theory and Implementation | 1047 | 8, 22, 23, 49, 51, 52 |
 | IRSST — Prevention of Mechanical Hazards | 71 | 47 |
-| SEMI — bộ tiêu chuẩn (E10, E79…) | 5292 | 21, 37, 38, 41, 55 |
+| SEMI — bộ tiêu chuẩn (E10, E79…) | 5292 | 21, 29, 37, 38, 41, 45, 55 |
 | Sensors — vision & PLC (CC BY) | 20 | 43 |
 
 ---

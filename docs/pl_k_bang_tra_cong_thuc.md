@@ -320,6 +320,9 @@ Nếu  Tần số xung  >  1 / (2 × Thời gian quét)   →  ⭐ PHẢI dùng 
 | Dải kiểu dữ liệu, chống tràn | K.6 | 11, 19 |
 | Vỏ chống nhiễu, nối đất | K.7 | 31, 36, 49 |
 
+> ⭐ **Cần đoạn code chứ không phải công thức?** Các mạch lặp lại ở mọi máy — tự giữ, chuỗi cho
+> phép, ba lệnh dừng, trình tự có timeout, servo, analog — nằm ở **Phụ lục L**.
+
 ---
 
 > ⚠⚠ **Nhắc lại giới hạn.** Các công thức ở đây là ⭐ **công cụ ước lượng và kiểm tra**, không phải

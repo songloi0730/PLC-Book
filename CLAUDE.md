@@ -203,7 +203,7 @@ bash tools/gop_sach.sh --khong-chep    # chỉ ghép để xem, không chép san
 ```
 
 Script tự làm: chạy bộ kiểm (⚠ **có LỖI thì dừng, không ghép**) → cập nhật số phiên bản trong
-`output/cover.md` và `output/cover.html` → ghép bìa + mục lục + 58 chương + 12 phụ lục → sinh mục lục
+`output/cover.md` và `output/cover.html` → ghép bìa + mục lục + 58 chương + 13 phụ lục → sinh mục lục
 HTML có id neo → bọc bảng cho cuộn ngang → dọn bản cũ → chép sang repo phát hành.
 
 ### Quy ước số phiên bản

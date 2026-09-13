@@ -303,6 +303,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | Theo dõi sự trôi trước khi thành lỗi | Chương 53 mục 53.5 |
 | Bảng I/O và trình tự của DP-01 | **Phụ lục J** |
 | Công thức tính, kèm điều kiện áp dụng | **Phụ lục K** |
+| ⭐ **Mẫu code cho mạch thường dùng** (tự giữ, dừng khẩn cấp, tạm dừng, tuần hoàn, servo…) | **Phụ lục L** |
 
 > ⚠⚠ **Nhắc lại giới hạn.** Phụ lục này liệt kê **nghi phạm thường gặp**, không phải chẩn đoán. Nó
 > giúp bạn thu hẹp phạm vi tìm kiếm nhanh hơn.

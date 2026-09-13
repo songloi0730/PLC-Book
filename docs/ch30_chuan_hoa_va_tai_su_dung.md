@@ -241,6 +241,11 @@ Kiểu thứ ba là kiểu hay xảy ra nhất trong thực tế, và nó tệ h
 | 2 | **Không phụ thuộc biến toàn cục** | Khối đọc lén một biến ngoài thì không tái dùng được ở dự án khác |
 | 3 | **Có ghi rõ giả định** | ⭐ "khối này giả định cơ cấu về vị trí lò xo khi mất lệnh" — viết ngay đầu khối |
 
+> ⭐ **Bắt đầu từ đâu.** Phụ lục L gom sẵn những mẫu lặp lại ở gần như mọi máy — tự giữ, chuỗi
+> cho phép, ba lệnh dừng, khung trình tự có timeout, khối cơ cấu hai vị trí dùng lại được.
+> ⚠ Mỗi mẫu ở đó **ghi kèm giả định của nó** đúng theo yêu cầu số 3 trong bảng trên — đọc phần
+> giả định trước khi chép, vì đó mới là chỗ dùng lại sai.
+
 ---
 
 ### ⚠⚠ Thời điểm viết tài liệu — thứ quyết định chất lượng của nó

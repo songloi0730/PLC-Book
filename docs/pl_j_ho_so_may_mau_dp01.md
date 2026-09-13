@@ -367,6 +367,7 @@ một phần của hồ sơ kỹ thuật**.
 | Ráp toàn bộ thành một dự án theo thứ tự | ⭐ **Chương 57** |
 | Bảng biểu mẫu trống để dùng cho máy của bạn | **Phụ lục C** |
 | Công thức tính, kèm điều kiện áp dụng | **Phụ lục K** |
+| ⭐ **Mẫu code cho mạch thường dùng** (tự giữ, dừng khẩn cấp, tạm dừng, tuần hoàn, servo…) | **Phụ lục L** |
 | Tra theo triệu chứng khi máy lỗi | **Phụ lục E** |
 | Thuật ngữ Việt–Anh | **Phụ lục F** |
 
