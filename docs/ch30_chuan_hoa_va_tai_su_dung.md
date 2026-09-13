@@ -342,6 +342,28 @@ Kiểu thứ ba là kiểu hay xảy ra nhất trong thực tế, và nó tệ h
 | 2 | **Không phụ thuộc biến toàn cục** | Khối đọc lén một biến ngoài thì không tái dùng được ở dự án khác |
 | 3 | **Có ghi rõ giả định** | ⭐ "khối này giả định cơ cấu về vị trí lò xo khi mất lệnh" — viết ngay đầu khối |
 
+### ⭐⭐ Mức 3 trông như thế nào trong thực tế
+
+Mức 3 ở bảng mục 30.3 — *tái sử dụng ở quy mô cả máy* — nghe trừu tượng. Đây là hình dạng thật của
+nó, đo trên **hai cỗ máy khác nhau do cùng một nhóm kỹ thuật viết**:
+
+| Hạng mục | Hai máy đó |
+|---|---|
+| Bố cục thư mục | ⭐ **Giống hệt** — sáu nhóm ở mục 30.3b |
+| Thư viện khối cơ cấu | ⭐ **Giống hệt** — cùng một bộ khối cho xy-lanh, trục, chân không, đầu ép, khay, kho đệm, đếm chu kỳ, đếm tuổi thọ vật tư, thống kê năng suất |
+| Bộ kiểu dữ liệu | ⭐ Giống hệt |
+| Khối giao diện với màn hình | ⭐⭐ **Khoảng hai phần ba trùng nhau từng tên biến** |
+| ⚠ **Phần khác nhau** | Gần như **chỉ có thư mục trình tự trạm**, cộng vài tín hiệu bắt tay riêng giữa các trạm của máy đó |
+
+> ⭐⭐ **Đó là câu trả lời cụ thể cho câu hỏi "tái sử dụng ở mức máy nghĩa là gì".** Không phải chép cả
+> chương trình rồi sửa. Mà là: ⭐ **mọi thứ KHÔNG đặc thù cho cỗ máy này đều nằm ngoài phần đặc thù**
+> — và phần đặc thù thu lại thành **một thư mục**.
+>
+> ⚡ Khi đạt tới hình dạng này, câu *"làm máy mới mất bao lâu"* đổi nghĩa: nó không còn là *"viết lại
+> chương trình"* mà là *"viết trình tự cho mấy trạm"*. ⚠ Nhưng nó cũng đặt ra một kỷ luật mới —
+> **sửa một khối dùng chung là chạm vào mọi cỗ máy đang dùng nó**, nên bắt buộc phải có phiên bản
+> (mục 30.6) và phải biết máy nào đang dùng phiên bản nào.
+
 > ⭐ **Bắt đầu từ đâu.** Phụ lục L gom sẵn những mẫu lặp lại ở gần như mọi máy — tự giữ, chuỗi
 > cho phép, ba lệnh dừng, khung trình tự có timeout, khối cơ cấu hai vị trí dùng lại được.
 > ⚠ Mỗi mẫu ở đó **ghi kèm giả định của nó** đúng theo yêu cầu số 3 trong bảng trên — đọc phần

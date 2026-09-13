@@ -210,7 +210,7 @@ HTML có id neo → bọc bảng cho cuộn ngang → dọn bản cũ → chép 
 
 | Phần | Nghĩa |
 |---|---|
-| `v1.0.0` — `BASE_VERSION` trong script | ⭐ **Tăng khi có đợt bổ sung nội dung LỚN.** Sửa thẳng trong `tools/gop_sach.sh` |
+| `v1.0.0` — `BASE_VERSION` trong script | ⚠⚠ **CHỈ tăng khi chủ dự án bảo tăng — chốt session 13.** Không tự ý tăng vì thấy đợt sửa "lớn". Mọi đợt sửa thường chỉ đổi phần ngày `.YYMMDD`; `BASE_VERSION` giữ nguyên `v1.0.0` |
 | `.260902` | ⭐ **Ngày ghép, YYMMDD** — script tự lấy theo hôm nay |
 
 ⚠ Đợt phát hành lớn thì **sửa `BASE_VERSION`**, đừng chỉ truyền tham số một lần — lần ghép sau

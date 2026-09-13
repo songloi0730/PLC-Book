@@ -314,6 +314,92 @@ END_IF;
 
 ---
 
+## 41.7b ⭐ Trạm đệm — nơi sản phẩm nằm lại, và nơi chương trình hay mất dấu
+
+Mục 41.4 hỏi *"ai đang giữ sản phẩm"* với **một** sản phẩm ở **một** chỗ giao. Trạm đệm *(buffer)* làm
+câu hỏi đó khó hẳn lên: ⭐ **nhiều sản phẩm nằm cùng lúc, và chương trình phải nhớ từng ô có gì.**
+
+Trạm đệm có hai lý do tồn tại, và chúng đòi hỏi khác nhau:
+
+| Kiểu | Mục đích | Điều kiện lấy ra |
+|---|---|---|
+| ⭐ **Đệm cân bằng nhịp** | Máy trước và máy sau không cùng nhịp (mục 41.2) | Có hàng là lấy được |
+| ⭐⭐ **Đệm theo thời gian** | ⭐ **Thời gian nằm lại LÀ một công đoạn** — keo đông, nguội sau sấy | ⚠ **Đủ thời gian mới được lấy** |
+
+### Ba thứ phải có cho mỗi ô
+
+| | Nội dung |
+|---|---|
+| ⭐ **Có hàng hay không** | Một bit cho mỗi ô |
+| ⭐ **Vào lúc nào** | Một đồng hồ cho mỗi ô — cần cho kiểu đệm theo thời gian, và ⚠ **luôn hữu ích** kể cả kiểu kia |
+| **Có dùng được không** | ⭐ Ô hỏng thì **bỏ qua ô đó**, không bỏ cả trạm (Chương 51 mục 51.7b) |
+
+```iecst
+// ── Mỗi ô: đếm thời gian đã nằm, và cho biết đã đủ chưa ──
+FOR i := 1 TO SLOT_COUNT DO
+    IF Slot[i].HasPart THEN
+        Slot[i].DwellMs := Slot[i].DwellMs + TASK_MS;
+    ELSE
+        Slot[i].DwellMs := 0;
+    END_IF;
+
+    // ⭐ Ô sẵn sàng để LẤY RA
+    Slot[i].ReadyOut := Slot[i].HasPart
+                        AND (Slot[i].DwellMs >= MinDwellMs)
+                        AND NOT Slot[i].Disabled;
+END_FOR;
+```
+
+### ⭐ Vào trước ra trước, hay vào sau ra trước — phải chọn, và phải chọn đúng
+
+| | **Vào trước ra trước** *(FIFO)* | **Vào sau ra trước** *(LIFO)* |
+|---|---|---|
+| Dùng khi | ⭐ **Hầu hết trường hợp** | Kho xếp chồng, chỉ với tới cái trên cùng |
+| Với đệm theo thời gian | ⭐⭐ **Bắt buộc** — cái vào trước đủ thời gian trước | ⚠⚠ **Sai** — cái vừa vào chưa đủ thời gian |
+| Truy xuất nguồn gốc | ⭐ Thứ tự ra đoán được | ⚠ Khó đối chiếu (Chương 42) |
+
+> ⚠⚠ **Chọn nhầm ở trạm đệm theo thời gian là lỗi không nhìn thấy được.** Máy vẫn chạy, sản lượng vẫn
+> đủ, ⭐ **chỉ có chất lượng là sai** — keo chưa đông đã đi tiếp. Và nó sai **âm thầm** đúng kiểu
+> Chương 48 cảnh báo: không có phép kiểm nào báo động.
+>
+> ⭐ Cách phòng rẻ nhất: **đừng lấy ra theo vị trí, hãy lấy ra theo ĐỒNG HỒ.** Chọn ô có thời gian nằm
+> lâu nhất trong số các ô đã đủ điều kiện — khi đó thứ tự đúng **tự nhiên đúng**, không phụ thuộc vào
+> việc ai đã chọn đúng chế độ.
+
+### ⚠⚠ Bật máy lên, trong đệm đang có hàng
+
+Đây là phần khó nhất, và là phần hay bị bỏ hẳn:
+
+> ⚠⚠ **Mất điện giữa ca thì sản phẩm vẫn nằm nguyên trong trạm đệm — nhưng bộ nhớ của chương trình
+> thì không.**
+
+Ba lối xử lý, và cái thứ ba là cái đúng:
+
+| Cách | Vấn đề |
+|---|---|
+| Giả định đệm rỗng | ⚠⚠ Máy nạp thêm vào ô đã có hàng, hoặc bỏ sót hàng cũ nằm lại mãi |
+| Giữ toàn bộ trạng thái qua mất điện | ⚠ Sai ngay khi có người **lấy tay ra** trong lúc máy tắt — và luôn có người làm thế |
+| ⭐⭐ **Đọc lại cảm biến khi khởi tạo, rồi HỎI người vận hành** | ⭐ Chương trình dựng lại *"ô nào có hàng"* từ cảm biến; ⚠ nhưng **thời gian đã nằm thì không cảm biến nào biết** |
+
+⭐ Với đệm theo thời gian, câu hỏi phải hỏi thẳng — bằng kênh nhắc thao tác ở Chương 44 mục 44.3b:
+
+```text
+   Trong trạm đệm đang có 4 sản phẩm.
+   Không biết chúng đã nằm bao lâu.
+
+   [ Tính lại từ bây giờ ]   [ Coi là đã đủ ]   [ Loại bỏ cả 4 ]
+```
+
+> ⭐⭐ **Ba nút đó là một quyết định về CHẤT LƯỢNG, nên nó phải do người quyết, không phải do chương
+> trình mặc định.** ⚠ Và dù chọn gì, **phải ghi vào nhật ký và đánh dấu bốn sản phẩm đó** — vì nếu về
+> sau có sự cố, đây chính xác là bốn sản phẩm cần tra lại (Chương 42).
+>
+> ⚡ Cùng một lập luận với việc *"bỏ qua camera thì sản phẩm phải bị đánh dấu"* ở Chương 51 mục 51.7b:
+> ⭐ **khi máy không biết chắc, hồ sơ phải nói rằng nó không biết chắc** — không được ghi một điều
+> đẹp đẽ mà sai.
+
+---
+
 ## 41.8 Trên máy mẫu DP-01
 
 ### Giao diện đầy đủ

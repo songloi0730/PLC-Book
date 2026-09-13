@@ -12,8 +12,8 @@
 #
 # ⚠ QUY ƯỚC PHIÊN BẢN (xem CLAUDE.md mục "Quy ước gộp sách và phiên bản"):
 #   - Mỗi lần ghép lại: phiên bản = ${BASE_VERSION}.<ngày hôm nay YYMMDD>.
-#   - Có đợt bổ sung nội dung LỚN → SỬA BASE_VERSION bên dưới (tăng MINOR/MAJOR),
-#     đừng chỉ truyền tham số một lần, vì lần ghép sau sẽ tụt lại.
+#   - ⚠⚠ BASE_VERSION CHỈ ĐƯỢC TĂNG KHI CHỦ DỰ ÁN BẢO TĂNG. Đừng tự ý tăng vì
+#     thấy đợt sửa "lớn" — mọi đợt sửa thường chỉ đổi phần ngày .YYMMDD.
 #   - Script tự cập nhật số phiên bản trong cover.md và cover.html.
 #
 # ⚠ AN TOÀN: khi dọn bản cũ, script CHỈ xoá file mang đúng tên sách này.
@@ -24,7 +24,7 @@
 set -e
 cd "$(dirname "$0")/.."
 
-BASE_VERSION="v1.2.0"          # tăng khi có đợt bổ sung nội dung lớn
+BASE_VERSION="v1.0.0"          # ⚠ CHỈ tăng khi chủ dự án bảo tăng — đừng tự ý
 TITLE="So tay Lap trinh PLC va Dieu khien May Tu dong hoa"   # không dấu, không ký tự đặc biệt
 
 KHONG_CHEP=0

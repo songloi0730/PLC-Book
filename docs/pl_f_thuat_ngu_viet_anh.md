@@ -243,7 +243,7 @@
 | Thời gian thông qua | throughput time · lead time | | 55 |
 | Sản lượng giờ | UPH (units per hour) | | 55 |
 | ⭐⭐ Nút cổ chai | bottleneck | | 55 |
-| Chỗ đệm | buffer | | 55 |
+| Chỗ đệm | buffer | ⭐ Trạm đệm và thời gian nằm lại: Ch.41 mục 41.7b | 41, 55 |
 | Hiệu suất thiết bị tổng thể | OEE (Overall Equipment Effectiveness) | ISO 22400 | 55 |
 | Khả dụng · Hiệu suất · Chất lượng | availability · performance · quality | Ba thành phần OEE | 55 |
 | Thời gian chết | downtime | | 55 |

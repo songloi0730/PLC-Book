@@ -1428,6 +1428,82 @@ của một khối đáng đưa vào thư viện**, vì Phụ lục L chính là
 
 ---
 
+## Đợt 38 — 2026-09-13 · Phần HMI, trạm đệm, và ⚠ một dự án KHÔNG đọc được
+
+Đợt này ba nguồn: **khối giao diện màn hình** của chương trình máy ở đợt 37, **một chương trình máy
+thứ hai** của cùng nhóm kỹ thuật, và **một dự án màn hình** mà ⚠ **không mở được**.
+
+> ⚠ Bất biến B1b vẫn áp: không ghi tên dự án, khách hàng, hay nhà máy ở bất kỳ đâu.
+
+### A — ⚠ Dự án màn hình: KHÔNG đọc được
+
+| # | Việc | KQ |
+|---|---|:--:|
+| 230 | Dự án màn hình (Weintek EasyBuilder Pro 6.10, tệp `.cmtp` 10 MB + `.cxob` 46 MB). ⚠⚠ **Nội dung bị nén/mã hoá theo định dạng riêng của hãng** — không có chuỗi văn bản nào đọc được, không phải zlib, không phải zip. ⭐ **Không rút được gì từ nó mà không có phần mềm EasyBuilder Pro** | ❔ |
+
+⭐ **Thứ thay thế được, và hoá ra còn tốt hơn:** khối dữ liệu **PLC ↔ màn hình** nằm trong chính
+chương trình PLC và **đọc được đầy đủ** — 101 biến gốc, hơn 2 500 dòng. ⚡ Nó cho biết *màn hình trao
+đổi những gì*, tức là **kiến trúc giao diện**, thay vì cách vẽ nút.
+
+### B — Ba mục mới cho phần HMI
+
+| # | Nơi bổ sung | Nội dung | KQ |
+|---|---|:--|:--:|
+| 231 | ⭐⭐ **Ch.44 mục 44.2b** — một màn hình cho mọi cơ cấu cùng loại | Khối giao diện chỉ có **MỘT** bộ biến trục cộng **một ô chỉ số**, không phải 10 bộ. PLC chép phản hồi của trục đang chọn ra, chép lệnh vào đúng trục đó. ⚠⚠ Kèm bẫy chết người: **không xoá phần Lệnh khi đổi chỉ số thì lệnh của trục 1 rơi xuống trục 2** | ➕➕ |
+| 232 | ⭐ **Ch.44 mục 44.3b** — ba kênh thông điệp | Khối giao diện tách hẳn **báo động · cảnh báo · nhắc thao tác**. ⭐⭐ Và việc tách kênh thứ ba **làm đúng luôn số liệu ở Ch.55**: máy chờ người không phải máy hỏng, nên không được rơi vào *thời gian dừng* | ➕➕ |
+| 233 | ⭐ **Ch.44 mục 44.2** — hiện **phiên bản chương trình PLC** trên màn hình tổng quan | Khối giao diện có hẳn một biến `Version`. ⚠ Câu hỏi đầu tiên khi hỗ trợ từ xa là *"máy đang chạy bản nào?"* — không hiện thì không ai trả lời được (Ch.54) | ➕ |
+
+⭐ Việc **lật trang xem số liệu lịch sử** (ngày trước/ngày sau/xem tháng) cũng nằm trong PLC: màn hình
+chỉ gửi một xung, PLC giữ chỉ số. ⚡ Đã ghi vào 44.2b như một ca cụ thể của mục 44.6.
+
+### C — Trạm đệm: mục đã hoãn ở đợt 37, nay viết
+
+| # | Nơi bổ sung | Nội dung | KQ |
+|---|---|:--|:--:|
+| 234 | ⭐⭐ **Ch.41 mục 41.7b** — trạm đệm | Mục 41.4 mới hỏi *"ai đang giữ sản phẩm"* với **một** sản phẩm. Trạm đệm có nhiều sản phẩm nằm cùng lúc, mỗi ô một đồng hồ. ⭐⭐ Phân biệt **đệm cân bằng nhịp** với **đệm theo thời gian** — ở loại sau, ⚠⚠ **chọn nhầm vào-sau-ra-trước là lỗi không nhìn thấy được**: máy vẫn chạy, chỉ có chất lượng sai | ➕➕ |
+| 235 | ⭐⭐ Ch.41 mục 41.7b — **bật máy lên, trong đệm đang có hàng** | Mất điện giữa ca thì sản phẩm còn nằm nguyên, bộ nhớ chương trình thì không. ⭐ Lối đúng: **đọc lại cảm biến rồi HỎI người vận hành** — vì ⚠ *thời gian đã nằm* thì không cảm biến nào biết. Và dù chọn gì cũng **phải đánh dấu số sản phẩm đó** | ➕➕ |
+
+⭐ Cách phòng rẻ nhất cho mục 234 cũng đã viết ra: **đừng lấy ra theo vị trí, hãy lấy ra theo đồng hồ**
+— chọn ô nằm lâu nhất trong số ô đã đủ điều kiện, khi ấy thứ tự đúng **tự nhiên đúng**.
+
+### D — Đo được một điều mà trước nay chỉ nói định tính
+
+| # | Nơi bổ sung | Nội dung | KQ |
+|---|---|:--|:--:|
+| 236 | ⭐⭐ **Ch.30 mục 30.5** — mức 3 tái sử dụng trông như thế nào | Đối chiếu **hai cỗ máy khác nhau của cùng một nhóm**: bố cục thư mục **giống hệt**, thư viện khối **giống hệt**, bộ kiểu dữ liệu **giống hệt**, khối giao diện màn hình **trùng khoảng hai phần ba từng tên biến** (65 / 101 và 65 / 106 biến gốc). ⚠ Phần khác nhau gần như **chỉ là thư mục trình tự trạm** | ➕➕ |
+
+> ⭐⭐ **Mục 236 là mục có giá trị nhất đợt này, vì nó biến một lời khuyên thành một hình dạng đo được.**
+> Ch.30 vẫn nói *"tái sử dụng ở mức máy"* mà không ai hình dung được nó ra sao. ⭐ Nay có con số:
+> **phần đặc thù của một cỗ máy thu lại thành MỘT thư mục.**
+
+### Việc quản trị
+
+| # | Việc | KQ |
+|---|---|:--:|
+| 237 | ⚠ **Sửa quy ước phiên bản theo yêu cầu của chủ dự án:** `BASE_VERSION` **chỉ tăng khi được bảo tăng**. Tôi đã tự ý tăng lên `v1.1.0` rồi `v1.2.0` trong ngày — ⭐ **sai**. Đã trả về `v1.0.0`, ghi luật vào `CLAUDE.md` và vào đầu `tools/gop_sach.sh` để lần sau không lặp lại | ⚠ |
+
+### Kết quả đợt 38
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **8** |
+| ➕➕ Bổ sung giá trị cao | 5 |
+| ➕ Bổ sung | 1 |
+| ❔ Không đọc được nguồn | 1 |
+| Mục mới trong thân sách | 3 — Ch.41, Ch.44 (×2) |
+
+> ⭐⭐ **Bài học: khi một nguồn không mở được, hãy hỏi xem thông tin đó có ở dạng khác không.**
+>
+> Dự án màn hình bị mã hoá, và phản xạ đầu tiên là báo *"không làm được"*. ⚠ Nhưng thứ tôi thật sự
+> cần — **màn hình trao đổi những gì với PLC** — nằm ở **phía PLC**, và ở đó nó là văn bản thuần.
+> ⭐ Nguồn đóng, nhưng **mặt tiếp giáp của nó thì mở**.
+>
+> ⚡ **Và mục 237 đáng ghi vì nó là lỗi quy trình, không phải lỗi nội dung.** Tôi tăng số phiên bản
+> theo cảm nhận *"đợt này lớn"* — trong khi ⭐ **quyết định phát hành là của chủ dự án, không phải của
+> người viết**. Luật nay nằm ở hai chỗ, và một trong hai chỗ là dòng đầu của script ghép.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

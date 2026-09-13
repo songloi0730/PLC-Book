@@ -51,6 +51,7 @@ thông dụng và đủ dùng:
 | ⭐ **Điều kiện đang thiếu để chạy** | Xem bên dưới |
 | Công thức đang chạy — **tên**, không chỉ mã số | Chương 29 |
 | Trạng thái kết nối: MES, đầu đọc, servo | Chương 40, 42 |
+| ⭐ **Phiên bản chương trình PLC** — hiện ở một góc | ⚠ Câu hỏi đầu tiên khi gọi hỗ trợ từ xa là *"máy đang chạy bản nào?"*; không hiện thì không ai trả lời được (Chương 54) |
 
 > ⭐⭐ **"Điều kiện đang thiếu để chạy" là thành phần có giá trị nhất của màn hình tổng quan, và hay
 > bị bỏ nhất.**
@@ -72,6 +73,73 @@ thông dụng và đủ dùng:
    │  ✓ Nhiệt độ keo: 60,2 °C         │
    └──────────────────────────────────┘
 ```
+
+---
+
+## 44.2b ⭐⭐ Một màn hình chi tiết dùng cho mọi cơ cấu cùng loại
+
+Mức 3 ở bảng trên là *"từng cơ cấu, từng giá trị"*. ⚠ Hiểu theo nghĩa đen thì máy có 10 trục sẽ có 10
+màn hình trục, 30 xy-lanh sẽ có 30 màn hình xy-lanh. Và đó là chỗ công sức làm màn hình vượt công sức
+viết chương trình.
+
+⭐ Cách làm tốt hơn: **một màn hình duy nhất cho mỗi LOẠI cơ cấu, cộng một ô chọn số thứ tự.**
+
+### Cách hoạt động
+
+Trong PLC, dựng **một bộ biến giao diện duy nhất** cho loại cơ cấu đó — theo hợp đồng ba phần ở
+Chương 30 mục 30.3b — cộng một biến chỉ số:
+
+```iecst
+// ── Chỉ số do màn hình đặt ──
+IF (HmiAxisNo < 1) OR (HmiAxisNo > AXIS_COUNT) THEN
+    HmiAxisNo := 1;                         // ⚠ luôn chặn dải trước khi dùng làm chỉ số
+END_IF;
+
+// ── ĐỔI CHỈ SỐ: xoá sạch phần Lệnh TRƯỚC khi nạp trục mới ──
+IF HmiAxisNo <> HmiAxisNoPrev THEN
+    HmiAxisCmd  := EmptyAxisCmd;            // ⚠⚠ bắt buộc — xem cảnh báo bên dưới
+    HmiAxisNoPrev := HmiAxisNo;
+END_IF;
+
+// ── Chép PHẢN HỒI + DỮ LIỆU của trục đang chọn RA màn hình ──
+HmiAxisResp := Axis[HmiAxisNo].Resp;
+HmiAxisData := Axis[HmiAxisNo].Data;
+
+// ── Chép LỆNH từ màn hình VÀO đúng trục đang chọn ──
+Axis[HmiAxisNo].Cmd := HmiAxisCmd;
+```
+
+| Được gì | |
+|---|---|
+| 1 | ⭐ **Một màn hình để làm và để sửa**, dù máy có 3 trục hay 30 |
+| 2 | ⭐⭐ **Thêm một trục không tốn gì trên màn hình** — chỉ đổi một hằng số |
+| 3 | ⭐ **Mọi trục trông giống nhau**, nên người vận hành học một lần |
+| 4 | ⭐ Dữ liệu trao đổi với màn hình **không tăng theo số cơ cấu** — đáng kể khi màn hình đọc qua mạng (Chương 39) |
+
+> ⚠⚠ **Bẫy chết người của mẫu này: lệnh còn treo khi đổi chỉ số.**
+>
+> Người vận hành mở trục 1, nhấn *chạy tới vị trí*, rồi đổi ô chọn sang trục 2 **trong lúc bit lệnh
+> vẫn còn bằng 1**. Nếu không xoá phần Lệnh khi chỉ số đổi, ⭐ **lệnh dành cho trục 1 sẽ rơi xuống
+> trục 2** — và trục 2 chạy mà không ai bấm gì cho nó.
+>
+> ⚠ Vì vậy dòng `HmiAxisCmd := EmptyAxisCmd;` **không phải để cho sạch sẽ** — nó là điều kiện để mẫu
+> này an toàn. ⭐ Cùng lý do với việc phải hạ `Execute` xuống ở Chương 37 mục 37.8.
+
+> ⚠ **Hai điều kiện nữa, ít nguy hiểm hơn nhưng vẫn phải có:**
+>
+> | | |
+> |---|---|
+> | 1 | ⚠ **Chặn dải chỉ số trước khi dùng.** Chỉ số ngoài dải là **truy cập mảng ngoài biên** — có hệ báo lỗi và dừng CPU, có hệ ghi đè lên vùng nhớ bên cạnh (Chương 11, Chương 19) |
+> | 2 | ⚠ **Hai màn hình cùng lúc sẽ giành nhau một ô chỉ số.** Máy có hai chỗ vận hành thì phải có **hai bộ biến giao diện**, không dùng chung một bộ |
+
+### Việc lật trang cũng là logic — nên nó cũng thuộc PLC
+
+Cùng nguyên tắc áp cho việc **xem số liệu lịch sử**: nút *ngày trước · ngày sau · xem theo tháng* chỉ
+gửi xuống một xung, ⭐ **PLC giữ chỉ số ngày đang xem và chép đúng khối số liệu đó ra**.
+
+> ⭐ Lý do không nằm ở kỹ thuật mà ở chỗ **nguồn sự thật chỉ có một**: khi màn hình tự tính chỉ số,
+> máy có hai chỗ cùng tin mình biết *"đang xem ngày nào"* — và chúng sẽ lệch nhau. ⚡ Đây là một ca cụ
+> thể của mục 44.6.
 
 ---
 
@@ -220,6 +288,35 @@ CO vung chet 5 do:
 *(Đối chiếu: Kuphaldt — Lessons in Industrial Instrumentation, mục về vùng chết của công tắc quá
 trình và báo động phiền nhiễu; Rockwell 1756-RM003 — khối PID có tham số vùng chết riêng cho báo
 động theo giá trị đo và theo sai lệch.)*
+
+## 44.3b ⭐ Ba kênh thông điệp — đừng nhét tất cả vào báo động
+
+Mục 44.3 thiết kế **báo động**. Nhưng máy có ba loại chuyện muốn nói với người vận hành, và ⚠ nhét cả
+ba vào danh sách báo động là nguyên nhân gốc của cỗ máy 47 báo động ở mục 44.1.
+
+| Kênh | Nghĩa | Máy có dừng không | Ai phải làm gì |
+|---|---|---|---|
+| ⚠ **Báo động** | Có lỗi, không chạy tiếp được | ⭐ **Dừng** | Sửa rồi xác nhận |
+| **Cảnh báo** | Vẫn chạy được, nhưng có thứ đang trôi | ⭐ **Không dừng** | Lên kế hoạch xử lý |
+| ⭐ **Nhắc thao tác** | Máy **không hỏng** — nó đang **chờ một người** | Đứng chờ | Làm việc được yêu cầu |
+
+⭐ Ba kênh **ba danh sách riêng, ba chỗ hiển thị riêng, ba cách xác nhận riêng.**
+
+> ⭐⭐ **Kênh thứ ba là kênh hay bị bỏ nhất, và nó bóp méo cả số liệu ở Chương 55.**
+>
+> Máy đứng chờ người lấy sản phẩm lỗi ra **không phải máy hỏng**. ⚠ Báo nó bằng báo động thì thời gian
+> đó rơi vào ô *"thời gian dừng"* thay vì *"thời gian chờ"* — đúng phép gộp mà Chương 55 mục 55.7c nói
+> là làm hỏng OEE. ⭐ **Tách kênh ở đây thì số liệu ở kia tự đúng.**
+
+> ⭐ **Cảnh báo phải có chỗ ở riêng, nếu không nó sẽ bị trộn vào báo động và biến mất.**
+>
+> *"Van kẹp đã dùng 86 % tuổi thọ"* (Chương 53) nằm lẫn trong danh sách báo động thì sau hai ngày
+> không ai đọc nó nữa. ⚠ Nó cũng không được phép làm dừng máy — xem Chương 53 mục 53.5.
+
+⚡ Kênh **nhắc thao tác** cần thêm một thứ mà hai kênh kia không cần: người vận hành phải **trả lời**
+được. Cách làm ở mục 44.5b.
+
+---
 
 ## 44.4 Phân quyền người dùng
 
