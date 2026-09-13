@@ -24,7 +24,7 @@
 set -e
 cd "$(dirname "$0")/.."
 
-BASE_VERSION="v1.0.0"          # tăng khi có đợt bổ sung nội dung lớn
+BASE_VERSION="v1.1.0"          # tăng khi có đợt bổ sung nội dung lớn
 TITLE="So tay Lap trinh PLC va Dieu khien May Tu dong hoa"   # không dấu, không ký tự đặc biệt
 
 KHONG_CHEP=0
