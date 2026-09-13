@@ -287,6 +287,19 @@ Ngưỡng cảnh báo = 18 000 000 lần  →  khoảng năm thứ 6
 > trình.** Xem Chương 11 về vùng nhớ giữ được, và ⚠ **kiểm tra thực tế** — nhiều người phát hiện bộ
 > đếm bảo trì của mình bị xoá mỗi lần nạp chương trình, sau khi đã đếm được ba năm.
 
+### ⭐ Viết một khối, dùng cho mọi thứ cần theo dõi
+
+⚠ Cách làm hỏng việc ở đây không phải là tính sai ngưỡng, mà là **viết tay từng bộ đếm**. Khi mỗi vật
+tư tốn hai chục dòng, người ta theo dõi ba thứ rồi thôi — và ba thứ đó luôn là ba thứ nghĩ ra đầu
+tiên, không phải ba thứ hay hỏng nhất.
+
+⭐ Gói thành **một khối chức năng** với ngưỡng là tham số: `số lần dùng · ngưỡng nhắc · ngưỡng cảnh
+báo · phần trăm đã dùng`. Thêm một thứ cần theo dõi khi ấy tốn **một dòng khai báo** — và vì nó rẻ,
+người ta sẽ thật sự thêm (Chương 30 mục 30.3, mẫu code ở **Phụ lục L.16**).
+
+> ⚡ **Phần trăm đã dùng là thứ đáng hiện lên màn hình, không phải số lần đếm được.** *"Van kẹp 1:
+> 86 %"* nói ngay phải làm gì; *"12 400 512 lần"* thì không ai biết là nhiều hay ít.
+
 ---
 
 ## 53.6 Trên máy mẫu DP-01

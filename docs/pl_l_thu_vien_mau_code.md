@@ -1,6 +1,6 @@
 # Phụ lục L — Thư viện mẫu code dùng ngay
 
-> **Tài liệu tra cứu.** Những đoạn logic lặp lại ở gần như mọi cỗ máy, gom về một chỗ. Mỗi mẫu kèm
+> **Tài liệu tra cứu.** Mười sáu đoạn logic lặp lại ở gần như mọi cỗ máy, gom về một chỗ. Mỗi mẫu kèm
 > ⭐ **điều kiện dùng** và ⚠ **thứ nó KHÔNG làm** — vì chép một mẫu mà không biết giới hạn của nó là
 > cách tạo ra lỗi trông rất giống code đúng.
 
@@ -661,7 +661,123 @@ END_IF;
 
 ---
 
-## L.15 Bảng tra nhanh — mẫu nào cho việc gì
+## L.15 Hút chân không có thổi ngược — hai ngõ ra, hai xác nhận
+
+⭐ **Dùng khi:** gắp sản phẩm bằng giác hút. ⚠ Mẫu này khác hẳn xy-lanh hai vị trí ở L.8: **nhả không
+phải là ngừng hút**.
+
+```iecst
+FUNCTION_BLOCK FB_Vacuum
+VAR_INPUT
+    SuckReq     : BOOL;      // TRUE = hút · FALSE = nhả
+    SensOK      : BOOL;      // công tắc áp chân không báo đã đủ độ chân không
+    SensShield  : BOOL;      // bỏ qua cảm biến — có điều kiện, xem Chương 51
+    InterLock   : BOOL;      // chặn từ tầng chống va chạm (Chương 27)
+    SuckLimit   : TIME := T#1S;    // bao lâu thì phải đạt độ chân không
+    BlowTime    : TIME := T#300MS; // thổi ngược bao lâu rồi tắt
+END_VAR
+VAR_OUTPUT
+    OutSuck     : BOOL;      // van hút
+    OutBlow     : BOOL;      // ⭐ van THỔI NGƯỢC — ngõ ra riêng
+    Holding     : BOOL;      // đang giữ được sản phẩm
+    Released    : BOOL;      // đã nhả xong
+    Fault       : BOOL;
+    FaultCode   : INT;       // 1 = hút không đạt · 2 = rơi giữa chừng
+END_VAR
+VAR
+    T_Suck : TON;
+    T_Blow : TON;
+END_VAR
+
+// ── Hút ──
+OutSuck := SuckReq AND NOT InterLock;
+Holding := OutSuck AND (SensOK OR SensShield);
+
+T_Suck(IN := OutSuck AND NOT Holding, PT := SuckLimit);
+IF T_Suck.Q THEN
+    Fault := TRUE;  FaultCode := 1;        // hút mãi không đạt: hở, tắc, hoặc không có hàng
+END_IF;
+
+// ⚠⚠ MẤT CHÂN KHÔNG GIỮA CHỪNG — sản phẩm đã rơi, và đây là báo động RIÊNG
+IF OutSuck AND NOT SensOK AND NOT SensShield AND T_Suck.ET > SuckLimit THEN
+    Fault := TRUE;  FaultCode := 2;
+END_IF;
+
+// ── Nhả: thổi ngược một nhịp NGẮN rồi TẮT ──
+T_Blow(IN := NOT SuckReq, PT := BlowTime);
+OutBlow  := NOT SuckReq AND NOT T_Blow.Q;  // thổi trong BlowTime, sau đó thôi
+Released := NOT SuckReq AND T_Blow.Q;
+END_FUNCTION_BLOCK
+```
+
+> ⭐⭐ **Ba điều làm mẫu này khác xy-lanh hai vị trí, và cả ba đều là chỗ hay sai:**
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Ngừng hút KHÔNG phải là nhả.** Sản phẩm nhẹ sẽ dính lại vì độ chân không còn dư — phải **thổi ngược** mới rời ra đúng chỗ |
+> | 2 | ⚠⚠ **Thổi ngược phải TẮT sau một nhịp ngắn.** Thổi liên tục thì tốn khí, làm bẩn sản phẩm, và ⭐ **thổi bay sản phẩm kế tiếp** |
+> | 3 | ⚠⚠ **"Mất chân không giữa chừng" là báo động riêng, khác "hút không đạt".** Loại một nghĩa là chưa gắp được; loại hai nghĩa là ⭐ **sản phẩm đã rơi đâu đó trong máy** — và phải tìm nó trước khi chạy tiếp |
+>
+> ⚡ **Cảm biến ở đây là công tắc áp chân không, không phải cảm biến vị trí.** Nó nói *"đủ độ chân
+> không"*, ⚠ **không** nói *"đang giữ đúng một sản phẩm"* — giác hút bịt vào mặt bàn cũng cho tín hiệu
+> y hệt (Chương 33, Chương 48).
+
+---
+
+## L.16 Đếm tuổi thọ vật tư — cảnh báo trước, báo động sau
+
+⭐ **Dùng khi:** một thứ sẽ mòn và sẽ hỏng — van, giác hút, mũi tra keo, bộ lọc, đèn UV, dây đai. Mẫu
+này biến **một sự cố bất ngờ** thành **một việc có kế hoạch** (Chương 53 mục 53.5).
+
+```iecst
+FUNCTION_BLOCK FB_PartLife
+VAR_INPUT
+    CountTrig  : BOOL;       // một xung mỗi lần dùng — ⚠ đã bắt cạnh (L.7)
+    ResetTrig  : BOOL;       // thay đồ mới → xoá về 0
+    WarnLimit  : DINT;       // ⭐ ngưỡng NHẮC   ≈ tuổi thọ × 0,7
+    AlarmLimit : DINT;       // ⭐ ngưỡng CẢNH BÁO ≈ tuổi thọ × 0,9
+END_VAR
+VAR_OUTPUT
+    Count      : DINT;       // ⚠⚠ phải là biến GIỮ ĐƯỢC qua mất điện
+    Warning    : BOOL;       // còn thời gian đặt hàng
+    Alarm      : BOOL;       // nên thay ở lần dừng máy tới
+    PctUsed    : INT;        // % đã dùng, đơn vị 1 %
+END_VAR
+
+IF ResetTrig THEN
+    Count := 0;
+ELSIF CountTrig THEN
+    Count := Count + 1;
+END_IF;
+
+Warning := (Count >= WarnLimit);
+Alarm   := (Count >= AlarmLimit);
+
+IF AlarmLimit > 0 THEN
+    PctUsed := DINT_TO_INT((Count * 100) / AlarmLimit);
+ELSE
+    PctUsed := 0;                        // chưa đặt ngưỡng — đừng chia cho 0 (L.14)
+END_IF;
+END_FUNCTION_BLOCK
+```
+
+> ⭐⭐ **Hai ngưỡng, không phải một — và khoảng cách giữa chúng chính là thời gian đặt hàng phụ tùng.**
+> Một ngưỡng thì bạn biết *đúng lúc đã muộn*.
+>
+> ⚠⚠ **Cả hai ngưỡng đều là NHẮC, không được dừng máy.** Một cỗ máy tự dừng vì *"đã tới hạn thay
+> van"* sẽ bị vô hiệu hoá trong vòng một tuần — và khi đó bạn mất luôn cả bộ đếm (Chương 53).
+>
+> ⚠⚠ **`Count` phải sống sót qua mất điện VÀ qua việc nạp lại chương trình.** ⭐ Đây là chỗ phải
+> **thử thật**, không được tin: nhiều người phát hiện bộ đếm bảo trì của mình bị xoá mỗi lần nạp
+> chương trình — sau khi đã đếm được ba năm (Chương 11, Chương 54).
+>
+> ⚡ **Một khối, nhiều thể hiện, ngưỡng là tham số.** Đây đúng là mức 1 của việc tái sử dụng ở
+> Chương 30: mỗi vật tư một thể hiện, ngưỡng nạp từ bảng tham số — ⭐ **thêm một thứ cần theo dõi chỉ
+> tốn một dòng khai báo**, nên người ta sẽ thật sự thêm.
+
+---
+
+## L.17 Bảng tra nhanh — mẫu nào cho việc gì
 
 | Việc cần làm | Mẫu | Bẫy lớn nhất | Chương |
 |---|---|---|---|
@@ -679,6 +795,8 @@ END_IF;
 | Đọc analog | L.12 | ⚠⚠ Kiểm ngoài dải **trước** khi quy đổi | 31, 32 |
 | Đèn tháp | L.13 | ⚠ Mỗi lúc một màu | 44, 51 |
 | Đếm sản lượng | L.14 | ⚠⚠ Chia cho 0 ở đầu ca | 19, 55 |
+| Gắp bằng giác hút | L.15 | ⚠⚠ Ngừng hút **không phải** là nhả | 6, 33, 46 |
+| Theo dõi tuổi thọ vật tư | L.16 | ⚠⚠ Bộ đếm bị xoá khi nạp lại chương trình | 11, 53 |
 
 ---
 

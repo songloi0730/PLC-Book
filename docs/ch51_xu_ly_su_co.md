@@ -292,6 +292,87 @@ Quy trình bắt buộc — bốn việc, không bỏ việc nào:
 
 ---
 
+## 51.7b ⭐⭐ Cờ bỏ qua thiết kế sẵn — thứ duy nhất thay thế được việc cưỡng bức
+
+Mục 51.7 nói cưỡng bức *(forcing)* nguy hiểm thế nào và phải gỡ ra sao. Nhưng nó chưa trả lời câu hỏi
+đứng ngay sau đó, và là câu hỏi thật của người vận hành lúc hai giờ sáng:
+
+> *"Camera trạm 2 hỏng, phụ tùng mai mới về. Tôi vẫn phải ra hàng đêm nay. Làm sao?"*
+
+⚠⚠ **Nếu chương trình không trả lời được câu này, người ta sẽ tự trả lời — bằng cưỡng bức, bằng sửa
+trực tuyến, hoặc bằng cách rút một sợi dây.** Cả ba đều tệ hơn thứ lẽ ra nên có.
+
+### Bỏ qua là một yêu cầu chức năng, không phải một sự cố
+
+Máy sản xuất thật **luôn** có lúc phải chạy thiếu một thứ gì đó: một camera hỏng, một đầu đọc mã mất
+kết nối, máy chủ cấp trên bảo trì nên không nhận được dữ liệu tải lên, một trạm phải tháo ra sửa.
+
+⭐ Vì vậy **"bỏ qua" (bypass) phải được thiết kế vào chương trình từ đầu** — thành một tập cờ có tên,
+có chỗ hiển thị, có ghi nhật ký. Khi ấy việc bỏ qua trở thành một **thao tác được kiểm soát** thay vì
+một mẹo cá nhân.
+
+| Cái gì nên có cờ bỏ qua | Vì sao |
+|---|---|
+| ⭐ **Từng trạm** | Trạm hỏng thì bỏ trạm, chuyền vẫn chạy qua |
+| ⭐ **Từng camera, từng đầu đọc mã** | Thiết bị phụ trợ hỏng không nên làm dừng cả máy |
+| ⭐ **Việc tải dữ liệu lên cấp trên** | Máy chủ bảo trì — máy không có lỗi gì cả (Chương 45) |
+| **Liên kết với máy tính điều khiển** | Mất kết nối PC không đồng nghĩa máy hỏng (Chương 43) |
+| **Từng ô khay, từng vị trí trên mâm** | Một ô hỏng không làm bỏ cả khay |
+| **Còi báo** | Đêm khuya, xưởng trống — tắt còi là hợp lý, và nên tắt **có kiểm soát** |
+| ⚠ Từng cảm biến của một cơ cấu | Chấp nhận được **với điều kiện** ở mục dưới |
+
+### Bốn yêu cầu bắt buộc của một cờ bỏ qua
+
+| # | Yêu cầu | Vì sao |
+|---|---|---|
+| 1 | ⭐⭐ **Nhìn thấy được, không cần đi tìm** | Hiện ngay màn hình chính: *"Đang bỏ qua: 2 mục"*. ⚠ Cờ bỏ qua chôn trong trang cài đặt tầng ba là cưỡng bức đội lốt |
+| 2 | ⭐ **Có phân quyền** | Bỏ qua một trạm không phải thao tác của người vận hành (Chương 44 mục 44.4) |
+| 3 | ⭐⭐ **Ghi nhật ký: ai bật, lúc nào, bỏ qua cái gì** | Khi lô hàng bị trả về, đây là thứ duy nhất trả lời được *"lô đó máy đang chạy ở trạng thái nào"* |
+| 4 | ⚠ **Đánh dấu sản phẩm làm ra trong lúc bỏ qua** | Board đi qua trạm kiểm mà camera đang bị bỏ qua thì ⚠⚠ **nó chưa được kiểm** — dữ liệu truy xuất phải nói đúng điều đó (Chương 42) |
+
+> ⭐⭐ **Yêu cầu số 4 là yêu cầu hay bị quên nhất, và là yêu cầu tốn kém nhất khi quên.**
+>
+> Bỏ qua camera rồi vẫn ghi *"đã kiểm — OK"* vào hồ sơ truy xuất là **ghi một điều không đúng sự
+> thật**. ⚠ Lúc có sự cố chất lượng, hồ sơ đó sẽ được dùng để chứng minh máy đã kiểm — và nó sẽ dẫn
+> việc điều tra đi sai hướng suốt nhiều ngày.
+
+### ⚠⚠ Một ranh giới không được nhập nhằng
+
+> ⚠⚠ **Cờ bỏ qua cho thiết bị an toàn — cửa an toàn, rèm quang — KHÔNG thuộc danh sách trên và không
+> được nằm chung một chỗ với chúng.**
+>
+> Việc tạm vô hiệu hoá một thiết bị bảo vệ có tên riêng là **muting**, có yêu cầu thiết kế riêng, và
+> ⭐ **phải do người có thẩm quyền thiết kế** — xem Chương 47 mục 47.7.
+>
+> ⚠ Đặt *"bỏ qua cửa an toàn"* cùng bảng với *"bỏ qua còi báo"* là đã sai ngay từ cách trình bày:
+> nó dạy người dùng rằng hai thứ đó cùng một loại. **Chúng không cùng một loại.**
+
+### Bỏ qua cảm biến của cơ cấu — chấp nhận được khi nào
+
+Cho phép bỏ qua **một** cảm biến vị trí của xy-lanh là việc thường gặp, và có lý: cảm biến hỏng lúc
+nửa đêm, xy-lanh vẫn tốt.
+
+⚠ Nhưng nó đổi bản chất của cơ cấu đó: từ **có xác nhận** thành **chạy mù theo thời gian**. Ba điều
+kiện tối thiểu:
+
+| | |
+|---|---|
+| 1 | ⚠ **Phải thay bằng một thời gian chờ cố định**, không phải bỏ luôn phép kiểm |
+| 2 | ⚠⚠ **Không áp dụng cho cơ cấu mà sai vị trí gây hư hỏng hoặc nguy hiểm** — trục đứng có tải treo, kẹp giữ sản phẩm nặng |
+| 3 | ⭐ **Phải tự hết khi khởi động lại máy**, không được là biến giữ qua mất điện |
+
+> ⚡ **Điều kiện 3 là điều kiện phân biệt "bỏ qua" với "sửa vĩnh viễn".** Một cờ bỏ qua sống sót qua
+> mất điện sẽ ở lại đó ba năm, và không ai còn nhớ vì sao nó bật. ⭐ Cùng lý do với cờ *đã về gốc* ở
+> Chương 37 mục 37.3: **thứ mô tả một tình trạng tạm thời thì không được giữ.**
+
+### Đưa lên đèn tháp
+
+⭐ Mẹo ở mục 51.7 (đèn vàng nháy khi còn cưỡng bức) áp y hệt cho cờ bỏ qua — và ở đây nó còn quan
+trọng hơn, vì cờ bỏ qua **được phép tồn tại lâu**, nên càng dễ bị quên. Một cỗ máy đang chạy với ba
+cờ bỏ qua bật phải **trông khác** một cỗ máy chạy đủ chức năng, nhìn từ xa.
+
+---
+
 ## 51.8 Lỗi chập chờn — bốn nguyên nhân vật lý hay bị bỏ sót
 
 Lỗi chập chờn là loại khó nhất: nó không có mặt khi bạn tới, và nó quay lại khi bạn vừa đi.

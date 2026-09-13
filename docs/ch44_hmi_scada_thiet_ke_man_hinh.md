@@ -286,6 +286,73 @@ Quy ước thực dụng:
 
 ---
 
+## 44.5b ⭐ Cửa sổ nhắc thao tác — do PLC điều khiển, không do HMI
+
+Báo động ở mục 44.3 nói *"có chuyện gì"*. Nhưng có một loại tình huống khác hẳn, và nó chiếm phần lớn
+thời gian dừng máy thật:
+
+> Máy **không hỏng**. Nó chỉ **cần một người làm một việc** rồi mới đi tiếp được: lấy sản phẩm lỗi ra,
+> nạp thêm liệu, xác nhận đã gá lại đúng, quyết định thử lại hay bỏ qua.
+
+⚠ Dùng báo động cho việc này là sai công cụ: báo động nói *đã có lỗi*, còn đây là *đang chờ bạn*. Và
+nó làm hỏng chính số liệu ở Chương 55 — thời gian chờ người bị tính thành thời gian máy hỏng.
+
+### Giao thức tối thiểu — năm nút, không hơn
+
+⭐ PLC nêu câu hỏi, **PLC** quyết định có những lựa chọn nào, HMI chỉ vẽ:
+
+| PLC gửi lên | Nghĩa |
+|---|---|
+| Mã cửa sổ nhắc | Câu hỏi nào — HMI tra bảng văn bản, ⭐ để dịch được nhiều thứ tiếng |
+| Vị trí | Trạm nào, cơ cấu nào đang hỏi |
+| Cờ từng nút | ⭐ **Nút nào được phép bấm lúc này** |
+
+| HMI gửi xuống | Nghĩa | Trình tự làm gì |
+|---|---|---|
+| ⭐ **Xác nhận** | "Tôi làm xong rồi" | Đi tiếp từ bước đang đứng |
+| ⭐ **Lặp lại** | "Thử lại động tác vừa rồi" | ⭐ Quay lại **đầu bước hiện tại** |
+| ⭐ **Bỏ qua** | "Bỏ sản phẩm này, làm tiếp cái sau" | Nhảy tới bước kết thúc, ⚠ **đánh dấu sản phẩm là loại** |
+| **Tiếp tục** | "Đi tiếp dù chưa đạt" | ⚠⚠ Xem cảnh báo bên dưới |
+| **Huỷ** | "Dừng chu trình này" | Về bước chờ, trả máy về trạng thái an toàn |
+
+> ⭐⭐ **Ba nút Lặp lại · Bỏ qua · Huỷ là phần đáng giá nhất, và là phần hay bị bỏ sót nhất.**
+>
+> Không có chúng, người vận hành chỉ còn hai lựa chọn: *xác nhận* (dù chưa xử lý xong) hoặc *tắt máy
+> đi bật lại*. ⚠ Cả hai đều tệ, và ⭐ **cái thứ nhất tệ hơn** — vì nó âm thầm, và nó ghi vào hồ sơ
+> rằng mọi thứ đã ổn.
+
+### Bốn quy tắc
+
+| # | Quy tắc | Vì sao |
+|---|---|---|
+| 1 | ⭐⭐ **PLC bật cờ cho từng nút, HMI chỉ vẽ nút có cờ** | ⚠ HMI tự quyết định hiện nút nào là logic điều khiển nằm trong HMI — đúng điều mục 44.6 cấm |
+| 2 | ⭐ **Một cửa sổ nhắc một lúc, mỗi trạm một hàng đợi riêng** | Hai cửa sổ nhắc chồng nhau thì người vận hành trả lời nhầm cái kia |
+| 3 | ⭐ **Ghi nhật ký mọi lựa chọn**: cửa sổ nhắc nào, ai chọn gì, lúc nào | ⚠⚠ Đây là dữ liệu đắt nhất mà máy tạo ra — xem bên dưới |
+| 4 | ⚠ **Có thời gian chờ tối đa**, hết thì tự chuyển thành báo động | Cửa sổ nhắc mở suốt ca đêm mà không ai thấy là một dạng máy chết âm thầm |
+
+> ⭐⭐ **Quy tắc 3 cho một thứ mà không phép đo nào khác cho được: bảng đếm "cửa sổ nhắc nào hiện nhiều
+> nhất".**
+>
+> Cửa sổ nhắc đứng đầu bảng chính là ⭐ **việc thủ công tốn nhiều thời gian nhất của cả máy** — và nó
+> thường là thứ không ai để ý, vì mỗi lần chỉ mất hai mươi giây. ⚡ Đây là đầu vào tốt nhất cho việc
+> cải tiến chu kỳ ở Chương 55, tốt hơn cả đồ thị OEE.
+
+> ⚠⚠ **Cảnh báo về nút "Tiếp tục".**
+>
+> Nút này cho phép đi tiếp khi một phép kiểm **chưa đạt**. Nó có lý do tồn tại — chạy thử, chạy mẫu
+> đầu, xử lý sự cố — nhưng ba điều kiện là bắt buộc:
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Phải có phân quyền**, không phải nút của người vận hành (mục 44.4) |
+> | 2 | ⚠⚠ **Sản phẩm đi qua bằng nút này phải bị đánh dấu trong hồ sơ truy xuất** (Chương 42) |
+> | 3 | ⚠ **Không được có ở chế độ sản xuất bình thường** — chỉ hiện khi máy đang ở chế độ thử |
+>
+> ⚡ Không có ba điều kiện đó, *"Tiếp tục"* là ⭐ **một cái nút để biến hàng lỗi thành hàng đạt**, và
+> nó sẽ được dùng đúng như vậy vào cuối ca khi còn thiếu sản lượng.
+
+---
+
 ## 44.6 ⚠⚠ Ba điều HMI không được làm
 
 ### 1. Không chứa logic điều khiển

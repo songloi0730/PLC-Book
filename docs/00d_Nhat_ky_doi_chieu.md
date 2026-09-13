@@ -1354,6 +1354,80 @@ của một khối đáng đưa vào thư viện**, vì Phụ lục L chính là
 
 ---
 
+## Đợt 37 — 2026-09-13 · Đối chiếu với MỘT CHƯƠNG TRÌNH MÁY THẬT
+
+⭐ Nguồn của đợt này khác hẳn mọi đợt trước: không phải sách hay tiêu chuẩn, mà là **một chương trình
+điều khiển máy sản xuất đang chạy**, viết trên nền **Inovance AutoShop**, khoảng 40 chương trình con,
+21 khối chức năng dùng lại và hơn 40 kiểu dữ liệu người dùng.
+
+> ⚠ **Theo bất biến B1b, danh tính dự án/khách hàng không được ghi ở bất kỳ đâu.** Chỉ ghi nền công cụ
+> (tên hãng là thông tin được phép — B1). ⭐ Mọi thứ rút ra đều đã viết lại thành **tình huống chung**,
+> không mang số liệu quy trình hay tên trạm của dự án đó.
+>
+> ⚠ Thân chương trình lưu dạng biên dịch nên **không đọc được mã**. ⭐ Thứ đọc được — và cũng là thứ
+> đáng giá nhất — là **kiến trúc**: cây thư mục, danh sách khối, và toàn bộ **kiểu dữ liệu kèm chú
+> thích**.
+
+### A — Bốn thứ sách THIẾU hẳn
+
+| # | Nơi bổ sung | Nội dung | KQ |
+|---|---|:--|:--:|
+| 221 | ⭐⭐ **Ch.51 mục 51.7b** — cờ bỏ qua thiết kế sẵn | Sách dạy cưỡng bức I/O nguy hiểm thế nào, nhưng ⚠ **không trả lời câu đứng ngay sau đó**: *"camera hỏng, mai phụ tùng mới về, đêm nay vẫn phải ra hàng"*. Chương trình thật có hẳn một **tập cờ bỏ qua có tên** — theo trạm, theo camera, theo đầu đọc mã, theo việc tải dữ liệu lên, theo ô khay. ⭐ Đó là **thứ duy nhất thay thế được việc cưỡng bức**: không có nó, người ta tự làm bằng cách tệ hơn | ➕➕ |
+| 222 | ⭐⭐ **Ch.27 mục 27.3b** — tầng chống va chạm | Sách nhắc *"liên động chống va chạm"* ở Ch.27, 28, 46 nhưng ⚠ **chưa bao giờ coi nó là một TẦNG riêng**. Chương trình thật có một mảng cờ chống va chạm và **một nhóm báo động riêng** cho nó. ⭐⭐ Điểm mấu chốt: cờ nằm ở **tầng cơ cấu**, nên chế độ tay **không thể đi vòng qua** — đúng chỗ va chạm thật sự xảy ra | ➕➕ |
+| 223 | ⭐⭐ **Ch.30 mục 30.3b** — hợp đồng ba phần `Cmd · Data · Resp` | Mục 30.3 gói trạng thái vào một UDT nhưng **trộn lẫn thứ người ngoài ghi với thứ khối tự ghi**. Chương trình thật tách **ba phần cho mọi cơ cấu** — xy-lanh, trục, điện xy-lanh, đầu ép, khay, kho, chân không — cùng một khuôn tên. ⭐ Nhờ đó câu *"chỗ nào ghi vào phản hồi của xy-lanh 3?"* trả lời được bằng **một lần tra chéo** | ➕➕ |
+| 224 | ⭐⭐ **Ch.55 mục 55.7c** — đo và cất số liệu OEE ở đâu | Ch.55 giải thích OEE và SEMI E10/E79 rất kỹ nhưng ⚠ **không nói PLC phải làm gì**. Chương trình thật có bốn đồng hồ (bật máy · chạy · dừng · chờ) và cấu trúc lưu **24 giờ × 3 ca × ~31 ngày × 2 tháng**. ⭐⭐ Bổ sung kèm **bất biến kiểm được**: `chạy + dừng + chờ = bật máy` | ➕➕ |
+
+### B — Bốn thứ sách có nhưng còn mỏng
+
+| # | Nơi bổ sung | Nội dung | KQ |
+|---|---|:--|:--:|
+| 225 | ⭐ **Ch.44 mục 44.5b** — cửa sổ nhắc thao tác | Chương trình thật có năm nút do PLC điều khiển: xác nhận · lặp lại · bỏ qua · tiếp tục · huỷ. ⭐ Sách chỉ có **báo động**, mà báo động nói *"đã có lỗi"* — còn đây là *"đang chờ bạn"*. ⚠⚠ Kèm cảnh báo về nút *"Tiếp tục"*: không có phân quyền và không đánh dấu truy xuất thì nó là **cái nút biến hàng lỗi thành hàng đạt** | ➕➕ |
+| 226 | ⭐ **Ch.30 mục 30.3b** — chia thư mục theo vai trò | Sáu nhóm: cấu hình hệ thống · khởi tạo · thao tác tay · **báo động (mỗi nguyên nhân một chương trình con)** · trình tự trạm · cấu hình trục. ⭐ Và **trình tự chạy khô là một chương trình con RIÊNG**, thay vì rải `IF M_DryRun` khắp trình tự thật | ➕ |
+| 227 | ⭐ **Phụ lục L.15** — hút chân không có thổi ngược | Sách nhắc chân không ở Ch.5, 6, 33, 46 nhưng ⚠ **không có mẫu code**. Ba điều phân biệt nó với xy-lanh hai vị trí: ngừng hút ≠ nhả · thổi ngược phải **tắt** sau một nhịp · ⚠⚠ *"mất chân không giữa chừng"* là báo động **riêng** (sản phẩm đã rơi đâu đó trong máy) | ➕ |
+| 228 | **Ch.53 mục 53.5 · Phụ lục L.16** — đếm tuổi thọ vật tư | ⭐ Sách **đã có** hai ngưỡng 0,7 / 0,9 và đã nói *"nhắc, không được dừng máy"* — ✅ **không sửa**. Thứ còn thiếu là **gói thành một khối có tham số**: viết tay từng bộ đếm thì người ta theo dõi ba thứ rồi thôi. ⚡ Và hiện **phần trăm đã dùng**, không hiện số lần đếm được | ➕ |
+| 229 | ⭐ **Phụ lục K.7b** — lưới khay dạy ba điểm | Công thức nội suy hai chiều từ ba ô đã dạy. ⭐⭐ Vì sao **ba** điểm chứ không phải hai: ba điểm bắt được cả **khay bị xoay khi gá** — hai điểm thì ô xa nhất sai nhiều nhất | ➕ |
+
+### C — Đã xem và CỐ Ý không thêm
+
+| Thứ có trong chương trình thật | Vì sao không thêm |
+|:--|:--|
+| Theo dõi từng vòi hút / từng ô khay của máy gắp linh kiện | ⚠ Quá đặc thù một loại máy — vi phạm tinh thần B6 (tự đủ ≠ phủ mọi ngành) |
+| Điều khiển lực ép có PID, bù hiệu chuẩn, ngưỡng chạm | ⭐ Ch.34 và Ch.35 đã phủ nguyên lý; phần còn lại là tham số của một đầu ép cụ thể |
+| Kho đệm vào trước ra trước / vào sau ra trước, đếm giờ từng ô | ⭐ Đáng thêm, nhưng thuộc Ch.41 và cần viết cẩn thận — **để đợt sau** |
+| Bản đồ thanh ghi Modbus của xy-lanh điện | ⭐ Ch.39 đã có bẫy *"thanh ghi không dấu đọc ra số âm"*; phần còn lại là datasheet một mã hàng |
+| Điều khiển hai tay | ⚠⚠ Ch.47 mới có **một dòng** trong bảng. Có tiêu chuẩn riêng quy định con số cụ thể, mà ⚠ **bộ tài liệu nội bộ KHÔNG có bản gốc** — theo B2 không được viết số liệu từ trí nhớ. ⭐ **Cần mua tiêu chuẩn** |
+
+### Kết quả đợt 37
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **9** |
+| ➕➕ Bổ sung giá trị cao | 5 |
+| ➕ Bổ sung | 4 |
+| ✅ Kiểm rồi không sửa | 1 (Ch.53 hai ngưỡng bảo trì) |
+| Mục mới trong thân sách | 5 — Ch.27, 30, 44, 51, 55 |
+| Mẫu code mới | 2 — Phụ lục L nay có **16 mẫu** |
+
+> ⭐⭐ **Bài học lớn nhất: một chương trình máy ĐANG CHẠY trả lời được loại câu hỏi mà sách và tiêu
+> chuẩn không trả lời.**
+>
+> Sách dạy *nên làm gì*. Tiêu chuẩn nói *phải đạt gì*. ⚠ Nhưng chỉ chương trình thật mới cho thấy
+> **cái gì buộc phải có để máy sống được qua ca đêm** — và ba trong bốn mục ở phần A đúng là loại đó:
+> cờ bỏ qua, tầng chống va chạm, cửa sổ nhắc thao tác. ⭐ Cả ba đều sinh ra từ **áp lực vận hành**,
+> không từ lý thuyết, nên không sách nào nghĩ ra để viết.
+>
+> ⚡ **Và mục 221 là mục đáng nhớ nhất, vì nó lật cách sách đặt vấn đề.** Ch.51 coi cưỡng bức là **thứ
+> phải cấm**. Chương trình thật cho thấy cưỡng bức là **triệu chứng**: người ta cưỡng bức vì chương
+> trình không cho họ cách nào khác. ⭐ Cấm mà không thay thế thì chỉ đẩy việc đó vào chỗ tối hơn.
+>
+> ⚠ **Bộ kiểm lại bắt được hai lỗi của tôi trong đợt này**, cả hai đều là B8 (bóc lớp): Ch.27 nhắc
+> *"gantry"* và Ch.30 nhắc *"HMI"* — đều là thiết bị của lát cắt sau. Cộng với một lỗi TAG:
+> `DO_ZDownVlv` không có trong bảng I/O J.2, ⭐ **vì trục Z của DP-01 là servo chứ không phải van**.
+> ⚡ Ba lỗi này nằm trong văn xuôi và tên tag ngoài khối code — đúng vùng bộ kiểm **nhìn thấy**, khác
+> hẳn chỗ mù đã ghi ở đợt 36.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

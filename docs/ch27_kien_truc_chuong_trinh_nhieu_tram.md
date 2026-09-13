@@ -182,6 +182,89 @@ Bốn thứ bạn được ngay khi viết như vậy, mà cách viết rải r�
 
 ---
 
+## 27.3b ⭐⭐ Tầng chống va chạm — một lớp riêng, không rải trong trình tự
+
+Mục 27.3 đặt cơ cấu thành một tầng. Nhưng có một loại điều kiện **không thuộc về cơ cấu nào cả**:
+điều kiện nói rằng ⭐ **hai cơ cấu không được ở cùng một chỗ, cùng một lúc**.
+
+Đầu công tác không được hạ xuống khi kẹp chưa lên. Băng tải không được chạy khi kẹp còn giữ board.
+Xy-lanh chặn không được hạ khi board chưa qua hẳn.
+
+### Vì sao nó phải là một tầng riêng
+
+Cách làm tự nhiên là viết điều kiện đó ngay tại chỗ ra lệnh:
+
+```iecst
+// ⚠ CÁCH HAY GẶP — và nó sẽ hỏng
+IF Stn1_Step = 30 AND DI_Clamp1Up THEN     // "nhớ" kiểm kẹp trước khi hạ Z
+    M_Z_DownReq := TRUE;
+END_IF;
+```
+
+Ba vấn đề, cả ba đều chỉ lộ ra khi máy đã chạy:
+
+| # | Vấn đề | Hậu quả |
+|---|---|---|
+| 1 | ⚠⚠ **Chế độ tay không đi qua trình tự** | Người vận hành hạ Z bằng nút trên màn hình — điều kiện trên **không chạy**. Đây là lúc va chạm thật sự xảy ra (Chương 28 mục 28.2) |
+| 2 | ⚠ **Không rà được** | Muốn trả lời *"có bao nhiêu ràng buộc chống va chạm?"* phải đọc hết chương trình. Không ai làm được việc đó ở buổi nghiệm thu |
+| 3 | ⚠ **Sửa một chỗ, sót ba chỗ** | Cùng một ràng buộc được viết lại ở mọi nơi có lệnh hạ Z |
+
+⭐ Cách đúng: **tính mọi điều kiện chống va chạm ở MỘT chỗ, thành một tập cờ riêng, và cơ cấu đọc cờ
+đó như đọc một ngõ vào.**
+
+```iecst
+// ── TẦNG CHỐNG VA CHẠM — chạy mỗi vòng quét, TRƯỚC mọi trình tự ──
+// Mỗi dòng là MỘT ràng buộc vật lý, đọc được như một câu tiếng Việt.
+
+M_Itf_ZDown   := NOT DI_Clamp1Up;                      // chưa kẹp thì cấm hạ đầu công tác
+M_Itf_ClampDn := NOT M_Z_AtSafeHeight;                 // đầu chưa lên cao thì cấm nhả kẹp   
+M_Itf_Stop1Dn := DI_BoardStn1;                         // board còn tại trạm thì cấm hạ chặn
+M_Itf_ConvRun := M_Stn1_ClampReq OR M_Stn2_ClampReq;   // còn kẹp thì cấm chạy băng
+
+M_Itf_Any := M_Itf_ZDown OR M_Itf_ClampDn OR M_Itf_Stop1Dn OR M_Itf_ConvRun;
+```
+
+Rồi **mọi** đường ra lệnh — tự động, tay, về gốc, chạy khô — đều đi qua cùng một cửa:
+
+```iecst
+// Tầng cơ cấu: ngõ ra và yêu cầu chuyển động chỉ đi tiếp khi tầng này cho phép
+DO_Stop1Vlv := (M_Stn1_StopReq  OR M_Stn1_StopManual)  AND NOT M_Itf_Stop1Dn;
+DO_ConvRun  := (M_ConvRunReq    OR M_ConvRunManual)    AND NOT M_Itf_ConvRun;
+M_Z_DownGo  := (M_Z_DownReq     OR M_Z_DownManual)     AND NOT M_Itf_ZDown;
+```
+
+> ⭐⭐ **Điểm mấu chốt: cờ chống va chạm nằm ở TẦNG CƠ CẤU, không ở tầng trình tự.** Nhờ vậy nó
+> **không thể bị bỏ qua** bởi bất kỳ đường ra lệnh nào — kể cả chế độ tay, kể cả trình tự về gốc
+> (Chương 28 mục 28.5).
+
+### Báo động chống va chạm là một nhóm riêng
+
+⭐ Khi một lệnh bị tầng này chặn, **phải báo** — và báo bằng một **nhóm báo động riêng**, không trộn
+vào lỗi cơ cấu:
+
+| Nhóm báo động | Nghĩa | Người xử lý |
+|---|---|---|
+| Lỗi **cơ cấu** | Van hỏng, cảm biến hỏng, quá thời gian | Thợ bảo trì |
+| ⭐ Lỗi **chống va chạm** | Cơ cấu bình thường, nhưng **lệnh sai lúc** | ⭐ **Người viết chương trình** |
+
+> ⭐⭐ **Hai nhóm này gọi hai người khác nhau tới máy.** Trộn chúng làm một là lý do thợ bảo trì thay
+> một cái van hoàn toàn tốt.
+>
+> ⚡ Và một báo động chống va chạm ở máy đã nghiệm thu là **tín hiệu có lỗi thiết kế trình tự**, không
+> phải sự cố vận hành. Nó nên được đếm và xem lại, không nên chỉ xác nhận rồi chạy tiếp.
+
+### ⚠⚠ Cái tầng này KHÔNG làm
+
+> ⚠⚠ **Tầng chống va chạm bảo vệ MÁY, không bảo vệ NGƯỜI.**
+>
+> Nó chạy trong CPU thường, nên nó chết cùng CPU. Mọi mối nguy với người vẫn phải do thiết bị an toàn
+> xử lý, độc lập — Chương 47.
+>
+> ⭐ Cách phân biệt nhanh: *"nếu CPU treo giữa lúc này, ai bị thương?"* Trả lời được **"không ai"** thì
+> nó thuộc tầng chống va chạm. Trả lời khác đi thì nó thuộc Chương 47, và không có ngoại lệ.
+
+---
+
 ## 27.4 Đồng bộ giữa hai trạm — không được chờ bận
 
 Hai trạm của DP-01 chạy song song trên hai board khác nhau. Chúng cần phối hợp đúng **một** việc: trạm

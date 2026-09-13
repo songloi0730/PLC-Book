@@ -300,6 +300,50 @@ Nếu  Tần số xung  >  1 / (2 × Thời gian quét)   →  ⭐ PHẢI dùng 
 
 ---
 
+## K.7b Lưới khay — dạy ba điểm, tính ra mọi ô
+
+Khay có `R` hàng × `C` cột. ⚠ Dạy từng ô là việc không làm nổi khi khay có 60 ô, và ⭐ **mỗi lần gá
+lại khay là phải dạy lại toàn bộ**.
+
+⭐ Chỉ dạy **ba** ô và suy ra phần còn lại:
+
+```text
+P1 = ô (1,1)        — góc đầu
+P2 = ô (1,C)        — cuối HÀNG thứ nhất
+P3 = ô (R,1)        — cuối CỘT thứ nhất
+```
+
+```text
+             (c − 1)                       (r − 1)
+P(r,c) = P1 + ─────── × (P2 − P1)  +  ─────── × (P3 − P1)
+             (C − 1)                       (R − 1)
+```
+
+Áp cho từng trục:
+
+```text
+X(r,c) = X1 + (c−1)·(X2−X1)/(C−1) + (r−1)·(X3−X1)/(R−1)
+Y(r,c) = Y1 + (c−1)·(Y2−Y1)/(C−1) + (r−1)·(Y3−Y1)/(R−1)
+```
+
+| Hạng mục | Nội dung |
+|---|---|
+| ⭐ **Điều kiện áp dụng** | Các ô cách **đều nhau** theo mỗi chiều; khay **phẳng** trong mặt phẳng chuyển động |
+| ⭐⭐ **Vì sao phải ba điểm, không phải hai** | Ba điểm bắt được cả **khay bị xoay** khi gá. Hai điểm chỉ bắt được bước và chiều dài — ⚠ khay lệch góc vài độ sẽ sai dần và ⭐ **ô cuối cùng sai nhiều nhất** |
+| ⚠ **Không áp dụng cho** | Khay có bước không đều; khay cong vênh; khay nghiêng so với mặt phẳng chạy — khi đó cần dạy thêm điểm hoặc dùng hệ thị giác (Chương 43) |
+| ⚠⚠ **Bẫy số học** | ⭐ **Nhân trước, chia sau**; `C = 1` hoặc `R = 1` làm **mẫu số bằng 0** — phải chặn riêng (K.6, Chương 19 mục 19.5) |
+| ⭐ Kiểm tra | Sau khi dạy, chạy thử **bốn góc** — không phải ô đầu. ⚠ Sai số cộng dồn chỉ lộ ra ở góc xa nhất |
+| Chương | 37 · Phụ lục L.9 |
+
+> ⭐ **Đánh số ô: chọn một quy ước rồi viết nó lên khay.** Đếm theo hàng trước hay theo cột trước,
+> đếm từ 0 hay từ 1 — ⚠ **cả bốn kiểu đều có người dùng**, và cãi nhau về việc này lúc giao máy là
+> chuyện có thật. Ghi vào hồ sơ máy (Phụ lục J).
+>
+> ⚡ Cùng công thức này dùng được cho **kho nhiều tầng**: thay `(r, c)` bằng `(tầng, ô)` và dạy ba
+> điểm tương ứng.
+
+---
+
 ## K.8 Bảng tra nhanh — công thức nào ở chương nào
 
 | Cần tính | Công thức ở | Chương gốc |
@@ -319,6 +363,7 @@ Nếu  Tần số xung  >  1 / (2 × Thời gian quét)   →  ⭐ PHẢI dùng 
 | ⭐ **Khi nào cần bộ đếm tốc độ cao** | K.5 | 18 |
 | Dải kiểu dữ liệu, chống tràn | K.6 | 11, 19 |
 | Vỏ chống nhiễu, nối đất | K.7 | 31, 36, 49 |
+| ⭐ **Lưới khay — dạy ba điểm** | K.7b | 37 |
 
 > ⭐ **Cần đoạn code chứ không phải công thức?** Các mạch lặp lại ở mọi máy — tự giữ, chuỗi cho
 > phép, ba lệnh dừng, trình tự có timeout, servo, analog — nằm ở **Phụ lục L**.

@@ -458,6 +458,88 @@ theo sáu loại kinh điển, và ⚠ **họ sẽ dùng từ đó khi nói chuy
 
 ---
 
+## 55.7c ⭐ Đo và cất số liệu ở đâu — phần PLC phải làm
+
+Mục 55.7 và 55.7b nói OEE **nghĩa là gì** và vì sao nó hay bị bóp méo. Mục này trả lời câu còn lại:
+⭐ **ai đếm, đếm bằng gì, và cất ở đâu** — vì đó là phần rơi vào tay người lập trình PLC.
+
+### Bốn đồng hồ, và chúng phải cộng lại đúng
+
+Sáu trạng thái của SEMI E10 ở mục 55.7b cần có chỗ tích luỹ thời gian. Tối thiểu là **bốn đồng hồ**,
+và chúng phải thoả một bất biến:
+
+| Đồng hồ | Đếm khi | Nghĩa |
+|---|---|---|
+| ⭐ **Thời gian bật máy** | CPU đang chạy | Mẫu số của mọi tỉ lệ |
+| ⭐ **Thời gian chạy** | Máy đang làm ra sản phẩm | Tử số của khả dụng |
+| ⭐ **Thời gian dừng** | Có báo động, hoặc người dừng máy | Thứ cần phân tích |
+| ⭐ **Thời gian chờ** | Máy tốt, không có gì để làm — thiếu liệu, chờ máy trước | ⚠ **Không phải lỗi của máy** |
+
+```text
+⭐ BẤT BIẾN:   chạy + dừng + chờ  =  bật máy
+```
+
+> ⭐⭐ **Bất biến này là phép kiểm rẻ nhất và hiệu quả nhất của cả hệ thống đo.**
+>
+> Viết nó thành một phép so sánh chạy mỗi giờ. ⚠ Lệch quá vài giây nghĩa là có một trạng thái **không
+> được đếm vào đâu cả** — và trạng thái bị bỏ quên đó luôn là trạng thái bạn cần biết nhất.
+>
+> ⚡ Nó cũng là cách phát hiện lỗi kinh điển: máy chuyển từ *chạy* sang *báo động* mà đoạn mã tích luỹ
+> chỉ cộng khi *chạy* và khi *dừng*, quên mất nửa giây chuyển tiếp. Một ngày mất vài phút, một tháng
+> mất vài giờ, và không ai biết chúng đi đâu.
+
+### ⚠ Tách "chờ" khỏi "dừng" — tách một lần, dùng mãi
+
+⚠⚠ **Gộp thời gian chờ vào thời gian dừng là cách nhanh nhất để biến OEE thành một con số vô dụng.**
+
+Máy đứng vì máy trước chưa cấp liệu **không phải** máy hỏng. Gộp chúng lại thì mọi cuộc họp sản xuất
+sẽ dành ra bàn xem lỗi tại ai, thay vì bàn xem nút cổ chai ở đâu — trong khi ⭐ **con số trả lời câu
+thứ hai đã nằm sẵn trong PLC** (mục 55.3).
+
+⭐ Nếu chỉ tách được **một** thứ trong cả hệ thống đo, hãy tách thứ này.
+
+### Cất ở đâu trong PLC
+
+⭐ Một bộ khung đủ dùng cho hầu hết máy, và vừa bộ nhớ của PLC cỡ trung:
+
+| Mức | Cất gì | Vì sao cần mức này |
+|---|---|---|
+| **Theo giờ** | 24 ô cho một ngày | ⭐⭐ Thấy **giờ nào trong ca bị mất**, thứ mà con số cả ngày giấu đi |
+| **Theo ca** | Một ô cho mỗi ca | Đơn vị mà người quản lý sản xuất thật sự dùng |
+| **Theo ngày** | Khoảng 31 ô cho một tháng | Xu hướng trong tháng |
+| **Theo tháng** | Tháng này và tháng trước | So sánh, và ⭐ dữ liệu **sống sót qua một lần mất mạng dài** |
+
+Mỗi ô chứa cùng một tập trường — thời gian kế hoạch, thời gian chạy, số đạt, số không đạt — nên nó
+chính là một **kiểu dữ liệu người dùng** dùng lại ở cả bốn mức (Chương 11, Chương 30 mục 30.3).
+
+> ⭐ **Cất số ĐẾM, không cất số phần trăm.** Tỉ lệ tính ra lúc hiển thị. ⚠ Cất sẵn phần trăm thì khi
+> định nghĩa đổi — mà nó sẽ đổi, xem mục 55.7b — **toàn bộ lịch sử thành rác**, vì không còn số gốc
+> để tính lại.
+
+### ⚠ Ba chỗ hỏng, đều nằm ở ranh giới thời gian
+
+| # | Chỗ hỏng | Cách phòng |
+|---|---|---|
+| 1 | ⚠⚠ **Ca không trùng ngày** | Ca đêm chạy qua nửa đêm. ⭐ Quyết định trước: sản lượng của ca đó thuộc **ngày bắt đầu ca**, và ghi quyết định ấy vào hồ sơ máy |
+| 2 | ⚠ **Đổi ô khi sang giờ mới** | Lúc chuyển ô, phần thời gian dở dang phải **chia đúng** cho hai ô, không dồn hết về một bên |
+| 3 | ⚠⚠ **Đồng hồ thời gian thực của PLC trôi** | Vài giây mỗi tuần là bình thường. ⭐ Đồng bộ từ cấp trên (Chương 45), và ⚠ **ghi lại mỗi lần chỉnh giờ** — nếu không, một lần chỉnh lùi sẽ tạo ra số liệu âm mà không ai giải thích được |
+
+> ⚡ **Chỗ hỏng số 3 đáng nhớ vì hậu quả của nó trông giống lỗi lập trình.** Một ô sản lượng âm, hoặc
+> một giờ có 4 000 giây, gần như luôn là ⭐ **đồng hồ bị chỉnh**, không phải phép cộng sai.
+
+### Ai bấm nút xoá
+
+⭐ Số liệu OEE phải xoá được — đầu lô mới, sau khi chạy thử, sau khi sửa máy. Nhưng:
+
+> ⚠⚠ **Nút xoá số liệu phải có phân quyền, phải hỏi lại, và phải ghi nhật ký ai xoá lúc nào**
+> (Chương 44 mục 44.4).
+>
+> ⭐ Lý do rất thực tế: OEE thường được dùng làm chỉ tiêu đánh giá. ⚠ Một nút xoá không ghi nhật ký,
+> đặt ngay màn hình chính, là một lời mời — và khi nghi ngờ nổi lên, **không có cách nào chứng minh
+> điều ngược lại**. Ghi nhật ký bảo vệ cả người vận hành lẫn con số.
+
+---
+
 ## 55.8 Trên máy mẫu DP-01
 
 Số liệu đã chốt: **300 board/giờ** → chu kỳ **12,0 giây** (Phụ lục J §J.1).

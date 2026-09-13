@@ -159,6 +159,107 @@ Ba lợi ích, và lợi ích thứ ba là lớn nhất:
 
 ---
 
+## 30.3b ⭐ Hai quy ước làm cho cấu trúc ở mục 30.3 **giữ được** khi máy lớn lên
+
+Mục 30.3 nói tổ chức theo cơ cấu và gói trạng thái vào một kiểu dữ liệu. Hai quy ước dưới đây là thứ
+quyết định cấu trúc đó còn đứng vững sau ba năm hay tan ra — và cả hai đều gần như không tốn gì.
+
+### Quy ước 1 — chia kiểu dữ liệu làm **ba phần**: Lệnh · Dữ liệu · Phản hồi
+
+Kiểu `ST_Station` ở mục 30.3 trộn lẫn thứ **người khác ghi vào** với thứ **khối tự ghi ra**. Khi chỉ
+có sáu trường thì không sao. Khi có sáu mươi trường thì không ai còn trả lời được câu hỏi quan trọng
+nhất: ⚠ *"biến này ai được phép ghi?"*
+
+⭐ Cách chữa: tách mỗi cơ cấu thành **ba kiểu**, đặt tên theo cùng một khuôn:
+
+| Phần | Nghĩa | Ai ghi | Ai đọc |
+|---|---|---|---|
+| `…Cmd` — **Lệnh** | Thứ người ngoài **yêu cầu** cơ cấu làm | ⭐ Trình tự, chế độ tay, nơi ra lệnh | Khối cơ cấu |
+| `…Data` — **Dữ liệu** | Tham số và số đo: vị trí, tốc độ, thời gian, ngưỡng | ⭐ Công thức, khối | Cả hai |
+| `…Resp` — **Phản hồi** | Thứ cơ cấu **công bố** về chính nó | ⭐ **Chỉ khối cơ cấu** | Mọi người |
+
+```iecst
+TYPE ST_CylinderCmd :          // ai cũng ghi được
+STRUCT
+    Req          : BOOL;       // yêu cầu tới vị trí làm việc
+    ManualTrig   : BOOL;       // nút trên màn hình
+    InitialReset : BOOL;       // đưa về gốc khi khởi tạo
+    InterLock    : BOOL;       // chặn từ tầng chống va chạm (Chương 27 mục 27.3b)
+    AlarmShield  : BOOL;       // bỏ qua báo động cơ cấu này (Chương 51 mục 51.7b)
+    SensShield   : BOOL;       // bỏ qua cảm biến — có điều kiện, xem Ch.51
+END_STRUCT
+END_TYPE
+
+TYPE ST_CylinderResp :         // ⚠ CHỈ khối cơ cấu được ghi
+STRUCT
+    Done         : BOOL;
+    AtHome       : BOOL;
+    AtWork       : BOOL;
+    Fault        : BOOL;
+    FaultCode    : INT;
+    InitialDone  : BOOL;
+    ManualActive : BOOL;       // đang bị điều khiển bằng tay
+    Admit        : BOOL;       // ⭐ xem bên dưới
+END_STRUCT
+END_TYPE
+```
+
+> ⭐⭐ **Lợi ích thật không nằm ở chỗ gọn, mà ở chỗ quy tắc trở nên KIỂM TRA ĐƯỢC.**
+>
+> Với ba phần có tên, câu hỏi *"chỗ nào trong chương trình ghi vào phản hồi của xy-lanh 3?"* trả lời
+> được bằng **một lần tra chéo** *(cross-reference)*. ⚠ Ra nhiều hơn một chỗ là có lỗi — và bạn tìm
+> ra nó **trước** khi máy chạy, thay vì sau (Chương 22, Chương 51 mục 51.7).
+
+### ⭐ Trường `Admit` — cơ cấu tự nói nó có nhận lệnh hay không
+
+Trong `…Resp` nên có một trường mà người mới hay bỏ: **cơ cấu tự công bố nó có sẵn sàng nhận lệnh
+không**, và nói riêng cho từng chế độ.
+
+```iecst
+// Trong khối cơ cấu — KHÔNG phải trong trình tự
+Cyl1.Resp.AutoAdmit   := Cyl1.Resp.InitialDone AND NOT Cyl1.Resp.Fault
+                         AND NOT Cyl1.Cmd.InterLock AND M_AutoMode;
+Cyl1.Resp.ManualAdmit := Cyl1.Resp.InitialDone AND NOT Cyl1.Cmd.InterLock
+                         AND M_ManualMode;
+```
+
+Vì sao đáng có:
+
+| | |
+|---|---|
+| 1 | ⭐ Trình tự chỉ cần hỏi **một bit** thay vì lặp lại đủ điều kiện ở mọi chỗ gọi |
+| 2 | ⭐⭐ Nơi ra lệnh **biết trước lệnh sẽ bị từ chối**, nên không gửi đi một lệnh chắc chắn rơi vào hư không — và nói được vì sao (Chương 44) |
+| 3 | ⚠ Điều kiện nằm **trong** khối nên **không thể quên** khi thêm một cơ cấu mới |
+
+### Quy ước 2 — chia thư mục chương trình theo **vai trò**, không theo thứ tự viết
+
+Chương trình máy thật có vài chục chương trình con. ⚠ Để chúng phẳng trong một danh sách thì sau sáu
+tháng không ai tìm được gì. ⭐ Một bố cục theo vai trò đã được dùng nhiều và đủ tốt để bắt chước:
+
+| Nhóm | Chứa gì | Chương |
+|---|---|---|
+| **A — Cấu hình hệ thống** | Gán I/O, máy trạng thái toàn máy, cờ bỏ qua, tham số hệ thống | 25, 51 |
+| **B — Khởi tạo** | Trình tự về gốc: toàn máy, rồi từng trạm | 28 |
+| **C — Thao tác tay** | Điều khiển từng cơ cấu bằng tay, điều khiển chuyền | 28 |
+| **D — Báo động** | ⭐ **Mỗi nhóm nguyên nhân một chương trình con**: cơ cấu · trục · hệ thống · chống va chạm · trạm · cảnh báo, và một chỗ gom tất cả | 27, 44 |
+| **E — Trình tự trạm** | Mỗi trạm một chương trình con, cộng trình tự chạy khô | 26, 27 |
+| **F — Cấu hình trục** | Tham số trục, dữ liệu trục, phần hiện lên màn hình | 37 |
+
+> ⭐⭐ **Nhóm D là nhóm chứng minh giá trị của cách chia này.** Tách báo động theo **nguyên nhân** —
+> chứ không rải chúng vào chỗ phát hiện ra lỗi — cho ngay ba thứ:
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ Đếm được tổng số báo động của máy, và ⚠ **thấy ngay cái nào chưa có** |
+> | 2 | ⭐ Mỗi nhóm gom được thành **một bit tổng** để đèn tháp và màn hình dùng (Phụ lục L.11, L.13) |
+> | 3 | ⭐⭐ Lỗi **chống va chạm** tách khỏi lỗi **cơ cấu** — hai nhóm gọi hai người khác nhau tới máy (Chương 27 mục 27.3b) |
+>
+> ⚡ Và nhóm E tách **trình tự chạy khô** *(dry run)* thành một chương trình con riêng thay vì rải
+> `IF M_DryRun` khắp trình tự thật — nhờ vậy trình tự thật đọc được, còn chế độ chạy khô không âm thầm
+> phân nhánh ở mười chỗ (Chương 28, Chương 50).
+
+---
+
 ## 30.4 Comment — viết như nhật ký kỹ thuật
 
 ### Comment vô dụng và comment có giá trị
