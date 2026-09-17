@@ -1975,6 +1975,66 @@ bảng, không hình** thì đánh dấu.
 
 ---
 
+## Đợt 45 — 2026-09-17 · ⭐⭐ Chủ dự án đọc mã và chỉ ra: chương trình thật đánh CHỈ SỐ, không đặt tên
+
+Nhận xét của chủ dự án sau khi đọc các dự án ví dụ: *"chương trình viết theo chỉ số mảng chứ không
+phải dạng tag như sách nhắc đến"*. ⭐ **Nhận xét đúng, và nó chỉ ra một chỗ sách trình bày gây hiểu
+nhầm.**
+
+### A — Đọc kỹ: không phải "không có tag", mà là BA TẦNG, ba quy ước
+
+| # | Phát hiện | KQ |
+|---|:--|:--:|
+| 288 | ⭐ Khối dữ liệu I/O là **bản sao địa chỉ vật lý**: `InX0[0..7]` … `InX370[7]`, `OutY0[0]` … ⚡ Để ý dãy số **nhảy từ 70 sang 100** — đó là **bát phân**, đúng quy ước địa chỉ mà Phụ lục A1 đã cảnh báo | ✔ |
+| 289 | ⭐⭐ Khối dữ liệu trình tự: **732 biến, 647 trong đó là phần tử mảng** (~88 %) — `STSignal[0..20].Condition`, `STSignal[i].done[0..9]`, `AxisAlarm[0..20]`, `CylinderAlarm[0..34]` | ✔ |
+| 290 | ⭐ Nhưng tầng logic riêng của máy **vẫn dùng tên mô tả** — có tiền tố kiểu (`b`, `x`, `i`) và viết bằng tiếng bản địa | ✔ |
+
+⭐ **Kết luận: đây không phải "không dùng tag". Đây là BA quy ước dùng ở BA tầng khác nhau** — và
+mỗi lựa chọn đều có lý ở tầng của nó.
+
+### B — ⭐⭐ Đo được kỷ luật "địa chỉ tuyệt đối chỉ ở tầng khai báo"
+
+Nguyên tắc PLCopen thêm vào Chương 27 mục 27.2b ở đợt 40 là **kiểm được**. Đã kiểm bằng bảng tham
+chiếu chéo của chính dự án:
+
+| # | Phép đo | Kết quả | KQ |
+|---|---|:--|:--:|
+| 291 | Tag I/O thô (`InX*` / `OutY*`) xuất hiện ở những chương trình con nào | ⭐⭐ **148 / 158 lần (94 %) nằm trong ĐÚNG chương trình con gán chân.** Phần còn lại: **một** chương trình con trao đổi dữ liệu với hệ trên, đọc thẳng một byte vào/ra | ✔ |
+
+> ⭐ Con số này đáng giá gấp đôi: nó cho thấy kỷ luật **giữ được trong thực tế**, và nó cho thấy
+> ⚠ **rò rỉ luôn có, luôn kèm một lý do nghe hợp lý lúc đó**.
+
+### C — Chỗ sách trình bày gây hiểu nhầm, đã sửa
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 292 | ⚠ **Ch.30 mục 30.2** | Bày bốn quy ước **cạnh nhau như bốn lựa chọn cho cả chương trình** — ⭐ đúng thông tin, nhưng ⚠ gây hiểu nhầm rằng phải chọn **một** | ⚠ |
+| 293 | ⭐⭐ **Ch.30 mục 30.2b** (mới) | *Quy ước chọn cho TỪNG TẦNG*: bảng ba tầng thật kèm ví dụ thật, và câu trả lời cho *"vì sao tầng khung BUỘC phải đánh chỉ số"* — ⭐⭐ **không thể viết một khối rồi tạo 30 thể hiện nếu mỗi thiết bị có một tên viết tay**. Thư viện dùng lại và tên riêng cho từng thiết bị là **hai thứ loại trừ nhau ở tầng đó** | ➕➕ |
+| 294 | ⚠⚠ Ch.30 mục 30.2b — **cái giá, và nó nặng hơn vẻ ngoài** | Với tên mô tả, mất hết tài liệu thì **cái tên chính là tài liệu**. ⭐ Với chỉ số, mất bảng tra là **mất khả năng đọc** — thấy `[12]` báo lỗi mà không biết `[12]` là cơ cấu nào. ⚡ Nên **bảng tra chỉ số trở thành một phần của chương trình**, và phải nằm trong danh mục sao lưu (Ch.54 mục 54.3) | ➕➕ |
+| 295 | ⭐ Ch.30 mục 30.2b — **cách KIỂM** | Chạy tham chiếu chéo trên một tag I/O thô, đếm số chương trình con. Ba mức kết quả và nghĩa của từng mức. ⭐ Biến một lời khuyên thành **một phép đo** | ➕➕ |
+| 296 | **Ch.30** — thuật ngữ | ⚠ Bộ kiểm bắt một lỗi nhỏ của tôi: *cross-reference* bị dịch hai kiểu (**tra chéo** vs **tham chiếu chéo**) — ⭐ bản sai là do **chính tôi** viết ở đợt 40. Đã thống nhất theo Ch.22 mục 22.3 | ⚠ |
+
+### Kết quả đợt 45
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **9** |
+| ➕➕ Bổ sung giá trị cao | 3 |
+| ⚠ Sửa chỗ trình bày gây hiểu nhầm | 1 |
+| Mục mới | 1 — Ch.30 mục 30.2b |
+
+> ⭐⭐ **Bài học: người đọc ngoài nhìn ra thứ người viết không nhìn ra — vì người viết biết mình
+> ĐỊNH nói gì.**
+>
+> Mục 30.2 không sai một chữ. ⚠ Nhưng nó bày bốn quy ước theo kiểu thực đơn, nên người đọc hiểu là
+> **chọn một**. ⭐ Chỉ khi đặt nó cạnh một chương trình thật mới thấy: thực tế **dùng ba cái cùng
+> lúc**, và câu hỏi hay không phải *"chọn cái nào"* mà là ⭐⭐ **"ở tầng này, ai là người đọc?"**
+>
+> ⚡ Và nhận xét đó đến từ việc **đọc mã**, không từ việc đọc sách. ⭐ Đây là lý do tại sao đối chiếu
+> với chương trình thật có giá trị mà đối chiếu với tài liệu không thay thế được.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
