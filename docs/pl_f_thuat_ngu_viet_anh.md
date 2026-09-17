@@ -151,7 +151,7 @@
 | Vùng chết | deadband | | 32, 35 |
 | Trễ tích luỹ | hysteresis | | 32 |
 | Biến tần | VFD (variable frequency drive) · inverter | | 36 |
-| Tăng tốc · giảm tốc | acceleration · deceleration ramp | | 36 |
+| Tăng tốc · giảm tốc | acceleration · deceleration ramp | Dốc của biến tần: Ch.36; biên dạng vận tốc của servo: Ch.37 mục 37.5 | 36, 37 |
 | ⭐ Mô-men dừng an toàn | STO (Safe Torque Off) | ⚠ Chức năng an toàn của driver | 36, 47 |
 | Servo drive | servo drive | | 37 |
 | Trục | axis | | 37 |

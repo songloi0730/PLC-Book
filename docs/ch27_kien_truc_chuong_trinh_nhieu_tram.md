@@ -317,6 +317,25 @@ vào lỗi cơ cấu:
 
 ---
 
+### ⭐ Khi "cơ cấu" lại là một bộ điều khiển khác
+
+Xy-lanh là cơ cấu **không tự nghĩ**: bạn ra lệnh, nó làm. Nhưng có loại cơ cấu **mang theo bộ điều
+khiển riêng** — có chương trình riêng, máy trạng thái riêng, và thường là **người lập trình riêng**.
+
+⭐ **Quy tắc ba tầng vẫn giữ nguyên**: với tầng trạm, thứ đó vẫn chỉ là một cơ cấu có `Cmd` · `Data` ·
+`Resp` (mục 30.3b). ⚠ Nhưng ba điều đổi, và cả ba đều đắt nếu phát hiện muộn:
+
+| | Đổi ở chỗ nào |
+|---|---|
+| 1 | ⚠⚠ **Phải chốt AI CHỈ HUY AI trước khi viết dòng đầu tiên** — và chốt bằng văn bản, vì hai bên là hai người |
+| 2 | ⚠ **Phục hồi khác hẳn**: cơ cấu đó có thể **đang giữ sản phẩm** và đang ở giữa chương trình của nó — không "về gốc" một phát là xong (Chương 28) |
+| 3 | ⚠ **Nó có dữ liệu phải sao lưu** mà không nằm trong dự án PLC của bạn (Chương 54 mục 54.3, hạng mục 8) |
+
+⭐ Loại cơ cấu này được nói kỹ ở **Chương 46** — mục 46.3 cho việc chỉ huy, 46.5 cho dữ liệu
+phải sao lưu, 46.8 cho phục hồi.
+
+---
+
 ## 27.4 Đồng bộ giữa hai trạm — không được chờ bận
 
 Hai trạm của DP-01 chạy song song trên hai board khác nhau. Chúng cần phối hợp đúng **một** việc: trạm

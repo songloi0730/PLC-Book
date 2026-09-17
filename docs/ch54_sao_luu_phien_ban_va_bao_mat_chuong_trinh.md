@@ -53,7 +53,7 @@ của nó rất đắt.
 
 ---
 
-## 54.3 ⭐⭐ Sao lưu cái gì — bảy thứ, không phải một
+## 54.3 ⭐⭐ Sao lưu cái gì — tám thứ, không phải một
 
 Đây là mục quan trọng nhất chương. Hầu hết người ta sao lưu **một** thứ và tưởng là đã xong.
 
@@ -61,11 +61,12 @@ của nó rất đắt.
 |---|---|---|
 | 1 | ⭐ **Dự án PLC** (logic + chú thích + tên biến) | Có logic nhưng không đọc được |
 | 2 | ⭐ **Cấu hình phần cứng** *(hardware configuration)* — khe cắm, module, địa chỉ, tham số module | CPU mới không nhận I/O |
-| 3 | ⭐ **Tham số biến tần / servo driver** | ⚠ **Động cơ chạy sai hoặc không chạy**; chỉnh lại tay mất hàng ngày (Chương 36–37) |
+| 3 | ⭐ **Tham số biến tần / servo driver** — ⚠⚠ **kể cả tham số CHỨC NĂNG AN TOÀN của drive** | ⚠ **Động cơ chạy sai hoặc không chạy**; chỉnh lại tay mất hàng ngày (Chương 36–37). ⚠⚠ Và nếu thiếu tham số an toàn: máy **chạy bình thường** nhưng chức năng an toàn **không còn như đã nghiệm thu**, ⭐ **không báo động nào nói điều đó** (Chương 37 mục 37.6b) |
 | 4 | ⭐ **Dự án HMI / SCADA** | Có máy chạy nhưng ⚠ **không ai điều khiển được** (Chương 44) |
 | 5 | **Công thức và tham số sản phẩm** | Mất toàn bộ dữ liệu sản phẩm (Chương 32) |
 | 6 | ⚠⚠ **Chương trình và cấu hình thiết bị an toàn** | Không khôi phục được chức năng an toàn; ⚠ **và phải kiểm định lại** (Chương 48) |
 | 7 | **Cấu hình mạng** — địa chỉ IP, tên trạm, tệp mô tả thiết bị | Thiết bị không nhận nhau (Chương 40) |
+| 8 | ⭐⭐ **Chương trình và ĐIỂM DẠY của bộ điều khiển ngoài** — robot, tay gắp thông minh | ⚠⚠ **Điểm dạy là dữ liệu nhưng có vai trò như code**: mất nó thì phải dạy lại từng điểm trên máy thật, và ⚠ không có cách nào kiểm rằng đã dạy đúng như cũ (Chương 46 mục 46.5) |
 
 > ⭐ **Mục 3 là mục bị quên nhiều nhất, và nó gây bất ngờ khó chịu nhất.**
 >
@@ -76,6 +77,12 @@ của nó rất đắt.
 >
 > ⚡ Nhiều biến tần cho phép **sao chép tham số vào bảng điều khiển rời** rồi nạp sang bộ khác — dùng
 > nó, và **kèm cả tệp sao lưu tham số** vào bộ sao lưu chung.
+
+> ⭐⭐ **Mục 8 hay bị bỏ vì nó "không thuộc PLC".**
+>
+> Robot có bộ nhớ riêng, phần mềm riêng, người lập trình riêng — nên rất dễ mặc định rằng *"bên robot
+> họ tự lo"*. ⚠ Nhưng khi máy hỏng lúc nửa đêm, người đứng đó là bạn. ⭐ **Bộ sao lưu của cỗ máy phải
+> là bộ sao lưu của CẢ CỖ MÁY**, không phải của riêng phần mình làm (Chương 46).
 
 ### ⭐ Mục 6 là hạng mục đặc biệt
 

@@ -41,7 +41,6 @@
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
 | Petruzella — Activities Manual | 401 | 22 | ✔ |
 | Kuphaldt — Instrumentation Technician | 163 | 90 | ✔ |
-| PLCopen Safe Motion | 45 | 30 | ✔ |
 | IO-Link — mô tả hệ thống | 25 | 4 | ✔ |
 
 ---
@@ -83,6 +82,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Schneider — an toàn máy | 33 | 41, 47, 56 |
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 47 |
+| PLCopen Safe Motion | 45 | 37 |
 | PLCopen Motion Control | 213 | 28, 37, 43, 45 |
 | PLCopen — Structuring Program Development | 4 | 27 |
 | PLCopen XML exchange | 80 | 14 |

@@ -249,6 +249,98 @@ Ba yêu cầu đi kèm:
 
 ---
 
+## 37.6b ⭐⭐ Chức năng an toàn của truyền động — cả một họ, không chỉ STO
+
+Mục 37.6 dựng ba lớp bảo vệ **cơ khí và logic**. Còn một lớp nữa nằm **bên trong chính bộ truyền
+động**, và phần lớn người mới chỉ biết đúng một thành viên của nó: **STO**.
+
+> ⚠⚠ **Mục này giới thiệu TỪ VỰNG, không thiết kế an toàn.** Chọn dùng chức năng nào, ở mức toàn vẹn
+> nào, với kiến trúc nào — là kết quả của **đánh giá rủi ro do người có thẩm quyền thực hiện**
+> (Chương 47). ⭐ Mục đích ở đây là để bạn **biết những gì tồn tại** mà hỏi cho đúng, thay vì mặc định
+> rằng STO là lựa chọn duy nhất.
+
+### Vì sao chỉ biết STO là không đủ
+
+Chương 47 mục 47.8 đã cảnh báo hai điều STO **không** làm, và cảnh báo quan trọng nhất là:
+
+> ⚠ **STO không hãm.** Động cơ ngừng sinh mô-men, nhưng tải có quán tính **trôi theo đà** — và trục
+> đứng có tải treo thì **rơi**.
+
+⭐ Câu hỏi tự nhiên tiếp theo là *"vậy dùng gì?"* — và câu trả lời nằm ở chỗ **có cả một họ chức năng
+an toàn cho truyền động**, được định nghĩa trong tiêu chuẩn về truyền động điện *(IEC 61800-5-2)*.
+
+### Bốn chức năng dừng — khác nhau ở chỗ nào
+
+| Ký hiệu | Tên | Làm gì | ⭐ Trả lời tình huống |
+|---|---|---|---|
+| **STO** | *Safe torque off* | ⭐ **Cắt năng lượng sinh chuyển động** khỏi động cơ | Tải nhẹ, ma sát đủ giữ, hoặc đã có phanh cơ |
+| ⭐ **SS1** | *Safe stop 1* | **Giảm tốc có kiểm soát, rồi mới STO** | ⭐⭐ Đúng câu trả lời cho *"tải có quán tính lớn"* |
+| ⭐ **SS2** | *Safe stop 2* | Giảm tốc có kiểm soát, **rồi chuyển sang SOS** | Khi dừng xong vẫn phải **giữ nguyên vị trí** |
+| ⭐⭐ **SOS** | *Safe operating stop* | ⭐ **Giữ trục đứng yên — vẫn còn mô-men** | ⚠ **Trục đứng có tải treo**; hoặc cần giữ vị trí giữa chu trình |
+
+> ⭐⭐ **Khác biệt SS1 với SS2/SOS là khác biệt đáng nhớ nhất của cả mục này.**
+>
+> Cả hai đều giảm tốc có kiểm soát. Nhưng ⚠ **SS1 kết thúc bằng STO — hết mô-men**, còn ⭐ **SS2 kết
+> thúc bằng SOS — còn mô-men để giữ chỗ**.
+>
+> ⚡ Với trục Z mang đầu công tác, chọn nhầm SS1 thay vì SS2 nghĩa là: máy dừng êm, đúng quy trình,
+> **rồi trục rơi xuống** — vì sau khi giảm tốc xong thì mô-men bị cắt.
+
+### Các chức năng giám sát — cho phép máy vẫn chạy, nhưng chạy trong giới hạn
+
+| Ký hiệu | Tên | Giữ cho cái gì trong giới hạn |
+|---|---|---|
+| ⭐⭐ **SLS** | *Safely-limited speed* | **Tốc độ** không vượt ngưỡng |
+| **SSR** | *Safe speed range* | Tốc độ nằm trong một **dải** |
+| ⭐ **SLP** | *Safely-limited position* | **Vị trí** không vượt giới hạn |
+| **SLI** | *Safely-limited increment* | Mỗi lần chỉ đi **một bước ngắn** |
+| ⭐ **SDI** | *Safe direction* | Chỉ cho đi **một chiều** — chặn chiều không mong muốn |
+| **SLA** · **SAR** | *Safely-limited / safe range acceleration* | **Gia tốc** |
+| **SLT** · **STR** | *Safely-limited / safe range torque* | **Mô-men hoặc lực** |
+| **SMT** | *Safe motor temperature* | **Nhiệt độ động cơ** |
+
+Và ba chức năng **công bố tín hiệu** thay vì hạn chế:
+
+| Ký hiệu | Tên | Công bố điều gì |
+|---|---|---|
+| **SSM** | *Safe speed monitor* | Tốc độ **đang dưới ngưỡng** hay không |
+| **SCA** | *Safe cam* | Trục **đang trong một dải vị trí** hay không |
+| ⭐ **SBC** | *Safe brake control* | ⭐⭐ Điều khiển **phanh ngoài** bằng tín hiệu an toàn — ⚠ đây là thứ đi cùng trục đứng |
+
+> ⭐⭐ **SLS là chức năng đổi cách làm việc nhiều nhất, và đáng biết nhất với người lập trình.**
+>
+> Bài toán quen thuộc: **dạy điểm, căn chỉnh, gỡ kẹt** — những việc buộc người phải vào vùng máy
+> trong khi trục cần **vẫn nhúc nhích được**. ⚠ Nếu chỉ có STO thì chỉ còn hai lựa chọn, và cả hai
+> đều tệ: **cắt hẳn** (không làm được việc) hoặc **chạy đủ tốc độ** (không an toàn).
+>
+> ⭐ SLS mở ra lựa chọn thứ ba: **cho chạy, nhưng tốc độ bị chặn ở mức an toàn — và mức chặn đó do
+> phần cứng an toàn giám sát, không do chương trình**. ⚡ Ghép thêm **SDI** thì còn giới hạn được cả
+> chiều: chỉ cho đi **ra xa** người, không cho đi vào.
+>
+> ⚠ Nhưng nhắc lại: **ngưỡng tốc độ an toàn là con số của đánh giá rủi ro**, không phải con số người
+> lập trình chọn (Chương 47).
+
+### ⭐ Hai chỗ đặt chức năng an toàn — và hệ quả với người lập trình
+
+| | **Trong chính bộ truyền động** *(safety drive)* | **Do một PLC an toàn giám sát** |
+|---|---|---|
+| Cách làm | ⭐ Drive có sẵn chức năng an toàn; nó tự chuyển giữa các chức năng bằng **máy trạng thái bên trong** | Bộ điều khiển an toàn giám sát nhiều trục ở một chỗ |
+| ⭐ Được gì | Phản ứng nhanh nhất, ít dây; ⭐ **không phụ thuộc mạng** | ⭐ Nhìn được **toàn máy**, phối hợp nhiều trục theo vùng |
+| ⚠ Mất gì | Cấu hình nằm **trong tham số drive** — ⚠ **dễ bị quên khi thay drive** (Chương 53, Chương 54) | Phức tạp hơn; phụ thuộc mạng an toàn |
+| ⚠ Hệ quả với bạn | ⭐⭐ **Tham số an toàn của drive PHẢI nằm trong bản sao lưu** — nó không nằm trong tệp chương trình PLC | Dự án an toàn là **một dự án riêng**, sao lưu riêng |
+
+> ⚠⚠ **Hàng cuối là hàng hay gây sự cố nhất, và nó thuộc về người lập trình PLC.**
+>
+> Thay một drive hỏng, nạp lại tham số từ bản lưu — nhưng bản lưu ấy **chỉ có tham số vận hành**,
+> không có **tham số an toàn**. ⭐ Máy chạy bình thường, mọi thứ trông đúng, và ⚠⚠ **chức năng an
+> toàn thì không còn như đã nghiệm thu** — không có báo động nào nói điều đó.
+>
+> ⭐ Vì vậy danh mục sao lưu ở Chương 54 phải ghi **tham số an toàn của từng drive** thành một mục
+> riêng, và việc thay drive phải kèm **thử lại chức năng an toàn**, không chỉ thử chạy
+> (Chương 52 mục 52.5).
+
+---
+
 ## 37.7 Phối hợp nhiều trục
 
 Gantry XY cần hai trục chạy **cùng lúc và phối hợp**, không phải lần lượt.
@@ -650,6 +742,14 @@ lát cắt 4: nối máy với thế giới bên ngoài. Bắt đầu bằng RS-
 công nghiệp, và là cách bộ điều khiển nhiệt độ của DP-01 nói chuyện với PLC.
 
 ### Nguồn tham khảo chương 37
+
+- **PLCopen** — *Safe Motion v1.0* (TC5): ⭐ **danh mục đầy đủ các chức năng an toàn của truyền động**
+  theo **IEC 61800-5-2** — bốn chức năng dừng (STO · SS1 · SS2 · SOS), nhóm giới hạn (SLS, SSR, SLP,
+  SLI, SDI, SLA, SAR, SLT, STR, SMT), nhóm công bố tín hiệu (SSM, SCA, SBC) — nền cho mục 37.6b;
+  và **hai kiến trúc**: giám sát **trong chính drive** với máy trạng thái nội bộ, hay giám sát ở một
+  **bộ điều khiển an toàn**. *(tài liệu mở của PLCopen; ⚠ bản thân IEC 61800-5-2 có bản quyền và
+  KHÔNG có trong bộ tài liệu — sách chỉ nêu tên và mô tả chức năng ở mức khái niệm, không dẫn số
+  điều khoản)*
 
 - IEC 61800-5-2 — *Adjustable speed electrical power drive systems — Safety requirements — Functional*:
   các chức năng an toàn của truyền động. *(tiêu chuẩn có bản quyền)*

@@ -1736,6 +1736,94 @@ phương án mình đang khuyến nghị, không chỉ các phương án bị lo
 
 ---
 
+## Đợt 42 — 2026-09-17 · Rà bằng một ống kính mới: chương nào bị CÔ LẬP
+
+Đợt 40 đo **kích thước** từng chương. Đợt này đo **liên kết**: đếm xem mỗi chương **được bao nhiêu
+chương khác dẫn tới**. ⭐ Một chương không ai trỏ tới là một chương mà phần còn lại của sách **coi
+như không tồn tại** — dù bản thân nó viết tốt.
+
+### A — Kết quả đo
+
+| Chương | Được mấy chương dẫn | Nhận xét |
+|---|:--:|---|
+| Ch.01 | 1 | ⭐ Bình thường — chương mở đầu |
+| ⚠⚠ **Ch.46 — tích hợp robot** | **1** | ⚠ Và chỗ duy nhất đó là dòng *"chương tiếp theo"* ở cuối Ch.45. ⭐⭐ **Không một mục nội dung nào trong cả cuốn sách trỏ tới nó** |
+| Ch.56 · Ch.58 | 2 | Chương kết, chấp nhận được |
+
+> ⭐⭐ **Ch.46 bị cô lập là một lỗi thật, và nó không lộ ra bằng cách đọc.** Chương viết đủ và đúng.
+> ⚠ Nhưng nghĩa của việc không ai dẫn tới nó là: người đọc Ch.27 (kiến trúc), Ch.28 (phục hồi) hay
+> Ch.54 (sao lưu) **sẽ không bao giờ biết rằng có một loại cơ cấu phá vỡ giả định của ba chương đó**.
+
+### B — Đã nối lại, và việc nối làm lộ thêm hai lỗ hổng thật
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 263 | ⭐⭐ **Ch.27 mục 27.3** — *khi "cơ cấu" lại là một bộ điều khiển khác* | Quy tắc ba tầng **vẫn giữ**, nhưng ba điều đổi: ⚠⚠ phải **chốt ai chỉ huy ai bằng văn bản trước khi viết dòng đầu** · ⚠ phục hồi khác hẳn vì cơ cấu đó **đang ở giữa chương trình của nó** · ⚠ nó có **dữ liệu phải sao lưu** không nằm trong dự án PLC của bạn | ➕➕ |
+| 264 | ⭐⭐ **Ch.54 mục 54.3** — danh mục sao lưu **bảy → tám hạng mục** | Thiếu hẳn hạng mục **chương trình và ĐIỂM DẠY của bộ điều khiển ngoài**. ⭐ Điểm dạy là *dữ liệu nhưng có vai trò như code*: mất nó thì phải dạy lại từng điểm **trên máy thật**, và ⚠ không có cách nào kiểm rằng đã dạy đúng như cũ | ➕➕ |
+| 265 | ⚠⚠ **Ch.54 hạng mục 3** — siết lại | Hạng mục *"tham số biến tần/servo"* **không nói tới tham số CHỨC NĂNG AN TOÀN của drive**. Thiếu nó thì ⭐ **máy chạy bình thường, mọi thứ trông đúng, nhưng chức năng an toàn không còn như đã nghiệm thu — và không báo động nào nói điều đó** | ⚠ |
+
+### C — Nguồn mới: cả một họ chức năng mà sách chỉ biết một
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 266 | ⭐⭐ **Ch.37 mục 37.6b** | ⚠ Chương servo **không nhắc STO một lần nào** — cả cuốn sách chỉ nói về nó ở Ch.47 mục 47.8. Và Ch.47 để lại một câu hỏi bỏ ngỏ: *"STO không hãm, tải quán tính sẽ trôi, trục đứng thì rơi"* → **vậy dùng gì?** | ➕➕ |
+| 267 | ⭐⭐ Ch.37 mục 37.6b — **câu trả lời là cả một họ** | Theo **IEC 61800-5-2**: bốn chức năng dừng (STO · SS1 · SS2 · SOS) và mười ba chức năng giới hạn/công bố. ⭐⭐ Khác biệt đáng nhớ nhất: **SS1 kết thúc bằng STO — hết mô-men**, còn **SS2 kết thúc bằng SOS — CÒN mô-men để giữ chỗ**. ⚡ Với trục đứng, chọn nhầm SS1 nghĩa là *máy dừng êm, đúng quy trình, rồi trục rơi* | ➕➕ |
+| 268 | ⭐ Ch.37 mục 37.6b — **SLS mở ra lựa chọn thứ ba** | Dạy điểm, căn chỉnh, gỡ kẹt — người phải vào vùng máy mà trục cần **vẫn nhúc nhích được**. ⚠ Chỉ có STO thì chỉ còn *cắt hẳn* (không làm được việc) hoặc *chạy đủ tốc* (không an toàn). ⭐ **SLS**: cho chạy, nhưng tốc độ bị **phần cứng an toàn** chặn — ghép **SDI** thì chặn được cả chiều | ➕➕ |
+
+⭐ Nguồn: **PLCopen Safe Motion v1.0** — rời khỏi danh sách "chưa ai dẫn". Còn **7 nguồn**.
+
+> ⚠ Mục 37.6b **chỉ giới thiệu từ vựng**. Chọn chức năng nào, mức toàn vẹn nào, kiến trúc nào — là
+> kết quả **đánh giá rủi ro của người có thẩm quyền** (Chương 47). ⭐ Mục đích là để người đọc **biết
+> những gì tồn tại mà hỏi cho đúng**, thay vì mặc định STO là lựa chọn duy nhất.
+
+### D — ⚠ Bộ kiểm bỏ lọt một vi phạm B8 THẬT của tôi
+
+| # | Phát hiện | KQ |
+|---|:--|:--:|
+| 269 | Bản đầu của mục 27.3 mới **gọi thẳng tên "robot" và "tay gắp"** trong một chương **lát cắt 2**. ⚠⚠ Bộ kiểm **không báo** — vì hai từ đó **không có trong từ vựng lát cắt** của `cau_hinh_kiem_tra.json`. ⭐ Tôi tự phát hiện khi đối chiếu lại B8, không phải nhờ công cụ | ⚠ |
+
+⭐ Đã sửa hai việc:
+
+| | |
+|---|---|
+| 1 | Viết lại mục 27.3 **không gọi tên thiết bị lát cắt sau** — giữ nguyên luận điểm kiến trúc, và **giữ dẫn chiếu tới Ch.46** (dẫn chiếu tới chương sau thì được, gọi tên thiết bị thì không) |
+| 2 | ⭐ Bổ sung từ vựng cho bộ kiểm: **`robot`, `tay gắp`** vào lát cắt 4; **`SS1 SS2 SOS SLS SDI SBC SLP`** vào lát cắt 3 — cùng lý do với `STO`: chúng là **tính năng của truyền động** |
+
+⚡ Đã thử lại trên bốn ca dựng sẵn: báo đúng khi dùng sớm (Ch.27 + *robot*, Ch.27 + *SS1*), im đúng
+khi dùng đúng chỗ (Ch.37 + *SS1*, Ch.46 + *robot*).
+
+### Kết quả đợt 42
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **7** |
+| ➕➕ Bổ sung giá trị cao | 5 |
+| ⚠ Siết lại nội dung cũ | 1 |
+| ⚠ Lỗi của tôi mà công cụ bỏ lọt | 1 |
+| Mục mới trong thân sách | 2 — Ch.27, Ch.37 |
+| Từ vựng mới cho bộ kiểm | 9 từ |
+| Nguồn hết "chưa ai dẫn" | 1 (còn **7**) |
+| ⭐ Ch.46 nay được **3 chương** dẫn tới | |
+
+> ⭐⭐ **Bài học 1 — "chương viết tốt" và "chương có ích" là hai chuyện khác nhau.**
+>
+> Ch.46 không thiếu gì cả: đủ mục, đủ bẫy, đủ Bảng chốt, qua mọi bộ kiểm. ⚠ Nó chỉ thiếu **đường
+> dẫn vào**. Người đọc Ch.54 lập danh mục sao lưu sẽ lập thiếu một hạng mục, và **không có gì trong
+> Ch.54 báo cho họ biết điều đó** — cho tới đợt này.
+>
+> ⚡ **Bài học 2 — việc NỐI hai chương lại làm lộ ra lỗ hổng ở CHƯƠNG KIA.**
+>
+> Mục tiêu ban đầu chỉ là thêm dẫn chiếu tới Ch.46. Nhưng để viết được dẫn chiếu ấy, phải trả lời
+> *"Ch.54 nói gì về dữ liệu của bộ điều khiển ngoài"* — và câu trả lời là **không nói gì**. ⭐ Hai
+> hạng mục đắt nhất đợt này (264, 265) tìm được theo cách đó, **không phải bằng cách đọc Ch.54**.
+>
+> ⭐ **Bài học 3 — công cụ chỉ bắt được thứ đã có trong từ điển của nó.** Bộ kiểm B8 chạy đúng suốt
+> mười mấy đợt, nhưng nó không biết từ *"robot"*. ⚠ Nghĩa là số lần nó báo **không** đo được số lần
+> nó đúng. Mỗi lần thêm nội dung vào một lĩnh vực mới, phải hỏi: ⭐ **từ vựng của bộ kiểm đã có lĩnh
+> vực đó chưa?**
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
