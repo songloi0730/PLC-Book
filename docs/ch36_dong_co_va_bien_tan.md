@@ -308,7 +308,7 @@ board vào và ra trong phần thời gian không dành cho gia công**.
 | Khía cạnh | Điều cần biết |
 |---|---|
 | ⚠ **Bản đồ tham số** | Khác nhau **hoàn toàn** giữa các hãng, và cả giữa các dòng của cùng hãng. Số hiệu tham số của biến tần này **vô nghĩa** với biến tần khác |
-| Giao thức mạng | Phần lớn biến tần hỗ trợ nhiều lựa chọn: Modbus RTU/TCP (Chương 39), PROFINET, EtherNet/IP, EtherCAT (Chương 40). ⭐ Chọn theo mạng bạn đang dùng |
+| Giao thức mạng | Phần lớn biến tần hỗ trợ nhiều lựa chọn: Modbus RTU/TCP (Chương 39), PROFINET, EtherNet/IP, EtherCAT. ⭐ **Bảng so sánh ba họ giao thức kèm ưu/nhược: Chương 40 mục 40.3; cách chọn: mục 40.5.** ⚠ Với biến tần, phần lớn trường hợp chỉ cần chạy/dừng và đặt tần số — ⭐ **không cần họ nhanh nhất**, nên đừng chọn EtherCAT chỉ vì nó nhanh |
 | ⭐ Từ điều khiển / từ trạng thái | Khi nối qua mạng, lệnh và trạng thái gói trong **các bit của một từ**. ⚠ Dùng kiểu `WORD`, không dùng `INT` (Chương 11, mục 11.2) |
 | Hành vi khi mất truyền thông | ⚠ **Tham số riêng** — mặc định chưa chắc đúng cho máy của bạn (mục 36.5) |
 | STO | Có ở phần lớn biến tần công nghiệp hiện đại, nhưng ⚠ **kiểm mã sản phẩm cụ thể** — không phải bản nào cũng có |

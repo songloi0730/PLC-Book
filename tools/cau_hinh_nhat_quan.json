@@ -29,7 +29,8 @@
     "DI_DoorClosed": "Ch.30 — ví dụ quy ước đặt tên khẳng định",
     "DI_DoorNotOpen": "Ch.30 — phản ví dụ đặt tên phủ định",
     "DI_Door1": "Ch.30 — ví dụ đặt tên",
-    "DI_Input2": "Ch.11 — ví dụ kiểu dữ liệu chung"
+    "DI_Input2": "Ch.11 — ví dụ kiểu dữ liệu chung",
+    "DI_B12Clamp1Up": "Ch.30 muc 30.2 — minh hoa quy uoc dat ten tron B+D (tien to loai + ma thiet bi tren ban ve); CUNG mot cam bien DI_Clamp1Up cua DP-01, co y viet khac de so sanh"
   },
   "_ghi_chu_so_lieu": "Số liệu chốt của DP-01. Mỗi mục: 'mau' là regex tìm con số trong văn bản, 'dung' là giá trị đúng duy nhất được phép. Nếu tìm thấy dạng khác => LỖI.",
   "so_lieu_chot": {

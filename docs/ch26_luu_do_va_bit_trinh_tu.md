@@ -439,7 +439,20 @@ END_IF;
 Đánh 1, 2, 3, 4… rồi cần chèn một bước giữa 2 và 3. Bạn phải đánh số lại toàn bộ, và mọi tham chiếu
 tới số bước — trong thông báo lỗi, trong màn hình, trong tài liệu — đều sai.
 
-Đánh cách 10 ngay từ đầu. Chi phí bằng không, lợi ích rất lớn.
+Ba kiểu đánh số đều có người dùng. Cùng một trình tự 5 bước:
+
+| Kiểu | Trông ra sao | ⭐ Được gì | ⚠ Mất gì |
+|---|---|---|---|
+| **Liền nhau** | `1, 2, 3, 4, 5` | Ngắn; hợp với `CASE` có kiểm đủ nhánh | ⚠⚠ **Chèn một bước là đánh số lại tất cả** — kéo theo thông báo lỗi, màn hình, tài liệu |
+| ⭐ **Cách 10** | `10, 20, 30, 40, 50` | ⭐ Chèn được **9 bước** vào giữa mà không đụng gì khác | Số lớn hơn; ⚠ chèn quá 9 lần vào cùng một khe thì hết chỗ |
+| **Cách 100 theo trạm** | `110…150` cho trạm 1, `210…250` cho trạm 2 | ⭐⭐ **Nhìn số là biết trạm nào** — rất lợi khi thông báo lỗi ghi số bước | Số dài; ⚠ giới hạn 9 trạm nếu dùng ba chữ số |
+
+⭐ **Cách 10 là lựa chọn mặc định tốt**: chi phí bằng không, và nó giải quyết đúng vấn đề hay gặp
+nhất. ⚡ Máy từ ba trạm trở lên thì **cách 100 theo trạm** đáng giá hơn, vì mã lỗi `S230 quá thời
+gian` tự nói ra *trạm 2, bước 30* mà không cần tra.
+
+⚠ Dù chọn kiểu nào, **ghi quy ước đó vào hồ sơ máy** — người sửa sau bạn sẽ chèn bước, và họ cần
+biết khe trống nằm ở đâu.
 
 ### 🔍 BẪY 4 — Không ghi lại bước bị kẹt
 

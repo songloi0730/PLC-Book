@@ -1321,7 +1321,7 @@ sáu chỗ trong thân sách**.
 
 | # | Phát hiện | Hệ quả |
 |---|:--|:--:|
-| 219 | ⚠⚠ **`kiem_nhat_quan.py` cố ý xoá mọi khối code trước khi kiểm** (hàm `bo_code_block`) — để số dòng khớp file thật. Nên mọi tên tag, tên biến, hằng số **nằm trong ```` ```iecst ```` đều vô hình với nó** | ⚠ |
+| 219 | ⚠ Bộ kiểm không thấy sáu lỗi trên. ⚠⚠ **ĐÍNH CHÍNH đợt 39 — chẩn đoán ban đầu SAI**, xem đợt 39 mục 238. Lý do thật không phải "khối code bị bỏ qua" mà là: nhóm TAG **chỉ soi tiền tố vào/ra** (`DI_ DO_ AI_ AO_ AX_ NET_`), còn sáu lỗi kia là **tên biến nội bộ và lựa chọn kỹ thuật** — ⭐ **không nhóm kiểm nào của bộ công cụ được thiết kế để bắt loại đó** | ⚠ |
 | 220 | ⭐ Ngược lại, `kiem_tra_chuong.py` **bắt được** một lỗi mà mắt tôi bỏ qua: dẫn chiếu mới ở Ch.30 nhắc *"servo"* — thiết bị **lát cắt 3** trong một chương **lát cắt 2**, vi phạm B8 | ✅ |
 
 ⭐ Đã thêm dẫn chiếu tới Phụ lục L từ Phụ lục B, E, J, K và Ch.30 mục 30.5 — chỗ nói về **ba yêu cầu
@@ -1336,21 +1336,23 @@ của một khối đáng đưa vào thư viện**, vì Phụ lục L chính là
 | ⚠ Sửa mâu thuẫn nội bộ | **6** (đều trong bản nháp, chưa từng phát hành) |
 | ⭐ Tài liệu mới | Phụ lục L — **14 mẫu**, sách nay có **13 phụ lục** |
 
-> ⭐⭐ **Bài học lớn nhất của đợt này: bộ kiểm có một chỗ mù đúng bằng kích thước của code.**
+> ⭐⭐ **Bài học lớn nhất của đợt này: bộ kiểm có một chỗ mù, và nó nằm ở phần code.**
 >
-> Bốn công cụ đều xanh trong khi bản nháp mâu thuẫn với Ch.26, Ch.32, Ch.37 và Ch.44 ở sáu chỗ. ⚠ Lý
-> do không phải công cụ hỏng — mà vì `kiem_nhat_quan.py` **cố ý** bỏ khối code, và cuốn sách này có
-> **165 khối `iecst` trên 35 chương**. ⭐ Nghĩa là phần **dễ bị chép nguyên nhất** cũng là phần
-> **không ai canh**.
+> Bốn công cụ đều xanh trong khi bản nháp mâu thuẫn với Ch.26, Ch.32, Ch.37 và Ch.44 ở sáu chỗ.
+>
+> ⚠⚠ **ĐÍNH CHÍNH (đợt 39):** lời giải thích ban đầu ở đây — *"vì `kiem_nhat_quan.py` cố ý bỏ khối
+> code"* — là **SAI**, và tôi đã dùng nó để đề xuất một thay đổi công cụ **không cần thiết**. Sự thật:
+> nhóm XREF bỏ khối code, nhưng ⭐ **nhóm TAG thì KHÔNG** — nó đọc văn bản thô. Chỗ mù thật nằm ở
+> **phạm vi**, không ở **vùng văn bản**: nhóm TAG chỉ soi tiền tố vào/ra, nên tên biến nội bộ `M_*`,
+> hằng số và lựa chọn kỹ thuật (số thực hay số nguyên, lọc trước hay sau) ⚠ **không thuộc phạm vi của
+> bất kỳ nhóm kiểm nào**. Chi tiết ở đợt 39 mục 238.
 >
 > ⚡ Sáu lỗi trên chỉ lộ ra vì tôi tra thẳng trong sách *"chương nào đã DẠY thứ này?"* trước khi viết —
 > đúng quy trình đã ghi ở đợt 24. ⚠ Nếu viết theo trí nhớ thì cả sáu đã vào bản phát hành, và chúng
 > **nguy hiểm hơn một câu văn sai**: mẫu code là thứ người đọc chép nguyên.
 >
-> ⚠ **Đề xuất chưa làm (cần quyết định):** cho `kiem_nhat_quan.py` quét **tên tag và tên hằng bên
-> trong khối code** như một nhóm kiểm riêng. ⭐ Lợi: bịt đúng chỗ mù vừa phát hiện. ⚠ Giá: code minh
-> hoạ cố ý dùng tên tổng quát (`Axis1`, `SensWork`) sẽ báo giả hàng loạt — phải có danh sách cho phép,
-> và danh sách đó lại là một thứ phải bảo trì.
+> ⚠⚠ **Đề xuất ghi ở đây ĐÃ BỊ RÚT (đợt 39):** *"cho `kiem_nhat_quan.py` quét tên tag bên trong khối
+> code"* — ⭐ **nó đã quét sẵn rồi**. Đề xuất thay thế, hẹp hơn và đúng chỗ hơn, nằm ở đợt 39 mục 238.
 
 ---
 
@@ -1423,8 +1425,9 @@ của một khối đáng đưa vào thư viện**, vì Phụ lục L chính là
 > ⚠ **Bộ kiểm lại bắt được hai lỗi của tôi trong đợt này**, cả hai đều là B8 (bóc lớp): Ch.27 nhắc
 > *"gantry"* và Ch.30 nhắc *"HMI"* — đều là thiết bị của lát cắt sau. Cộng với một lỗi TAG:
 > `DO_ZDownVlv` không có trong bảng I/O J.2, ⭐ **vì trục Z của DP-01 là servo chứ không phải van**.
-> ⚡ Ba lỗi này nằm trong văn xuôi và tên tag ngoài khối code — đúng vùng bộ kiểm **nhìn thấy**, khác
-> hẳn chỗ mù đã ghi ở đợt 36.
+> ⚡ ⚠ **ĐÍNH CHÍNH (đợt 39):** câu ở đây từng viết ba lỗi này *"nằm ngoài khối code"*. ⭐ **Sai** —
+> `DO_ZDownVlv` nằm **bên trong** một khối ```` ```iecst ````, và nhóm TAG vẫn bắt được, vì nó đọc văn
+> bản thô. Đây chính là bằng chứng phủ nhận chẩn đoán ở đợt 36.
 
 ---
 
@@ -1501,6 +1504,93 @@ chỉ gửi một xung, PLC giữ chỉ số. ⚡ Đã ghi vào 44.2b như một
 > ⚡ **Và mục 237 đáng ghi vì nó là lỗi quy trình, không phải lỗi nội dung.** Tôi tăng số phiên bản
 > theo cảm nhận *"đợt này lớn"* — trong khi ⭐ **quyết định phát hành là của chủ dự án, không phải của
 > người viết**. Luật nay nằm ở hai chỗ, và một trong hai chỗ là dòng đầu của script ghép.
+
+---
+
+## Đợt 39 — 2026-09-17 · Bất biến B18, và ⚠⚠ đính chính hai kết luận sai của chính tôi
+
+Đợt này bắt đầu từ một yêu cầu của chủ dự án: ⭐ *"khi nhắc tới những thứ khác nhau, hãy cho ví dụ và
+nêu ưu nhược điểm của các cái đó, ví dụ như cách đặt tên biến"*.
+
+### A — Chỗ bị chỉ đích danh, và nó đúng
+
+| # | Nơi | Vấn đề | KQ |
+|---|---|:--|:--:|
+| 238 | ⭐⭐ **Ch.30 mục 30.2** | Sách viết *"Có nhiều cách đặt tên tag hợp lý. Không cách nào đúng tuyệt đối"* rồi ⚠ **nhảy thẳng sang quy ước của sách** — chưa bao giờ cho thấy những cách khác đó là gì. Người đọc không có cơ sở nào để đánh giá, và cũng không bảo vệ được lựa chọn của mình trước đồng nghiệp | ⚠ |
+
+⭐ Đã viết lại: **bốn quy ước có người dùng thật** — địa chỉ trần · tiền tố loại · phân cấp theo cấu
+trúc · theo mã thiết bị trên bản vẽ — đặt tên cho **cùng một cảm biến**, cùng một đoạn logic viết bốn
+lần, bảng ưu/nhược, cách **trộn** được chấp nhận, và bảng **chọn cái nào trong hoàn cảnh nào**.
+
+⚡ Kèm hai câu mà mục cũ thiếu hẳn: ⭐ **điều tệ nhất không phải chọn sai quy ước mà là không chọn**;
+và ⚠ khi bàn giao cho nhà máy đã có quy ước riêng thì **quy ước của họ thắng** — người sống với
+chương trình mười năm tới là họ.
+
+### B — Nâng yêu cầu đó thành bất biến, và cho công cụ canh
+
+| # | Việc | KQ |
+|---|:--|:--:|
+| 239 | ⭐ **Bất biến B18** trong `CLAUDE.md`: chỗ nào nêu nhiều lựa chọn phải có đủ **bốn thứ** — liệt kê đích danh · một ví dụ thật **cùng một bài toán** cho từng cách · bảng ưu/nhược · khuyến nghị dùng cái nào khi nào. ⚠ Dừng ở *"tuỳ bạn"* là chưa viết xong | ➕ |
+| 240 | ⭐ Thêm phép kiểm **B18** vào `kiem_tra_chuong.py` (mức TIN, không chặn ghép) | ➕ |
+| 241 | Quét toàn sách: **8 chỗ** khớp mẫu *"nhiều cách / vài cách / tuỳ bạn…"*, ⭐ **cả 8 nay đều có bảng so sánh kề bên**. Ba chỗ chỉnh thêm: Ch.30 mục 30.2 (viết lại), Ch.11 (dẫn thẳng tới 30.2 thay vì "Chương 30"), Ch.36 (dẫn tới Chương 40 mục 40.3/40.5 thay vì *"chọn theo mạng bạn đang dùng"*) | ⚠ |
+| 242 | ⭐ Ch.26 Bẫy 3 — trước chỉ nói *"đánh cách 10, chi phí bằng không"*. Nay so sánh **ba kiểu** đánh số bước (liền nhau · cách 10 · cách 100 theo trạm) kèm ưu/nhược. ⚡ Kiểu thứ ba đáng giá từ ba trạm trở lên: mã lỗi `S230` tự nói ra *trạm 2, bước 30* | ➕ |
+
+> ⚠ **Giới hạn của phép kiểm B18, nói thẳng để không ai tin quá nó.** Nó chỉ biết *quanh đó có bảng
+> hay có dẫn chiếu không* — ⭐ **nó không biết bảng đó có phải bảng SO SÁNH hay không**. Nên nó bắt
+> được ca trắng trợn (một câu "có nhiều cách" nằm trơ giữa đoạn văn) và ⚠ **bỏ lọt ca tinh vi** (câu
+> đó tình cờ nằm cạnh một bảng nói chuyện khác). ⚡ Đã thử trên ba ca dựng sẵn: báo đúng ca xấu, im ở
+> hai ca tốt.
+
+### C — ⚠⚠ Đính chính: hai kết luận về CÔNG CỤ của tôi ở đợt 36 và 37 đều sai
+
+Khi thêm một tag minh hoạ vào Ch.30, nhóm TAG **báo lỗi** — dù tag đó nằm **bên trong một khối
+`iecst`**. Điều đó mâu thuẫn với kết luận tôi ghi ở đợt 36. Tra lại mã nguồn:
+
+| Nhóm kiểm | Đọc gì | Có thấy trong khối code không |
+|---|---|:--:|
+| **XREF** (dẫn chiếu) | `van` — đã bỏ khối code | ⚠ **Không** |
+| ⭐ **TAG** (tên tag) | `tho` — **văn bản thô** | ⭐ **CÓ** |
+
+| # | Kết luận cũ | Sự thật | KQ |
+|---|:--|:--|:--:|
+| 243 | Đợt 36: *"`kiem_nhat_quan.py` cố ý xoá mọi khối code, nên mọi tên tag trong code đều vô hình"* | ⚠⚠ **Sai.** Chỉ XREF bỏ code; TAG thì không | ⚠ |
+| 244 | Đợt 37: *"ba lỗi này nằm ngoài khối code — đúng vùng bộ kiểm nhìn thấy"* | ⚠⚠ **Sai.** `DO_ZDownVlv` nằm **trong** khối code, và vẫn bị bắt — đây chính là bằng chứng phủ nhận mục 243 | ⚠ |
+| 245 | Đợt 36 đề xuất *"cho công cụ quét tên tag bên trong khối code"* | ⚠ **Đã rút** — nó quét sẵn rồi. Tôi suýt bỏ công làm một việc đã có | ⚠ |
+
+⭐ **Chỗ mù thật là chỗ nào, nói cho đúng:** không phải *vùng văn bản* mà là **phạm vi**. Nhóm TAG chỉ
+soi tiền tố vào/ra (`DI_ DO_ AI_ AO_ AX_ NET_`). Sáu lỗi của đợt 36 là **tên biến nội bộ `M_*`, hằng
+số, và lựa chọn kỹ thuật** (số thực hay số nguyên, lọc trước hay sau ngưỡng) — ⚠ **không nhóm kiểm
+nào được thiết kế để bắt loại đó**, và phần lớn trong số đó thì **không công cụ nào bắt nổi**.
+
+| # | Phát hiện phụ về công cụ | KQ |
+|---|:--|:--:|
+| 246 | ⚠ Biểu thức tìm tag là `(?:DI\|DO\|...)_[A-Za-z0-9]+` — **dừng ở dấu gạch dưới thứ hai**. Tag hai gạch dưới sẽ bị cắt cụt rồi mới đem so. ⭐ Bảng I/O DP-01 hiện **không có tag nào như vậy** nên chưa hại gì, nhưng đây là **bẫy nằm chờ** | ⚠ |
+
+### Kết quả đợt 39
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **9** |
+| ⚠ Đính chính kết luận cũ của chính tôi | **3** |
+| ➕ Bổ sung nội dung | 3 (Ch.30 mục 30.2 viết lại · Ch.26 Bẫy 3 · Ch.36) |
+| Bất biến mới | **B18** |
+| Phép kiểm mới | **B18** trong `kiem_tra_chuong.py` (mức TIN) |
+
+> ⭐⭐ **Bài học 1 — "có nhiều cách" là một lời hứa chưa trả.**
+>
+> Câu đó nghe khiêm tốn và công bằng, nên rất dễ viết. ⚠ Nhưng với người đọc nó **không mang thông
+> tin nào**: họ vẫn phải đi tìm những cách đó ở chỗ khác, và đó đúng là việc cuốn sách nhận làm hộ.
+> ⭐ Viết ra bốn cái tên, bốn dòng code, một bảng ưu/nhược tốn nửa trang — và nó thay thế một buổi tối
+> tra cứu của người đọc.
+>
+> ⚡ **Bài học 2 — phải nghi ngờ cả kết luận về công cụ, không chỉ kết luận về nội dung.**
+>
+> Đợt 36 tôi ghi một chẩn đoán về chính bộ kiểm của mình, ⚠ **không thử lại**, rồi đợt 37 **viết thêm
+> một câu dựa trên nó** — và câu đó chứa sẵn bằng chứng phủ nhận nó (`DO_ZDownVlv` nằm trong khối
+> code). ⭐ Sai lầm sống được hai đợt vì nó **giải thích thoả đáng** hiện tượng đã thấy. ⚠⚠ Đúng cái
+> bẫy mà chính nhật ký này đã ghi ở đợt 24: *phải thử công cụ trên một ca mà bạn đã biết trước câu
+> trả lời*. Lần này tôi có làm việc đó cho phép kiểm **mới** (B18) — nhưng đã **không** làm cho kết
+> luận về phép kiểm **cũ**.
 
 ---
 

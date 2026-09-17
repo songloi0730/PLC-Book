@@ -127,8 +127,9 @@ Sách dùng quy ước này xuyên suốt, và nó đã xuất hiện trong mọ
 
 Ba quy tắc quan trọng hơn bản thân quy ước:
 
-- **Nhất quán quan trọng hơn đẹp.** Nhiều cách đặt tên đều hợp lý; trộn nhiều cách trong một chương
-  trình thì luôn sai, vì người đọc mất khả năng đoán (Chương 30).
+- **Nhất quán quan trọng hơn đẹp.** Nhiều cách đặt tên đều hợp lý; trộn tuỳ hứng nhiều cách trong một
+  chương trình thì luôn sai, vì người đọc mất khả năng đoán. ⭐ **Bốn quy ước hay gặp, cùng một ví dụ,
+  kèm ưu và nhược: Chương 30 mục 30.2** — đọc trước khi chốt quy ước cho dự án của bạn.
 - ⭐ **Đưa đơn vị vào tên** khi giá trị có đơn vị: `CycleTimeMs`, `LengthTenthMm`, `YieldPctX10`. Đơn
   vị ngầm hiểu là nguồn của lỗi quy đổi gấp 10, 100, 1000 lần (Chương 19, Bẫy 9).
 - **Tên nói *là gì*, không nói *ở đâu*.** `DI_BoardStn1` tốt; `DI_Input2` vô dụng vì nó chỉ lặp lại

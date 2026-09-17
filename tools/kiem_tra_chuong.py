@@ -260,6 +260,35 @@ def kiem_lat_cat_khai_bao(so, nd, cfg, kq):
 
 # ─────────────────────────────────────────────── chạy
 
+
+# B18 — chỗ nói "có nhiều cách" thì phải so sánh được: ví dụ + ưu/nhược + khuyến nghị.
+# ⚠ Đây là HEURISTIC, nên chỉ báo mức TIN. Nó không biết bảng gần đó có thật sự là bảng
+# so sánh hay không — chỉ biết có bảng, hoặc có dẫn chiếu tới chỗ đã so sánh. Người viết
+# vẫn phải tự soát; công cụ chỉ chỉ chỗ cần nhìn lại.
+MAU_NHIEU_CACH = re.compile(
+    r"(nhiều cách|vài cách|mấy cách|nhiều kiểu|nhiều lối|nhiều lựa chọn|nhiều phương án"
+    r"|mỗi nơi một|mỗi người một kiểu|tuỳ bạn|tùy bạn|không cách nào (?:đúng )?tuyệt đối"
+    r"|cách nào cũng được)", re.I)
+
+MAU_HANG_BANG = re.compile(r"^\|[\s:|-]+\|\s*$", re.M)
+MAU_DAN_CHIEU = re.compile(r"(mục \d+\.\d+|Chương \d+|Phụ lục [A-Z])")
+
+
+def kiem_so_sanh_duoc(so, vanxuoi, kq):
+    """B18 — nêu nhiều lựa chọn thì phải có bảng so sánh gần đó, hoặc dẫn tới chỗ có."""
+    dong = vanxuoi.split("\n")
+    for i, d in enumerate(dong):
+        m = MAU_NHIEU_CACH.search(d)
+        if not m:
+            continue
+        quanh = "\n".join(dong[max(0, i - 6): i + 25])
+        if MAU_HANG_BANG.search(quanh) or MAU_DAN_CHIEU.search(quanh):
+            continue
+        kq.tin(so, "B18",
+               "'%s' (dòng %d) — nêu nhiều lựa chọn mà quanh đó không thấy bảng so sánh "
+               "hay dẫn chiếu tới chỗ đã so sánh" % (m.group(1), i + 1))
+
+
 def kiem_mot_chuong(so, duong_dan, cfg, ds_chuong, kq):
     with open(duong_dan, encoding="utf-8") as f:
         nd = f.read()
@@ -270,6 +299,7 @@ def kiem_mot_chuong(so, duong_dan, cfg, ds_chuong, kq):
     kiem_ten_hang(so, vanxuoi, cfg, kq)
     kiem_lat_cat_khai_bao(so, nd, cfg, kq)
     kiem_lat_cat(so, vanxuoi, cfg, kq)
+    kiem_so_sanh_duoc(so, vanxuoi, kq)
     kiem_song_ngu(so, nd, kq)
     kiem_hinh(so, nd, kq)
     kiem_tieu_chuan(so, nd, cfg, kq)

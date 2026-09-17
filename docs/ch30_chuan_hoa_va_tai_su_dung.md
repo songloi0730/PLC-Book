@@ -46,6 +46,82 @@ board. Bạn không cần tra. Khi quy ước hỗn độn, mỗi tag là một 
 > **Giá trị của quy ước đặt tên nằm ở chỗ nó cho phép ĐOÁN ĐÚNG.** Một quy ước "xấu" mà nhất quán còn
 > tốt hơn ba quy ước "đẹp" trộn lẫn.
 
+### Bốn quy ước thật sự có người dùng — cùng một tín hiệu, bốn cái tên
+
+Nói *"có nhiều cách đặt tên"* rồi bỏ qua là vô ích. Dưới đây là **bốn quy ước gặp thật trong nghề**,
+tất cả đặt tên cho **cùng một tín hiệu**: cảm biến báo **xy-lanh kẹp ở trạm 1 đã lên**.
+
+| | Quy ước | Cái tên |
+|---|---|---|
+| **A** | **Địa chỉ trần** — không có tên tượng trưng | `X10` · `I0.2` · `%IX0.2` |
+| **B** | ⭐ **Tiền tố loại + chức năng** — *sách này dùng* | `DI_Clamp1Up` |
+| **C** | **Phân cấp theo cấu trúc** | `Stn1.Clamp.UpSensor` |
+| **D** | **Theo mã thiết bị trên bản vẽ điện** | `B12_Clamp1Up` |
+
+Cùng một đoạn logic, viết bằng bốn quy ước:
+
+```iecst
+// A — địa chỉ trần
+IF X10 AND NOT X11 THEN  M20 := TRUE;  END_IF;
+
+// B — tiền tố loại + chức năng
+IF DI_Clamp1Up AND NOT DI_Clamp1Dn THEN  M_Stn1_ClampedOk := TRUE;  END_IF;
+
+// C — phân cấp
+IF Stn[1].Clamp.UpSensor AND NOT Stn[1].Clamp.DnSensor THEN
+    Stn[1].Clamp.Confirmed := TRUE;
+END_IF;
+
+// D — theo mã thiết bị trên bản vẽ
+IF B12_Clamp1Up AND NOT B13_Clamp1Dn THEN  M_Stn1_ClampedOk := TRUE;  END_IF;
+```
+
+### Ưu và nhược của từng quy ước
+
+| | ⭐ Được gì | ⚠ Mất gì | Hợp với |
+|---|---|---|---|
+| **A** Địa chỉ trần | Không phải nghĩ; **khớp thẳng bản vẽ đấu dây**; ai cũng tra được | ⚠⚠ Đọc chương trình phải **tra bảng liên tục** · đổi module là mọi ghi chú sai · ⚠ **không dùng được ở hệ chỉ có tag** (Phụ lục A1) | Máy rất nhỏ, làm một lần, một người |
+| **B** Tiền tố loại | ⭐ **Đoán được loại tín hiệu ngay khi đọc** · lọc và sắp xếp theo tiền tố · dùng được ở mọi hệ | ⚠ Tiền tố **lặp lại thứ trình biên dịch đã biết** · tên dài · ⚠ khi một tín hiệu chuyển từ dây cứng sang lấy qua mạng thì **tên nói sai** | ⭐ **Mặc định tốt** cho máy vừa, nhóm nhiều người |
+| **C** Phân cấp | ⭐⭐ **Khớp với kiểu dữ liệu người dùng và mảng** — thêm trạm thứ ba tốn một dòng (mục 30.3) · trình soạn thảo gợi ý theo cấp | ⚠ Phải **thiết kế cấu trúc trước**, sửa cấu trúc về sau rất đắt · ⚠ **tra chéo theo tiền tố không còn dùng được** · tên đầy đủ dài khi viết vào hồ sơ | Máy nhiều trạm **giống nhau**; hệ hỗ trợ kiểu người dùng tốt |
+| **D** Mã thiết bị | ⭐⭐ **Thợ điện cầm bản vẽ và người đọc chương trình nói cùng một ngôn ngữ** — giá trị lớn nhất lúc 2 giờ sáng | ⚠ Sửa bản vẽ là **phải sửa chương trình** · mã thiết bị **không nói chức năng** nên vẫn phải kèm phần chữ · ⚠ phụ thuộc chất lượng hồ sơ điện | Máy có **hồ sơ điện nghiêm túc**, nhiều người bảo trì luân phiên |
+
+### ⭐ Trong thực tế người ta trộn — và trộn thế nào thì được
+
+⚠ Mục 30.2 mở đầu bằng *"trộn nhiều cách thì luôn sai"*. Nói chính xác hơn: ⭐ **trộn TUỲ HỨNG thì
+sai; trộn theo một luật viết ra được thì tốt.**
+
+Hai cách trộn hay gặp và đều dùng được:
+
+```iecst
+// B + D — tiền tố loại, rồi mã thiết bị, rồi chức năng
+DI_B12Clamp1Up         // ai cũng đọc được, và tra được về bản vẽ
+
+// C + B — phân cấp cho cơ cấu, tiền tố cho tín hiệu vào/ra thô
+Stn[1].Clamp.UpSensor  // tầng cơ cấu
+DI_Clamp1Up            // tầng gán chân, chỉ xuất hiện ở một chỗ duy nhất
+```
+
+> ⭐⭐ **Cách trộn thứ hai đáng học nhất.** Tên theo địa chỉ hoặc theo chân chỉ xuất hiện **ở đúng một
+> chỗ** — lớp gán vào/ra ở đầu chương trình. Từ đó trở đi mọi thứ dùng tên phân cấp. ⚡ Khi đổi module
+> hay đổi chân, **chỉ một chỗ phải sửa**, và phần còn lại của chương trình không biết gì.
+
+### Chọn cái nào
+
+| Hoàn cảnh | ⭐ Chọn |
+|---|---|
+| Máy nhỏ, dưới ~30 tín hiệu, một người làm và bảo trì | **A** hoặc **B** — đừng dựng bộ máy to hơn bài toán |
+| Máy vừa, vài người, nhiều cơ cấu **khác nhau** | ⭐ **B** — đây là lý do sách chọn nó |
+| Máy nhiều trạm **giống nhau**, sẽ còn nhân bản | ⭐⭐ **C**, cộng **B** ở lớp gán chân |
+| Nhà máy có nhiều người bảo trì luân phiên, hồ sơ điện tốt | ⭐ **D**, thường trộn với **B** |
+| ⚠ Khách hàng đã có quy ước riêng | ⭐⭐ **Theo họ** — dù bạn thấy nó không đẹp. Xem bên dưới |
+
+> ⭐⭐ **Điều tệ nhất không phải chọn sai quy ước, mà là không chọn.** Ba người viết ba kiểu trong cùng
+> một chương trình gây thiệt hại lớn hơn bất kỳ quy ước "xấu" nào được tuân thủ nghiêm túc.
+>
+> ⚠ Và khi bàn giao cho một nhà máy đã có quy ước riêng, ⭐ **quy ước của họ thắng** — kể cả khi bạn
+> thấy nó dở. Người sống với chương trình này mười năm tới là họ, không phải bạn. ⚡ Điều bạn nên đấu
+> tranh là **có một quy ước và nó được ghi ra**, không phải quy ước nào.
+
 ### Quy ước dùng trong sách
 
 ```text
