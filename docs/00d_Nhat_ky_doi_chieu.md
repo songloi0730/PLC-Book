@@ -1594,6 +1594,77 @@ nào được thiết kế để bắt loại đó**, và phần lớn trong s�
 
 ---
 
+## Đợt 40 — 2026-09-17 · Rà toàn sách bằng SỐ LIỆU, không bằng cảm nhận
+
+Yêu cầu: *"rà soát lại toàn sách xem có chỗ nào cần bổ sung"*. ⚠ Rà bằng cách đọc lại 58 chương là
+việc **không đáng tin** — mắt quen dần và bỏ qua đúng những chỗ đã đọc nhiều lần. ⭐ Nên đợt này đo
+trước: viết một script đếm **số từ · số mục · số bẫy · số hình · số khối code · số bảng · có Bảng
+chốt không · số nguồn** cho từng chương, rồi chỉ đi vào những chỗ số liệu chỉ ra.
+
+### A — Số liệu nói gì
+
+| Chỉ số | Kết quả |
+|---|---|
+| Tổng số từ thân sách | ~295 000, trung bình ~5 100 từ/chương |
+| ⚠ Chương **thiếu Bảng chốt** | **2** — Ch.01 và **Ch.52** (54/58 chương còn lại đều có) |
+| ⚠ Chương **không có hình** | 45/58 |
+| Chương ngắn nhất | Ch.50 (~3 075 từ) · Ch.02 · Ch.17 |
+
+### B — Lỗ hổng tìm ra và đã lấp
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 247 | ⭐⭐ **Ch.52 mục 52.11b** | Chương nghiệm thu — chương **nhiều danh mục nhất sách** — lại **không có Bảng chốt**. Đã viết, và viết **khác** mục 52.9: 52.9 là *"phải kiểm gì trước khi bàn giao"*, còn Bảng chốt là *"chương này dạy gì"* | ➕ |
+| 248 | ⭐⭐ **Ch.13 mục 13.2b** | Mục 13.2 có bảy tiêu chí chọn PLC, nhưng ⚠ **thiếu hẳn ba tiêu chí**: **môi trường lắp đặt** (dải làm việc thông dụng 0–55 °C là nhiệt độ **TRONG TỦ**), **bộ nhớ** (sách không có tiêu chí nào về bộ nhớ!), và **I/O tại chỗ hay ở xa** | ➕➕ |
+| 249 | ⭐ **Phụ lục K.5b** | Quy tắc ước lượng bộ nhớ chương trình: **5 word mỗi thiết bị số + 25 word mỗi thiết bị analog**, kèm điều kiện áp dụng và ⚠ nhắc **bộ nhớ dữ liệu là chuyện khác** — với máy lưu lịch sử năng suất thì bảng dữ liệu mới là thứ quyết định chọn CPU | ➕ |
+| 250 | ⭐⭐ **Ch.27 mục 27.2b** | Sách nói chương trình **nên** có ba tầng, nhưng ⚠ **không nói bắt đầu từ đâu**. Bổ sung **bảy bước dựng cấu trúc** của PLCopen, đối chiếu từng bước với chương tương ứng | ➕➕ |
+| 251 | ⚠ Ch.27 mục 27.2b — **giới hạn của việc chia nhỏ** | Sách đẩy mạnh việc phân rã mà chưa bao giờ nói điểm dừng. ⭐ *"Chia càng nhỏ thì công sức không biến mất — nó chuyển sang việc GHÉP."* Dấu hiệu chia quá tay: ⚠ **số biến đi lại giữa các khối tăng nhanh hơn số khối** | ➕➕ |
+| 252 | ⭐ **Ch.31 — Hình 31.1** | *Ai cấp nguồn cho vòng 4–20 mA* — ba cách đấu vẽ cạnh nhau. Đúng tiêu chí B13 (**đường đi của dòng điện**), và là ⚠⚠ **bẫy làm hỏng thiết bị**. Sách nay có **15 hình** | ➕ |
+
+### C — ⭐⭐ Bước 3 của PLCopen xác nhận một điều sách vừa thêm
+
+PLCopen đặt *"chốt mọi tương tác của người vận hành, **mọi cách bỏ qua**, và dữ liệu giám sát"* ở
+**bước 3 — TRƯỚC khi phân rã bài toán ở bước 4**.
+
+> ⭐⭐ Nghĩa là các đường **bỏ qua (override)** được coi là **đầu vào của kiến trúc**, không phải thứ
+> gắn thêm lúc máy gần xong. ⚡ Đây là **xác nhận độc lập** cho mục 51.7b vừa viết ở đợt 37 — mục đó
+> lập luận từ áp lực vận hành, còn PLCopen đi tới cùng kết luận từ phía phương pháp luận.
+
+### D — Hai nguồn rời khỏi danh sách "chưa ai dẫn"
+
+| # | Nguồn | Dùng vào đâu | KQ |
+|---|---|:--|:--:|
+| 253 | **PLCopen** — *Structuring Program Development with IEC 61131-3* (4 trang) | Ch.27 mục 27.2b. ⭐ Bốn trang, và nó lấp đúng chỗ trống lớn nhất về phương pháp của Ch.27 | ➕➕ |
+| 254 | **AutomationDirect** — *PLC Handbook* (85 trang) | Ch.13 mục 13.2b. ⚠ Phần lớn tài liệu là **giới thiệu sản phẩm của hãng**, nhưng chương *How to Choose a Controller* có bảng công tác chín bước dùng được. ⭐ Đây là nguồn duy nhất trong danh sách bị đánh dấu *"nhật ký CHƯA từng nhắc"* — đúng thứ bản đồ nguồn sinh ra để bắt | ➕ |
+
+⭐ Còn **10 nguồn** chưa chương nào dẫn.
+
+### Kết quả đợt 40
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **8** |
+| ➕➕ Bổ sung giá trị cao | 4 |
+| ➕ Bổ sung | 4 |
+| Mục mới trong thân sách | 3 — Ch.13, Ch.27, Ch.52 |
+| Mục mới trong phụ lục | 1 — K.5b |
+| Hình mới | **1** — sách nay có **15 hình** |
+| Nguồn hết "chưa ai dẫn" | 2 (còn 10) |
+
+> ⭐⭐ **Bài học: đo trước, đọc sau.**
+>
+> Ba lỗ hổng ở phần B **không lộ ra khi đọc**. Ch.52 đọc rất đầy đặn — nó dài trên trung bình và có
+> tới mười một mục; ⚠ **chỉ khi đếm mới thấy nó là 1 trong 2 chương thiếu Bảng chốt**. Ch.13 cũng
+> vậy: bảy tiêu chí đọc thì thấy đủ, ⭐ **chỉ khi đặt cạnh một bảng công tác của người khác mới thấy
+> thiếu ba cái**.
+>
+> ⚡ **Và nguồn 4 trang lại có giá trị cao hơn nguồn 85 trang.** Tài liệu PLCopen ngắn hơn hai chục
+> lần nhưng lấp đúng chỗ trống về phương pháp; tài liệu 85 trang kia phần lớn là giới thiệu sản
+> phẩm. ⚠ **Số trang không nói gì về giá trị** — nên danh sách "nguồn chưa ai dẫn" phải đọc **hết**,
+> không được sắp theo độ dày rồi đọc từ trên xuống.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

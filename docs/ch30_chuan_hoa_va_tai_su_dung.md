@@ -104,6 +104,10 @@ DI_Clamp1Up            // tầng gán chân, chỉ xuất hiện ở một chỗ
 > ⭐⭐ **Cách trộn thứ hai đáng học nhất.** Tên theo địa chỉ hoặc theo chân chỉ xuất hiện **ở đúng một
 > chỗ** — lớp gán vào/ra ở đầu chương trình. Từ đó trở đi mọi thứ dùng tên phân cấp. ⚡ Khi đổi module
 > hay đổi chân, **chỉ một chỗ phải sửa**, và phần còn lại của chương trình không biết gì.
+>
+> ⭐ Đây không phải sáng kiến riêng của sách: PLCopen nêu nó thành một nguyên tắc — ⭐⭐ *"chỉ làm việc
+> bằng tên tượng trưng; địa chỉ tuyệt đối chỉ xuất hiện ở phần khai báo"* — với đúng ba lợi ích:
+> **dễ thích nghi khi môi trường đổi · tái dùng được nhiều hơn · ít hiệu ứng phụ** (Chương 27 mục 27.2b).
 
 ### Chọn cái nào
 

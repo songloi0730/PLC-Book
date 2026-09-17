@@ -112,6 +112,72 @@ vô ích.
 
 ---
 
+## 13.2b ⭐ Ba tiêu chí nữa — ít được nhắc, và mỗi cái từng làm hỏng một dự án
+
+Bảy tiêu chí ở mục 13.2 là những thứ ai cũng nghĩ tới. Ba tiêu chí dưới đây ⚠ **hay bị bỏ cho tới
+lúc đã mua hàng**, và khi ấy sửa rất đắt.
+
+### 8. ⚠ Môi trường lắp đặt — hỏi trước khi chọn, không phải sau
+
+⭐ **Bộ điều khiển công nghiệp thông dụng có dải nhiệt độ làm việc quanh 0–55 °C.** Con số đó nghe
+rộng rãi cho tới khi bạn nhớ rằng nó là ⚠ **nhiệt độ TRONG TỦ, không phải trong xưởng**.
+
+| Yếu tố | Hỏi gì | ⚠ Hậu quả nếu bỏ qua |
+|---|---|---|
+| ⭐⭐ **Nhiệt độ trong tủ** | Tủ đặt ở đâu, có nắng chiếu không, có quạt/điều hoà không, mùa hè cao nhất bao nhiêu | Tủ kín cạnh lò nung dễ vượt 55 °C. ⚠ CPU không cháy ngay — nó **chạy sai lúc nóng nhất**, tức là lúc sản lượng cao nhất |
+| **Bụi và hơi ẩm** | Môi trường có bụi dẫn điện, hơi dầu, hơi hoá chất không | Cấp bảo vệ của tủ, và cần lọc hay làm mát kín |
+| **Rung động** | Máy có búa, máy dập, hay đặt cạnh thiết bị rung | Đầu nối long ra sau vài tháng — kiểu lỗi chập chờn ở Chương 51 mục 51.8 |
+| ⚠ **Quy định riêng của nhà máy** | Nhà máy có yêu cầu riêng về chứng nhận, về hãng được duyệt, về cấp bảo vệ không | ⭐ Biết **trước khi báo giá**, không phải lúc nghiệm thu |
+
+> ⭐ **Đo, đừng đoán.** Đặt một nhiệt kế ghi dữ liệu trong tủ của một máy tương tự, chạy một ngày hè.
+> ⚠ Con số thật thường cao hơn ước lượng 10–15 °C, vì trong tủ còn có biến tần và bộ nguồn toả
+> nhiệt (Chương 49).
+
+### 9. ⭐ Bộ nhớ — và cách ước lượng khi chưa viết dòng nào
+
+Câu hỏi *"cần bao nhiêu bộ nhớ"* nghe như không trả lời được trước khi viết chương trình. ⭐ Có một
+**quy tắc ngón tay cái** để ước lượng thô:
+
+```text
+Bộ nhớ chương trình  ≈  5 word × số thiết bị số  +  25 word × số thiết bị analog
+```
+
+Với máy mẫu DP-01 (Phụ lục J): khoảng 40 tín hiệu số và 7 tín hiệu analog.
+
+```text
+≈ 5 × 40  +  25 × 7  =  200 + 175  =  375 word
+```
+
+| Hạng mục | Nội dung |
+|---|---|
+| ⭐ **Điều kiện áp dụng** | Ứng dụng **thiên về tuần tự** — đóng cắt, liên động, trình tự bước |
+| ⚠ **Không áp dụng cho** | Chương trình nặng tính toán, xử lý chuỗi, hay nhiều khối chuyển động — ⭐ **khó ước lượng hơn nhiều**, phải tra bảng chi phí lệnh của hãng |
+| ⭐ Dùng để làm gì | **Loại nhanh** các CPU quá nhỏ. ⚠ **Không** dùng để chọn CPU vừa khít |
+| ⭐⭐ Hệ số dự phòng | ⚠ **Nhân đôi**. Máy nào cũng phình ra: thêm báo động, thêm chế độ, thêm thống kê (mục 13.2 tiêu chí 1) |
+
+⚠ Và nhớ **bộ nhớ dữ liệu là chuyện khác**: nếu máy phải giữ lịch sử — số liệu năng suất theo giờ,
+theo ca, theo ngày (Chương 55 mục 55.7c) — thì **kích thước bảng dữ liệu mới là thứ quyết định chọn
+CPU nào**, chứ không phải số dòng lệnh.
+
+> ⚡ **Một chi tiết về thời gian quét mà bảng thông số hay giấu:** ⚠ **có CPU nhanh ở lệnh logic
+> nhưng chậm ở lệnh xử lý dữ liệu.** Con số *"0,05 µs mỗi lệnh"* trên tờ quảng cáo gần như luôn là
+> ⭐ **lệnh bit**. Nếu chương trình của bạn nhiều phép tính, phải tra bảng chi phí **từng nhóm lệnh**
+> (Chương 10, Phụ lục K.5).
+
+### 10. I/O tại chỗ hay ở xa
+
+| | **Tại chỗ** — module cắm cạnh CPU | **Ở xa** — cụm I/O nối qua mạng |
+|---|---|---|
+| ⭐ Được gì | Nhanh nhất, đơn giản nhất, ít thứ hỏng | ⭐⭐ **Tiết kiệm dây rất nhiều** khi máy dài hoặc có nhiều cụm rời |
+| ⚠ Mất gì | ⚠ Tốn dây khi thiết bị ở xa tủ | ⚠ Thêm một mạng phải cấu hình và chẩn đoán · ⭐ **thêm trễ**, và trễ đó cộng vào chuỗi trễ ở Chương 32 mục 32.6 |
+| Phải hỏi trước | Tủ cách thiết bị xa nhất bao nhiêu mét | ⭐ CPU có **hỗ trợ I/O từ xa** không, qua giao thức nào, khoảng cách và tốc độ tối đa (Chương 40) |
+
+> ⭐ **Câu hỏi quyết định rất đơn giản: có cụm thiết bị nào cách tủ trên ~10 m và có từ 8 tín hiệu
+> trở lên không?** Có thì cân nhắc I/O từ xa; không thì đừng thêm một mạng vào máy chỉ để cho hiện
+> đại.
+
+---
+
 ## 13.3 Bảng đối chiếu các hệ phổ biến
 
 Nêu tên để bạn **biết đường tra và so sánh**, không phải để khuyến nghị. Cột "đặc điểm" là những thứ
@@ -429,6 +495,12 @@ chiếm ưu thế ở tầng máy.
   mọi số liệu và tình trạng sản phẩm.
 - Thông tin về vòng đời sản phẩm và thông báo ngừng sản xuất, công bố trên trang chính thức của từng
   hãng — dùng cho tiêu chí 6.
+- **AutomationDirect** — *PLC Handbook*, chương *How to Choose a Controller*: bảng công tác chín bước
+  chọn bộ điều khiển — nền cho mục 13.2b, gồm ⭐ **môi trường lắp đặt** (dải nhiệt độ làm việc thông
+  dụng 0–55 °C), ⭐ **quy tắc ước lượng bộ nhớ chương trình** (5 word mỗi thiết bị số, 25 word mỗi
+  thiết bị analog), và ⚠ lưu ý **CPU nhanh ở lệnh logic có thể chậm ở lệnh xử lý dữ liệu**.
+  *(tài liệu của hãng — ⚠ mang tính giới thiệu sản phẩm; chỉ lấy phần nguyên tắc chung, mọi số liệu
+  sản phẩm phải tra catalogue hiện hành)*
 
 > ⚠⚠ **Thông tin có hạn sử dụng — đọc kỹ.** Bảng ở mục 13.3 và mọi nhận định về **giá tương đối, tính
 > sẵn có, chính sách bản quyền, và dòng sản phẩm** đều **đổi theo thời gian và theo thị trường**. Dòng

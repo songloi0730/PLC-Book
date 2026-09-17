@@ -234,6 +234,28 @@ Nếu  Tần số xung  >  1 / (2 × Thời gian quét)   →  ⭐ PHẢI dùng 
 
 ---
 
+## K.5b Ước lượng bộ nhớ chương trình
+
+⭐ Dùng khi **chưa viết dòng nào** mà đã phải chọn CPU.
+
+```text
+Bộ nhớ chương trình  ≈  5 word × số thiết bị SỐ  +  25 word × số thiết bị ANALOG
+```
+
+| Hạng mục | Nội dung |
+|---|---|
+| ⭐ **Điều kiện áp dụng** | Ứng dụng **thiên về tuần tự** — đóng cắt, liên động, trình tự bước |
+| ⚠ **Không áp dụng cho** | Chương trình nặng tính toán, xử lý chuỗi, nhiều khối chuyển động — ⭐ phải tra **bảng chi phí lệnh** của hãng |
+| ⭐ Dùng để làm gì | **Loại nhanh** CPU quá nhỏ. ⚠ **Không** dùng để chọn CPU vừa khít |
+| ⭐⭐ Hệ số dự phòng | ⚠ **Nhân đôi** — máy nào cũng phình ra: thêm báo động, thêm chế độ, thêm thống kê |
+| ⚠⚠ Bẫy | **Bộ nhớ DỮ LIỆU là chuyện khác.** Nếu phải giữ lịch sử năng suất theo giờ/ca/ngày thì ⭐ **kích thước bảng dữ liệu mới quyết định chọn CPU**, không phải số dòng lệnh (Ch.55 mục 55.7c) |
+| Chương | 13 mục 13.2b |
+
+> ⚡ **Con số trên tờ quảng cáo gần như luôn là lệnh BIT.** ⚠ Có CPU nhanh ở lệnh logic nhưng chậm ở
+> lệnh xử lý dữ liệu — chương trình nhiều phép tính phải tra chi phí **từng nhóm lệnh** (Ch.10, K.5).
+
+---
+
 ## K.6 Số học và kiểu dữ liệu
 
 ### ⚠ Dải giá trị các kiểu số nguyên thường gặp
@@ -363,6 +385,7 @@ Y(r,c) = Y1 + (c−1)·(Y2−Y1)/(C−1) + (r−1)·(Y3−Y1)/(R−1)
 | ⭐ **Khi nào cần bộ đếm tốc độ cao** | K.5 | 18 |
 | Dải kiểu dữ liệu, chống tràn | K.6 | 11, 19 |
 | Vỏ chống nhiễu, nối đất | K.7 | 31, 36, 49 |
+| ⭐ Ước lượng bộ nhớ chương trình | K.5b | 13 |
 | ⭐ **Lưới khay — dạy ba điểm** | K.7b | 37 |
 
 > ⭐ **Cần đoạn code chứ không phải công thức?** Các mạch lặp lại ở mọi máy — tự giữ, chuỗi cho

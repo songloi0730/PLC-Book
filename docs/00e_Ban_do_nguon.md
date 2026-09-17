@@ -41,12 +41,10 @@
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
 | Petruzella — Activities Manual | 401 | 22 | ✔ |
 | Kuphaldt — Instrumentation Technician | 163 | 90 | ✔ |
-| AutomationDirect PLC Handbook | 85 | 0 | ⚠ **chưa** |
 | PLCopen XML exchange | 80 | 103 | ✔ |
 | PLCopen Safe Motion | 45 | 30 | ✔ |
 | Rockwell — IEC 61131-3 compliance | 30 | 17 | ✔ |
 | IO-Link — mô tả hệ thống | 25 | 4 | ✔ |
-| PLCopen — Structuring Program Development | 4 | 0 | ✔ |
 
 ---
 
@@ -75,6 +73,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30, 45 |
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21, 32 |
+| AutomationDirect PLC Handbook | 85 | 13 |
 | Siemens S7-1200 System Manual | 864 | 7, 12, 51 |
 | Siemens S7-1500 / TIA | 37 | 38 |
 | Mitsubishi FX5 — Program Design | 136 | 25, 26, 53 |
@@ -86,6 +85,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 47 |
 | PLCopen Motion Control | 213 | 28, 37, 43, 45 |
+| PLCopen — Structuring Program Development | 4 | 27 |
 | Mitsubishi FX5 — Positioning | 302 | 28 |
 | Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
 | Bryan — Theory and Implementation | 1047 | 8, 22, 23, 49, 51, 52 |

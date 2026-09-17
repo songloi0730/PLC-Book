@@ -243,6 +243,16 @@ Với vòng hai dây, nguồn có thể đến từ **module analog của PLC** 
 > **Cách phòng:** tra **sơ đồ đấu trong datasheet của module** trước khi đấu sợi dây đầu tiên. Sơ đồ
 > nói rõ có nguồn hay không — đừng suy từ tên gọi, và đừng suy từ module khác của cùng hãng.
 
+![Ai cấp nguồn cho vòng 4–20 mA](../assets/ch31/hinh_31_1_ai_cap_nguon_vong.svg)
+
+*Hình 31.1 — Ba cách đấu vòng 4–20 mA. Hai cách đúng khác nhau ở chỗ nguồn nằm trong module hay
+ngoài; cách sai có hai nguồn nối tiếp trong cùng một vòng, và nguồn thứ hai nằm khuất bên trong
+module nên sơ đồ đấu ngoài không cho thấy nó.*
+
+> ⭐ **Hình 31.1 vẽ cả ba cách đấu cạnh nhau** vì trên bản vẽ chúng trông na ná: cũng hai sợi dây,
+> cũng một cảm biến, cũng một module. ⚠ Khác biệt duy nhất là **nguồn 24 V nằm ở đâu** — và với ô C
+> thì nguồn thứ hai **nằm bên trong module**, nên nhìn sơ đồ đấu ngoài không thấy nó.
+
 ### ⚠ Điện trở tải tối đa của vòng
 
 Vòng dòng hai dây có một giới hạn thường bị quên: **tổng điện trở của vòng không được vượt một giá

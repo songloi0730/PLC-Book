@@ -392,6 +392,25 @@ hoặc thiếu tham số thiết bị.
 
 ---
 
+## 52.11b Bảng chốt
+
+| Chủ đề | Chốt lại |
+|---|---|
+| ⚠⚠ **Thứ tự tám bước** | **Không phải gợi ý.** Mỗi bước chặn một loại sự cố; nhảy bước là chấp nhận loại sự cố đó (mục 52.2) |
+| ⭐ **Ba mốc nghiệm thu** | **FAT** tại xưởng · **SAT** tại hiện trường · **SIT** khi ghép chuyền. ⚠ SAT **không phải** FAT làm lại — vận chuyển, nguồn, khí và nhiệt độ đều khác |
+| ⭐⭐ **Kiểm I/O 1-1** | Kiểm **từng kênh một**, bằng **cưỡng bức**, ⚠ **không bằng chương trình** — chương trình sai thì phép kiểm sai theo (Bẫy 2) |
+| ⚠ **Chức năng an toàn** | Thử **từng nút, từng cửa, từng rèm** — không thử một cái rồi suy ra cái còn lại (Bẫy 3) |
+| ⭐ **Thử tạo lỗi cố ý** | Bước 7 là bước phân biệt máy **chạy được** với máy **dùng được**. Cắt khí, che cảm biến, rút cáp — rồi xem máy nói gì |
+| ⚠ **Đo chu kỳ** | Đo ở **điều kiện thật**: sản phẩm thật, người thật, có cả lúc chờ. ⭐ Con số đo lúc lý tưởng là con số sẽ bị đem ra cãi nhau (Bẫy 5) |
+| ⭐⭐ **Trước khi bàn giao** | ⚠ Gỡ **hết** cưỡng bức — kể cả loại "đã cài nhưng đang tắt" · tắt cờ mô phỏng và chạy khô · bỏ mọi nấc thang tạm (mục 52.9) |
+| ⭐ **Sao lưu** | Bản sao lưu **chưa thử khôi phục** thì chưa phải bản sao lưu (Bẫy 7, Chương 54) |
+| **Bộ số liệu chuẩn** | Ghi lại lúc máy còn tốt: thời gian quét, điện áp 24 V, chu kỳ, thời gian hành trình từng cơ cấu — ⭐ **mốc so sánh cho cả vòng đời máy** (Chương 53) |
+| ⚠ **Danh mục tồn** | Phải **viết ra, có người chịu trách nhiệm, có hạn**. "Để đó rồi tính" nghĩa là không bao giờ |
+| ⭐ **Biên bản** | *"Đã nghiệm thu"* mà **không kèm danh mục cụ thể** là câu vô nghĩa khi có tranh chấp |
+| ⭐⭐ **Bàn giao là một hoạt động, không phải một lần gửi tệp** | Tài liệu **cộng** đào tạo người vận hành. Máy tốt mà không ai biết dùng thì vẫn là máy dừng (mục 52.10) |
+
+---
+
 ## 52.12 Tự kiểm
 
 1. Kể lại sự cố ở mục 52.1. **Bước nào** trong thứ tự tám bước đã có thể chặn nó, và mất bao lâu?

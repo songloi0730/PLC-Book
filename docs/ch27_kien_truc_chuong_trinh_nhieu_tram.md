@@ -99,6 +99,58 @@ Quy tắc Q3 nghe hình thức, nhưng nó là quy tắc **trả lại nhiều n
 
 ---
 
+## 27.2b ⭐⭐ Bảy bước dựng cấu trúc — làm theo thứ tự nào
+
+Mục 27.2 nói chương trình **nên** có ba tầng. Mục này trả lời câu đứng ngay sau đó: ⭐ **bắt đầu từ
+đâu, và theo thứ tự nào** — vì thứ tự sai thì ba tầng kia không tự mọc ra.
+
+PLCopen đề xuất một trình tự bảy bước cho việc cấu trúc hoá phần mềm theo IEC 61131-3. Bảng dưới đặt
+nó cạnh chỗ tương ứng trong sách này:
+
+| # | Bước | Trả lời câu hỏi | Chương |
+|---|---|---|---|
+| 1 | **Xác định giao diện ra bên ngoài** của hệ điều khiển | Máy nói chuyện với **ai** — máy trước, máy sau, cấp trên, người vận hành | 41, 45 |
+| 2 | **Chốt các tín hiệu chính trao đổi** với phần còn lại của nhà máy | Qua mỗi giao diện đó, **những bit và số nào** đi qua | 23, 41 |
+| 3 | ⭐⭐ **Chốt mọi tương tác của người vận hành, mọi cách BỎ QUA, và dữ liệu giám sát** | Người vận hành làm được gì, và ⭐ **được phép bỏ qua cái gì** | 28, 51 |
+| 4 | **Phân rã bài toán từ trên xuống** thành các phần logic | Máy chia thành mấy trạm, mấy cụm, mấy cơ cấu | ⭐ **27** |
+| 5 | **Định nghĩa các khối cần có** — chương trình và khối chức năng | Cái gì viết một lần dùng nhiều lần | 27, 30 |
+| 6 | **Chốt yêu cầu chu kỳ** cho từng phần | Phần nào phải chạy nhanh, phần nào chậm cũng được | 10, 27 |
+| 7 | **Cấu hình hệ thống** — gán chương trình vào tác vụ, gán chân vào/ra | Ai chạy trong tác vụ nào, tag nào ứng chân nào | 27, 30 |
+
+> ⭐⭐ **Bước 3 là bước gây ngạc nhiên nhất, và nó đáng bàn.**
+>
+> Tương tác người vận hành và ⭐ **các đường "bỏ qua" (override) được chốt ở bước 3 — TRƯỚC khi phân
+> rã bài toán ở bước 4.** Nghĩa là chúng được coi là **đầu vào của kiến trúc**, không phải thứ gắn
+> thêm khi máy gần xong.
+>
+> ⚠ Thực tế thì gần như ai cũng làm ngược: viết trình tự tự động trước, rồi mới nghĩ tới chế độ tay,
+> rồi cuối cùng mới đối phó với câu *"camera hỏng thì chạy kiểu gì"*. ⭐ Và đó chính là lý do phần đó
+> luôn trông như chắp vá — xem Chương 28 và Chương 51 mục 51.7b.
+
+### ⚠ Giới hạn của việc chia nhỏ
+
+Chia để trị là đúng, nhưng nó **không đúng vô hạn**:
+
+> ⚠⚠ **Chia càng nhỏ thì công sức không biến mất — nó chuyển sang việc GHÉP các mảnh lại.**
+>
+> ⭐ Một khối làm đúng một việc rõ ràng là tốt. Ba mươi khối, mỗi khối ba dòng, nối với nhau bằng
+> bốn mươi biến trung gian thì **khó đọc hơn** một khối ba mươi dòng.
+>
+> ⚡ Dấu hiệu đã chia quá tay: ⚠ **số biến đi lại giữa các khối tăng nhanh hơn số khối**. Khi mỗi
+> khối mới thêm vào lại kéo theo năm biến giao tiếp, bạn đang trả nhiều hơn phần được lợi — đúng
+> nguyên tắc "giao diện phải nhỏ" ở mục 27.3.
+
+### ⭐ Bốn nguyên tắc đi kèm
+
+| Nguyên tắc | Nghĩa | Ở đâu trong sách |
+|---|---|---|
+| ⭐⭐ **Chỉ làm việc bằng tên tượng trưng** — địa chỉ tuyệt đối **chỉ xuất hiện ở phần khai báo** | Đổi module, đổi chân thì sửa **một chỗ**; phần còn lại không biết gì | Chương 30 mục 30.2 |
+| **Phần nào thuộc về nhau thì để cạnh nhau trong mã nguồn** | Đọc một cơ cấu không phải nhảy bốn chỗ | Chương 30 mục 30.3 |
+| ⚠ **Không dùng lệnh nhảy** | Nhảy phá tính đọc được và tính tái dùng, và sinh hiệu ứng phụ | Chương 20 |
+| **Đặt tên biến và khối nhất quán** | Cho phép **đoán đúng** thay vì phải tra | Chương 30 mục 30.2 |
+
+---
+
 ## 27.3 Tầng cơ cấu — khối tái dùng
 
 Mỗi loại cơ cấu viết **một lần** thành một **khối chức năng** *(function block, FB)*, rồi tạo nhiều
@@ -550,6 +602,11 @@ chưa trả lời: khi máy dừng giữa chừng ở một tư thế bất kỳ
   Structure*: ⭐ **bốn câu hỏi để chia bài toán điều khiển** (chạy cùng lúc? · độc lập? · có trình tự
   rõ? · ⭐ **có ranh giới vật lý?**), và ⚠ điều kiện tiên quyết *hiểu quy trình trước* — nền cho
   mục 27.2.
+- **PLCopen** — *Structuring Program Development with IEC 61131-3*: ⭐⭐ **bảy bước dựng cấu trúc**
+  (nền cho mục 27.2b), năm nguyên tắc mô-đun hoá (giao diện ít và nhỏ, tương tác khai báo tường minh,
+  đóng gói dữ liệu), ⚠ **giới hạn của việc chia nhỏ** — chia quá tay thì công sức chuyển sang việc
+  ghép, và bốn nguyên tắc đi kèm (chỉ dùng tên tượng trưng · để phần thuộc về nhau cạnh nhau ·
+  không dùng lệnh nhảy · đặt tên nhất quán). *(tài liệu mở của PLCopen)*
 
 > ⚡ Ba tầng ở mục 27.2 là **cách tổ chức thực dụng đã được kiểm chứng cho máy tự động hoá rời rạc**,
 > không phải một kiến trúc chuẩn hoá bắt buộc. Máy rất nhỏ có thể gộp tầng trạm vào tầng máy; máy rất
