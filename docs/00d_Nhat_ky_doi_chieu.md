@@ -1824,6 +1824,68 @@ khi dùng đúng chỗ (Ch.37 + *SS1*, Ch.46 + *robot*).
 
 ---
 
+## Đợt 43 — 2026-09-17 · Phán quyết về Rabiee, và ba lỗ hổng do MỤC LỤC nguồn chỉ ra
+
+Hai việc: **quyết dứt điểm** có đọc tài liệu Rabiee 446 trang hay không, và **soi mục lục các sổ tay
+lệnh của hãng** xem có chủ đề nào sách chưa có.
+
+### A — ⭐ Rabiee: đọc mục lục xong, KẾT LUẬN KHÔNG ĐỌC TIẾP
+
+| # | Việc | Kết quả | KQ |
+|---|---|:--|:--:|
+| 270 | Tệp là **bản quét thuần** — mỗi trang một ảnh, **không có lớp văn bản, không có mục lục nhúng**. Máy không cài công cụ OCR nào | ⭐ Không cần cài: **kết xuất mấy trang mục lục thành ảnh rồi đọc trực tiếp** — nhanh hơn và đủ chính xác cho việc quyết định | ✔ |
+| 271 | Đối chiếu **18 chương** của Rabiee với sách | ⭐ **16/18 chương trùng chủ đề đã có**, và tài liệu gắn chặt nền **Rockwell SLC 500 / RSLogix** với bài thực hành trên phần mềm mô phỏng riêng. ⚠ Phần vendor-neutral của nó **không thêm gì** cho một cuốn sách trung lập hãng | ❔ |
+
+> ⭐⭐ **Phán quyết: KHÔNG OCR và KHÔNG đọc tiếp. Ghi vào đây để đợt sau không cân nhắc lại.**
+>
+> ⚡ Nhưng **chính mục lục ấy đã trả công cho nửa giờ bỏ ra**: hai chương của nó — *Compare, Jump và
+> MCR* và *Sequencer Instructions* — chỉ vào **hai chủ đề mà cả cuốn sách này không có một dòng nào**.
+> ⭐ Bài học: **đọc mục lục một nguồn là việc rẻ và nên làm, kể cả khi kết luận là không đọc nguồn đó.**
+
+### B — Ba chủ đề sách thiếu hẳn, tìm ra từ mục lục
+
+Đối chiếu chéo với mục lục **sổ tay lệnh Mitsubishi FX5** (1 470 trang) và **Inovance H5U**
+(1 113 trang) cho thấy cả ba đều là **chủ đề liên hãng**, không phải đặc sản một hãng:
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 272 | ⚠⚠ **Ch.15 mục 15.4b** — vùng điều khiển `MCR` | Cả sách **không nhắc `MCR` một lần nào**, trong khi Rockwell, Mitsubishi (*Master Control Instruction*) và Inovance (*MC/MCR*) đều có. ⭐⭐ Và nó mang **một cái tên trùng nguy hiểm**: `MCR` = *Master Control Relay*, ⚠ **cùng cụm từ** với **mạch cắt nguồn bằng phần cứng** | ➕➕ |
+| 273 | ⚠⚠ Ch.15 mục 15.4b — **hai thứ trùng tên, ngược nhau về bản chất** | Lệnh `MCR` ⚠ **không cắt gì cả** — nó chỉ làm logic trong vùng ngừng chạy, và **chạy trong cùng CPU** nên **CPU treo thì nó treo theo**. Nhầm lẫn kinh điển: *"trạm này nằm trong vùng MCR rồi nên an toàn"* | ➕➕ |
+| 274 | ⭐ Ch.15 mục 15.4b — ba hành vi **phải tra, không được đoán** | Ngõ ra **chốt** (SET/RESET) trong vùng thường **giữ nguyên**, không tắt · timer trong vùng **khác nhau giữa các hãng** · vùng lồng nhau **có hệ cho, có hệ không** | ➕ |
+| 275 | ⭐⭐ **Ch.25 — "Chọn cách nào"** thêm **cột thứ ba** | Bảng so sánh cách hiện thực máy trạng thái chỉ có hai cột (*Biến + `CASE`* · *Bit trạng thái*), ⚠ **thiếu hẳn nhóm lệnh tuần tự của hãng** (*step ladder · sequencer · drum*) — thứ có ở cả Mitsubishi (3.4 *Step Ladder*) lẫn Inovance (4.3.2 *STL*). ⭐ Đúng một ca của bất biến **B18**: bảng so sánh thiếu một phương án thì bảng đó chưa đủ | ➕➕ |
+| 276 | ⭐ Ch.25 — hàng mới trong bảng: **khả chuyển sang hãng khác** | Nhóm lệnh tuần tự có ưu điểm thật (**bất biến "chỉ một bước hoạt" do chính lệnh bảo đảm**), nhưng ⚠⚠ **khả chuyển bằng không** — và cái giá đó **chỉ hiện ra ở dự án sau** (Chương 14 mục 14.6b) | ➕➕ |
+| 277 | ⚠⚠ **Ch.10** — lệnh nạp lại watchdog | Bảng khác biệt giữa các hãng có nhắc lệnh `WDT`, nhưng ⚠ **không cảnh báo cách nó bị lạm dụng**: chương trình chạm ngưỡng watchdog → thêm một lệnh nạp lại vào giữa → cảnh báo biến mất. ⭐⭐ **Vòng quét vẫn dài y như cũ; thứ duy nhất mất đi là cái báo cho bạn biết** | ➕➕ |
+
+### Kết quả đợt 43
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **8** |
+| ➕➕ Bổ sung giá trị cao | 5 |
+| ➕ Bổ sung | 1 |
+| ❔ Nguồn quyết định **không đọc tiếp** | 1 (Rabiee, 446 trang) |
+| Mục mới trong thân sách | 1 — Ch.15 mục 15.4b |
+| Mục cũ được mở rộng | 2 — Ch.25 (bảng so sánh), Ch.10 (watchdog) |
+
+> ⭐⭐ **Bài học 1 — mục lục của một nguồn có giá trị RIÊNG, tách khỏi nội dung của nó.**
+>
+> Rabiee là bản quét, gắn chặt một hãng, và 16/18 chương trùng thứ sách đã có — ⭐ **đúng là không
+> đáng đọc**. Nhưng danh sách 18 tiêu đề của nó là một **danh mục kiểm tra chủ đề** do người khác
+> lập, và đối chiếu nó với sách mất nửa giờ mà ra **hai lỗ hổng thật**.
+>
+> ⚡ Điều đó đổi cách nên xử lý danh sách *"nguồn chưa ai dẫn"*: ⚠ đừng hỏi *"có nên đọc tài liệu
+> này không"* — hãy hỏi ⭐ **"mục lục của nó có tên chương nào mà sách mình không có không"**. Câu
+> thứ hai rẻ hơn nhiều lần và trả lời được cho **cả** những nguồn không đáng đọc.
+>
+> ⭐ **Bài học 2 — chỗ nguy hiểm nhất của đợt này là một CÁI TÊN.**
+>
+> Mục 15.4b không dạy một kỹ thuật mới; nó gỡ một **trùng tên**. `MCR` vừa là một lệnh phần mềm
+> không cắt được gì, vừa là tên một **mạch phần cứng cắt nguồn thật**. ⚠⚠ Hai thứ ngược nhau về bản
+> chất, và một trong hai liên quan tới tính mạng. ⭐ Sách trung lập hãng mà bỏ qua trùng tên kiểu này
+> là bỏ qua đúng thứ người đọc sẽ gặp trong tài liệu của mọi hãng.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

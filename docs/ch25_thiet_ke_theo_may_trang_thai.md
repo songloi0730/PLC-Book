@@ -279,12 +279,32 @@ S_Uninit   S_Homing   S_Idle   S_Running   S_Hold   S_Alarm   S_Resetting
 
 ### Chọn cách nào
 
-| | Biến + `CASE` | Bit trạng thái |
-|---|---|---|
-| Bất biến "một trạng thái" | **Được bảo đảm bởi kiểu dữ liệu** | Phải tự cưỡng chế + giám sát |
-| Đọc trạng thái khi gỡ lỗi | Xem một biến | Xem bảy bit |
-| Đội bảo trì đọc ladder | Không đọc được | **Đọc được** |
-| Thêm trạng thái | Thêm một giá trị | Thêm một bit + sửa nấc giám sát |
+| | Biến + `CASE` | Bit trạng thái | ⭐ Lệnh tuần tự của hãng |
+|---|---|---|---|
+| Bất biến "một trạng thái" | **Được bảo đảm bởi kiểu dữ liệu** | Phải tự cưỡng chế + giám sát | ⭐ **Do chính lệnh bảo đảm** |
+| Đọc trạng thái khi gỡ lỗi | Xem một biến | Xem bảy bit | Xem bước đang hoạt |
+| Đội bảo trì đọc ladder | Không đọc được | **Đọc được** | ⚠ Đọc được **nếu đã quen cú pháp riêng đó** |
+| Thêm trạng thái | Thêm một giá trị | Thêm một bit + sửa nấc giám sát | Thêm một bước |
+| ⚠⚠ **Khả chuyển sang hãng khác** | ⭐ Cao | ⭐ **Cao nhất** — chỉ là bit và tiếp điểm | ⚠⚠ **Bằng không** |
+
+### ⭐ Cột thứ ba là gì
+
+Nhiều hệ có sẵn **một nhóm lệnh chuyên để viết trình tự**: bước, chuyển tiếp, và cơ chế tự tắt bước
+trước khi bật bước sau. Tên gọi khác nhau theo hãng — *step ladder*, *sequencer*, *drum* — nhưng ý
+tưởng giống nhau, và chúng ⭐ **làm hộ bạn đúng cái bất biến "chỉ một bước hoạt tại một thời điểm"**.
+
+| ⭐ Được gì | ⚠ Mất gì |
+|---|---|
+| Bất biến được **lệnh bảo đảm**, không phải do bạn tự canh | ⚠⚠ **Khoá chặt vào hãng** — không có lệnh tương đương khi đổi hệ (Chương 14 mục 14.6b) |
+| Viết nhanh, ít nấc thang hơn | ⚠ Người chưa quen cú pháp đó **không đọc được**, kể cả khi họ thạo ladder |
+| Trình soạn thảo thường có màn theo dõi bước riêng | ⚠ Hành vi ở **trường hợp biên** (nhảy bước, huỷ giữa chừng, khởi động lại) **khác nhau giữa các hãng** — phải tra |
+
+> ⭐⭐ **Khi nào nên dùng cột thứ ba:** máy sẽ **ở lại trên một nền duy nhất** suốt đời, đội bảo trì
+> đã quen cú pháp đó, và trình tự **thuần tuần tự** — không có nhiều nhánh song song.
+>
+> ⚠ **Khi nào tránh:** làm máy để **bán cho nhiều khách dùng nhiều hãng khác nhau**, hoặc nhóm kỹ
+> thuật còn đang xoay vòng giữa vài nền. ⭐ Khi đó cái giá *"khả chuyển bằng không"* là cái giá thật,
+> và nó chỉ hiện ra ở dự án sau.
 
 Tiêu chí quyết định **không phải kỹ thuật mà là tổ chức**: ai sẽ sửa cỗ máy này lúc hai giờ sáng khi
 bạn không có mặt? Viết cho người đó đọc.

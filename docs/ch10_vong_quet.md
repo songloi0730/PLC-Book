@@ -128,6 +128,19 @@ trước** — thường là tắt hết, nhưng cấu hình được. Đây kh�
 > lý do **mạch dừng khẩn cấp không được đi qua logic PLC thường** (Chương 47): khi CPU chết, logic chết
 > theo, còn mối nguy thì không.
 
+> ⚠⚠ **Và có một lệnh cho phép bạn TẮT lời cảnh báo này — đừng dùng nó để làm việc đó.**
+>
+> Phần lớn hệ có một lệnh nạp lại watchdog giữa vòng quét (tên hay gặp: `WDT`). ⭐ Nó có công dụng
+> hợp lệ: một đoạn khởi tạo chạy **đúng một lần** lúc bật máy và cố tình mất lâu.
+>
+> ⚠ Nhưng cách nó **thường** được dùng là: chương trình bắt đầu chạm ngưỡng watchdog, ai đó thêm
+> một lệnh nạp lại vào giữa, và cảnh báo biến mất. ⭐⭐ **Vòng quét vẫn dài y như cũ** — thứ duy nhất
+> mất đi là **cái báo cho bạn biết điều đó**.
+>
+> ⚡ Vòng quét dài là một **triệu chứng**, và nó có nguyên nhân tra được: vòng lặp chờ tín hiệu ngoài
+> (Chương 20 mục 20.5), khối mới thêm vào tác vụ sai, hay dữ liệu lớn hơn dự tính. ⭐ Chữa nguyên
+> nhân; đừng tháo đồng hồ báo.
+
 ---
 
 ## 10.3 Trên máy mẫu DP-01

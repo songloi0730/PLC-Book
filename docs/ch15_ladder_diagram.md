@@ -280,6 +280,69 @@ board. Khó chịu, nhưng không nguy hiểm cho người.
 
 ---
 
+## 15.4b ⚠⚠ Vùng điều khiển `MCR` — và một cái tên nguy hiểm
+
+Có một nhóm lệnh ladder mà mọi hệ đều có, sách chưa nhắc, và nó mang **một cái tên gây hiểu nhầm
+chết người**: **lệnh điều khiển vùng**, thường viết là `MCR` hoặc `MC` / `MCR`.
+
+### Nó làm gì
+
+Hai lệnh đặt thành **một cặp**, kẹp lấy một nhóm nấc thang. Khi điều kiện của lệnh mở **sai**, toàn
+bộ nhóm nấc bên trong **bị vô hiệu**:
+
+```text
+      M_ZoneEnable
+   ──────┤ ├──────────────────────────( MCR bắt đầu vùng )──
+
+        ⋮   các nấc thang bên trong vùng
+        ⋮   — chỉ chạy khi M_ZoneEnable = 1
+
+   ────────────────────────────────────( MCR kết thúc vùng )──
+```
+
+⭐ Công dụng thật của nó: **tắt nhanh một mảng lớn logic** — ví dụ cả cụm logic của một trạm đang bị
+bỏ qua (Chương 51 mục 51.7b), mà không phải thêm một tiếp điểm vào từng nấc.
+
+### ⚠⚠ Cái tên — đây mới là phần phải nhớ
+
+`MCR` là viết tắt của **Master Control Relay**. Và trong nghề, **cùng cụm từ đó** còn chỉ một thứ
+hoàn toàn khác:
+
+| | ⭐ **Lệnh `MCR` trong chương trình** | ⚠⚠ **Mạch "master control relay" bằng PHẦN CỨNG** |
+|---|---|---|
+| Là cái gì | Một lệnh ladder | ⭐ Một **mạch điện thật** cắt nguồn cấp cho ngõ ra |
+| Cắt cái gì | ⚠ **Không cắt gì cả** — chỉ làm logic bên trong vùng ngừng chạy | ⭐ **Cắt năng lượng** tới các cơ cấu |
+| Có tác dụng khi CPU treo | ⚠⚠ **Không** — nó *là* phần mềm | ⭐ **Có** — nó không phụ thuộc CPU |
+| Dùng cho an toàn được không | ⚠⚠ **TUYỆT ĐỐI KHÔNG** | Là một phần của thiết kế an toàn (Chương 47) |
+
+> ⚠⚠ **Hai thứ trùng tên, ngược nhau về bản chất, và một trong hai liên quan tới tính mạng.**
+>
+> ⭐ Nhầm lẫn kinh điển: *"trạm này đã nằm trong vùng `MCR` rồi nên nó an toàn"*. ⚠⚠ **Sai.** Lệnh
+> `MCR` chạy trong cùng CPU với phần còn lại của chương trình — ⭐ **CPU treo thì nó treo theo**, và
+> các ngõ ra giữ nguyên trạng thái lúc đó.
+>
+> ⚡ Cách tự kiểm vẫn là câu hỏi ở Chương 27 mục 27.3b: *"nếu CPU treo đúng lúc này, ai bị thương?"*
+
+### ⚠ Ba điều lệnh `MCR` không làm như người ta tưởng
+
+| # | Tưởng là | Thực tế |
+|---|---|---|
+| 1 | *"Ngõ ra trong vùng bị tắt khi vùng tắt"* | ⚠ **Tuỳ hệ và tuỳ loại lệnh trong vùng.** Cuộn dây thường về 0, nhưng ⭐ **cuộn dây chốt (SET/RESET) thường GIỮ NGUYÊN** — Chương 16 |
+| 2 | *"Timer trong vùng dừng đếm"* | ⚠ Hành vi **khác nhau giữa các hãng**. Có hệ timer bị đặt lại, có hệ giữ giá trị — ⭐ **phải tra, không được đoán** (Chương 17) |
+| 3 | *"Vùng lồng nhau thì như ngoặc"* | ⚠ Có hệ cho lồng, có hệ không, và **số cấp lồng tối đa khác nhau**. ⭐ Vùng không đóng đúng cặp là lỗi rất khó tìm |
+
+> ⭐⭐ **Lời khuyên thực dụng: dùng `MCR` ít thôi, và không bao giờ cho thứ gì quan trọng.**
+>
+> Nó tiện đúng một việc: **tắt cả một mảng logic phụ trợ**. ⚠ Nhưng nó làm cho việc đọc chương trình
+> khó hẳn lên — một nấc thang trông hoàn toàn bình thường có thể **không bao giờ chạy**, và lý do
+> nằm ở một dòng cách đó hai trang. ⚡ Đây cùng họ vấn đề với lệnh nhảy (Chương 27 mục 27.2b).
+>
+> ⭐ Thay thế rõ ràng hơn trong phần lớn trường hợp: **đưa cờ cho phép vào chuỗi điều kiện của từng
+> ngõ ra**, đúng cách làm ở Phụ lục L.2. Dài hơn vài ký tự, nhưng ⭐ **đọc một nấc là biết nấc đó có
+> chạy hay không**.
+
+---
+
 ## 15.5 Bẫy thường gặp
 
 ### 🔍 BẪY 1 — Cuộn dây trùng
