@@ -2035,6 +2035,73 @@ chiếu chéo của chính dự án:
 
 ---
 
+## Đợt 46 — 2026-09-18 · Tham chiếu chéo khi mọi thứ là chỉ số; và khảo sát 16 dự án Mitsubishi
+
+Hai câu hỏi của chủ dự án: ⭐ *"làm sao dùng tham chiếu chéo với máy lớn mà gần như hầu hết nội dung
+là chỉ số, mà không bị nhầm"*, và ⭐ *"có vẻ một số chương trình Mitsubishi dùng địa chỉ trực tiếp
+chứ không dùng tag"*.
+
+### A — ⭐⭐ Sách nêu đúng giới hạn rồi DỪNG LẠI ở đó
+
+| # | Phát hiện | KQ |
+|---|:--|:--:|
+| 297 | ⚠ **Ch.22 mục 22.3** có đúng một gạch đầu dòng: *"không tìm được chỗ ghi gián tiếp qua chỉ số mảng tính toán được"* — rồi **hết**. ⭐ Đúng chẩn đoán, ⚠ **không có bước tiếp theo** — đúng dạng lỗ hổng đã nhận ra ở đợt 41 | ⚠ |
+
+### B — Ch.22 mục 22.3b (mới): bảy cách làm việc
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 298 | ⭐⭐ **Hai kiểu chỉ số làm hỏng tham chiếu chéo theo hai cách khác nhau**: chỉ số vào mảng (`Cyl[i]`) và **thanh ghi chỉ số** (`D100Z1`). ⭐ Điểm chung: **thứ bạn muốn tra KHÔNG XUẤT HIỆN trong mã** — nên không công cụ nào tìm được | ➕➕ |
+| 299 | ⭐⭐ **Cách ①: tra theo TRƯỜNG, đừng tra theo phần tử.** Đổi *"ai ghi vào `Cyl[12].Cmd.Req`"* thành *"có mấy nơi ghi vào `.Cmd.Req` của bất kỳ cái nào"*. ⚡ Nghe rộng hơn nhưng thực tế **hẹp lại**: chương trình có kỷ luật chỉ có hai–ba nơi. ⭐⭐ Và nếu ra **mười lăm** thì bạn vừa tìm ra vấn đề thật — nó không phải vấn đề của số 12 | ➕➕ |
+| 300 | ⭐ **Cách ②: tra biến CHỈ SỐ, không tra mảng.** Chỉ số đến từ vòng lặp chạy hết dải → "ai ghi" = vòng lặp đó, **xong**. Đến từ ngoài → tra chính biến đó | ➕➕ |
+| 301 | ⭐ **Cách ③: chỉ số cố định phải là HẰNG CÓ TÊN** — `Cyl[CYL_CLAMP_STN1]` thay cho `Cyl[12]`. ⭐⭐ Một dòng khai báo **lấy lại toàn bộ sức mạnh của tham chiếu chéo** cho phần tử đó | ➕➕ |
+| 302 | Cách ④ đọc chương trình con cấu hình trước · ⑤ tìm chỉ số **cứng** trong bản xuất văn bản · ⑥ chuyển sang xem trực tuyến khi tra tĩnh bó tay · ⑦ bốn luật cho người viết | ➕ |
+| 303 | ⚠⚠ **Cạm bẫy nặng nhất: chỉ số ngoài dải KHÔNG sai cú pháp.** `Cyl[30]` khi mảng có 20 phần tử vẫn biên dịch. Tuỳ hệ: dừng CPU, hoặc ⚠⚠ **ghi đè vùng nhớ bên cạnh** — một cơ cấu **khác hẳn** nhận lệnh, và ⭐ **tham chiếu chéo không bao giờ chỉ ra được**. Đây mới là lý do thật của việc chặn dải | ➕➕ |
+
+### C — ⭐ Khảo sát 16 chương trình Mitsubishi: nhận xét của chủ dự án ĐÚNG
+
+Giải nén tệp dự án (là **tệp nén** chứa cơ sở dữ liệu SQLite) và đếm trực tiếp:
+
+| # | Phép đo | Kết quả | KQ |
+|---|---|:--|:--:|
+| 304 | Số **nhãn/biến** khai báo so với số **chú thích thiết bị** người viết đặt, trên **16 dự án** | ⭐⭐ **15/16 dự án có đúng cùng một con số nhãn** — tức là **người viết không khai báo biến nào**; trong khi chú thích thiết bị chạy từ **0 tới hơn 200** mỗi dự án | ✔ |
+| 305 | Kiểu đặt tên thực tế | ⭐ Dùng thẳng `X3` · `Y5` · `M20` · `D13`, ý nghĩa nằm trong **chú thích thiết bị**. ⚡ Và trong bảng thanh ghi có cả `i_Index`, `n_index`, `j_index` — nghĩa là **còn chồng thêm chỉ số lên địa chỉ trực tiếp** | ✔ |
+| 306 | ⭐ Phát hiện phụ về công cụ | Tệp dự án chứa sẵn một **kho quản lý phiên bản** bên trong, và một bảng riêng cho **vùng `MC`/`MCR`** — ⭐ xác nhận mục 15.4b viết ở đợt 43 là chủ đề có thật, không phải chuyện của riêng một hãng | ✔ |
+
+### D — Ch.30 mục 30.2b: thêm kiểu thứ ba
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 307 | ⭐⭐ Mục 30.2b trước chỉ có hai tầng dựa trên **một** chương trình. Nay thêm **kiểu thứ ba — không khai báo biến nào**, với số liệu từ 16 dự án. ⭐ Kèm nghịch lý đáng chú ý: ⚠ kiểu này làm **tham chiếu chéo chạy RẤT TỐT** (địa chỉ là chuỗi có thật trong mã) nhưng ⚠⚠ **chú thích gắn với ĐỊA CHỈ chứ không gắn với ý nghĩa** | ➕➕ |
+| 308 | ⭐⭐ **Bảng ba kiểu, phân biệt bằng một câu hỏi: "mất tài liệu thì còn đọc được không?"** — tên mô tả: **còn** (cái tên chính là tài liệu) · mảng chỉ số: **mất** bảng tra · địa chỉ + chú thích: **mất** tệp chú thích. ⚡ Hai kiểu sau biến **một tệp phụ thành một phần không thể thiếu của chương trình** | ➕➕ |
+
+### Kết quả đợt 46
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **12** |
+| ➕➕ Bổ sung giá trị cao | 7 |
+| ➕ Bổ sung | 1 |
+| Mục mới | 1 — Ch.22 mục 22.3b |
+| Mục mở rộng | 1 — Ch.30 mục 30.2b |
+| Dự án thật đã khảo sát | **16** (Mitsubishi) + 4 (đợt trước) |
+
+> ⭐⭐ **Bài học 1 — câu hỏi hỏng chứ không phải công cụ hỏng.**
+>
+> *"Tham chiếu chéo vô dụng với mảng"* là kết luận sai. ⭐ Đúng hơn: **hỏi sai câu**. Hỏi *"ai ghi
+> vào số 12"* thì công cụ chịu; hỏi *"có mấy nơi ghi vào trường này"*, *"chỉ số nhận giá trị ở
+> đâu"*, *"bảng tra nằm ở đâu"* thì **cùng một công cụ** trả lời hết. ⚡ Nên mục mới đặt tên các
+> **câu hỏi**, không đặt tên các nút bấm.
+>
+> ⭐ **Bài học 2 — một nhận xét cảm tính của người đọc thường ĐO ĐƯỢC.**
+>
+> Chủ dự án nói *"có vẻ một số chương trình Mitsubishi dùng địa chỉ trực tiếp"*. ⚡ Thay vì đồng ý
+> hay phản bác, tôi giải nén 16 dự án và **đếm**: 15/16 không khai báo biến nào. ⭐ Kết quả biến một
+> cảm nhận thành **một dòng số liệu dùng được trong sách** — và nó mạnh hơn hẳn cách viết *"nhiều
+> chương trình vẫn dùng địa chỉ trực tiếp"*.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

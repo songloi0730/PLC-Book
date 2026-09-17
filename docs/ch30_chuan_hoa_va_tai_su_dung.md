@@ -248,6 +248,34 @@ trao đổi dữ liệu với hệ trên, đọc thẳng một byte vào/ra.
 > tầng khung người đọc là **một khối chạy cho mọi thiết bị cùng loại**; ở tầng logic máy người đọc là
 > thợ bảo trì lúc hai giờ sáng.
 
+### ⚠ Và có một kiểu thứ ba: KHÔNG đặt tên biến nào cả
+
+Hai tầng ở trên đều giả định chương trình **có khai báo biến**. ⚠ Nhưng còn một kiểu rất phổ biến —
+nhất là ở nền đánh địa chỉ theo thiết bị và ở chương trình đời cũ:
+
+> ⚠⚠ **Không khai báo biến nào. Dùng thẳng `X3`, `Y5`, `M20`, `D13` — và ý nghĩa nằm trong CHÚ THÍCH
+> THIẾT BỊ** *(device comment)* gắn với từng địa chỉ.
+
+⭐ Khảo sát **16 chương trình dạy học** trên một nền phổ biến cho kết quả rất nhất quán: ⚠ **gần như
+không chương trình nào khai báo biến**, trong khi số **chú thích thiết bị do người viết đặt** chạy
+từ 0 tới hơn 200 mỗi chương trình.
+
+| | ⭐ Được gì | ⚠ Mất gì |
+|---|---|---|
+| **Dùng thẳng địa chỉ + chú thích** | ⭐⭐ **Tham chiếu chéo chạy rất tốt** — địa chỉ là chuỗi có thật trong mã (khác hẳn chỉ số, xem Chương 22 mục 22.3b) · khớp một–một với bản vẽ · không cần thiết kế cấu trúc trước | ⚠⚠ **Chú thích gắn với ĐỊA CHỈ, không gắn với ý nghĩa** — đổi cách đánh địa chỉ thì chú thích ở lại chỗ cũ và **thành sai** · ⚠⚠ **mất tệp chú thích là mất toàn bộ ý nghĩa** · ⚠ không tái dùng khối được (mỗi thiết bị một đoạn mã riêng) |
+
+> ⭐⭐ **Ba kiểu, ba thứ bị mất khi mất tài liệu — và đây là cách phân biệt nhanh nhất:**
+>
+> | Kiểu | Mất tài liệu thì còn đọc được không |
+> |---|---|
+> | **Tên mô tả** | ⭐ **Còn** — cái tên **chính là** tài liệu |
+> | **Mảng đánh chỉ số** | ⚠ **Mất** bảng tra chỉ số → không biết `[12]` là cơ cấu nào |
+> | **Địa chỉ + chú thích** | ⚠⚠ **Mất** tệp chú thích → `M20` không còn nghĩa gì |
+>
+> ⚡ Hai kiểu sau đều biến **một tệp phụ thành một phần không thể thiếu của chương trình**. ⭐ Hệ quả
+> giống nhau: tệp đó **phải nằm trong danh mục sao lưu** (Chương 54 mục 54.3), và ⚠ thiếu nó thì máy
+> vẫn chạy — chỉ là không ai sửa được nữa.
+
 ---
 
 ## 30.3 Cấu trúc chương trình — theo cơ cấu, không theo bước
