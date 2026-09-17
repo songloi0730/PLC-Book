@@ -448,6 +448,61 @@ nó ở cửa chuyền: board phải qua được, người thì không.
 
 ---
 
+## 47.7b ⭐⭐ Các chức năng an toàn đã được chuẩn hoá thành KHỐI — đừng viết lại
+
+Mục 47.4b nói ngôn ngữ của PLC an toàn bị cắt bớt có chủ ý. Mục này nói tiếp một điều mà người lập
+trình cần biết **trước khi bắt đầu gõ**: ⭐ **những chức năng an toàn hay gặp nhất đã được định nghĩa
+sẵn thành khối chức năng, với hành vi được mô tả rất kỹ.**
+
+PLCopen đã chuẩn hoá một bộ khối như vậy cho PLC an toàn. Bảng dưới là **từ vựng** — để bạn biết
+phải hỏi thứ gì, và nhận ra khi mình đang định viết lại một thứ đã có:
+
+| Khối chuẩn | Dùng cho | Mục trong sách |
+|---|---|---|
+| `SF_EmergencyStop` | Dừng khẩn cấp | 47.6 |
+| `SF_Guard` · `SF_GuardLocking` | Cửa liên động · cửa có khoá giữ | 47.7 |
+| `SF_ESPE` | Thiết bị bảo vệ không tiếp xúc — rèm quang, quét vùng | 47.7 |
+| ⭐ `SF_MutingSeq` · `SF_MutingPar` | **Muting** theo trình tự / song song | ⚠ 47.7 — phần nguy hiểm nhất |
+| ⭐ `SF_TwoHandControlTypeII` · `SF_TwoHandControlTypeIII` | **Điều khiển hai tay** — hai loại, khác nhau về mức yêu cầu | 47.7 |
+| `SF_ModeSelector` | Chọn chế độ có ràng buộc an toàn | Chương 28 |
+| ⭐ `SF_Override` | **Bỏ qua có kiểm soát** ở mức an toàn | ⚠ Khác cờ bỏ qua thường — Chương 51 mục 51.7b |
+| `SF_EnableSwitch` | Công tắc cho phép cầm tay *(enabling device)* | 47.7 |
+| ⭐ `SF_EDM` | **Giám sát phản hồi** của cơ cấu ngắt — phát hiện tiếp điểm hàn dính | Chương 48 |
+| `SF_ResetButton` | Nút phục hồi đúng cách — ⭐ **không tự phục hồi** | 47.6 |
+| `SF_SafetyRequest` | Yêu cầu dừng an toàn tới một truyền động | 47.8, Chương 37 mục 37.6b |
+| `SF_Equivalent` · `SF_Antivalent` | Giám sát cặp tiếp điểm hai kênh — cùng chiều / ngược chiều | 47.5 |
+| `SF_OutControl` | Điều khiển ngõ ra an toàn | 47.5 |
+| `SF_TestableSafetySensor` | Cảm biến an toàn có xung kiểm tra | Chương 49 |
+
+> ⭐⭐ **Vì sao bảng này quan trọng hơn vẻ ngoài của nó.**
+>
+> Nhìn thì nó chỉ là một danh sách tên. ⭐ Nhưng mỗi khối trong đó **mang theo một đặc tả hành vi đầy
+> đủ** — gồm những chi tiết mà người tự viết gần như luôn bỏ sót. Lấy điều khiển hai tay làm ví dụ,
+> một bản tự viết thường chỉ làm **vế thứ nhất**:
+>
+> | | Yêu cầu | ⚠ Bản tự viết hay quên |
+> |---|---|---|
+> | 1 | Phải nhấn **cả hai** nút trong một cửa sổ thời gian | ⭐ Thường có |
+> | 2 | ⚠⚠ Phải **NHẢ CẢ HAI** nút rồi mới được bắt đầu lần sau | ⚠ **Hay thiếu** — thiếu nó thì kẹp một nút lại là xong |
+> | 3 | ⚠ Nhả **một** nút thì phải **dừng ngay** | Hay thiếu |
+> | 4 | Phải phát hiện được **nút kẹt dính** và báo ra | ⚠ Gần như luôn thiếu |
+> | 5 | Phải nói được **lý do từ chối**, không im lặng | Gần như luôn thiếu |
+
+> ⚠⚠ **NGUY HIỂM — và đây là điều phải nhớ nếu chỉ nhớ một câu của mục này.**
+>
+> ⭐ Việc có **tên khối chuẩn** không làm cho một bản tự viết trong CPU thường trở nên an toàn.
+> ⚠⚠ **Các khối này phải chạy trên phần cứng an toàn đã chứng nhận** — vì lý do ở mục 47.1: CPU
+> thường treo thì logic trong đó treo theo.
+>
+> ⚡ Nói cách khác, bảng trên trả lời câu hỏi *"gọi cái này là gì và nó phải làm những gì"*. Nó
+> **không** trả lời *"chạy ở đâu"* — câu đó chỉ có một đáp án, và đáp án đó là phần cứng an toàn.
+
+> ⚠ **Vẫn phải có người có thẩm quyền.** Bảng này là từ vựng, không phải thiết kế. ⭐ Chọn khối nào,
+> mức hiệu năng bao nhiêu, kiến trúc mấy kênh — là kết quả của **đánh giá rủi ro** ở mục 47.2, và
+> ⚠⚠ nội dung chương này **không thay thế** việc đó.
+
+---
+
 ## 47.8 STO — dừng an toàn cho truyền động
 
 Với trục có servo hoặc biến tần, cách "cắt năng lượng" ngây thơ là **ngắt contactor phía trước bộ điều
@@ -654,6 +709,16 @@ tin lệnh** là nguyên tắc xuyên suốt cả cuốn sách.
 ---
 
 ### Nguồn tham khảo chương 47
+
+- **PLCopen** — *Safety Software Technical Specification, Part 1: Concepts and Function Blocks*
+  (v2.10): ⭐ **danh mục khối chức năng an toàn đã chuẩn hoá** — `SF_EmergencyStop`, `SF_Guard`,
+  `SF_GuardLocking`, `SF_ESPE`, `SF_MutingSeq`, `SF_MutingPar`, ⭐ **`SF_TwoHandControlTypeII` và
+  `SF_TwoHandControlTypeIII`**, `SF_ModeSelector`, `SF_Override`, `SF_EnableSwitch`, `SF_EDM`,
+  `SF_ResetButton`, `SF_SafetyRequest`, `SF_Equivalent`, `SF_Antivalent`, `SF_OutControl`,
+  `SF_TestableSafetySensor` — nền cho mục 47.7b. *(tài liệu mở của PLCopen)*
+  ⚠ **Vẫn còn thiếu:** tiêu chuẩn riêng về **điều khiển hai tay** quy định các **con số** cụ thể
+  (cửa sổ đồng thời, khoảng cách đặt nút) — ⭐ **không có trong bộ tài liệu**, nên sách chỉ mô tả
+  **yêu cầu hành vi**, không nêu số. Muốn có số thì **phải mua tiêu chuẩn**.
 
 - ISO 12100 — *Safety of machinery — General principles for design — Risk assessment and risk reduction*:
   quy trình đánh giá rủi ro và thứ tự ưu tiên giảm thiểu (mục 47.2, 47.3).

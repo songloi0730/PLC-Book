@@ -1,6 +1,7 @@
 # Phụ lục L — Thư viện mẫu code dùng ngay
 
-> **Tài liệu tra cứu.** Mười sáu đoạn logic lặp lại ở gần như mọi cỗ máy, gom về một chỗ. Mỗi mẫu kèm
+> **Tài liệu tra cứu.** Mười sáu đoạn logic lặp lại ở gần như mọi cỗ máy, gom về một chỗ — cộng một
+> **danh mục ở L.17** trả lời câu hỏi đứng trước tất cả: *khối nào nên tự viết, khối nào đã có sẵn*. Mỗi mẫu kèm
 > ⭐ **điều kiện dùng** và ⚠ **thứ nó KHÔNG làm** — vì chép một mẫu mà không biết giới hạn của nó là
 > cách tạo ra lỗi trông rất giống code đúng.
 
@@ -777,7 +778,97 @@ END_FUNCTION_BLOCK
 
 ---
 
-## L.17 Bảng tra nhanh — mẫu nào cho việc gì
+## L.17 ⭐⭐ Danh mục khối dùng lại — cái nào tự viết, cái nào đã có sẵn
+
+Trước khi viết một khối chức năng cho máy mới, hỏi đúng **một** câu: ⭐ **thứ này đã có ai làm chuẩn
+chưa?** Viết lại một thứ đã được chuẩn hoá thì tốn công là chuyện nhỏ — ⚠ chuyện lớn là **bản của
+bạn không được kiểm chứng bằng những gì bản chuẩn đã trải qua**.
+
+⭐ Bảng dưới chia thư viện khối của một cỗ máy thành **ba nhóm**, theo đúng câu hỏi đó.
+
+### Nhóm 1 — ⚠ Chuẩn hoặc hãng ĐÃ CÓ: đừng viết lại
+
+| Bạn định viết | ⭐ Thứ đã có sẵn | Vì sao đừng tự viết |
+|---|---|---|
+| Khối **trễ** bật/tắt | ⭐ `TON` · `TOF` · `TP` — **khối chuẩn IEC 61131-3** | Hành vi đã định nghĩa trong chuẩn; bản tự viết ⚠ **hay sai ở trường hợp biên** (mất điện giữa chừng, đặt lại khi đang đếm) — Chương 17 |
+| Khối **bắt cạnh** | ⭐ `R_TRIG` · `F_TRIG` — **khối chuẩn IEC** | Chương 16, Phụ lục L.7 |
+| Khối **đếm** | ⭐ `CTU` · `CTD` · `CTUD` — **khối chuẩn IEC** | Chương 18 |
+| Khối **chốt** | ⭐ `SR` · `RS` — **khối chuẩn IEC** | ⚠ Và phải biết cái nào ưu tiên Set, cái nào ưu tiên Reset — Chương 16 |
+| Khối **dịch bit / dịch word** | ⭐ `SHL` · `SHR` · `ROL` · `ROR` — **hàm chuẩn IEC**; ngoài ra mọi hãng đều có lệnh dịch riêng | Chương 19 mục 19.6 |
+| Khối **gộp 8 bit thành byte** / tách ngược lại | ⭐ Phần lớn hệ cho **truy cập từng bit của một `WORD`/`BYTE`** ngay trong cú pháp | ⚠ Tự viết là thêm một lớp không cần thiết — Chương 11 mục 11.2 |
+| Khối **so sánh hai số nguyên bằng nhau** | ⭐ Toán tử `=` | ⚠ Không có gì để bọc |
+| Khối **PID** | ⭐ Hầu hết hệ có **khối PID sẵn**, nhiều hệ kèm **tự chỉnh định** *(auto-tune)* | Chương 35. ⭐ Tự viết PID chỉ hợp lý khi bạn cần thứ khối sẵn không làm được — và khi đó hãy nói rõ là **thứ gì** |
+
+> ⚡ **Một ngoại lệ đáng giữ trong nhóm này: so sánh hai SỐ THỰC.**
+>
+> ⚠ `=` với số thực là bẫy — hai giá trị "bằng nhau về mặt vật lý" vẫn khác nhau ở chữ số cuối.
+> ⭐ Một khối `SoSanhReal(a, b, DungSai)` trả về *"lệch nhỏ hơn dung sai"* **là khối đáng viết**, vì
+> chuẩn không có sẵn (Chương 19 mục 19.5).
+
+### Nhóm 2 — ⚠⚠ TUYỆT ĐỐI không tự viết
+
+| Bạn định viết | ⭐ Thứ đã có | ⚠⚠ Vì sao |
+|---|---|---|
+| ⚠⚠ **Khối điều khiển hai tay** | ⭐ **`SF_TwoHandControlTypeII`** và **`SF_TwoHandControlTypeIII`** — khối an toàn đã chuẩn hoá (PLCopen Safety) | Xem khung bên dưới |
+| ⚠⚠ Khối **dừng khẩn cấp** | ⭐ `SF_EmergencyStop` | Chương 47, Phụ lục L.3 |
+| ⚠⚠ Khối **giám sát cửa / khoá cửa** | ⭐ `SF_Guard` · `SF_GuardLocking` | Chương 47 |
+| ⚠⚠ Khối **rèm quang** và **muting** | ⭐ `SF_ESPE` · `SF_MutingSeq` · `SF_MutingPar` | Chương 47 mục 47.7 |
+| ⚠⚠ Khối **chọn chế độ** có ràng buộc an toàn | ⭐ `SF_ModeSelector` | Chương 28, Chương 47 |
+| ⚠⚠ Khối **bỏ qua** có ràng buộc an toàn | ⭐ `SF_Override` | ⚠ Khác hẳn cờ bỏ qua thường ở Chương 51 mục 51.7b |
+| ⚠⚠ Khối **giám sát phản hồi công tắc tơ** | ⭐ `SF_EDM` | Chương 48 |
+| ⚠⚠ Khối **nút phục hồi** an toàn | ⭐ `SF_ResetButton` | Chương 47 |
+
+> ⚠⚠ **Nhóm này không phải lời khuyên về năng suất. Đây là ranh giới.**
+>
+> ⭐ Hai lý do, và lý do thứ hai mới là lý do thật:
+>
+> | | |
+> |---|---|
+> | 1 | Các khối này **đã được định nghĩa hành vi rất kỹ** — kể cả những chuyện dễ quên: phải **nhả cả hai nút rồi mới được bắt đầu lần sau**, phải xử lý **nút kẹt dính**, phải báo **lý do từ chối** |
+> | 2 | ⚠⚠ **Chúng phải chạy trên phần cứng an toàn đã chứng nhận.** Viết lại chúng bằng logic thường, trong CPU thường, là ⭐ **chuyển một chức năng an toàn vào chỗ mà CPU treo thì nó treo theo** — đúng điều Chương 47 cấm |
+>
+> ⚡ **Dấu hiệu nhận ra mình đang sai:** nếu khối bạn đang viết có tên chứa *"nút hai tay"*, *"dừng
+> khẩn"*, *"cửa an toàn"*, *"rèm quang"* — ⭐ **dừng lại và hỏi người có thẩm quyền về an toàn**,
+> trước khi viết dòng tiếp theo.
+
+### Nhóm 3 — ⭐ Nên tự viết: đây mới là thư viện của bạn
+
+⭐ Đây là nhóm đem lại giá trị thật, vì **không ai làm hộ được** — chúng gắn với cách cỗ máy của bạn
+hoạt động. Mỗi dòng dưới đây đã có mẫu ở đâu đó trong sách:
+
+| Khối | Làm gì | ⭐ Mẫu ở đâu |
+|---|---|---|
+| **Cơ cấu hai vị trí** | Xy-lanh có hai cảm biến, timeout, phát hiện hai cảm biến cùng báo | **Phụ lục L.8** |
+| **Hút chân không** | Hai ngõ ra, hai xác nhận, thổi ngược có thời hạn | **Phụ lục L.15** |
+| ⭐ **Bọc lệnh chuyển động** | Gói `MC_*` thành một giao diện quen thuộc cho trình tự | **Phụ lục L.9**, Chương 37 mục 37.8 |
+| **Trục điện qua mạng** | Cùng ý tưởng, nhưng nói chuyện qua thanh ghi | Chương 39 |
+| **Kho đệm / trạm đệm** | Theo dõi từng ô, thời gian nằm, thứ tự lấy ra | **Chương 41 mục 41.7b** |
+| **Lưới khay** | Dạy ba điểm, suy ra mọi ô | **Phụ lục K.7b** |
+| ⭐ **Đếm tuổi thọ vật tư** | Hai ngưỡng: nhắc trước, cảnh báo sau | **Phụ lục L.16**, Chương 53 |
+| **Đo chu kỳ** | Đo thật từng trạm, không tính lý thuyết | Chương 55 mục 55.4 |
+| ⭐ **Đồng hồ trạng thái máy** | Bật máy · chạy · dừng · chờ, và bất biến giữa chúng | **Chương 55 mục 55.7c** |
+| ⭐ **Thống kê năng suất** | Tỉ lệ đạt, khả dụng, hiệu suất — cất số **đếm**, không cất phần trăm | **Chương 55 mục 55.7c** |
+| ⭐ **Bắt tay với máy tính / hệ trên** | Kích · bận · kết quả · mã lệnh · số lần thử lại | Chương 43, Chương 45 |
+| **Điều khiển lực ép** | Vòng kín trên nền khối PID của hãng, cộng bù hiệu chuẩn | Chương 34, Chương 35 |
+
+> ⭐⭐ **Bằng chứng rằng nhóm 3 đáng đầu tư, đo trên bốn cỗ máy khác nhau của cùng một nhóm kỹ
+> thuật:** **25 trên 27 khối giống hệt nhau ở cả bốn máy**. Phần khác nhau gần như chỉ là trình tự
+> trạm (Chương 30 mục 30.5).
+>
+> ⚡ Nói cách khác: **công viết thư viện trả hết ở máy thứ hai**, và từ máy thứ ba trở đi là lãi.
+
+### ⭐ Trước khi thêm một khối vào thư viện — bốn câu hỏi
+
+| # | Hỏi | Nếu câu trả lời là… |
+|---|---|---|
+| 1 | **Chuẩn IEC đã có chưa?** | Có → dùng khối chuẩn. ⭐ Nó khả chuyển sang mọi hệ (Chương 14) |
+| 2 | ⚠⚠ **Nó có phải chức năng an toàn không?** | Có → ⭐ **dừng lại**, dùng khối an toàn đã chứng nhận trên phần cứng an toàn |
+| 3 | **Hãng đã có khối tương đương chưa?** | Có → cân nhắc dùng, ⚠ nhưng nhớ **nó khoá bạn vào hãng** (Chương 14 mục 14.6b) |
+| 4 | **Nó có xuất hiện ở máy thứ hai không?** | Không → ⚠ **đừng đưa vào thư viện**; viết thẳng trong chương trình máy đó. ⭐ Thư viện đầy khối dùng một lần thì không còn là thư viện |
+
+---
+
+## L.18 Bảng tra nhanh — mẫu nào cho việc gì
 
 | Việc cần làm | Mẫu | Bẫy lớn nhất | Chương |
 |---|---|---|---|

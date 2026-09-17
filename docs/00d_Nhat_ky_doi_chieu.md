@@ -1886,6 +1886,95 @@ lệnh của hãng** xem có chủ đề nào sách chưa có.
 
 ---
 
+## Đợt 44 — 2026-09-17 · Soát ví dụ minh hoạ, và trả lời câu "khối nào dùng lại được"
+
+Ba việc: **soát xem chỗ nào thiếu ví dụ**, **đối chiếu thư viện khối của bốn cỗ máy thật**, và
+**nói rõ khối nào hãng/chuẩn đã có**.
+
+### A — Soát: chỗ nào nhắc tới mà không có ví dụ, bảng hay hình
+
+⭐ Đếm theo **mục** (không theo chương): mục nào dài từ 260 từ trở lên mà **không có khối code, không
+bảng, không hình** thì đánh dấu.
+
+| Kết quả | |
+|---|---|
+| Tổng số mục bị đánh dấu | **13** trên khoảng 700 mục |
+| ⭐ Trong đó **cố ý là văn xuôi** | 12 — mở đầu kể chuyện (*"Bài toán…"*), lộ trình đọc ở Ch.1, và các danh mục kiểm ở Phụ lục D (bản thân danh sách **là** minh hoạ) |
+| ⚠ **Thiếu thật** | **1** |
+
+| # | Nơi | Vấn đề | KQ |
+|---|---|:--|:--:|
+| 278 | ⚠ **Ch.51 mục 51.8** — bốn nguyên nhân lỗi chập chờn | 626 từ, **bốn** nguyên nhân kể liền nhau bằng văn xuôi, ⚠ **không có bảng chốt** — vi phạm B14. Đã thêm bảng phân biệt **theo câu hỏi "lỗi xuất hiện KHI NÀO"**, vì đó là thứ tách bốn nguyên nhân ra rõ nhất | ➕ |
+
+⭐ Kết luận chung: **sách đạt** ở tiêu chí này. ⚡ Và cách đo đáng giữ lại — nó rẻ, và nó phân biệt
+được *"văn xuôi có chủ ý"* với *"quên minh hoạ"* chỉ bằng một lần đọc lại 13 mục.
+
+### B — ⭐⭐ Bốn cỗ máy, một thư viện: con số
+
+Đối chiếu danh sách khối chức năng của **bốn chương trình máy thật** của cùng một nhóm kỹ thuật:
+
+| | Kết quả |
+|---|---|
+| ⭐⭐ Khối **giống hệt ở CẢ BỐN máy** | **25 / 27** |
+| Khối chỉ có ở một số máy | 2 (hai khối chuyển đổi bit ↔ byte) |
+
+> ⭐⭐ Đây là số đo cho luận điểm ở Chương 30 mục 30.5: **công viết thư viện trả hết ở máy thứ hai**,
+> từ máy thứ ba là lãi. ⚡ Và nó cho thấy phần đặc thù của một cỗ máy nhỏ hơn nhiều so với cảm giác.
+
+### C — ⭐⭐ Phụ lục L.17 — danh mục khối: cái nào tự viết, cái nào đã có sẵn
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 279 | ⭐⭐ **Phụ lục L.17** | Chia thư viện làm **ba nhóm** theo đúng câu hỏi *"thứ này đã có ai làm chuẩn chưa?"* | ➕➕ |
+| 280 | ⚠ **Nhóm 1 — chuẩn đã có, đừng viết lại** | Trong thư viện thật có ít nhất **bốn khối viết lại thứ chuẩn IEC đã có**: khối trễ (`TON`/`TOF`), khối bắt cạnh (`R_TRIG`/`F_TRIG`), khối dịch bit (`SHL`/`SHR`), và khối so sánh hai **số nguyên** bằng nhau (chỉ cần `=`). ⭐ Ngoại lệ đáng giữ: **so sánh hai số THỰC có dung sai** — chuẩn không có, và nó là bẫy thật (Ch.19 mục 19.5) | ➕➕ |
+| 281 | ⚠⚠ **Nhóm 2 — tuyệt đối không tự viết** | Thư viện thật có một **khối điều khiển hai tay tự viết**. ⭐ PLCopen Safety đã chuẩn hoá nó thành `SF_TwoHandControlTypeII` / `TypeIII` — và quan trọng hơn, ⚠⚠ **chức năng này phải chạy trên phần cứng an toàn**, không phải trong CPU thường | ➕➕ |
+| 282 | ⭐ **Nhóm 3 — nên tự viết** | Mười hai loại khối thật sự đáng có, ⭐ **và sách đã có mẫu cho gần hết**: L.8 xy-lanh · L.15 chân không · L.9 chuyển động · L.16 tuổi thọ vật tư · Ch.41 41.7b kho đệm · K.7b lưới khay · Ch.55 55.7c đồng hồ máy và thống kê | ➕ |
+| 283 | ⭐ **Bốn câu hỏi trước khi thêm một khối vào thư viện** | Chuẩn có chưa · ⚠⚠ **có phải chức năng an toàn không** · hãng có chưa · ⭐ **nó có xuất hiện ở máy thứ hai không** — nếu không thì viết thẳng trong chương trình máy đó, đừng nhét vào thư viện | ➕ |
+
+### D — ⭐⭐ Ch.47 mục 47.7b: lấp nốt lỗ hổng đã treo từ đợt 37
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 284 | ⭐⭐ **Ch.47 mục 47.7b** | Đợt 37 ghi: *"điều khiển hai tay — Ch.47 mới có một dòng trong bảng; ⚠ cần MUA tiêu chuẩn mới viết được"*. ⭐ **Giải được một nửa mà không cần mua**: PLCopen Safety cho **đặc tả HÀNH VI** và tên khối chuẩn; thứ phải mua chỉ là **các CON SỐ** (cửa sổ đồng thời, khoảng cách đặt nút) | ➕➕ |
+| 285 | ⭐ Ch.47 mục 47.7b — bảng **14 khối an toàn chuẩn** | `SF_EmergencyStop` · `SF_Guard` · `SF_GuardLocking` · `SF_ESPE` · `SF_MutingSeq/Par` · `SF_TwoHandControl…` · `SF_ModeSelector` · ⭐ `SF_Override` · `SF_EnableSwitch` · `SF_EDM` · `SF_ResetButton` · `SF_SafetyRequest` · `SF_Equivalent/Antivalent` · `SF_OutControl` | ➕➕ |
+| 286 | ⭐⭐ Ch.47 mục 47.7b — **năm yêu cầu của điều khiển hai tay**, và bốn cái hay bị quên | Bản tự viết thường chỉ làm vế đầu (*nhấn cả hai trong một cửa sổ*). ⚠⚠ Hay thiếu: **phải NHẢ CẢ HAI rồi mới được bắt đầu lần sau** — thiếu nó thì **kẹp một nút lại là xong**; nhả một nút phải dừng ngay; phát hiện nút kẹt dính; nói được lý do từ chối | ➕➕ |
+
+> ⚠ Vẫn giữ nguyên cờ ⚠ của Ch.47. Mục mới là **từ vựng**, không phải thiết kế — và nó ghi rõ rằng
+> có tên khối chuẩn **không** làm cho bản tự viết trong CPU thường trở nên an toàn.
+
+### E — Về việc mở chương trình bằng phần mềm
+
+| # | Việc | Kết quả | KQ |
+|---|---|:--|:--:|
+| 287 | Kiểm xem có mở được chương trình PLC bằng phần mềm của hãng không | ⚠ **Không** — máy chỉ có một gói thư viện an toàn của hãng, **không có phần mềm lập trình**. ⭐ Nhưng cũng **không cần**: phần đọc được (kiểu dữ liệu, giao diện khối, danh sách khối, cây thư mục) đã đủ cho mọi kết luận ở trên; phần không đọc được là **thân khối đã nén**, mà thân khối thì ⚠ **không nên chép sang sách** dù có đọc được | ✔ |
+
+### Kết quả đợt 44
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **10** |
+| ➕➕ Bổ sung giá trị cao | 6 |
+| ➕ Bổ sung | 3 |
+| Mục mới | 2 — Phụ lục L.17, Ch.47 mục 47.7b |
+| Bảng chốt mới | 1 — Ch.51 mục 51.8 |
+| ⚠ Việc treo từ đợt 37 **đã gỡ một nửa** | điều khiển hai tay |
+
+> ⭐⭐ **Bài học 1 — câu hỏi hay nhất về một thư viện không phải "có gì trong đó" mà "cái nào lẽ ra
+> không nên có".**
+>
+> Thư viện thật có 27 khối và **25 dùng lại được ở cả bốn máy** — nghe rất tốt. ⚠ Nhưng soi kỹ thì ít
+> nhất **bốn khối là viết lại thứ chuẩn IEC đã có**, và **một khối là chức năng an toàn nằm sai
+> chỗ**. ⭐ Cái sau không phải chuyện lãng phí công — nó là chuyện an toàn.
+>
+> ⚡ **Bài học 2 — một việc bị chặn vì "phải mua tiêu chuẩn" đôi khi chỉ bị chặn MỘT NỬA.**
+>
+> Đợt 37 tôi gác lại điều khiển hai tay vì không có tiêu chuẩn để lấy số. ⭐ Nhưng thứ người đọc cần
+> nhất **không phải con số** — mà là **danh sách những gì bản tự viết hay quên**, nhất là *"phải nhả
+> cả hai nút"*. Phần đó có nguồn mở, và nó nằm ngay trong bộ tài liệu suốt thời gian qua.
+> ⚠ **Bài học về quy trình: khi gác một việc lại, hãy ghi rõ CÁI GÌ bị chặn — không phải chặn cả mục.**
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

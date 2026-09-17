@@ -433,6 +433,27 @@ máy chạy chu trình đầy đủ. Nếu min tụt xuống dưới ngưỡng c
 
 ---
 
+### ⭐ Bảng chốt bốn nguyên nhân — phân biệt bằng CÂU HỎI "KHI NÀO"
+
+⭐ Bốn nguyên nhân trên nghe giống nhau khi đọc rời. ⚡ Nhưng chúng **tách nhau rất rõ theo THỜI
+ĐIỂM xuất hiện** — và đó là câu hỏi đầu tiên nên hỏi người vận hành:
+
+| | Lỗi xuất hiện **KHI NÀO** | Nguyên nhân nghi trước | ⭐ Kiểm bằng | Chữa ở |
+|---|---|---|---|---|
+| ① | ⭐ **Đúng lúc thiết bị khác khởi động** | Vòng lặp đất | Đo điện áp **giữa hai điểm đất** lúc máy chạy | Chương 49 |
+| ② | ⭐ **Khi biến tần tăng/giảm tốc**, hoặc có máy hàn gần | Nhiễu điện từ | Cho thiết bị nghi ngờ chạy/dừng, xem tương quan | Chương 49 |
+| ③ | ⭐⭐ **Sau vài giờ chạy** — hết sau một đêm nghỉ; hoặc chỉ ca chiều | ⚠ **Mỏi đầu nối do nóng-nguội** | **Súng đo nhiệt** quét cầu đấu khi đang tải | Siết lại, thay đầu cốt |
+| ④ | ⭐ **Khi nhiều cơ cấu tác động cùng lúc**; nặng dần qua vài năm | Tụ nguồn lão hoá | Đo 24 V **lúc có tải đột ngột**, không đo lúc rảnh | Thay bộ nguồn (Chương 3) |
+
+> ⭐⭐ **Hàng ③ là hàng đáng nhớ nhất, vì nó có dấu hiệu thời gian mà ba hàng kia không có:** *"chạy
+> buổi sáng thì tốt, chiều thì lỗi"* hoặc *"cứ sau ba tiếng là bị"*. ⚡ Nghe thấy mô tả kiểu đó thì
+> ⭐ **đừng tìm trong chương trình** — hãy cầm súng đo nhiệt.
+>
+> ⚠ Và cả bốn nguyên nhân đều **không nằm trong chương trình PLC**. Đó chính là lý do mục này tồn
+> tại: người lập trình bị gọi tới vì *"máy lỗi"*, rồi mất hai ngày đọc code cho một đầu cốt lỏng.
+
+---
+
 ## 51.9 Bảng triệu chứng → nguyên nhân → phép kiểm
 
 Bảng tra nhanh. Dùng khi bạn đã biết triệu chứng và cần đường ngắn nhất tới nguyên nhân.
