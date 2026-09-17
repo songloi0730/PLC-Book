@@ -495,6 +495,39 @@ lý do:
 > chương trình. Thiếu tham số driver hoặc cấu hình phần cứng nghĩa là **không khôi phục được máy**,
 > dù bạn có file chương trình. Chương 54.
 
+### ⭐⭐ Làm cho nó so sánh được — xuất ra văn bản
+
+Bảng trên cho thấy phần lớn thành phần **không** so sánh được bằng công cụ. ⚠ Nhưng đó là nhận định
+về **định dạng tệp gốc của hãng**, không phải về giới hạn không vượt qua được.
+
+⭐ **Cách vượt qua: xuất chương trình ra một định dạng văn bản, rồi so sánh và lưu bản văn bản đó.**
+
+| Cách xuất | Có ở đâu | ⭐ Được gì | ⚠ Mất gì |
+|---|---|---|---|
+| **Xuất văn bản ASCII của hãng** | Hầu hết hệ đều có, dưới tên *import/export* | ⭐ Luôn sẵn, không cần công cụ ngoài | ⚠ Định dạng **riêng của hãng** — đổi hãng thì vô dụng |
+| ⭐⭐ **Xuất PLCopen XML** | Nhiều hệ hỗ trợ, mức độ khác nhau | ⭐ Định dạng **mở**, chở được cả phần đồ hoạ; ⭐⭐ đúng thứ hệ quản lý phiên bản cần (Chương 14 mục 14.6b) | ⚠ **Không phải hệ nào cũng có**, và mức hỗ trợ khác nhau |
+| **Chụp báo cáo / in ra PDF** | Mọi hệ | Xem được bằng mắt | ⚠⚠ **Không so sánh tự động được** — chỉ là ảnh chụp |
+
+> ⭐⭐ **Xuất ra văn bản đổi hẳn chất của việc quản lý phiên bản.** Khi bản lưu là văn bản, bạn có
+> đúng ba thứ mà tệp nhị phân của hãng không cho:
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Xem được đã đổi chính xác dòng nào** — không phải "có khác nhau" chung chung |
+> | 2 | ⭐ Tìm được **khi nào** một dòng xuất hiện, và **ai** thêm nó |
+> | 3 | ⭐⭐ Đọc được bản cũ **mà không cần cài đúng phiên bản phần mềm của hãng** — thứ sẽ rất quý sau năm năm |
+
+> ⚠⚠ **Nhưng bản xuất KHÔNG thay được bản sao lưu gốc.**
+>
+> Bản văn bản chở logic; nó ⚠ **không chở đủ cấu hình phần cứng, tham số thiết bị, và mọi thứ ở bảng
+> trên đang để dấu ❌**. ⭐ Quy tắc: **lưu CẢ HAI** — tệp gốc của hãng để khôi phục máy, bản xuất văn
+> bản để đọc và so sánh (Chương 54).
+>
+> ⚡ Và nhớ kiểm chứng: ⚠ **tệp xuất hợp lệ không có nghĩa là nhập lại được** — chính đặc tả PLCopen
+> XML nói nội dung xuất ra *"không có kiểm chứng về tính nhất quán hay tính đúng đắn"*. ⭐ Cách duy
+> nhất để biết là **thử nhập lại một lần**, đúng tinh thần *"bản sao lưu chưa thử khôi phục thì chưa
+> phải bản sao lưu"* (Chương 52, Chương 54).
+
 ### Quy ước tối thiểu
 
 Không cần hệ thống phức tạp. Bốn thứ này đã giải quyết phần lớn vấn đề:

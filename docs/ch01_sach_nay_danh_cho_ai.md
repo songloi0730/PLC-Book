@@ -366,6 +366,33 @@ Ba nguyên tắc áp dụng từ trang này tới hết sách:
 
 ---
 
+## 1.9b Bảng chốt — dùng cuốn sách này thế nào
+
+⭐ Một trang để quay lại khi bạn quên mình đang ở đâu.
+
+| Bạn là ai | Bắt đầu từ | ⚠ Đừng bỏ qua | Chương đầu tiên nên đọc kỹ |
+|---|---|---|---|
+| **Chuyển ngành, chưa biết điện** | ⭐ Lộ trình A — đọc tuần tự từ Ch.1 | ⚠ **Ch.3 (điện) và Ch.6 (khí nén)** — thiếu nền này thì các chương sau chỉ là chép mẫu | 3 · 4 · 9 |
+| **Thợ điện, kỹ thuật viên đi lên** | Lộ trình B — nhảy qua phần điện cơ bản | ⚠ **Ch.10 (vòng quét)** — đây là chỗ tư duy mạch điện dẫn tới hiểu sai | 10 · 15 · 17 |
+| **Dân lập trình phần mềm** | Lộ trình C | ⚠⚠ **Ch.10 và Ch.48** — chương trình PLC không "chạy một lần", và phần cứng **hỏng thật** | 10 · 15 · 48 |
+
+| Bạn đang cần gì ngay lúc này | ⭐ Đi đường nào |
+|---|---|
+| Học nghề, có thời gian | **Đường 1** — đọc tuần tự (mục 1.3) |
+| Đang làm một việc cụ thể | **Đường 2** — tra theo việc (mục 1.3) |
+| ⚠ **Máy đang hỏng, có người đứng chờ** | ⭐⭐ **Đường 3 — Phụ lục E, tra theo triệu chứng.** Đừng đọc tuần tự lúc này |
+| Cần một đoạn code mẫu | **Phụ lục L** — 16 mẫu dùng ngay |
+| Cần một công thức | **Phụ lục K** — kèm điều kiện áp dụng |
+| Cần đối chiếu sang hãng mình dùng | **Phụ lục A1 và A2** |
+
+| Ba điều nhớ trước khi bắt đầu | |
+|---|---|
+| ⭐ **Một máy mẫu duy nhất** | Mọi ví dụ từ Ch.8 trở đi dùng chung máy **DP-01**, bóc lớp dần theo chương (mục 1.4) |
+| ⭐ **Sách không dạy theo phần mềm nào** | Thân sách dạy khái niệm; mọi thứ phụ thuộc hãng nằm ở **Phụ lục A** (mục 1.5) |
+| ⚠⚠ **An toàn không phải một chương** | Nó nằm rải khắp sách. Các chương có cờ ⚠ đang **chờ người có thẩm quyền duyệt** — đọc để hiểu, ⚠ **không dùng thay đánh giá rủi ro** (mục 1.9) |
+
+---
+
 ## 1.10 Tự kiểm
 
 Đọc xong chương này, bạn phải trả lời được:

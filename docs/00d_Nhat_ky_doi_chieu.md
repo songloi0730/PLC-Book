@@ -1665,6 +1665,77 @@ PLCopen đặt *"chốt mọi tương tác của người vận hành, **mọi c
 
 ---
 
+## Đợt 41 — 2026-09-17 · Đọc nốt nguồn nhỏ, và một câu của sách được NÂNG từ ý kiến lên có nguồn
+
+Tiếp tục đợt 40. Lần này đi vào **ba nguồn nhỏ chưa chương nào dẫn** và **hai chương số liệu còn
+chỉ ra** — cộng một phép soát mới do chủ dự án đặt ra ở bộ sách khác.
+
+### A — ⭐⭐ Một nhận định của sách nay có nguồn, và nguồn đến từ chính hãng
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 255 | ⭐⭐ **Ch.14 mục 14.6** | Mục này nói *"code không khả chuyển"* và ⚠ **tự ghi chú rằng đó chỉ là quan sát của nghề, không phải phát biểu của tiêu chuẩn**. Nay có nguồn — và nguồn là **tài liệu tuân thủ của một hãng lớn**, không phải người phê bình: *"đây là một điểm yếu của IEC 61131-3, vì chuẩn không định nghĩa định dạng trao đổi tệp"* | ⚠ |
+
+⭐ Đây là kiểu cải thiện đáng giá nhất theo bất biến B2: **không đổi kết luận, chỉ đổi cơ sở của
+kết luận** — từ *"theo kinh nghiệm"* thành *"theo tài liệu của chính bên bán"*.
+
+### B — Ba mục mới
+
+| # | Nơi | Nội dung | KQ |
+|---|---|:--|:--:|
+| 256 | ⭐⭐ **Ch.14 mục 14.6b** — *"tuân thủ IEC" là một BẢNG TÍCH, không phải một dấu tích* | ⚠⚠ **Bộ lệnh mà chuẩn quy định là TUỲ CHỌN**: có hiện thực thì phải làm đúng, nhưng chuẩn **không bắt phải có**, và không cấm hãng thêm lệnh riêng. ⭐ Nên câu hỏi đúng với người bán hàng không phải *"có tuân thủ không"* mà **"cho tôi xem bảng tuân thủ"** — rồi đọc cột *phần mở rộng và ghi chú hiện thực*. ⚡ Trớ trêu: lệnh mở rộng là **lệnh tiện nhất**, nên càng làm nhanh càng dính hãng | ➕➕ |
+| 257 | ⭐ Ch.14 mục 14.6b — **PLCopen XML** | Sách từng viết *"không có định dạng chung được dùng rộng rãi"*. Nói đủ hơn: ⭐ **có** một định dạng chung, nhưng nó do **một tổ chức độc lập** làm, ⚠⚠ *"dù đó không phải chủ ý của bản thân chuẩn"*. Kèm ba giới hạn **do chính đặc tả nêu** — nhất là ⚠ *"tệp xuất ra không có kiểm chứng về tính nhất quán hay tính đúng đắn"* | ➕➕ |
+| 258 | ⭐⭐ **Ch.30 mục 30.6** — *làm cho nó so sánh được: xuất ra văn bản* | Bảng ở 30.6 liệt kê những thứ **không** so sánh được, rồi dừng ở đó. ⚠ Nhưng đó là giới hạn của **định dạng tệp gốc**, không phải giới hạn không vượt được. Bổ sung ba cách xuất kèm ưu/nhược, và ⭐⭐ ba thứ chỉ có khi bản lưu là văn bản — trong đó có **đọc được bản cũ mà không cần cài đúng phiên bản phần mềm của hãng** | ➕➕ |
+| 259 | ⭐⭐ **Ch.50 mục 50.5b** — kiểm thử hồi quy | Mục 50.4 cho danh sách ca cho **lần đầu**. ⚠ Nhưng phần lớn đời sống chương trình là **lần thứ hai mươi**. Bổ sung ba vòng hồi quy theo mức rủi ro, và ⚠ **bốn thay đổi trông vô hại nhưng bắt buộc vòng đầy đủ** — đứng đầu là **đổi firmware: không sửa dòng nào mà nền bên dưới đã đổi** | ➕➕ |
+| 260 | ⭐ **Ch.01 mục 1.9b** — Bảng chốt | Chương cuối cùng còn thiếu. ⭐ Nay **58/58 chương đều có Bảng chốt**. Viết thành một trang *"dùng cuốn sách này thế nào"*: bạn thuộc nhóm nào → đọc đường nào → chương nào đừng bỏ qua | ➕ |
+
+### C — Một nguồn mở ra thì thấy **rỗng**
+
+| # | Nguồn | Phát hiện | KQ |
+|---|---|:--|:--:|
+| 261 | **IO-Link — System Description** (25 trang) | ⚠⚠ Nhật ký từng ghi *"file PDF không trích được text"*. ⭐ **Sai** — text trích được bình thường. Sự thật là tệp này là **bản in một trang web**: toàn menu điều hướng, ⚠ **không một dòng nào dài quá 90 ký tự**, tức là **không có đoạn văn nào**. Không có gì để lấy | ❔ |
+
+⭐ Đã ghi lại để đợt sau **không tra lại nó lần nữa**. ⚡ Bài học nhỏ: *"không đọc được"* và *"đọc
+được nhưng rỗng"* là hai kết luận khác nhau, và ghi nhầm thì người sau sẽ đi tìm một công cụ OCR
+không cần thiết.
+
+### D — Phép soát mới: luật so sánh áp cho cả phương án MÌNH khuyến nghị
+
+Chủ dự án bổ sung bất biến B18 khi làm ở bộ sách khác: ⭐⭐ **luật "phải so sánh được" áp cho cả
+phương án mình đang khuyến nghị, không chỉ các phương án bị loại.**
+
+| # | Phép soát | Kết quả | KQ |
+|---|---|:--|:--:|
+| 262 | Quét toàn sách các câu *"nên dùng / khuyến nghị / nên chọn / hãy dùng"*, kiểm quanh đó ±14 dòng có bảng so sánh hoặc từ *thay vì / đừng / không nên / đánh đổi / nhược điểm* không | **60 chỗ · 56 có đối chứng · 4 còn lại đọc kỹ đều là báo giả** (một tiêu đề chương, một câu nói *đây KHÔNG phải khuyến nghị chung*, hai câu hỏi tự kiểm). ⭐ **Sách PLC đạt** | ✅ |
+
+### Kết quả đợt 41
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **8** |
+| ➕➕ Bổ sung giá trị cao | 4 |
+| ➕ Bổ sung | 1 |
+| ⚠ Nâng cấp cơ sở của một nhận định cũ | 1 |
+| ❔ Nguồn mở ra thấy rỗng | 1 |
+| ✅ Soát toàn sách, đạt | 1 |
+| Mục mới trong thân sách | 4 — Ch.01, Ch.14, Ch.30, Ch.50 |
+| Nguồn hết "chưa ai dẫn" | 2 (còn **8**) |
+
+> ⭐⭐ **Bài học 1 — "đã kiểm, đúng rồi" vẫn còn chỗ để cải thiện: cái ĐÚNG có thể chưa có CƠ SỞ.**
+>
+> Mục 14.6 không sai một chữ nào, và đã qua nhiều đợt rà. ⚠ Nhưng nó tự ghi chú là *"quan sát của
+> nghề"* — và một quan sát của nghề thì **cãi lại được**. ⭐ Nay nó là câu trích từ tài liệu của một
+> hãng lớn, và điều đó đổi hẳn sức nặng khi người đọc phải bảo vệ lập luận trước khách hàng.
+>
+> ⚡ **Bài học 2 — chỗ đáng sửa nhất thường là chỗ sách DỪNG LẠI, không phải chỗ sách nói sai.**
+>
+> Ba trong bốn mục mới đợt này đều cùng một dạng: sách nêu đúng vấn đề rồi **dừng ở chẩn đoán**.
+> Mục 30.6 liệt kê những gì không so sánh được — rồi thôi. Mục 50.4 cho danh sách ca cho lần đầu —
+> rồi thôi. Mục 14.6 nói không có định dạng chung — rồi thôi. ⭐ **Cả ba đều có bước tiếp theo**, và
+> bước tiếp theo mới là thứ người đọc dùng được.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -1702,7 +1773,7 @@ kiểm**, không phải "không có lỗi".
 | ⚠⚠ **Bản gốc tiêu chuẩn ISO/IEC** | Chỉ có tài liệu diễn giải của hãng → ⚠ **không được dẫn số điều khoản** ở bất kỳ chương nào |
 | ⭐ **SEMI (E10, E79…)** | ⭐⭐ **ĐÃ CÓ BẢN GỐC** từ 2026-09-05 → **dẫn được số mục**; vẫn ⚠ **không sao chép bảng/công thức nguyên văn** |
 | Thị trường thiết bị hiện hành | Hai giả định của máy mẫu (đầu đọc mã 2D Ethernet · bộ điều khiển nhiệt rời RS-485) vẫn **chưa xác minh** — Phụ lục J §J.9 |
-| ⚠ IO-Link System Description | ⭐ **File PDF trong bộ không trích được text** — nếu cần đối chiếu Ch.12 phải mở tay |
+| ⚠ IO-Link System Description | ⚠⚠ **ĐÍNH CHÍNH đợt 41:** text trích được bình thường — nhưng tệp là **bản in một trang web**, toàn menu điều hướng, ⭐ **không có đoạn văn nào**. Không có gì để đối chiếu; đừng tra lại |
 
 ---
 

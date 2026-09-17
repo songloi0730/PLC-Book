@@ -41,9 +41,7 @@
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
 | Petruzella — Activities Manual | 401 | 22 | ✔ |
 | Kuphaldt — Instrumentation Technician | 163 | 90 | ✔ |
-| PLCopen XML exchange | 80 | 103 | ✔ |
 | PLCopen Safe Motion | 45 | 30 | ✔ |
-| Rockwell — IEC 61131-3 compliance | 30 | 17 | ✔ |
 | IO-Link — mô tả hệ thống | 25 | 4 | ✔ |
 
 ---
@@ -77,6 +75,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Siemens S7-1200 System Manual | 864 | 7, 12, 51 |
 | Siemens S7-1500 / TIA | 37 | 38 |
 | Mitsubishi FX5 — Program Design | 136 | 25, 26, 53 |
+| Rockwell — IEC 61131-3 compliance | 30 | 14 |
 | Rockwell — khác | 1432 | 35 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
 | IO-Link — đặc tả giao diện | 294 | 37, 38, 41, 43, 54 |
@@ -86,6 +85,7 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | PLCopen Safety Part 1 | 194 | 47 |
 | PLCopen Motion Control | 213 | 28, 37, 43, 45 |
 | PLCopen — Structuring Program Development | 4 | 27 |
+| PLCopen XML exchange | 80 | 14 |
 | Mitsubishi FX5 — Positioning | 302 | 28 |
 | Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
 | Bryan — Theory and Implementation | 1047 | 8, 22, 23, 49, 51, 52 |

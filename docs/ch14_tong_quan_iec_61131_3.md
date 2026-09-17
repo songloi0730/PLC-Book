@@ -259,6 +259,80 @@ nên người ta dùng, nên chương trình trở nên gắn chặt với hãng
 
 ---
 
+## 14.6b ⭐⭐ "Tuân thủ IEC" là một BẢNG TÍCH, không phải một dấu tích
+
+Mục 14.6 nói code không khả chuyển. Mục này nói một điều sắc hơn, và nó đổi cách bạn nói chuyện với
+người bán hàng: ⭐ **"tuân thủ IEC 61131-3" không phải một tính chất có hoặc không.**
+
+### Vì sao nó không thể là một dấu tích
+
+⚠⚠ **Bộ lệnh mà chuẩn quy định là TUỲ CHỌN.** Chuẩn liệt kê một tập lệnh giới hạn; ⭐ hãng nào **có**
+hiện thực lệnh đó thì phải làm đúng cách thực thi và cách biểu diễn đã quy định — nhưng chuẩn
+**không bắt phải có**, và cũng **không giới hạn** hãng thêm lệnh của riêng mình.
+
+Hệ quả, và đây là câu đáng nhớ:
+
+> ⚠⚠ **Lệnh mở rộng của hãng không được chuẩn định nghĩa, nên KHÔNG có gì bảo đảm hai hãng hiện thực
+> giống nhau — và dùng chúng có thể khiến logic không chuyển đi đâu được.**
+>
+> ⭐ Trớ trêu ở chỗ: lệnh mở rộng thường là **lệnh tiện nhất** — chẩn đoán, các phép điều khiển
+> chuyên dụng, xử lý khối dữ liệu. Nghĩa là ⚠ **càng dùng những thứ giúp làm việc nhanh, chương
+> trình càng dính chặt vào hãng.**
+
+### Nên hỏi người bán hàng câu gì
+
+Vì vậy hãng nghiêm túc **không** trả lời *"có, chúng tôi tuân thủ IEC"*. Họ đưa ra một **bảng tuân
+thủ**, mỗi dòng là một đặc trưng của chuẩn, kèm cột ⭐ **"phần mở rộng và ghi chú hiện thực"**:
+
+| Số bảng | Số đặc trưng | Mô tả đặc trưng | Phần mở rộng / ghi chú |
+|---|---|---|---|
+| … | … | Chú thích một dòng `// …` | *có, và hỗ trợ thêm `/* … */`* |
+| … | … | Định danh có gạch dưới ở đầu | *áp cho tên tác vụ, chương trình, cấu trúc…* |
+
+⭐⭐ **Câu hỏi đúng không phải *"có tuân thủ không"* mà là *"cho tôi xem bảng tuân thủ"*** — rồi đọc
+cột cuối. Đó là chỗ mọi khác biệt thật nằm.
+
+> ⚡ **Hai ví dụ cho thấy khác biệt nhỏ tới mức nào, và vẫn đủ gây chuyện:**
+>
+> | Chuẩn nói | Một hệ thực tế làm |
+> |---|---|
+> | Định danh phải hỗ trợ **tối thiểu sáu ký tự** | Hỗ trợ từ **một** ký tự — rộng hơn, nhưng ⚠ tên một ký tự sẽ **không chuyển ngược** sang hệ chỉ làm đúng mức tối thiểu |
+> | ⚠ **Không quy định** đơn vị thời gian cho tác vụ chu kỳ | Đặt được từ **1 ms** — con số này là của hãng, ⚠ **không phải của chuẩn** (Chương 10) |
+>
+> ⭐ Cả hai đều là "tuân thủ". Cả hai đều là chỗ chương trình có thể vấp khi đổi hệ.
+
+### ⭐ Có một định dạng trao đổi chung — nhưng nó không đến từ chuẩn
+
+Mục 14.6 nói *"không có định dạng chung được dùng rộng rãi"*. Nói cho đủ: ⭐ **có một định dạng chung
+tồn tại**, tên là **PLCopen XML** *(TC6 XML)* — và câu chuyện của nó giải thích chính xác vấn đề.
+
+| | |
+|---|---|
+| Ai làm | ⭐ **PLCopen** — một tổ chức độc lập, ⚠ **không phải ban soạn thảo chuẩn** |
+| Vì sao có | Người dùng muốn trao đổi chương trình giữa các môi trường phát triển — ⚠⚠ **"dù đó không phải chủ ý của bản thân chuẩn"** |
+| Chở được gì | Chương trình, thư viện, cả dự án — ⭐ kể cả **thông tin đồ hoạ**, không chỉ văn bản |
+| Dùng vào việc gì | Trao đổi giữa công cụ · ⭐ **đưa vào hệ quản lý phiên bản** · sinh tài liệu · công cụ kiểm tra · phân phối thư viện khối |
+
+⚠ Và đây là phần trung thực mà chính đặc tả tự nói ra:
+
+| ⚠ Giới hạn do chính đặc tả nêu | Nghĩa thực tế |
+|---|---|
+| Chuyển sang hệ khác *"có thể cần **một lượng công thủ công nhất định**"* | ⭐ Nó **giảm** công, **không xoá** công |
+| Dùng song song nhiều hệ cũng *"có thể cần một lượng công thủ công"* | Không có chuyện xuất ra rồi nhập vào là xong |
+| Nội dung xuất ra ⚠ *"có thể đang dở dang, nên **không có kiểm chứng** về tính áp dụng được, tính nhất quán hay tính đúng đắn"* | ⚠⚠ **Tệp XML hợp lệ không có nghĩa là chương trình chạy được** |
+
+> ⭐⭐ **Chốt lại cho đúng, và đây là bản sửa cho một câu hay bị nói quá:**
+>
+> ⚠ Sai: *"IEC 61131-3 cho phép chuyển chương trình giữa các hãng."*
+> ⭐ Đúng: **chuẩn không định nghĩa định dạng tệp — đó là một điểm yếu của nó** — nên một tổ chức
+> độc lập đã làm một định dạng bù vào, và định dạng ấy ⭐ **giảm được công chuyển đổi, nhưng vẫn để
+> lại phần việc tay.**
+>
+> ⚡ Giá trị lớn nhất của PLCopen XML với đa số người đọc sách này **không nằm ở việc đổi hãng** — mà
+> ở chỗ nó biến chương trình thành **văn bản so sánh được và lưu trữ được** (Chương 30 mục 30.6).
+
+---
+
 ## 14.7 Trên máy mẫu DP-01 — chương trình được tổ chức thế nào
 
 Áp tất cả khái niệm của chương vào một bố cục cụ thể:
@@ -429,11 +503,23 @@ bằng ngôn ngữ chiếm ưu thế ở tầng máy và cũng là ngôn ngữ c
 - IEC 61131-1 — *Programmable controllers, Part 1: General information*: mô hình phần mềm tổng thể.
 - Tài liệu lập trình của từng hệ trong Phụ lục A — dùng cho bảng đối chiếu ở mục 14.8: tên gọi POU,
   cách khai báo tác vụ, cơ chế bộ nhớ thể hiện, và tên gói SFC của từng hãng.
+- **Rockwell Automation** — *Logix 5000 Controllers IEC 61131-3 Compliance* (1756-PM018): ⭐⭐ **bộ
+  lệnh của chuẩn là TUỲ CHỌN**; lệnh mở rộng của hãng không được chuẩn định nghĩa nên ⚠ **không bảo
+  đảm tương thích giữa các hãng**; ⚠⚠ **chuẩn không định nghĩa định dạng trao đổi tệp — tài liệu gọi
+  thẳng đó là "điểm yếu"**; và **mẫu bảng tuân thủ theo từng đặc trưng** kèm cột *phần mở rộng và ghi
+  chú hiện thực* — nền cho mục 14.6b. *(tài liệu của hãng; phần trích ở đây là phát biểu về CHUẨN,
+  không phải về sản phẩm)*
+- **PLCopen** — *TC6 XML technical documentation v2.01*: mục đích và bốn nhóm ca sử dụng của
+  **PLCopen XML**, ⚠ kèm các giới hạn do chính đặc tả nêu — chuyển hệ *"có thể cần một lượng công thủ
+  công nhất định"*, và nội dung xuất ra *"không có kiểm chứng về tính áp dụng được, tính nhất quán
+  hay tính đúng đắn"*. *(tài liệu mở của PLCopen)*
 - **Hanssen, Dag H.** — *Programmable Logic Controllers: A Practical Approach to IEC 61131-3 using
   CoDeSys*, §6.6: ba hướng tham số `VAR_INPUT` / `VAR_OUTPUT` / ⭐ **`VAR_IN_OUT`** (POU được gọi nhận
   **chính vị trí bộ nhớ** nên sửa được biến của bên gọi), và ⚠ **`VAR_TEMP`** — khởi tạo lại ở mỗi
   lần gọi POU nên **không mang được giá trị sang lần sau**.
 
-> ⚡ Nhận định ở mục 14.6 về tính khả chuyển là **quan sát thực tế của nghề**, không phải phát biểu
-> của tiêu chuẩn. Bản thân chuẩn không hứa hẹn khả chuyển ở mức tệp dự án; kỳ vọng đó đến từ cách
-> chuẩn được giới thiệu, không từ nội dung của nó.
+> ⚡ ⭐ **Cập nhật:** nhận định ở mục 14.6 trước đây chỉ là **quan sát của nghề**. Nay nó **có nguồn**
+> — và nguồn đến từ chính tài liệu tuân thủ của một hãng lớn, chứ không phải từ người phê bình:
+> *"đây là một điểm yếu của IEC 61131-3, vì chuẩn không định nghĩa định dạng trao đổi tệp"*, và
+> *"lệnh mở rộng… không có bảo đảm rằng hai hãng hiện thực tương thích; dùng chúng có thể khiến logic
+> không chuyển được giữa các hãng"*. ⭐ Chi tiết ở mục 14.6b.

@@ -199,6 +199,61 @@ Bảng này chính là **bằng chứng nghiệm thu** ở Chương 52 — và n
 
 ---
 
+## 50.5b ⭐⭐ Kiểm thử hồi quy — sửa một chỗ, phải thử lại những gì
+
+Mục 50.4 cho một danh sách ca kiểm thử để chạy **lần đầu**. Nhưng phần lớn đời sống của một chương
+trình không phải lần đầu — nó là **lần thứ hai mươi**, sau một lần sửa nhỏ lúc máy đang chạy
+(Chương 53).
+
+Và đây là câu hỏi không ai trả lời được nếu chưa chuẩn bị trước:
+
+> ⚠⚠ **"Tôi vừa đổi một dòng. Giờ phải thử lại những gì?"**
+>
+> ⭐ Trả lời *"thử lại hết"* thì không ai làm — vì không có thời gian. ⚠ Trả lời *"chắc không ảnh
+> hưởng gì"* thì đó chính là câu nói ngay trước phần lớn sự cố sau bảo trì.
+
+**Kiểm thử hồi quy** *(regression testing)* là việc chạy lại một tập ca kiểm thử **đã từng đạt**, để
+chắc rằng thay đổi mới không phá cái cũ.
+
+### ⭐ Ba vòng, chọn theo mức rủi ro của thay đổi
+
+| Vòng | Chạy những gì | Mất bao lâu | Dùng khi |
+|---|---|---|---|
+| **Tối thiểu** | Nhóm A (luồng chính) + ca đúng chỗ vừa sửa | Vài phút | Sửa thông báo, đổi một hằng số hiển thị |
+| ⭐ **Tiêu chuẩn** | Trên + nhóm B (điều kiện biên) + nhóm F (về gốc) | ~nửa giờ | ⭐ **Mặc định** cho mọi thay đổi logic |
+| **Đầy đủ** | Toàn bộ A–F | Vài giờ | ⚠ Đổi máy trạng thái, đổi liên động, đổi bất cứ thứ gì liên quan an toàn, hoặc **đổi phiên bản phần mềm/firmware** |
+
+> ⭐⭐ **Chọn vòng nào là quyết định về RỦI RO, nên nó không thuộc về người sửa.** Người vừa sửa luôn
+> là người đánh giá thấp nhất ảnh hưởng của thay đổi đó — họ vừa nghĩ về nó, và nó rõ ràng trong đầu
+> họ. ⭐ Đây là lý do quy trình thay đổi có kiểm soát ở Chương 53 mục 53.3 yêu cầu **người thứ hai**.
+
+### ⚠ Bốn thay đổi trông vô hại nhưng bắt buộc vòng ĐẦY ĐỦ
+
+| Thay đổi | Vì sao nguy hiểm hơn vẻ ngoài |
+|---|---|
+| ⚠⚠ **Đổi phiên bản firmware hoặc phần mềm lập trình** | ⭐ Bạn **không đổi một dòng nào**, nhưng nền bên dưới đã đổi: hành vi biên, thời gian quét, cách xử lý tràn số (Chương 19) |
+| ⚠ **Thêm một khối vào tác vụ đang chạy** | Thời gian quét dài ra — ảnh hưởng **mọi phép đo thời gian** trong chương trình (Chương 10) |
+| ⚠ **Đổi một khối trong thư viện dùng chung** | Chạm vào **mọi cơ cấu** đang dùng khối đó, không chỉ cơ cấu bạn đang nghĩ tới (mục 30.5) |
+| ⚠⚠ **Đổi một hằng số dùng nhiều nơi** | Tra chéo trước khi đổi. ⭐ *"Chỉ một con số"* là câu mở đầu quen thuộc của một sự cố |
+
+### ⭐ Điều kiện để việc này khả thi: ca kiểm thử phải **ghi lại được và chạy lại được**
+
+Kiểm thử hồi quy chỉ làm được nếu ca kiểm thử **tồn tại dưới dạng viết ra**, không nằm trong đầu ai.
+
+| Cần có | Vì sao |
+|---|---|
+| ⭐ **Danh sách ca đánh số** — mục 50.4 và Phụ lục C | Nói *"chạy lại ca B3, B7"* mới có nghĩa |
+| ⭐⭐ **Mỗi ca ghi rõ: đặt gì vào, chờ thấy gì** | ⚠ Ca không có kết quả mong đợi thì **không thể trượt** — nên nó không kiểm gì cả |
+| **Kết quả lần chạy trước** (mục 50.5) | Để biết ca này **từng đạt**, nếu không thì trượt lần này chưa chắc là hồi quy |
+| ⭐ **Cờ mô phỏng còn dùng được** | ⚠ Lớp mô phỏng ở mục 50.3 hay bị bỏ rơi sau khi giao máy — ⭐ **giữ nó sống** thì mỗi lần sửa về sau rẻ đi rất nhiều |
+
+> ⚡ **Hàng cuối là hàng tiết kiệm nhiều thời gian nhất trong cả chương, và cũng là hàng hay bị bỏ
+> nhất.** Lớp mô phỏng được viết cho lần chạy thử đầu tiên, rồi bị coi là xong việc. ⭐ Nếu giữ nó —
+> và giữ cho nó vẫn đúng khi chương trình đổi — thì ba năm sau, việc thử một thay đổi vẫn làm được
+> **trên bàn**, thay vì phải chờ dừng máy (mục 50.1).
+
+---
+
 ## 50.6 Giới hạn của mô phỏng
 
 Thành thật về những gì mô phỏng **không** phát hiện được, để bạn không có cảm giác an toàn giả:
