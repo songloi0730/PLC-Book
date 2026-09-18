@@ -2102,6 +2102,78 @@ Giải nén tệp dự án (là **tệp nén** chứa cơ sở dữ liệu SQLit
 
 ---
 
+## Đợt 47 — 2026-09-18 · Bổ sung bản LADDER cho thư viện mẫu code
+
+Yêu cầu của chủ dự án: ⭐ *"thêm các ví dụ viết bằng ladder để tham khảo, chứ không chỉ dùng ST"*.
+
+### A — ⚠ Phụ lục L tự mâu thuẫn với chính mình
+
+| # | Phát hiện | KQ |
+|---|:--|:--:|
+| 309 | ⚠ Khung mở đầu Phụ lục L **khuyên** *"với logic liên động và ngõ ra cuối, cân nhắc viết bằng ladder để người bảo trì đọc được"* — nhưng ⭐ **cả 16 mẫu đều chỉ có ST**. Khuyên một đằng, làm một nẻo | ⚠ |
+
+### B — Bảy mẫu nay có **cả hai bản**
+
+⭐ Dùng đúng bộ ký hiệu ASCII đã có trong sách từ Chương 15: `┤ ├` tiếp điểm thường mở · `┤/├` thường
+đóng · `( )` cuộn dây · `( S )` / `( R )` cuộn chốt. ⭐ Thêm hai ký hiệu mới, có định nghĩa tại chỗ:
+**`┤P├` / `┤N├`** (tiếp điểm bắt cạnh) và **hộp khối chức năng** vẽ bằng ký tự khung.
+
+| # | Mẫu | ⭐ Vì sao ladder đáng có ở đây | KQ |
+|---|---|:--|:--:|
+| 310 | **L.1** tự giữ | ⭐⭐ **Nhánh tự giữ NHÌN THẤY ĐƯỢC.** ⚠ Trong ST, dấu ngoặc đặt sai chỗ **trông vẫn bình thường**; trong ladder, nhánh ôm nhầm nút Dừng thì **nhìn là thấy** | ➕➕ |
+| 311 | **L.2** chuỗi cho phép | ⭐⭐ Một nấc thang — khi máy không chạy, mở màn theo dõi là **thấy ngay tiếp điểm nào hở**, không cần biết lập trình. ⭐ Nhưng phần mã lý do chặn **để nguyên ST** — ví dụ điển hình của trộn đúng chỗ | ➕➕ |
+| 312 | **L.4** ba lệnh dừng | Cuộn `( S )` / `( R )`; ⚠ nút bật/tắt cần **hai nấc** thay vì một dòng ST | ➕ |
+| 313 | **L.7** bắt cạnh + chống rung | ⭐⭐ **Thứ tự lọc-rung-trước nhìn thấy được** — hộp `TON` bên trái, `┤P├` bên phải. ⚠ Nhưng ladder **giấu** một thứ ST nói rõ: mỗi hộp là một **thể hiện riêng** | ➕➕ |
+| 314 | **L.8** gọi khối cơ cấu | ⭐ Hình dạng **quen thuộc nhất với thợ bảo trì**: hộp có tên, chân trái lệnh vào, chân phải phản hồi | ➕ |
+| 315 | **L.10** khoá chéo | ⭐⭐ Đọc chéo hai nấc là **thấy ngay** khoá chéo; thiếu một trong hai nhìn ra bằng mắt | ➕➕ |
+| 316 | **L.13** đèn tháp | ⭐⭐ **Chỗ ladder đáng dùng nhất cả phụ lục** — người mở chương trình khi có sự cố sẽ tìm nấc điều khiển **cái đèn đang sáng sai**. Bốn nấc tìm ra trong mười giây | ➕➕ |
+
+### C — ⭐⭐ Mục L.18 mới: chọn ngôn ngữ nào cho mẫu nào
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 317 | ⭐⭐ **Bảy mẫu còn lại CỐ Ý chỉ có ST** — và mục mới nói rõ vì sao, theo đúng bất biến **B18**: bảng 14 mẫu, mỗi mẫu một dòng, cột *ladder* / cột *ST* / cột **nên dùng cái nào** | ➕➕ |
+| 318 | ⭐ **Quy tắc rút ra** — ladder khi: thợ bảo trì phải đọc lúc hai giờ sáng · là logic bit · điều khiển **ngõ ra cuối** · là **liên động**. ST khi: có phép tính · nhiều nhánh · trình tự `CASE` · vòng lặp và chỉ số | ➕➕ |
+| 319 | ⭐⭐ **Cách TRỘN đúng, theo tầng**: bên trong khối → **ST** · gọi khối và nối khối → **ladder** · trình tự nhiều bước → **ST/SFC** · ⭐⭐ **chuỗi cho phép và ngõ ra cuối → ladder, kể cả khi cả chương trình viết bằng ST** | ➕➕ |
+| 320 | ⚠ Kèm cảnh báo: **không phải hệ nào cũng cho trộn ngôn ngữ ở mọi mức** — phần lớn hệ cho mỗi **khối** một ngôn ngữ, và như vậy là đủ cho cách chia trên. ⭐ Kiểm trước khi thiết kế theo nó | ➕ |
+
+### D — Soát trình bày
+
+| # | Việc | KQ |
+|---|:--|:--:|
+| 321 | ⚠ Hai khối ladder đầu tiên **vẽ lệch cột**: hộp khối chức năng ở L.8 có cạnh phải không thẳng, và nhánh song song ở L.13 thiếu hai ký tự. ⭐ Bắt được bằng cách **đếm cột từng dòng** bằng script, rồi dựng lại hộp bằng phép tính vị trí thay vì gõ tay | ⚠ |
+| 322 | ⭐ Kiểm bản ghép: ký tự khung `┤ ├` · `┤/├` · `┤P├` **sống sót nguyên vẹn** sang HTML, và `pre` dùng **phông đẳng chiều** kèm `overflow-x` nên nấc dài **cuộn ngang**, không xuống dòng vỡ hình | ✔ |
+| 323 | ⚠ Nấc dài nhất ban đầu **106 ký tự** — đã nén còn **99**, ngang với các hình ASCII sẵn có trong sách | ⚠ |
+
+### Kết quả đợt 47
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **15** |
+| ➕➕ Bổ sung giá trị cao | 8 |
+| ➕ Bổ sung | 3 |
+| ⚠ Sửa trình bày | 2 |
+| Mục mới | 1 — Phụ lục L.18 |
+| Mẫu nay có **cả hai ngôn ngữ** | **7 / 16** |
+
+> ⭐⭐ **Bài học 1 — lời khuyên trong sách phải được chính sách làm gương.**
+>
+> Phụ lục L khuyên dùng ladder cho liên động và ngõ ra cuối, rồi ⚠ **viết toàn bộ bằng ST**. Không
+> ai bắt lỗi được điều đó bằng bộ kiểm — nó không sai một chữ nào. ⭐ Nhưng người đọc sẽ học theo
+> **cái họ THẤY**, không theo cái họ được khuyên.
+>
+> ⚡ **Bài học 2 — "cũng cho luôn bản ladder" không phải là câu trả lời đầy đủ.**
+>
+> Chép cả 16 mẫu sang ladder sẽ **tệ hơn**: `CASE`, phép chia, quy đổi thang analog viết bằng ladder
+> thì khó đọc hơn hẳn. ⭐ Giá trị thật nằm ở chỗ **bảy mẫu nào nên có, bảy mẫu nào không, và vì
+> sao** — tức là mục L.18, chứ không phải bảy khối vẽ thêm.
+>
+> ⭐ **Bài học 3 — hình vẽ bằng ký tự vẫn phải soát như hình.** Hai khối lệch cột không lộ ra khi
+> đọc lướt; ⚡ chúng lộ ra khi **đếm cột bằng script**. Cùng tinh thần với bài học ở đợt 35: hình
+> phải nhìn, và với hình bằng ký tự thì "nhìn" nghĩa là **đo**.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
