@@ -91,6 +91,28 @@ cập nhật bắt buộc nào làm hỏng thứ đang chạy.
 Đây là tiêu chí **khả năng cung ứng dài hạn** ở Chương 13, và là lý do thị trường PLC thay đổi chậm
 hơn nhiều so với thị trường máy tính.
 
+### 5. ⭐⭐ Sửa được chương trình trong lúc máy đang chạy
+
+⭐ Đây là khác biệt ít được nhắc nhất, mà lại là khác biệt **thay đổi cả cách làm nghề**.
+
+| | Phần mềm máy tính thường | PLC |
+|---|---|---|
+| Đổi một dòng lệnh | Dừng chương trình, nạp bản mới, chạy lại | ⭐ **Nạp thay đổi trong lúc máy vẫn đang chạy** |
+| Cái phải trả giá | Thời gian dừng | ⚠⚠ **Rủi ro ngay tại thời điểm nạp** |
+
+> ⭐ **Vì sao thiết bị này được thiết kế như vậy:** một dây chuyền dừng nửa tiếng để nạp lại chương
+> trình có thể tốn hơn cả tháng lương người sửa. ⚡ Nên khả năng **đổi mà không dừng** không phải
+> tiện nghi — với nhiều nhà máy nó là **điều kiện để chấp nhận thiết bị**.
+
+> ⚠⚠ **Nhưng nó là con dao hai lưỡi, và đây là chỗ nguy hiểm nhất trong cả chương này.** ⭐ Sửa lúc
+> máy đang chạy nghĩa là cơ cấu **đang ở giữa chừng một hành trình** khi logic điều khiển nó đổi.
+> ⚠ Người đứng cạnh máy **không được cảnh báo gì cả** — máy không dừng, không có đèn nào đổi màu.
+>
+> ⚡ Cả một chương của sách dành cho việc làm chuyện này an toàn: **Chương 53**. ⭐ Ở đây chỉ cần
+> nhớ một điều: ⚠⚠ **PLC cho phép bạn làm điều đó KHÔNG có nghĩa là bạn nên làm.**
+
+---
+
 ---
 
 ## 2.3 PLC, PAC, DCS, IPC hay vi điều khiển
@@ -253,6 +275,7 @@ và nó chạy "tạm" trong hai năm.
 | Khác biệt cốt lõi với máy tính thường | ⭐ **Tính tất định**, không phải tốc độ |
 | Tính tất định nghĩa là | Cùng đầu vào → cùng hành vi, **trong cùng khoảng thời gian** |
 | Tuổi đời phải tính tới | **15–20 năm** — phụ tùng, phần mềm, người biết dùng |
+| Khả năng ít được nhắc nhất | ⭐ **Sửa chương trình khi máy đang chạy** — và ⚠⚠ nó nguy hiểm đúng bằng mức nó tiện (Chương 53) |
 | Cỗ máy rời rạc | **PLC** |
 | Nhà máy quá trình liên tục | **DCS** |
 | Cần thị giác máy, cơ sở dữ liệu | **IPC / PAC**, hoặc PLC + hệ chuyên dụng |

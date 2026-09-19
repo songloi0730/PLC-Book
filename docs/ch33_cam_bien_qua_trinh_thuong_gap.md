@@ -108,21 +108,17 @@ Một đôi dây đồng dài 20 m, tiết diện nhỏ, có điện trở kho�
 
 ### Ba cách đấu
 
-```text
-2 DÂY — module không tách được điện trở dây
-   [RTD] ══════════════ [module]        ⚠ sai số cộng thẳng vào
+![RTD đấu 2, 3 và 4 dây](../assets/ch33/hinh_33_1_rtd_2_3_4_day.svg)
 
-3 DÂY — thêm một dây để module ĐO ĐƯỢC điện trở dây và trừ đi
-   [RTD] ══════════════ [module]
-         ══════════════
-         ══════════════                 ⭐ bù được, chỉ cần 3 sợi
+*Hình 33.1 — Ba cách đấu RTD. Khác biệt không nằm ở số sợi dây, mà ở chỗ sợi nào mang dòng kích
+thích và điện áp được đo ở đâu.*
 
-4 DÂY — hai dây cấp dòng, hai dây đo áp, hoàn toàn không chịu ảnh hưởng dây
-   [RTD] ══════════════ [module]
-         ══════════════
-         ══════════════
-         ══════════════                 ⭐ chính xác nhất
-```
+> ⭐⭐ **Đọc hình theo một câu hỏi duy nhất: *"sợi nào có dòng chạy qua?"*** ⭐ Sợi có dòng thì có sụt
+> áp trên chính nó, và sụt áp đó **cộng vào phép đo**. Sợi không có dòng thì không sụt áp — nên nó
+> dẫn được điện áp **thật trên RTD** về tới module mà không làm sai lệch gì.
+>
+> ⚡ Cả ba cách đấu chỉ là ba câu trả lời khác nhau cho câu hỏi đó, và ⭐ **suy ra được cả ba mà
+> không cần học thuộc**.
 
 | Cách đấu | Bù điện trở dây | Dùng khi |
 |---|---|---|

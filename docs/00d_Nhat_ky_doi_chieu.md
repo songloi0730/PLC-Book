@@ -2284,6 +2284,101 @@ Yêu cầu của chủ dự án: ⭐ *"đánh giá lại từng chương xem có
 
 ---
 
+## Đợt 49 — 2026-09-20 · Rà tiếp bằng ba thước đo khác: cấu trúc chương, bất biến B18, và chỗ hãng quyết định thay bạn
+
+Tiếp yêu cầu *"rà và bổ sung các chương còn lại"*. ⭐ Theo đúng **bài học 1 của đợt 48** — khi một
+cách rà cho ít kết quả thì **đổi thước đo**, đừng rà kỹ hơn — đợt này dùng ba thước hoàn toàn mới.
+
+| Thước đo | Cách đo | Cái nó lộ ra |
+|---|---|---|
+| **Bộ khung từng chương** | Đếm mục 🔍 BẪY · câu tự kiểm · khối mã · bảng · hình · có mục DP-01 không · có mục "khác biệt giữa các hãng" không, cho cả 58 chương | ⚠ Ch.27 và Ch.30 **thiếu mục khác biệt giữa các hãng** ở đúng hai chủ đề mà các hãng làm khác nhau nhất |
+| ⭐ **Soát bất biến B18** | Tìm mọi câu nhắc *"N cách / N lựa chọn / N phương án"* ngoài khối mã, rồi kiểm xem trong 14 dòng kế tiếp có bảng so sánh không | ✔ **Không tìm ra vi phạm thật** — chi tiết ở phần D |
+| **Hình minh hoạ có nói đúng cơ chế không** | Đọc lại từng hình ASCII sẵn có và hỏi *"hình này nói được điều gì mà chữ không nói?"* | ⚠⚠ Hình ba cách đấu RTD ở Ch.33 vẽ ba bó dây **giống hệt nhau** — không nói được gì cả |
+
+### A — ⚠ Ch.30 nói "dùng thư viện có phiên bản" mà không nói hãng cho bạn cơ chế gì
+
+| # | Phát hiện / bổ sung | KQ |
+|---|:--|:--:|
+| 351 | ⚠ Ch.30 là **chương dài nhất sách** (778 dòng) và là chương về **tái sử dụng**, nhưng mục 30.5 khuyên *"dùng thư viện có phiên bản"* mà ⭐ **không nói cơ chế đó do phần mềm hãng cung cấp** — người đọc không tự dựng được | ⚠ |
+| 352 | ⭐⭐ Mục mới: **hai hướng ngược nhau**, mỗi hướng một ví dụ thật đã xác minh — **chép có kiểm soát** (Rockwell AOI) và **tham chiếu tới kiểu** (Siemens type). Bảng sáu hàng: khối sống ở đâu · cập nhật thế nào · nhiều phiên bản cùng lúc · chống sửa lén · cái giá | ➕➕ |
+| 353 | ⭐⭐ Và nó **đọc lại được bảng "ba kiểu dùng lại"** sẵn có theo nghĩa cụ thể hơn: cơ chế Rockwell **chính là kiểu "chép"**, nhưng chép có bản sửa đổi, có chữ ký, có lịch sử. ⭐ Suy ra: *"chép" không tự động xấu — xấu là chép mà không biết mình chép bản nào* | ➕➕ |
+| 354 | ⚠⚠ **Chữ ký khối của Rockwell niêm cả tài liệu**: ký xong thì không sửa được, **kể cả chú thích nấc thang và mô tả biến**. Đổi lại nó là bằng chứng khối chưa bị đụng — nên **bắt buộc** cho khối tham gia chức năng an toàn mức SIL 3. ⚠ Lỗ hổng: chữ ký **không khoá** các khối và kiểu dữ liệu mà nó tham chiếu | ➕➕ |
+| 355 | ⚠⚠ **Xoá một "type" của Siemens là xoá mọi chỗ đang dùng nó**, và ⭐ **một bộ điều khiển chỉ chứa một phiên bản của mỗi kiểu** — nghe như hạn chế, nhưng nó chính là thứ chặn đứng "kiểu thứ ba" (chép rồi sửa tới mức không nhận ra) | ➕➕ |
+| 356 | ⭐ Thêm **bốn câu hỏi tự tra cho hệ của mình**, vì không suy được từ hai cột trên. ⚠⚠ Câu thứ tư — *xoá hoặc đổi tên khối thì chỗ đang dùng ra sao* — ⭐ **phải thử thật trên một dự án bỏ đi**, vì biết vào lúc đang sửa máy chạy sản xuất là quá muộn | ➕➕ |
+
+### B — Hình 33.1: RTD hai, ba, bốn dây
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 357 | ⚠⚠ Hình ASCII cũ vẽ cả ba cách như **ba bó dây song song giống hệt nhau**, khác mỗi số sợi. ⭐ Nó **không** nói được điều duy nhất đáng nói: sợi nào mang dòng, áp đo ở đâu, vì sao thêm một sợi lại bù được sai số. Ch.33 trước đợt này **không có hình nào** | ⚠ |
+| 358 | ⭐⭐ Hình mới vẽ **nét đỏ = sợi mang dòng kích thích**, **nét xanh = sợi chỉ để đo**, ô `R` = điện trở của chính sợi dây; cách 2 dây có thêm ký hiệu vôn kế **đặt tại chân module** để thấy phép đo dừng ở đâu | ➕➕ |
+| 359 | ⭐⭐ Và nó rút cả ba cách về **một câu hỏi duy nhất**: *"sợi nào có dòng chạy qua?"* — sợi có dòng thì sụt áp và sụt áp đó cộng vào kết quả; sợi không dòng thì dẫn được điện áp thật trên RTD về module. ⭐ Suy ra được cả ba cách mà không học thuộc | ➕➕ |
+| 360 | ⭐ Hình **thay** khối ASCII cũ chứ không thêm vào cạnh nó — khối cũ không còn tác dụng gì khi đã có hình | ⚠ |
+
+### C — Ch.27 nói về tác vụ mà không có con số nào của hãng
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 361 | ⭐⭐ Lời khuyên *"mặc định một tác vụ"* của mục 27.6 nay **có tài liệu hãng chống lưng**: tài liệu quản lý tác vụ có hẳn mục **"thận trọng với số lượng tác vụ bạn dùng"**, và câu ⭐ *bộ điều khiển chỉ chạy **một** tác vụ tại một thời điểm* — khép lại tranh luận "chạy song song cho nhanh" | ➕➕ |
+| 362 | ⚠⚠ **Điều kiện chồng tác vụ** — chu kỳ tác vụ định kỳ phải **dài hơn tổng thời gian chạy của mọi chương trình gán vào nó**; không thoả thì **lỗi nhẹ**. ⭐ Và đây là lỗi **không xuất hiện lúc nghiệm thu** — nó xuất hiện tháng sau khi ai đó thêm khối, đúng cơ chế trôi dạt ở Ch.36 | ➕➕ |
+| 363 | ⭐ **Mỗi tác vụ có watchdog riêng** — Ch.10 mục 10.4 mới chỉ nói watchdog của cả vòng quét. Tách tác vụ là thêm một chỗ phải đặt đúng | ➕ |
+| 364 | ⭐ Bảng ba loại tác vụ kèm con số: liên tục — ⭐ **không bắt buộc có, và nếu có thì chỉ được một** · định kỳ **0,1 ms – 2000 s**, mặc định **10 ms** · theo sự kiện, ⚠ không phải bộ điều khiển nào cũng đủ loại kích hoạt | ➕➕ |
+| 365 | ⭐⭐ **Mức ưu tiên có một giá trị đặc biệt**: 15 mức, và **tác vụ I/O của hệ chạy ở mức 6** — đặt 1–5 là cho tác vụ của bạn chen ngang cả việc cập nhật I/O. ⚠ Nhưng 15 **không phải hằng số**: cùng hãng, dòng chạy trên máy tính chỉ có **3** mức — nên phải tra theo đúng dòng đang dùng | ➕➕ |
+
+### D — ⭐ Soát bất biến B18 trên toàn sách: kết quả là **không có vi phạm**
+
+⭐⭐ **Đây là một kết quả âm tính, và nó đáng ghi lại đúng bằng một kết quả dương tính.**
+
+| # | Việc | KQ |
+|---|:--|:--:|
+| 366 | Quét toàn bộ 71 tệp tìm câu nhắc *"N cách / N lựa chọn / N phương án / có thể chọn"* **ngoài khối mã**, rồi kiểm có bảng so sánh trong 14 dòng kế tiếp không. ⭐ **55 chỗ** không có bảng | ⚠ |
+| 367 | ⭐ Đọc hết 55 chỗ: **không chỗ nào vi phạm B18 thật**. Phần lớn là **câu hỏi tự kiểm**, **chú thích hình**, **mục nguồn tham khảo** và **câu dẫn sang chương khác** — tức là nhắc tới phương án chứ không **giới thiệu** phương án | ✔ |
+| 368 | ⭐ Nhóm còn lại là **danh sách cách chữa đã xếp theo thứ tự ưu tiên**, mỗi mục có sẵn đánh đổi viết ngay trong câu (Ch.4 mục 4.3 và 4.4, Ch.9 mục 9.2, Ch.35 mục 35.2). ⭐⭐ Đây **đúng tinh thần B18** — có tên từng cách, có đánh đổi, có khuyến nghị — chỉ là **không ở dạng bảng**. ⚠ Ép thành bảng sẽ làm loãng, không làm rõ | ✔ |
+
+### E — Ch.2: khác biệt thứ năm, thứ ít được nhắc nhất
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 369 | ⚠ Ch.2 là chương **nhỏ nhất sách** (305 dòng) và ⭐ **chưa từng bị soi ở 48 đợt trước**. Mục 2.2 *"PLC khác máy tính thường ở đâu"* có bốn điểm: môi trường · tính tất định · khởi động lại · tuổi đời | ⚠ |
+| 370 | ⚠⚠ **Thiếu hẳn điểm thứ năm, mà lại là điểm có cả một chương dành cho nó**: PLC cho **sửa chương trình trong lúc máy đang chạy**. Ch.53 dạy rất kỹ chuyện làm việc đó an toàn, nhưng ⭐ **không chương nào giới thiệu rằng khả năng đó tồn tại** | ⚠ |
+| 371 | ⭐ Bổ sung mục 2.2 điểm 5, kèm hai mặt: ⚡ với nhiều nhà máy, **đổi mà không dừng** là **điều kiện chấp nhận thiết bị**, không phải tiện nghi; nhưng ⚠⚠ cơ cấu **đang ở giữa chừng hành trình** khi logic đổi, và **người đứng cạnh máy không được cảnh báo gì cả**. ⭐ Chốt: *PLC cho phép không có nghĩa là nên làm* → Chương 53 | ➕➕ |
+
+### Kết quả đợt 49
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **21** |
+| ➕➕ Bổ sung giá trị cao | 12 |
+| ➕ Bổ sung | 1 |
+| ⚠ Phát hiện thiếu sót / sửa | 6 |
+| ✔ Xác nhận không có vấn đề | 2 |
+| Hình mới | 1 — Hình 33.1 (và **bỏ** một khối ASCII vô dụng) |
+| Mục mới | 3 — Ch.2 §2.2 điểm 5, Ch.27 §27.6, Ch.30 §30.5 |
+| Nguồn ngoài mới được dẫn | 3 |
+
+> ⭐⭐ **Bài học 1 — "chương này thiếu mục X" là một thước đo, và nó rẻ.**
+>
+> Đếm xem chương nào **không có** mục *khác biệt giữa các hãng* cho ra 26 chương. ⭐ Phần lớn là
+> đúng — chương lớp 0 thì không có gì để so sánh giữa các hãng. ⚡ Nhưng **hai** trong số đó, Ch.27
+> và Ch.30, lại là đúng hai chủ đề mà **các hãng làm khác nhau nhất**: mô hình tác vụ, và cơ chế
+> thư viện dùng lại. ⭐ Thước đo thô, nhưng phần dư của nó chính là chỗ cần nhìn.
+
+> ⚠ **Bài học 2 — kết quả âm tính phải ghi lại, nếu không nó sẽ bị làm lại.**
+>
+> Soát B18 quét ra 55 chỗ nghi, đọc hết, và **không có vi phạm nào**. ⭐ Nếu không ghi lại thì đợt
+> sau ai đó sẽ chạy đúng phép quét đó, ra đúng 55 chỗ đó, và đọc lại từ đầu. ⚡ Nhật ký này tồn tại
+> để chuyện đó **không xảy ra lần thứ hai** — nên mục D ghi cả cách quét lẫn lý do bác bỏ.
+
+> ⭐ **Bài học 3 — một hình vô dụng tệ hơn không có hình.**
+>
+> Khối ASCII ba cách đấu RTD ở Ch.33 tồn tại nhiều đợt mà không ai bắt lỗi, vì ⚠ **nó không sai** —
+> ba cách đấu đúng là có 2, 3, 4 sợi. ⭐ Nó chỉ **không nói gì cả**: người đọc nhìn xong vẫn không
+> biết vì sao sợi thứ ba bù được sai số. ⚡ Câu hỏi để bắt loại lỗi này không phải *"hình có đúng
+> không?"* mà là ⭐⭐ ***"hình nói được điều gì mà chữ không nói?"*** — nếu không trả lời được, hình
+> đó đang chiếm chỗ.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -2299,7 +2394,8 @@ kiểm**, không phải "không có lỗi".
 | Ngôn ngữ | ⭐ **Đã đối chiếu hết** — 15, 16, 17, 20, 21 (đợt 16, 17, 19, 20, 21) | — | — |
 | Thiết kế | ⭐ **Đã đối chiếu hết** — 22–30 (đợt 23, 24, 27, 28, **31**) | — | — |
 | Chẩn đoán & vận hành | ⭐ **Đã đối chiếu hết** — 43, 49, 51, 52, 53, 55 (đợt 18, 26, 30, **33**) | — | — |
-| Không kiểm được bằng nguồn | 1, 2, 13, 23–29, 54, 56, 57, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
+| Không kiểm được bằng nguồn | 13, 23–24, 28–29, 54, 56, 58 | — | ⭐ Chủ yếu là phương pháp và kinh nghiệm nghề |
+| ⭐ Đã soi ở đợt 48–49 | 1, 2, 9, 17, 18, 25–27, 30, 33, 36, 57 | Kuphaldt ×2, Siemens ×2, Rockwell ×3, Mitsubishi | — |
 
 ---
 

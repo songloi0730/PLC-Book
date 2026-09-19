@@ -1,0 +1,94 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 646' width='900' height='646'>
+<rect width='900' height='646' fill='#FFFFFF'/>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 33.1 — RTD đấu 2, 3 và 4 dây: dòng đi đường nào</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Ba cách trông giống nhau trên bản vẽ. Khác biệt duy nhất, và là khác biệt quyết định: sợi nào mang dòng kích thích, và điện áp được đo ở đâu.</text>
+<text x='24' y='76' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='400' fill='#565E66' text-anchor='start'>Nét đỏ = sợi mang dòng kích thích   ·   Nét xanh = sợi chỉ để ĐO   ·   ô  R  = điện trở của chính sợi dây</text>
+<rect x='16' y='88' width='868' height='142' rx='3' fill='#FFFFFF' stroke='#9AA3AB' stroke-width='1.1'/>
+<text x='30' y='114' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#1A1D21' text-anchor='start'>2 DÂY</text>
+<text x='30' y='133' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#B03A2E' text-anchor='start'>⚠ Không bù được</text>
+<text x='30' y='158' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='start'>Điện trở hai sợi dây</text>
+<text x='30' y='173' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='start'>nằm TRONG phép đo</text>
+<rect x='200' y='134' width='80' height='48' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='240' y='155' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>RTD</text>
+<text x='240' y='171' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='middle'>Pt100</text>
+<rect x='600' y='120' width='118' height='76' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='659' y='136' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>MODULE</text>
+<line x1='280' y1='142' x2='600' y2='142' stroke='#C0392B' stroke-width='2.4'/>
+<rect x='507' y='135' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#C0392B' stroke-width='1.3'/>
+<text x='520' y='146' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#C0392B' text-anchor='middle'>R</text>
+<line x1='280' y1='174' x2='600' y2='174' stroke='#C0392B' stroke-width='2.4'/>
+<rect x='507' y='167' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#C0392B' stroke-width='1.3'/>
+<text x='520' y='178' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#C0392B' text-anchor='middle'>R</text>
+<line x1='298' y1='142' x2='336' y2='142' stroke='#C0392B' stroke-width='2.2'/>
+<polygon points='346.0,142.0 336.0,147.0 336.0,137.0' fill='#C0392B'/>
+<line x1='582' y1='174' x2='544' y2='174' stroke='#C0392B' stroke-width='2.2'/>
+<polygon points='534.0,174.0 544.0,169.0 544.0,179.0' fill='#C0392B'/>
+<line x1='612' y1='142' x2='612' y2='174' stroke='#1A1D21' stroke-width='1.6'/>
+<line x1='612' y1='158' x2='634' y2='158' stroke='#1A1D21' stroke-width='1.6'/>
+<circle cx='647' cy='158' r='13' fill='#FFFFFF' stroke='#1A1D21' stroke-width='1.6'/>
+<text x='647' y='163' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1A1D21' text-anchor='middle'>V</text>
+<text x='499' y='218' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='700' fill='#B03A2E' text-anchor='middle'>⚠ Module chỉ đo được tại chân của chính nó — dây nằm trong kết quả</text>
+<text x='734' y='152' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Module đo:</text>
+<text x='734' y='168' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='start'>R(RTD) + 2·R(dây)</text>
+<rect x='16' y='238' width='868' height='142' rx='3' fill='#FFFFFF' stroke='#9AA3AB' stroke-width='1.1'/>
+<text x='30' y='264' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#1A1D21' text-anchor='start'>3 DÂY</text>
+<text x='30' y='283' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#2E7D4F' text-anchor='start'>⭐ Bù được (có giả định)</text>
+<text x='30' y='308' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='start'>Sợi thứ ba cho module</text>
+<text x='30' y='323' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='start'>đo riêng điện trở dây</text>
+<rect x='200' y='284' width='80' height='48' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='240' y='305' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>RTD</text>
+<text x='240' y='321' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='middle'>Pt100</text>
+<rect x='600' y='270' width='118' height='76' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='659' y='286' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>MODULE</text>
+<line x1='280' y1='284' x2='600' y2='284' stroke='#C0392B' stroke-width='2.4'/>
+<rect x='507' y='277' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#C0392B' stroke-width='1.3'/>
+<text x='520' y='288' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#C0392B' text-anchor='middle'>R</text>
+<line x1='280' y1='308' x2='600' y2='308' stroke='#1F5F8B' stroke-width='2.4'/>
+<rect x='507' y='301' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#1F5F8B' stroke-width='1.3'/>
+<text x='520' y='312' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#1F5F8B' text-anchor='middle'>R</text>
+<line x1='280' y1='332' x2='600' y2='332' stroke='#C0392B' stroke-width='2.4'/>
+<rect x='507' y='325' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#C0392B' stroke-width='1.3'/>
+<text x='520' y='336' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#C0392B' text-anchor='middle'>R</text>
+<line x1='298' y1='284' x2='336' y2='284' stroke='#C0392B' stroke-width='2.2'/>
+<polygon points='346.0,284.0 336.0,289.0 336.0,279.0' fill='#C0392B'/>
+<line x1='582' y1='332' x2='544' y2='332' stroke='#C0392B' stroke-width='2.2'/>
+<polygon points='534.0,332.0 544.0,327.0 544.0,337.0' fill='#C0392B'/>
+<text x='300' y='299' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8.5' font-weight='700' fill='#1F5F8B' text-anchor='start'>sợi thứ ba: KHÔNG mang dòng</text>
+<text x='499' y='368' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='700' fill='#B8860B' text-anchor='middle'>⚠ Giả định: ba sợi cùng loại, cùng chiều dài, đi cùng một cáp</text>
+<text x='734' y='302' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Đo được R một sợi,</text>
+<text x='734' y='318' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='start'>rồi trừ khỏi kết quả</text>
+<rect x='16' y='388' width='868' height='142' rx='3' fill='#FFFFFF' stroke='#9AA3AB' stroke-width='1.1'/>
+<text x='30' y='414' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='13' font-weight='700' fill='#1A1D21' text-anchor='start'>4 DÂY</text>
+<text x='30' y='433' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#2E7D4F' text-anchor='start'>⭐ Không cần giả định gì</text>
+<text x='30' y='458' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='start'>Tách hẳn mạch cấp dòng</text>
+<text x='30' y='473' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='start'>khỏi mạch đo áp</text>
+<rect x='200' y='434' width='80' height='48' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='240' y='455' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>RTD</text>
+<text x='240' y='471' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='400' fill='#565E66' text-anchor='middle'>Pt100</text>
+<rect x='600' y='420' width='118' height='76' rx='3' fill='#F4F5F7' stroke='#1A1D21' stroke-width='1.5'/>
+<text x='659' y='436' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10.5' font-weight='700' fill='#1A1D21' text-anchor='middle'>MODULE</text>
+<line x1='280' y1='428' x2='600' y2='428' stroke='#C0392B' stroke-width='2.4'/>
+<rect x='507' y='421' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#C0392B' stroke-width='1.3'/>
+<text x='520' y='432' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#C0392B' text-anchor='middle'>R</text>
+<line x1='280' y1='448' x2='600' y2='448' stroke='#1F5F8B' stroke-width='2.4'/>
+<rect x='507' y='441' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#1F5F8B' stroke-width='1.3'/>
+<text x='520' y='452' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#1F5F8B' text-anchor='middle'>R</text>
+<line x1='280' y1='468' x2='600' y2='468' stroke='#1F5F8B' stroke-width='2.4'/>
+<rect x='507' y='461' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#1F5F8B' stroke-width='1.3'/>
+<text x='520' y='472' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#1F5F8B' text-anchor='middle'>R</text>
+<line x1='280' y1='488' x2='600' y2='488' stroke='#C0392B' stroke-width='2.4'/>
+<rect x='507' y='481' width='26' height='14' rx='1' fill='#FFFFFF' stroke='#C0392B' stroke-width='1.3'/>
+<text x='520' y='492' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8' font-weight='700' fill='#C0392B' text-anchor='middle'>R</text>
+<line x1='298' y1='428' x2='336' y2='428' stroke='#C0392B' stroke-width='2.2'/>
+<polygon points='346.0,428.0 336.0,433.0 336.0,423.0' fill='#C0392B'/>
+<line x1='582' y1='488' x2='544' y2='488' stroke='#C0392B' stroke-width='2.2'/>
+<polygon points='534.0,488.0 544.0,483.0 544.0,493.0' fill='#C0392B'/>
+<text x='300' y='440' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='8.5' font-weight='700' fill='#1F5F8B' text-anchor='start'>hai sợi ĐO: dòng ≈ 0</text>
+<text x='499' y='518' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='700' fill='#2E7D4F' text-anchor='middle'>⭐ Đo áp đúng trên hai đầu RTD — dây dài bao nhiêu cũng được</text>
+<text x='734' y='452' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#1A1D21' text-anchor='start'>Sợi đo không có dòng</text>
+<text x='734' y='468' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='start'>→ không có sụt áp</text>
+<rect x='16' y='546' width='868' height='88' rx='3' fill='#FDF6E7' stroke='#B8860B' stroke-width='1.3'/>
+<text x='32' y='570' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#7A5B08' text-anchor='start'>⭐⭐ Vì sao 3 dây là mặc định của ngành: nó bù được gần hết sai số với chi phí thêm ĐÚNG MỘT SỢI DÂY.</text>
+<text x='32' y='592' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#1A1D21' text-anchor='start'>⚡ Bước từ 2 lên 3 dây cải thiện rất nhiều; bước từ 3 lên 4 dây cải thiện thêm rất ít trong điều kiện máy công nghiệp.</text>
+<text x='32' y='612' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#1A1D21' text-anchor='start'>⚠ Và nhớ giả định của cách 3 dây: nối thêm một đoạn dây khác loại vào MỘT sợi là phá giả định đó — sai số quay lại mà không báo gì.</text>
+</svg>

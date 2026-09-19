@@ -470,6 +470,58 @@ Khi nào tách là chính đáng:
 Nếu tách, quy tắc bắt buộc: **dữ liệu đi qua ranh giới tác vụ phải qua một vùng đệm rõ ràng**, không
 đọc chéo biến trực tiếp.
 
+### ⭐⭐ Chính tài liệu hãng cũng khuyên hạn chế số tác vụ
+
+⭐ Lời khuyên *"mặc định là một tác vụ"* ở trên nghe như quan điểm cá nhân. ⚡ Nó không phải: tài
+liệu quản lý tác vụ của hãng có hẳn một mục tên là **"thận trọng với số lượng tác vụ bạn dùng"**, và
+nêu đúng hai hậu quả:
+
+| Hậu quả khi quá nhiều tác vụ | Nghĩa là gì |
+|---|---|
+| Tác vụ nền **không kịp chạy xong** | Mỗi tác vụ lấy thời gian CPU của các tác vụ khác |
+| ⚠⚠ Một tác vụ **chồng lên chính nó** *(overlap)* | Bị ngắt quá thường xuyên hoặc quá lâu → chưa chạy xong đã bị kích lần sau |
+
+> ⭐⭐ **Và câu này của tài liệu hãng khép lại tranh luận "chạy song song cho nhanh":** ⚡ *bộ điều
+> khiển chỉ chạy **một** tác vụ tại một thời điểm.* ⭐ Nhiều tác vụ **không** làm máy nhanh hơn — nó
+> chỉ đổi **thứ tự** và **độ ưu tiên**, và đổi lấy một lớp phức tạp mới.
+
+### ⚠⚠ Hai thứ đi kèm mỗi tác vụ mà người mới hay bỏ qua
+
+**Một — điều kiện chồng tác vụ, và nó là một phép tính bạn phải làm.**
+
+> ⚠ Chu kỳ của tác vụ định kỳ **phải dài hơn tổng thời gian chạy của MỌI chương trình gán vào tác vụ
+> đó**. ⭐ Không thoả thì tác vụ bị kích lại khi đang chạy dở → hệ báo **lỗi nhẹ** *(minor fault)*.
+>
+> ⚡ Và đây là lỗi **không xuất hiện lúc nghiệm thu**: nó xuất hiện tháng sau, khi ai đó thêm vài
+> khối vào đúng tác vụ đó. ⭐ Giống hệt cơ chế trôi dạt ở Chương 36 — ⚠ nên **ghi lại thời gian chạy
+> thật của từng tác vụ lúc nghiệm thu** (Chương 52).
+
+**Hai — mỗi tác vụ có watchdog riêng của nó.**
+
+⭐ Chương 10 mục 10.4 nói về watchdog của **cả vòng quét**. ⚡ Khi đã tách tác vụ thì ⭐ **mỗi tác vụ
+mang một watchdog riêng**, đặt riêng — nghĩa là bạn vừa có thêm một chỗ phải đặt đúng, vừa có thêm
+một chỗ có thể đặt sai.
+
+### ⭐ Ba loại tác vụ, và con số đi kèm
+
+| Loại | Chạy khi nào | ⭐ Con số đáng nhớ |
+|---|---|---|
+| **Liên tục** *(continuous)* | Chạy bằng thời gian CPU còn thừa; quét xong là **khởi động lại ngay** | ⭐ Dự án **không bắt buộc** phải có; và nếu có thì ⭐⭐ **chỉ được MỘT** |
+| **Định kỳ** *(periodic)* | Đúng chu kỳ đặt trước; ngắt các tác vụ ưu tiên thấp hơn, chạy một lần, trả quyền | Chu kỳ đặt được từ **0,1 ms tới 2000 s**; mặc định **10 ms** |
+| **Theo sự kiện** *(event)* | Khi có kích hoạt: ngõ vào số đổi trạng thái · có mẫu analog mới · lệnh sinh sự kiện… | ⚠ **Không phải bộ điều khiển nào cũng hỗ trợ đủ mọi loại kích hoạt** |
+
+> ⭐ **Mức ưu tiên là một con số, và nó có một giá trị đặc biệt.** Ở dòng bộ điều khiển đó có **15**
+> mức ưu tiên, và ⭐⭐ **tác vụ xử lý I/O của hệ chạy ở mức 6**. Nên đặt tác vụ của bạn ở mức 1–5
+> nghĩa là **cho nó chen ngang cả việc cập nhật I/O**; đặt ở 7–15 nghĩa là để I/O chen ngang nó.
+>
+> ⚠ Con số 15 **không phải hằng số của ngành** — cùng hãng đó, dòng chạy trên máy tính chỉ có **3**
+> mức. ⭐ Đây là lý do mọi con số trong mục này phải **tra lại theo đúng dòng bộ điều khiển bạn
+> dùng**, chứ không chép từ máy trước.
+
+> ⚡ **Tên gọi và mô hình khác nhau giữa các hãng** — có hệ bắt khai báo tác vụ tường minh, có hệ
+> dùng khối tổ chức với lớp ưu tiên sẵn, có hệ chỉ có chương trình chính quét tuần tự. ⭐ Đối chiếu
+> năm hệ: **Phụ lục A1**.
+
 ### Thứ tự gọi trong một tác vụ
 
 Trong tác vụ duy nhất, thứ tự gọi các khối **là một phần của thiết kế** (Chương 10):
@@ -617,6 +669,13 @@ chưa trả lời: khi máy dừng giữa chừng ở một tư thế bất kỳ
 - Tài liệu hãng về tổ chức tác vụ, chương trình và khối tái dùng — dùng để đối chiếu khác biệt; số hiệu
   cụ thể ghi trong Phụ lục A1.
 - Cấu hình cơ cấu và đặc tả trình tự hai trạm của DP-01 — Phụ lục J.
+- **Rockwell Automation** — *Logix 5000 Controllers Tasks, Programs, and Routines* (1756-PM005,
+  bản 9/2025), ch. 1 *Manage Tasks*: ⭐ mục **"thận trọng với số lượng tác vụ"** và câu ⭐⭐ *bộ điều
+  khiển chỉ chạy **một** tác vụ tại một thời điểm* — nền cho lời khuyên "mặc định một tác vụ" ở mục
+  27.6; ba loại tác vụ (liên tục — ⭐ **chỉ được một** và **không bắt buộc có** · định kỳ
+  **0,1 ms–2000 s**, mặc định **10 ms** · theo sự kiện); ⚠⚠ **lỗi nhẹ khi tác vụ chồng lên chính
+  nó** nếu chu kỳ ngắn hơn tổng thời gian chạy; **watchdog riêng cho từng tác vụ**; và 15 mức ưu
+  tiên với ⭐ **tác vụ I/O của hệ ở mức 6** (⚠ dòng chạy trên máy tính chỉ có 3 mức).
 - **Hugh Jack** — *Automating Manufacturing Systems with PLCs*, §32.4.1 *Developing a Program
   Structure*: ⭐ **bốn câu hỏi để chia bài toán điều khiển** (chạy cùng lúc? · độc lập? · có trình tự
   rõ? · ⭐ **có ranh giới vật lý?**), và ⚠ điều kiện tiên quyết *hiểu quy trình trước* — nền cho

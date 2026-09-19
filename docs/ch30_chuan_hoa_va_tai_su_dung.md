@@ -520,6 +520,62 @@ Kiểu thứ ba là kiểu hay xảy ra nhất trong thực tế, và nó tệ h
 > **Mỗi lần dùng lại một khối trong bối cảnh mới, phải rà lại các giả định về an toàn của nó.** Khối
 > càng tiện thì càng dễ dùng mà không nghĩ.
 
+### ⭐⭐ Hãng cho bạn cơ chế gì để làm được kiểu thứ hai
+
+Bảng trên nói *nên* dùng "thư viện có phiên bản". ⚠ Nhưng bạn **không tự dựng cơ chế đó được** — nó
+phải do phần mềm lập trình hỗ trợ. Và ⭐ **hai hãng lớn giải bài toán này theo hai hướng ngược nhau**,
+nên câu *"dùng thư viện có phiên bản"* có nghĩa rất khác nhau tuỳ hệ bạn đang dùng.
+
+| | Hướng **CHÉP có kiểm soát** | Hướng **THAM CHIẾU tới kiểu** |
+|---|---|---|
+| Ví dụ thật | ⭐ **Rockwell — Add-On Instruction (AOI)** | ⭐ **Siemens TIA Portal — "type" trong thư viện** |
+| Khối sống ở đâu | ⭐ **Trong chính dự án**; đưa sang dự án khác bằng chép/dán hoặc nhập từ tệp | Trong **thư viện**; dự án chỉ dùng, không sở hữu |
+| Cập nhật khi sửa khối gốc | ⚠ **Từng dự án một** — nhập bản sửa đổi mới vào từng dự án | ⭐⭐ **Cập nhật tập trung mọi chỗ dùng** trong dự án, một lệnh |
+| Nhiều phiên bản cùng lúc | ⭐ Được — mỗi dự án giữ bản của nó | ⚠⚠ **Chỉ MỘT phiên bản của một kiểu trong cùng một bộ điều khiển** |
+| Chống sửa lén | ⭐ **Chữ ký khối** — ký xong thì khối **bị niêm**, không sửa được nữa | ⭐ Hệ **không cho sửa tại chỗ dùng**; hệ tự giữ nhất quán |
+| ⚠⚠ Cái giá | Niêm rồi thì **kể cả chú thích cũng không sửa được** cho tới khi gỡ chữ ký | ⚠⚠ **Xoá một kiểu là xoá luôn MỌI chỗ đang dùng nó** trong chương trình |
+
+> ⭐⭐ **Đọc bảng này xong thì bảng "ba kiểu dùng lại" ở trên có nghĩa cụ thể hơn hẳn.** ⚡ Cơ chế của
+> Rockwell **là kiểu "chép"** — nhưng là chép **có kiểm soát**: có bản sửa đổi, có chữ ký, có lịch sử.
+> Cơ chế của Siemens **là kiểu "thư viện có phiên bản"** theo đúng nghĩa đen.
+>
+> ⭐ Nghĩa là ⚠ **"chép" không tự động xấu** — cái xấu là chép mà **không biết mình đã chép bản nào**.
+
+**Hai chi tiết đáng nhớ, vì cả hai đều bất ngờ với người quen hệ kia:**
+
+> ⚠⚠ **Chữ ký khối của Rockwell NIÊM cả tài liệu.** ⭐ Sau khi sinh chữ ký, khối không sửa được —
+> và "không sửa được" gồm cả **chú thích nấc thang và mô tả biến**. Muốn sửa một dấu phẩy trong chú
+> thích cũng phải **gỡ chữ ký ra rồi ký lại**.
+>
+> ⭐ Đổi lại, chữ ký cho bạn một thứ rất giá trị: ⚡ **bằng chứng rằng khối này chưa bị ai đụng vào**.
+> Đó là lý do nó **bắt buộc** khi khối tham gia chức năng an toàn mức SIL 3, và hay bị yêu cầu ở các
+> ngành có quản lý chặt (Chương 47).
+>
+> ⚠ Nhưng có một lỗ hổng phải biết: ⭐ **chữ ký KHÔNG khoá các khối và kiểu dữ liệu mà nó tham
+> chiếu**. Khối của bạn niêm rồi, mà cái nó gọi bên trong thì vẫn sửa được.
+
+> ⚠⚠ **Xoá một "type" của Siemens là xoá mọi chỗ dùng nó.** ⭐ Đây là mặt trái trực tiếp của ưu điểm
+> "hệ tự giữ nhất quán": hệ **không cho phép tồn tại chỗ dùng mồ côi**, nên nó xoá luôn.
+>
+> ⚡ Và ràng buộc **một bộ điều khiển chỉ chứa một phiên bản của mỗi kiểu** nghĩa là: ⚠ nâng cấp khối
+> xy-lanh lên V2 thì **cả máy dùng V2**, không có chuyện "trạm này V1, trạm kia V2". ⭐ Nghe như hạn
+> chế, nhưng nó chính là thứ **chặn đứng** kiểu thứ ba trong bảng trên.
+
+### ⭐ Hệ của bạn thuộc hướng nào — bốn câu hỏi để tự tra
+
+⚠ Đừng suy từ hai cột trên. Mỗi hệ một khác, và ⭐ **cùng một hãng cũng đổi giữa các đời phần mềm**.
+Mở tài liệu hệ bạn dùng rồi trả lời bốn câu này — trả lời xong là biết mình đang ở hướng nào:
+
+| # | Câu hỏi | ⭐ Vì sao nó quyết định |
+|---|:--|:--|
+| 1 | Sửa khối trong thư viện thì các dự án đang dùng **tự đổi theo**, hay phải **nhập lại từng cái**? | Phân biệt tham chiếu với chép |
+| 2 | Hệ có ghi **số phiên bản** của khối, và có cho **xem dự án nào dùng bản nào** không? | ⚠ Không có cái này thì "thư viện có phiên bản" chỉ là tên gọi |
+| 3 | Có cách **khoá khối** để người khác không sửa lén không? Khoá rồi thì **còn sửa được gì**? | Quyết định khối có dùng được cho phần an toàn không |
+| 4 | ⚠⚠ **Xoá hoặc đổi tên khối trong thư viện thì chuyện gì xảy ra** với chỗ đang dùng? | ⭐ Đây là câu nguy hiểm nhất, và là câu ít người thử nhất |
+
+> ⭐⭐ **Câu 4 phải thử thật, trên một dự án bỏ đi.** ⚡ Không tài liệu nào mô tả đủ rõ chuyện này, và
+> ⚠ đây là loại chuyện mà **biết vào lúc đang sửa máy chạy sản xuất là quá muộn**.
+
 ### Ba yêu cầu với một khối đáng đưa vào thư viện
 
 | # | Yêu cầu | Vì sao |
@@ -770,6 +826,17 @@ một lớp: analog và chuyển động.
   tài liệu này bàn đúng về cấu trúc chương trình, khối tái dùng và tối ưu vùng nhớ. Số hiệu cụ thể
   ghi trong Phụ lục A1.
 - Quy ước đặt tên và cấu trúc dùng trong sách — Phụ lục C.
+- **Rockwell Automation** — *Logix 5000 Controllers Add-On Instructions* (1756-PM010, bản 9/2025):
+  ⭐ **chữ ký khối** *(instruction signature)* sinh mã định danh duy nhất và **niêm** khối — không sửa
+  được nữa, ⚠ **kể cả chú thích nấc thang và mô tả biến**, cho tới khi gỡ chữ ký; ⭐ **bắt buộc** khi
+  khối tham gia chức năng an toàn mức SIL 3; ⚠ nhưng **không khoá** các khối và kiểu dữ liệu mà nó
+  tham chiếu. Và cách phân phối: **chép/dán giữa các dự án**, hoặc *nhập bản sửa đổi mới* — nền cho
+  cột "chép có kiểm soát" ở mục 30.5.
+- **Siemens** — *Programming Guideline for S7-1200/S7-1500*, ch. 3.7 *Libraries* (§3.7.2 *Type
+  concept*, §3.7.4 *Versioning of a block*): phân biệt **master copy** với ⭐ **type**; type **có
+  phiên bản** và **cập nhật tập trung mọi chỗ dùng**; ⚠⚠ **chỉ một phiên bản của một type trong cùng
+  một bộ điều khiển**, và ⚠⚠ **xoá type thì mọi chỗ dùng bị xoá theo** — nền cho cột "tham chiếu tới
+  kiểu" ở mục 30.5.
 - **Hugh Jack** — *Automating Manufacturing Systems with PLCs*, §32.5 *Documentation*: ⭐ tài liệu
   phải **phát triển cùng dự án**, để tới cuối thì chi tiết đã quên nên vừa lâu hơn vừa thiếu; và cách
   dùng **biểu mẫu để sẵn**, đặt nơi mọi người truy cập và cập nhật được khi máy thay đổi.
