@@ -36,6 +36,33 @@ hay bị nhầm lẫn.
 > Hai chữ khác nhau nhưng đi cùng nhau. Lý do: cảm biến PNP **đẩy** +24 V ra dây tín hiệu, nên module
 > phải **nhận** dòng đó về — tức là sink. Nhớ nhầm cặp này là nguồn gốc của loạt lỗi ở Chương 4.
 
+⭐ Bảng trên nói **cái gì**; hình dưới nói **vì sao** — bằng thứ duy nhất quyết định chuyện này:
+đường đi của dòng điện.
+
+![Ngõ vào kiểu sink và kiểu source](../assets/ch09/hinh_09_1_sink_source.svg)
+
+*Hình 9.1 — Cùng một module, đổi đúng một sợi dây chân chung là đổi cả chiều dòng, và đổi luôn loại
+cảm biến ghép được.*
+
+> ⭐⭐ **Đọc hình theo vòng dòng, đừng học thuộc bảng.** Vòng dòng luôn khép kín từ +24 V về 0 V —
+> nét đỏ trong hình là trọn vòng đó. ⭐ Chỉ cần hỏi một câu: *đoạn dây đi xuyên qua ngõ vào của
+> module chạy theo chiều nào?*
+>
+> ⚡ Chạy **vào** module → module đang **nhận** dòng → **sink** → phía bên kia phải là cảm biến
+> **PNP** (loại đẩy +24 V ra). Chạy **ra** khỏi module → module đang **cấp** dòng → **source** →
+> phía bên kia phải là cảm biến **NPN** (loại kéo dây xuống 0 V).
+>
+> ⭐ Suy được như vậy thì không cần nhớ cặp "sink ↔ PNP" nữa — và cũng không nhớ nhầm được.
+
+> ⭐ **Một chi tiết trong hình đáng để ý, vì nó trả lời một câu hỏi ở mục 9.5.** Cảm biến ba dây nào
+> cũng có **hai chân nguồn** riêng ngoài dây tín hiệu, và ⭐ **một trong hai chân đó nằm luôn trong
+> vòng dòng tín hiệu** — chân +24 V với cảm biến PNP, chân 0 V với cảm biến NPN.
+>
+> ⚡ Nghĩa là dòng mà ngõ vào của module lấy **không đi theo một nhánh riêng**: nó đi xuyên qua chính
+> dây nguồn của cảm biến. ⚠ Datasheet cảm biến thường ghi dòng tiêu thụ **lúc không tải** *(no
+> load)*, nên khi tính nguồn ở mục 9.5 thì dòng ngõ vào **vẫn phải cộng thêm** — chỉ là cộng vào
+> đúng sợi dây đó, không phải một phụ tải mới.
+
 Nhiều module hiện nay là **kiểu chuyển được** *(sink/source selectable)*: đấu chân chung vào 0 V thì
 thành sink, đấu vào +24 V thì thành source. Rất tiện — và cũng là một chỗ dễ đấu sai, vì cùng một
 module có thể hành xử hai kiểu tuỳ cách đấu một sợi dây.

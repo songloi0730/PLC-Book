@@ -521,8 +521,12 @@ quả khác nhau tuỳ máy đang ở đâu. Đó là lúc bảng chân lý hế
 
 - IEC 61131-3 — *Programmable controllers, Part 3: Programming languages*: các phép toán Boolean và
   cách biểu diễn trong LD, FBD, ST. *(tiêu chuẩn có bản quyền)*
-- Giáo trình đại số Boolean và kỹ thuật số cơ bản — dùng cho phần bảng chân lý, De Morgan và bìa
-  Karnaugh. Đây là toán học phổ thông, không gắn với hãng nào.
+- **Kuphaldt, Tony R.** — *Lessons In Electric Circuits, Volume IV: Digital*, ch. 7 *Boolean Algebra*
+  (§7.8 *DeMorgan's Theorems*, §7.9 *Converting truth tables into Boolean expressions*) và ch. 8
+  *Karnaugh Mapping*: nền toán cho các mục bảng chân lý, De Morgan và bìa Karnaugh. ⭐ Sách mở, đọc
+  được toàn văn — đây là chỗ nên tới khi cần **phần chứng minh** mà chương này cố ý lược bớt.
+- Giáo trình đại số Boolean và kỹ thuật số cơ bản nói chung — đây là toán học phổ thông, không gắn
+  với hãng nào; mọi giáo trình kỹ thuật số nhập môn đều dùng được.
 - Đặc tả trình tự và bảng I/O của DP-01 — Phụ lục J; các bảng chân lý ở mục 24.3 và 24.8 lấy điều
   kiện từ đó.
 

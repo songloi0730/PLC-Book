@@ -29,7 +29,7 @@ Chương này **ráp tất cả lại theo thứ tự của một dự án thậ
 |---|---|
 | Chức năng | Tra keo lên board mạch, rồi sấy UV cho keo cứng |
 | Bố trí | ⭐ **Hai trạm nối tiếp** trên một băng tải, không có chỗ đệm giữa hai trạm |
-| Trạm 1 | Gantry 3 trục chạy đường keo (X 0–150 · Y 0–120 · Z 0–50 mm), trục Z dùng servo |
+| Trạm 1 | Gantry 3 trục chạy đường keo (X 0–150 · Y 0–120 · Z 0–50 mm), ⭐ **cả ba trục đều servo** |
 | Trạm 2 | Buồng sấy UV, ⭐ **6–12 s tuỳ công thức** |
 | Board | 100 × 80 mm |
 | Năng suất | ⭐ **300 board/giờ → chu kỳ 12,0 s** |
@@ -146,7 +146,7 @@ Chương trình chính
  ├── Trạm 2 — sấy UV       (máy trạng thái)  ← Ch.21, 27
  ├── Điều phối giữa hai trạm                 ← Ch.26
  ├── Công thức & tham số sản phẩm            ← Ch.32
- ├── Analog, PID gia nhiệt keo               ← Ch.31, 35
+ ├── Analog; giám sát nhiệt qua RS-485       ← Ch.31, 35
  ├── Chuyển động gantry                      ← Ch.37
  ├── Truyền thông: mã 2D, nhiệt, lên trên    ← Ch.38, 42, 45
  ├── Báo động & chẩn đoán                    ← Ch.43, 51
@@ -181,6 +181,69 @@ Chương trình chính
 
 ---
 
+### ⭐⭐ Khung chương trình chính — sơ đồ ở trên viết ra thành mã
+
+Sơ đồ hộp ở đầu mục này nói *có những phần nào*. ⭐ Còn đây là **đúng sơ đồ đó viết thành mã**, với
+tên thật của DP-01. Cả cuốn sách hội tụ về khoảng ba mươi dòng này:
+
+```iecst
+PROGRAM Main          // tác vụ chu kỳ, chạy liên tục — Ch.10, Ch.27 mục 27.6
+
+  Prg_IoRead();        //  1  lọc rung, bắt cạnh, ánh xạ tag        Ch.4, 23
+  Prg_Safety();        //  2  chế độ vận hành, M_AllPermissive      Ch.25, 47
+  Prg_Mechanisms();    //  3  Stop1/Clamp1/Stop2/Clamp2, gantry     Ch.27, 30, 37
+  Prg_AntiCollision(); //  4  tầng chống va chạm                    Ch.27 mục 27.3b
+  Prg_Machine();       //  5  tầng máy: tài nguyên chung, pipeline  Ch.26, 27 mục 27.5
+  Prg_Stn1Dispense();  //  6  trình tự trạm 1                       Ch.21, 26 · khung L.6
+  Prg_Stn2Cure();      //  7  trình tự trạm 2                       Ch.21, 26 · khung L.6
+  Prg_Handshake();     //  8  bắt tay máy trước / máy sau           Ch.41
+  Prg_Recipe();        //  9  nạp tham số của công thức đang chọn   Ch.32
+  Prg_Comm();          // 10  mã 2D, nhiệt RS-485, báo cáo lên trên Ch.38, 42, 45
+  Prg_Alarm();         // 11  báo động và chẩn đoán                 Ch.43, 51
+  Prg_Stats();         // 12  chu kỳ, sản lượng, bộ đếm bảo trì     Ch.53, 55
+  Prg_OutputMap();     // 13  GOM ngõ ra — đúng một chỗ ghi mỗi tag Ch.22, 27 Bẫy 2
+  Prg_Hmi();           // 14  dữ liệu cho màn hình và đèn tháp      Ch.43, 44
+
+END_PROGRAM
+```
+
+Và `Prg_OutputMap` — khối ngắn nhất, nhưng là khối giữ cho chương trình còn đọc được sau ba năm:
+
+```iecst
+// Mỗi ngõ ra xuất hiện ĐÚNG MỘT LẦN trong toàn chương trình, và là ở đây.
+DO_Stop1Vlv  := Stop1.Valve;                      // Ch.27 — FB_Cylinder2Pos
+DO_Clamp1Vlv := Clamp1.Valve;
+DO_UvLamp    := Stn2_UvReq AND M_AllPermissive AND DI_ShutterClosed;
+DO_LampRed   := M_AnyFault;                       // Ch.43 — mẫu đèn tháp L.13
+```
+
+### ⭐ Ba điều trong khung này đáng nói hơn cả danh sách
+
+| Điều | Nội dung |
+|---|---|
+| ⚠⚠ **Không có `IF` nào bao quanh các lệnh gọi** | ⭐ Mọi khối chạy **mỗi vòng quét**. Bọc một lệnh gọi trong `IF` là đóng băng mọi timer bên trong nó, và ⚠ **ngõ ra thì giữ nguyên giá trị cũ** — Ch.17 Bẫy 3, Ch.15 mục 15.4b |
+| ⭐⭐ **Thứ tự KHÔNG tuỳ ý** | Cơ cấu → máy → trạm → ghi ngõ ra (Ch.27 mục 27.6). ⭐ Gọi tầng cơ cấu **trước** để `Done` và `Fault` mà trình tự đọc là **của vòng quét này**, không phải vòng trước |
+| ⭐ **Ghi ngõ ra gom vào một khối cuối** | ⚠ Đây là cách rẻ nhất để bảo đảm *"đúng một chỗ ghi cho mỗi tag"* — dấu hiệu số một của chương trình lành mạnh khi người khác đọc lại (Ch.22 mục 22.2) |
+
+> ⚠⚠ **Thứ tự GỌI khác thứ tự VIẾT.** Bảng ở mục 57.7 ngay dưới đây là thứ tự **viết** — an toàn viết
+> trước vì mọi thứ phụ thuộc nó. ⭐ Còn thứ tự **gọi** là danh sách trên, do luồng dữ liệu trong một
+> vòng quét quyết định. ⚡ Hai thứ tự này khác nhau, và **lẫn lộn chúng là một lỗi kiến trúc thật**.
+
+> ⭐⭐ **Vì sao DP-01 chỉ có MỘT tác vụ.** Danh mục kiểm ở Chương 27 mục 27.8 hỏi: *"có bao nhiêu tác
+> vụ, và mỗi tác vụ thêm có lý do định lượng không?"* ⭐ Câu trả lời của DP-01 là **một** — vì mọi
+> vòng điều khiển liên tục của nó đều đã **giao cho thiết bị chuyên dụng**: biến tần lo tốc độ, servo
+> drive lo vị trí, bộ điều khiển rời lo nhiệt độ keo (mục 35.9, 35.11).
+>
+> ⚡ Đó không phải may mắn — ⭐ đó là **hệ quả trực tiếp của các quyết định ở giai đoạn 2**, và nó đổi
+> lại một chương trình PLC đơn giản hơn hẳn.
+
+> ⭐ **Thân của từng khối thì không lặp lại ở đây.** Trình tự trạm dùng nguyên **khung L.6**; xy-lanh
+> dùng **`FB_Cylinder2Pos`** ở Chương 27 mục 27.3; đèn tháp dùng **L.13**; tự giữ dùng **L.1**. ⚡ Đó
+> chính là điều đáng nói: ⭐ **đến chương này thì không còn gì phải phát minh nữa** — chỉ còn việc
+> ghép các mẫu đã có theo đúng thứ tự.
+
+---
+
 ## 57.7 Giai đoạn 5 — Viết chương trình theo thứ tự
 
 ⭐ **Thứ tự viết không phải thứ tự chương trình chạy.** Viết theo thứ tự phụ thuộc, và luôn giữ được
@@ -196,7 +259,7 @@ một bản chạy được.
 | 6 | Trình tự trạm 2 | | 21 |
 | 7 | ⭐ **Điều phối hai trạm** | ⭐ Chỉ làm được khi đã có cả hai trạm | 26 |
 | 8 | Công thức và tham số | Trình tự đã biết cần tham số nào | 32 |
-| 9 | Analog và PID gia nhiệt | Độc lập với trình tự | 31, 35 |
+| 9 | Analog; giám sát bộ điều khiển nhiệt rời | Độc lập với trình tự | 31, 35 |
 | 10 | Truyền thông: mã 2D, nhiệt, chuyền | Cắm vào trình tự đã có | 38, 41, 42 |
 | 11 | ⭐ **Báo động và chẩn đoán** | ⭐ Viết khi đã biết **cái gì có thể sai** | 43, 51 |
 | 12 | HMI | Cần biết có gì để hiện | 44 |

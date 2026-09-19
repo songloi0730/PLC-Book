@@ -106,6 +106,38 @@ END_IF;
 
 ---
 
+### ⭐ Ba nguyên tắc đó bằng ladder
+
+⭐ Nguyên tắc **"chế độ tay vẫn giữ nguyên liên động"** dễ nói, và ⚠ **rất hay bị vi phạm** — vì ở
+chế độ tay người ta có xu hướng viết thẳng từ nút ra van. Nấc thang đúng trông như sau:
+
+```text
+  M_ManualMode  M_Jog_ClampUp  M_Itf_ClampUp  M_AllPermissive     DO_Clamp1Vlv
+ ─────┤ ├────────────┤ ├────────────┤/├────────────┤ ├───────────────( )───
+```
+
+> ⭐⭐ **Tiếp điểm thứ ba và thứ tư là toàn bộ nội dung của nguyên tắc này.** ⚡ Bỏ `M_Itf_ClampUp`
+> đi thì nấc vẫn chạy, máy vẫn nhúc nhích, và **không ai phát hiện** cho tới lần va chạm đầu tiên.
+> ⭐ Ở ladder, thiếu một tiếp điểm là **nhìn ra được**; ở ST, thiếu một vế `AND` thì không.
+
+⭐ Và nấc giám sát **chỉ một chế độ được bật**:
+
+```text
+  M_AutoMode    M_ManualMode                                      M_ModeFault
+ ─────┤ ├────────────┤ ├──────────────────────────────────────────────( )───
+
+  M_AutoMode    M_ManualMode                                      M_ModeFault
+ ─────┤/├───────────┤/├──────────────────────────────────────────────( )───
+```
+
+> ⭐ Hai nấc cùng ghi vào `M_ModeFault`: nấc trên bắt **cả hai cùng bật**, nấc dưới bắt **không cái
+> nào bật**. ⚠⚠ Nhưng ⭐ **đây chính là cuộn dây trùng** mà Chương 15 Bẫy 1 cấm — nấc sau ghi đè nấc
+> trước. Cách đúng là **gộp hai điều kiện vào một nấc** bằng nhánh song song, hoặc dùng một cờ trung
+> gian cho mỗi nấc rồi `OR` lại.
+>
+> ⚡ Tôi để nguyên hai nấc sai ở đây **có chủ ý**: nó là ví dụ đắt giá cho thấy ⭐ **ladder đọc dễ
+> không có nghĩa là ladder khó sai** — và cuộn dây trùng là lỗi ladder phổ biến nhất.
+
 ## 28.4 Về gốc — thứ tự suy ra từ phân tích, không phải tuỳ ý
 
 Đây là phần cốt lõi của chương.

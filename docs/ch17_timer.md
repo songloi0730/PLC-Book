@@ -110,6 +110,54 @@ của một cơ cấu, để lên lịch bảo trì (Chương 51, mục 51.11).
 
 ---
 
+### ⭐ Cùng ba timer đó, viết bằng ladder
+
+⭐ Ba ví dụ dưới là **đúng ba ví dụ ST ở trên**, vẽ lại thành nấc thang — để đặt cạnh nhau mà so.
+
+```text
+                      ┌──────────────────┐
+                      │  T_AirFault  TON │
+   DI_AirOK           │                  │          M_AirFault
+ ────┤/├──────────────┤ IN             Q ├──────────( )───
+              T#500MS─┤ PT               │
+                      └──────────────────┘
+
+                      ┌──────────────────┐
+                      │  T_FanRun   TOF  │
+   M_HeaterOn         │                  │          DO_ExhaustFan
+ ────┤ ├──────────────┤ IN             Q ├──────────( )───
+                T#30S─┤ PT               │
+                      └──────────────────┘
+
+                      ┌──────────────────┐
+                      │  T_Buzz     TP   │
+   M_NewAlarm         │                  │          DO_Buzzer
+ ────┤ ├──────────────┤ IN             Q ├──────────( )───
+                 T#1S─┤ PT               │
+                      └──────────────────┘
+```
+
+| Ký hiệu trong hộp | Nghĩa |
+|---|---|
+| `IN` | Ngõ vào — ⭐ chính là **điều kiện bên trái nấc thang** |
+| `PT` | Thời gian đặt — thường ghi thẳng dưới `IN` |
+| `Q` | Ngõ ra của timer, nối tiếp ra cuộn dây |
+| `ET` | ⭐ Thời gian đã chạy — nhiều hệ cho thêm chân này, **rất đáng nối ra** để chẩn đoán |
+
+> ⭐⭐ **Hộp timer trong ladder cho một thứ mà ST không cho: xem trực tuyến thấy `ET` chạy.**
+> ⚡ Khi trình tự kẹt, mở màn theo dõi là thấy **con số đang đếm lên** — biết ngay máy đang chờ chứ
+> không phải treo. ⭐ Đây là lý do đáng đưa timeout của bước ra ladder, dù phần còn lại viết bằng ST
+> (Phụ lục L.18).
+
+> ⚠⚠ **Ba cái bẫy ở mục 17.6 KHÔNG biến mất khi chuyển sang ladder** — và hai trong ba còn **khó
+> thấy hơn**:
+>
+> | Bẫy | Ở ladder thì sao |
+> |---|---|
+> | Bẫy 3 — timer nằm trong nhánh không được thực thi | ⚠⚠ **Khó thấy hơn ST.** Hộp nằm trong vùng `MCR` bị tắt thì nó **không được gọi**, và nấc thang trông vẫn hoàn toàn bình thường (Chương 15 mục 15.4b) |
+> | Bẫy 5 — dùng chung một thể hiện | ⚠⚠ **Rất dễ mắc hơn ST**, vì chép–dán một nấc thang mà **quên đổi tên hộp** là thao tác một giây |
+> | Bẫy 2 — timer bị đặt lại ngoài ý muốn | Ở ladder nhìn ra dễ hơn: điều kiện đặt lại **chính là** phần bên trái nấc |
+
 ## 17.3 Độ phân giải và sai số
 
 Timer trong PLC **không phải đồng hồ độc lập**. Nó được cập nhật **mỗi lần khối timer được gọi** — tức
@@ -354,6 +402,15 @@ OUTHS T5  K20   →  20 ×   1 ms  =  0,02 giây
 có cách nào khác** để xoá ngoài lệnh `RES`. Quên `RES` thì timer chạy đủ một lần rồi báo xong mãi
 mãi. Ngoài ra `.PRE` là **số nguyên mili-giây**, không phải hằng số kiểu `T#`.
 
+> ⚡ **Một cập nhật đáng biết, vì nó đang xoá dần khác biệt vừa nêu.** ⭐ Tài liệu lệnh bản 9/2025
+> thêm kiểu dữ liệu **`TIMER_T`**, trong đó `.PRE` và `.ACC` mang **kiểu `TIME`** chứ không còn là
+> `DINT` mili-giây, và hiển thị theo đơn vị thời gian (ngày · giờ · phút · giây · ms · µs) —
+> ⭐ **không phải tự quy đổi ra mili-giây nữa**. Kiểu này có trên các dòng bộ điều khiển đời mới.
+>
+> ⚠ Nhưng kiểu `TIMER` cũ **vẫn tồn tại song song**, và vẫn là `DINT` mili-giây. ⭐⭐ Nên khi đọc
+> chương trình, **phải nhìn kiểu của chính biến timer** — đừng suy từ tên hãng. ⚡ Lệnh `RES` xoá
+> `.ACC` và các bit trạng thái cho **cả hai** kiểu.
+
 **3. Siemens — khối IEC cần một khối dữ liệu thể hiện.** Mỗi `TON` là một thể hiện có bộ nhớ riêng,
 khai báo trong khối dữ liệu. Đây là hệ quả trực tiếp của quy tắc "mỗi chỗ dùng một thể hiện riêng"
 (Chương 20, Bẫy 7) — hệ ép bạn làm đúng, và đó là điều tốt.
@@ -422,5 +479,12 @@ ngưỡng mà đếm bằng phần mềm không còn khả thi — chương sau 
 - Tài liệu hãng về khối timer và timer giữ giá trị — dùng để đối chiếu khác biệt ở mục 17.7; số hiệu
   cụ thể ghi trong Phụ lục A2.
 - Bảng thời gian bước của DP-01 — Phụ lục J.
+- **Rockwell Automation** — *Logix 5000 Controllers General Instructions* (bản 9/2025), ch. 3
+  *Timer and Counter Instructions*: phân biệt timer ⭐ **giữ được** (`RTO`, `RTOR`) với timer
+  **không giữ** (`TON`, `TOF`, `TONR`, `TOFR`); ⚠ lệnh `RES` là cách xoá `.ACC` và các bit trạng
+  thái; và ⭐ kiểu dữ liệu **`TIMER_T`** mới — `.PRE` / `.ACC` mang kiểu `TIME` thay cho `DINT`
+  mili-giây — nền cho mục 17.7.
+- **Siemens** — *S7-1200 System Manual*: khối timer IEC cần **khối dữ liệu thể hiện** riêng cho mỗi
+  chỗ dùng; dùng cho điểm 3 của mục 17.7.
 > ⚡ Mọi con số thời gian trong chương (0,6 s cho hành trình kẹp, 3 s timeout, 500 ms lọc khí) là **giá
 > trị minh hoạ của máy mẫu**. Giá trị thật phải đo trên máy của bạn.

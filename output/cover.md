@@ -7,7 +7,7 @@
 
 | | |
 |---|---|
-| **Phiên bản** | v1.0.0.260918 |
+| **Phiên bản** | v1.0.0.260920 |
 | **Tác giả** | AI & songloi0730 |
 | **Xuất bản** | 09/2026 |
 | **Giấy phép** | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) |

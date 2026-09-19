@@ -2174,6 +2174,116 @@ Yêu cầu của chủ dự án: ⭐ *"thêm các ví dụ viết bằng ladder 
 
 ---
 
+## Đợt 48 — 2026-09-20 · Rà từng chương: ladder cho bốn chương thiếu, hai hình mới, khung DP-01, năm nguồn
+
+Yêu cầu của chủ dự án: ⭐ *"đánh giá lại từng chương xem có gì có thể bổ sung, chỉnh sửa không"*, rồi
+⭐ *"làm hết theo thứ tự"* — nên đợt này thực hiện trọn danh sách A→E đã đề xuất.
+
+> ⭐⭐ **Cách chọn việc của đợt này: ĐO, không đọc lại.** Đọc lại 58 chương lần thứ tư sẽ tìm ra
+> đúng những thứ ba lần trước đã tìm. Ba phép đo mới được dùng:
+>
+> | Phép đo | Cái nó lộ ra |
+> |---|---|
+> | Đếm **số khối ladder / số khối ST** từng chương | ⚠ Bốn chương dạy trực tiếp về ladder mà **không có khối ladder nào** |
+> | Đếm **số chương trỏ tới** một chương, đối chiếu **số hình** chương đó có | ⚠ Ch.9 (13 chương trỏ tới) và Ch.36 (14 chương trỏ tới) đều **không có hình** |
+> | Đếm **số lần nhật ký này nhắc tới** từng chương | ⚠ Ch.57 là chương tổng kết mà **không có một dòng mã nào** |
+
+### A — Bốn chương dạy ladder mà không có ladder
+
+| # | Chương | Bổ sung | KQ |
+|---|---|:--|:--:|
+| 324 | ⚠ **Ch.17** — cả chương về timer, ba ví dụ đều là ST | Ba hộp `TON` / `TOF` / `TP` vẽ lại **đúng ba ví dụ ST đã có**, kèm bảng chân `IN`/`PT`/`Q`/`ET`. ⭐⭐ Và điểm ladder hơn ST ở đây: **xem trực tuyến thấy `ET` đếm lên** — biết máy đang chờ chứ không treo | ➕➕ |
+| 325 | ⭐⭐ Ch.17 — ba bẫy của chính chương **không biến mất** khi sang ladder | Bảng đối chiếu: ⚠⚠ Bẫy 3 (hộp nằm trong vùng `MCR` bị tắt) và Bẫy 5 (chép–dán quên đổi tên hộp) **khó thấy hơn ở ladder**; chỉ Bẫy 2 là dễ thấy hơn | ➕➕ |
+| 326 | ⚠ **Ch.18** — bộ đếm | Hộp `CTU` với chân `CV` **nối ra thanh ghi** — để người vận hành thấy con số mà không cần mở phần mềm lập trình. Kèm ⚠⚠ bẫy chỉ có ở ladder: **cực tính chân `R` khác nhau giữa các hãng** | ➕➕ |
+| 327 | ⚠⚠ **Ch.26** — bảng của chính chương ghi *"bit bước hợp với **Ladder**"*, và bất biến nói *"bật bit mới, tắt bit cũ trong CÙNG một nấc"* — mà **chưa từng vẽ nấc đó ra** | Hai nấc `( S )` / `( R )` trên cùng một nấc thang, cộng nấc **giám sát bất biến**. ⭐ Khoảng khắc hai bit cùng bật nếu tách hai nấc — nay nhìn thấy được | ➕➕ |
+| 328 | ⚠ **Ch.28** — nguyên tắc *"chế độ tay vẫn giữ nguyên liên động"* | Nấc thang giữ đủ tiếp điểm liên động. ⭐ Ở ladder, **thiếu một tiếp điểm là nhìn ra được**; ở ST, thiếu một vế `AND` thì không | ➕➕ |
+| 329 | ⭐⭐ Ch.28 — thêm **hai nấc CỐ Ý SAI** | Hai nấc cùng ghi `M_ModeFault` = **cuộn dây trùng**, đúng thứ Ch.15 Bẫy 1 cấm. Để nguyên có chủ ý, vì nó chứng minh ⭐ **ladder dễ đọc không có nghĩa là ladder khó sai** | ➕➕ |
+| 330 | ⚠ Bốn khối đầu tiên **vẽ lệch cột** — nhãn ngõ ra đè lên cạnh phải của hộp | Sửa bằng cách bắt hàm sinh nhãn **phát cả hai cạnh hộp trước** rồi mới ghi nhãn bên ngoài; kiểm lại bằng script: cạnh trái cột 22, cạnh phải cột 41 ở **mọi** khối. ⭐ Cùng bài học đợt 47 — hình bằng ký tự thì "nhìn" nghĩa là "đo" | ⚠ |
+
+### B — Hình 9.1: sink / source
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 331 | ⚠ Ch.9 có **13 chương trỏ tới** — nhóm cao nhất sách — mà **không có hình nào**, trong khi mục 9.2 đúng là *đường đi của dòng điện*, tiêu chí số một của bất biến **B13** | ⚠ |
+| 332 | ⭐ Hình hai khung: sink và source, khác nhau **đúng một sợi dây chân chung**, và từ đó khác chiều dòng | ➕➕ |
+| 333 | ⭐⭐ **Sửa sau khi render PNG ra xem:** bản đầu vẽ **một chân nguồn của cảm biến bằng nét xám**, trong khi chân đó **nằm trong vòng dòng tín hiệu** (chân +24 V với PNP, chân 0 V với NPN). ⚠ Vòng dòng bị hở về mặt thị giác — mâu thuẫn với chính chú giải của hình. Đã vẽ đỏ trọn vòng | ⚠ |
+| 334 | ⭐ Ghi chú kèm hình trả lời một câu hỏi của mục 9.5: dòng ngõ vào **không đi nhánh riêng** mà xuyên qua dây nguồn cảm biến; ⚠ nhưng datasheet thường ghi dòng tiêu thụ **lúc không tải** nên **vẫn phải cộng thêm** | ➕ |
+
+### C — Ch.57 có mã: khung chương trình chính của DP-01
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 335 | ⚠ Ch.57 là **chương tổng kết cả sách** mà không có một dòng mã nào — chỉ có sơ đồ hộp | ⚠ |
+| 336 | ⭐⭐ Thêm **khung `PROGRAM Main`** 14 lệnh gọi, mỗi dòng chú thích chương nguồn; và khối `Prg_OutputMap` bốn dòng. ⭐ *"Đến chương này thì không còn gì phải phát minh — chỉ còn ghép các mẫu đã có theo đúng thứ tự"* | ➕➕ |
+| 337 | ⭐⭐ Ba điểm đi kèm: ⚠⚠ **không `IF` nào bao quanh lệnh gọi** (Ch.17 Bẫy 3) · thứ tự **cơ cấu → máy → trạm → ghi ngõ ra** không tuỳ ý (Ch.27 mục 27.6) · ghi ngõ ra gom một khối cuối = *"đúng một chỗ ghi mỗi tag"* (Ch.22) | ➕➕ |
+| 338 | ⭐⭐ Làm rõ một chỗ dễ lẫn: **thứ tự GỌI khác thứ tự VIẾT**. Mục 57.7 là thứ tự **viết** (an toàn trước); danh sách mới là thứ tự **gọi** (luồng dữ liệu trong một vòng quét) | ➕➕ |
+| 339 | ⚠⚠ **Bản nháp đầu có HAI tác vụ** — tác vụ 500 ms cho PID nhiệt keo. ⭐ Tra lại trước khi viết thì thấy **Ch.35 mục 35.11 nói thẳng**: *"DP-01 gần như không có vòng PID nào do PLC chạy"* — nhiệt keo do **bộ điều khiển rời RS-485** lo. Đã bỏ, và biến thành điểm dạy: DP-01 chỉ **một** tác vụ, vì mọi vòng liên tục đã giao cho thiết bị chuyên dụng | ⚠ |
+| 340 | ⚠ **Ch.57 tự mâu thuẫn với Phụ lục J**: mục 57.2 ghi *"trục Z dùng servo"* (ngụ ý chỉ Z), bảng I/O cùng chương ghi *"cả ba đều servo"*, Phụ lục J §J.1 và bảng trục cũng ghi **cả ba servo**. Sửa 57.2 | ⚠ |
+| 341 | ⚠ Sơ đồ hộp mục 57.6 và bảng mục 57.7 đều ghi *"Analog, **PID gia nhiệt keo**"* — trái với mục 35.11. Sửa cả hai thành *"giám sát nhiệt qua RS-485"* | ⚠ |
+
+### D — Hình 36.1: ba tháng trôi dạt
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 342 | ⚠ Ch.36 có **14 chương trỏ tới** mà **không có hình nào** | ⚠ |
+| 343 | ⭐⭐ Hình bốn băng theo thời gian: **lệnh đặt phẳng 70 %** · tốc độ thực tụt xuống 64 % · dòng động cơ leo lên 92 % · cờ *"đang giới hạn dòng"* bật dần. ⭐ Cả ba băng dưới đều **có sẵn trong biến tần**; PLC chỉ thấy băng trên cùng, và băng trên cùng thì phẳng | ➕➕ |
+| 344 | ⭐ Đường **"mốc"** trong hình gắn thẳng với mục 36.11 Bẫy 8: ⚡ **không ghi giá trị lúc nghiệm thu thì có đọc về cũng không biết đã trôi bao nhiêu** | ➕➕ |
+| 345 | ⚠ Kèm cảnh báo cách đọc sai: hình này **không nói biến tần hỏng**. Biến tần đang làm đúng chức năng bảo vệ; ⭐⭐ cái sai nằm ở **thiết kế đường thông tin** | ➕ |
+
+### E — Năm chương được thêm nguồn, và mỗi nguồn kéo theo nội dung
+
+⭐⭐ **Nguyên tắc tự đặt cho mục này: không thêm nguồn để trang trí.** Mỗi nguồn thêm vào phải
+**chống lưng cho một đoạn có thật** — nên bốn trong năm chương được thêm nội dung luôn.
+
+| # | Chương | Nguồn (đã xác minh bằng `tra_nguon.py`) | Nội dung kéo theo | KQ |
+|---|---|:--|:--|:--:|
+| 346 | **Ch.1** | ⭐ Kuphaldt, *Lessons In Industrial Instrumentation* §12.10 *How to teach yourself PLC programming* | ⭐⭐ Mục mới ở 1.8: **bốn việc theo thứ tự** (có PLC riêng · đọc *Getting Started* trước · **tự lắp bàn thực hành** · viết chương trình mẫu bé cho từng lệnh) và ⭐ **năm mục phải ghi trong chú thích**, trong đó có ⚠⚠ *lỗi mình đã mắc* | ➕➕ |
+| 347 | **Ch.11** | Siemens, *Programming Guideline for S7-1200/1500* ch. 2.6 *Optimized blocks* | ⭐ Mục mới ở 11.8: khối **tối ưu** chỉ truy cập theo tên · ⚠ khối chuẩn **đọc một bit thì khoá cả byte** · 64 kB so với 16 MB · ⚠⚠ **chép dữ liệu giữa hai kiểu tốn nhiều thời gian xử lý**. ⭐ Nối thẳng với mục 11.1: *"khối tối ưu không có địa chỉ tuyệt đối để mà dùng sai"* | ➕➕ |
+| 348 | **Ch.17** | Rockwell, *Logix 5000 Controllers General Instructions* bản 9/2025, ch. 3 | ⚡ Cập nhật cho mục 17.7: kiểu **`TIMER_T`** mới có `.PRE`/`.ACC` kiểu `TIME` — khác biệt *"Rockwell đếm bằng số nguyên mili-giây"* **đang mất dần**. ⚠ Nhưng kiểu `TIMER` cũ vẫn song song, nên ⭐⭐ **phải nhìn kiểu của biến, đừng suy từ tên hãng** | ➕ |
+| 349 | **Ch.24** | Kuphaldt, *Lessons In Electric Circuits Vol. IV: Digital* ch. 7 (§7.8 DeMorgan, §7.9 bảng chân lý → biểu thức) và ch. 8 *Karnaugh Mapping* | ⭐ Thay dòng *"giáo trình đại số Boolean nói chung"* bằng một nguồn **mở, đọc được toàn văn** — chỗ để tới khi cần phần chứng minh mà chương cố ý lược | ➕ |
+| 350 | **Ch.26** | Mitsubishi, *MELSEC iQ-F FX5 Programming Manual (Program Design)* ch. 8 và phần *step relay* | ⭐ Mục 26.2a mới: có hãng coi bit bước là **một loại thiết bị** (`S`), kèm bảng ưu/nhược so với cờ nhớ thường, và ⚠⚠ bẫy trong ST — **không gán thẳng** `M0 := S0;` mà phải viết bằng `IF … THEN … ELSE` | ➕➕ |
+
+### Kết quả đợt 48
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **27** |
+| ➕➕ Bổ sung giá trị cao | 15 |
+| ➕ Bổ sung | 5 |
+| ⚠ Sửa lỗi / sửa mâu thuẫn | 7 |
+| Hình mới | 2 — Hình 9.1, Hình 36.1 |
+| Mục mới | 4 — Ch.1 §1.8, Ch.11 §11.8, Ch.26 §26.2a, Ch.57 §57.6 |
+| Chương nay có khối ladder | **+4** (Ch.17, 18, 26, 28) |
+| Nguồn ngoài mới được dẫn | 5 |
+
+> ⭐⭐ **Bài học 1 — ba phép đếm khác nhau tìm ra ba nhóm thiếu sót khác nhau.**
+>
+> Ba lượt rà trước đều là *đọc lại*, và lượt sau tìm ra ít hơn lượt trước. Đợt này đổi sang **đếm**:
+> đếm khối ladder tìm ra Ch.17/18/26/28; đếm chương-trỏ-tới so với số hình tìm ra Ch.9/36; đếm số
+> lần nhật ký nhắc tới từng chương tìm ra Ch.57. ⚡ **Không phép đếm nào trong ba phép trên tìm ra
+> nhóm của hai phép kia.**
+>
+> ⭐ Suy ra cho các đợt sau: khi một cách rà bắt đầu cho ít kết quả, ⚠ đừng rà kỹ hơn — **đổi thước
+> đo**.
+
+> ⚠⚠ **Bài học 2 — tra sách TRƯỚC khi viết, không phải sau.**
+>
+> Khung chương trình DP-01 suýt có hai tác vụ, trong đó tác vụ thứ hai chạy một vòng PID mà ⚠ **máy
+> mẫu này không hề có** — Ch.35 mục 35.11 đã nói rõ từ lâu. ⭐ Cái cứu được là thói quen `grep`
+> chính cuốn sách trước khi đặt bút, đúng thói quen đã cứu Phụ lục L ở đợt 47.
+>
+> ⚡ Và lần tra đó **còn tìm thêm hai chỗ tự mâu thuẫn sẵn có** trong Ch.57 (số trục servo; PID nhiệt
+> keo) — ⭐ tức là việc tra để **viết đúng** cũng là việc rà soát, nếu tra đủ rộng.
+
+> ⭐ **Bài học 3 — hình phải render ra xem, mỗi lần.**
+>
+> Hình 9.1 bản đầu vẽ đúng về mặt sơ đồ nhưng ⚠ **sai về mặt kể chuyện**: chú giải nói *"nét đỏ là
+> vòng dòng"* trong khi một đoạn của vòng dòng lại là nét xám. ⚡ Đọc mã sinh hình **không** thấy
+> được điều đó; nhìn ảnh thì thấy ngay. Đây là lần thứ ba bài học này xuất hiện (đợt 35, 47, 48) —
+> ⭐ nên nó đã thành quy trình: **sinh SVG → render PNG → nhìn → sửa**, không bỏ bước nào.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

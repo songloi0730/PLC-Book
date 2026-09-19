@@ -1,0 +1,47 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 500' width='900' height='500'>
+<rect width='900' height='500' fill='#FFFFFF'/>
+<text x='24' y='34' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='16' font-weight='700' fill='#1A1D21' text-anchor='start'>Hình 36.1 — Ba tháng trôi dạt, và vì sao không ai thấy</text>
+<text x='24' y='56' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='12' font-weight='400' fill='#565E66' text-anchor='start'>Cùng một cỗ máy, cùng một quãng thời gian. Ba đại lượng dưới đây đều CÓ SẴN trong biến tần; PLC chỉ nhìn được đường trên cùng.</text>
+<rect x='196' y='92' width='632' height='54' rx='3' fill='#F4F5F7' stroke='#9AA3AB' stroke-width='1'/>
+<text x='24' y='110' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1A1D21' text-anchor='start'>Lệnh đặt tốc độ</text>
+<text x='24' y='125' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='start'>AO_ConvSpeed — PLC ghi ra</text>
+<polyline points='196.0,109.5 206.0,109.5 216.1,109.5 226.1,109.5 236.1,109.5 246.2,109.5 256.2,109.5 266.2,109.5 276.3,109.5 286.3,109.5 296.3,109.5 306.3,109.5 316.4,109.5 326.4,109.5 336.4,109.5 346.5,109.5 356.5,109.5 366.5,109.5 376.6,109.5 386.6,109.5 396.6,109.5 406.7,109.5 416.7,109.5 426.7,109.5 436.8,109.5 446.8,109.5 456.8,109.5 466.9,109.5 476.9,109.5 486.9,109.5 497.0,109.5 507.0,109.5 517.0,109.5 527.0,109.5 537.1,109.5 547.1,109.5 557.1,109.5 567.2,109.5 577.2,109.5 587.2,109.5 597.3,109.5 607.3,109.5 617.3,109.5 627.4,109.5 637.4,109.5 647.4,109.5 657.5,109.5 667.5,109.5 677.5,109.5 687.6,109.5 697.6,109.5 707.6,109.5 717.7,109.5 727.7,109.5 737.7,109.5 747.7,109.5 757.8,109.5 767.8,109.5 777.8,109.5 787.9,109.5 797.9,109.5 807.9,109.5 818.0,109.5 828.0,109.5' fill='none' stroke='#2E7D4F' stroke-width='2.4'/>
+<text x='820' y='100' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#2E7D4F' text-anchor='end'>70 %</text>
+<text x='512' y='122' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='700' fill='#2E7D4F' text-anchor='middle'>PLC ghi 70 % và không bao giờ đổi — nhìn từ PLC thì mọi thứ vẫn bình thường</text>
+<rect x='196' y='162' width='632' height='60' rx='3' fill='#F4F5F7' stroke='#9AA3AB' stroke-width='1'/>
+<text x='24' y='180' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1A1D21' text-anchor='start'>Tốc độ thực của động cơ</text>
+<text x='24' y='195' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='start'>biến tần đo được, PLC không đọc</text>
+<line x1='196' y1='180' x2='828' y2='180' stroke='#B8860B' stroke-width='1.4' stroke-dasharray='6,4'/>
+<text x='834' y='184' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='700' fill='#B8860B' text-anchor='start'>mốc 70 %</text>
+<polyline points='196.0,180.2 206.0,180.2 216.1,180.2 226.1,180.2 236.1,180.2 246.2,180.3 256.2,180.3 266.2,180.4 276.3,180.5 286.3,180.6 296.3,180.7 306.3,180.8 316.4,180.9 326.4,181.0 336.4,181.2 346.5,181.3 356.5,181.5 366.5,181.7 376.6,181.9 386.6,182.1 396.6,182.3 406.7,182.5 416.7,182.7 426.7,183.0 436.8,183.2 446.8,183.5 456.8,183.7 466.9,184.0 476.9,184.3 486.9,184.6 497.0,184.9 507.0,185.2 517.0,185.6 527.0,185.9 537.1,186.3 547.1,186.6 557.1,187.0 567.2,187.4 577.2,187.8 587.2,188.2 597.3,188.6 607.3,189.0 617.3,189.5 627.4,189.9 637.4,190.4 647.4,190.9 657.5,191.3 667.5,191.8 677.5,192.3 687.6,192.8 697.6,193.4 707.6,193.9 717.7,194.5 727.7,195.0 737.7,195.6 747.7,196.1 757.8,196.7 767.8,197.3 777.8,197.9 787.9,198.6 797.9,199.2 807.9,199.8 818.0,200.5 828.0,201.1' fill='none' stroke='#C0392B' stroke-width='2.4'/>
+<text x='820' y='218' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#C0392B' text-anchor='end'>64 %</text>
+<rect x='196' y='238' width='632' height='60' rx='3' fill='#F4F5F7' stroke='#9AA3AB' stroke-width='1'/>
+<text x='24' y='256' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1A1D21' text-anchor='start'>Dòng động cơ (% Iđm)</text>
+<text x='24' y='271' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='start'>biến tần đo được, PLC không đọc</text>
+<line x1='196' y1='282' x2='828' y2='282' stroke='#B8860B' stroke-width='1.4' stroke-dasharray='6,4'/>
+<text x='834' y='286' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='700' fill='#B8860B' text-anchor='start'>mốc 55 %</text>
+<polyline points='196.0,282.3 206.0,282.3 216.1,282.3 226.1,282.2 236.1,282.2 246.2,282.1 256.2,282.0 266.2,281.9 276.3,281.8 286.3,281.7 296.3,281.6 306.3,281.4 316.4,281.2 326.4,281.1 336.4,280.9 346.5,280.7 356.5,280.4 366.5,280.2 376.6,279.9 386.6,279.7 396.6,279.4 406.7,279.1 416.7,278.8 426.7,278.5 436.8,278.1 446.8,277.8 456.8,277.4 466.9,277.0 476.9,276.6 486.9,276.2 497.0,275.8 507.0,275.4 517.0,274.9 527.0,274.4 537.1,274.0 547.1,273.5 557.1,273.0 567.2,272.4 577.2,271.9 587.2,271.3 597.3,270.8 607.3,270.2 617.3,269.6 627.4,269.0 637.4,268.3 647.4,267.7 657.5,267.1 667.5,266.4 677.5,265.7 687.6,265.0 697.6,264.3 707.6,263.6 717.7,262.8 727.7,262.1 737.7,261.3 747.7,260.5 757.8,259.7 767.8,258.9 777.8,258.1 787.9,257.2 797.9,256.4 807.9,255.5 818.0,254.6 828.0,253.7' fill='none' stroke='#C0392B' stroke-width='2.4'/>
+<text x='820' y='244' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='700' fill='#C0392B' text-anchor='end'>92 %</text>
+<rect x='196' y='314' width='632' height='26' rx='3' fill='#FFFFFF' stroke='#9AA3AB' stroke-width='1'/>
+<text x='24' y='326' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#1A1D21' text-anchor='start'>Bit "đang giới hạn dòng"</text>
+<text x='24' y='340' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9.5' font-weight='400' fill='#565E66' text-anchor='start'>biến tần bật cờ này, PLC không đọc</text>
+<rect x='524.6' y='318' width='25.3' height='18' fill='#B03A2E' opacity='0.85'/>
+<rect x='587.8' y='318' width='31.6' height='18' fill='#B03A2E' opacity='0.85'/>
+<rect x='644.7' y='318' width='44.2' height='18' fill='#B03A2E' opacity='0.85'/>
+<rect x='714.2' y='318' width='113.8' height='18' fill='#B03A2E' opacity='0.85'/>
+<text x='834' y='331' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='9' font-weight='700' fill='#B03A2E' text-anchor='start'>bật</text>
+<line x1='196' y1='346' x2='828' y2='346' stroke='#1A1D21' stroke-width='1.4'/>
+<line x1='196' y1='346' x2='196' y2='352' stroke='#1A1D21' stroke-width='1.4'/>
+<text x='196' y='366' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='start'>nghiệm thu</text>
+<line x1='404' y1='346' x2='404' y2='352' stroke='#1A1D21' stroke-width='1.4'/>
+<text x='404' y='366' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='middle'>tháng 1</text>
+<line x1='613' y1='346' x2='613' y2='352' stroke='#1A1D21' stroke-width='1.4'/>
+<text x='613' y='366' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='middle'>tháng 2</text>
+<line x1='828' y1='346' x2='828' y2='352' stroke='#1A1D21' stroke-width='1.4'/>
+<text x='828' y='366' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='400' fill='#565E66' text-anchor='end'>tháng 3</text>
+<text x='512' y='384' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='700' fill='#B03A2E' text-anchor='middle'>⚠ Triệu chứng duy nhất mà nhà máy nhìn thấy: chu kỳ máy dài thêm khoảng 8 %</text>
+<rect x='24' y='404' width='852' height='82' rx='3' fill='#FDF6E7' stroke='#B8860B' stroke-width='1.3'/>
+<text x='38' y='428' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11.5' font-weight='700' fill='#7A5B08' text-anchor='start'>⭐⭐ Không có gì hỏng, và không có báo động nào nổ. Biến tần đang làm ĐÚNG việc của nó: giảm tốc để khỏi quá dòng.</text>
+<text x='38' y='450' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#1A1D21' text-anchor='start'>⭐ Ba đường dưới cùng nằm sẵn trong biến tần suốt ba tháng. Thứ thiếu không phải phép đo — mà là ĐƯỜNG ĐỌC VỀ.</text>
+<text x='38' y='470' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='11' font-weight='400' fill='#1A1D21' text-anchor='start'>⚡ Và đường "mốc" màu vàng là thứ phải ghi lại lúc nghiệm thu: không có mốc thì có đọc về cũng không biết đã trôi bao nhiêu.</text>
+</svg>

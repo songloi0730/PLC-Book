@@ -65,6 +65,31 @@ BoardInTray := C_Board.CV;
 > Đừng suy ra rằng vấn đề đã hết. Khối đếm bắt được cạnh, nhưng **cạnh giả thì nó vẫn đếm** — đó là
 > đúng cỗ máy ở mục 18.1, và là nội dung mục 18.4.
 
+### ⭐ Cùng khối đếm đó, viết bằng ladder
+
+```text
+                      ┌──────────────────┐
+                      │  C_Board     CTU │
+   DI_BoardStn1       │                  │          M_TrayFull
+ ────┤ ├──────────────┤ CU             Q ├──────────( )───
+   DI_ResetPB         │                  │
+ ────┤ ├──────────────┤ R             CV ├──────────► BoardInTray
+                   50─┤ PV               │
+                      └──────────────────┘
+```
+
+> ⭐⭐ **Chân `CV` nối ra một thanh ghi là thứ nên làm ngay từ đầu.** ⚡ Nó cho người vận hành thấy
+> **con số đang đếm tới đâu** mà không cần mở phần mềm lập trình — và cho người chẩn đoán biết bộ
+> đếm có nhích hay không.
+>
+> ⚠ Nhắc lại cảnh báo ở trên, vì ở ladder nó **dễ quên hơn**: chân `CU` đã tự bắt cạnh, nhưng
+> ⭐ **cạnh giả thì nó vẫn đếm** — mục 18.4.
+
+> ⚠⚠ **Và một bẫy chỉ có ở ladder:** ⭐ **cực tính chân `R` khác nhau giữa các hãng** (mục 18.6b).
+> Ở ST bạn viết rõ `R := DI_ResetPB`; ở ladder, một số hệ đặt lại khi nấc **thông**, số khác khi nấc
+> **hở**. ⚠ Nối nhầm thì bộ đếm **bị xoá mỗi vòng quét** và luôn đọc bằng 0 — hoặc **không bao giờ
+> xoá được**.
+
 ### CTUD — khi con số cần giảm
 
 CTU trả lời *"đã có bao nhiêu board đi qua?"*. Nhiều bài toán lại cần *"đang có bao nhiêu board trong

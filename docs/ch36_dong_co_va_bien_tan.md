@@ -23,6 +23,22 @@ lại gì.
 Chương này về động cơ và biến tần từ góc nhìn người lập trình PLC. Và câu hỏi trung tâm không phải
 "đặt tốc độ thế nào", mà **"làm sao biết nó có chạy đúng không"**.
 
+![Ba tháng trôi dạt mà không ai thấy](../assets/ch36/hinh_36_1_troi_dat.svg)
+
+*Hình 36.1 — Cùng một cỗ máy trong ba tháng. Ba đại lượng dưới đều nằm sẵn trong biến tần; PLC chỉ
+nhìn được đại lượng trên cùng, và đại lượng trên cùng thì phẳng.*
+
+> ⭐⭐ **Hình này là toàn bộ chương, gói trong một trang.** ⭐ Hỏng hóc kiểu *trôi dạt* không có thời
+> điểm bắt đầu, không có báo động, và ⚠ **không ai nhận ra bằng cách nhìn máy chạy** — vì hôm nay
+> luôn giống hôm qua. Chỉ có **so với một mốc** mới thấy.
+>
+> ⚡ Hai thứ hình đòi hỏi, và cả hai đều rẻ: **một đường đọc về** (mục 36.5, 36.8) và **một con số
+> ghi lại lúc nghiệm thu** (mục 36.11 Bẫy 8).
+
+> ⚠ **Đừng đọc hình này thành "biến tần hỏng".** ⭐ Biến tần đang làm đúng chức năng bảo vệ: tải nặng
+> lên thì nó giảm tốc để khỏi quá dòng — nếu không nó đã nhảy lỗi và dừng chuyền. ⭐⭐ Cái sai nằm ở
+> **thiết kế đường thông tin**, không nằm ở thiết bị.
+
 ---
 
 ## 36.2 Động cơ ba pha — đủ dùng

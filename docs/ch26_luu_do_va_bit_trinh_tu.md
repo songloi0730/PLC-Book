@@ -121,6 +121,69 @@ Cần chèn một bước giữa 20 và 30? Dùng 25. Không phải sửa gì kh
 
 ---
 
+### ⭐ Bit bước bằng ladder — nấc thang mà bảng trên nói tới
+
+Bảng ở trên ghi *bit bước hợp với **Ladder***, và quy tắc bất biến nói *"bật bit mới và tắt bit cũ
+trong cùng một nấc"*. ⭐ Đây là nấc thang đó:
+
+```text
+   S1_10       DI_Stop1Up                                        S1_20
+ ────┤ ├───────────┤ ├────────────────────────────┬────────────────( S )──
+                                                  │               S1_10
+                                                  └────────────────( R )──
+
+   S1_20       DI_Clamp1Up                                        S1_30
+ ────┤ ├───────────┤ ├────────────────────────────┬────────────────( S )──
+                                                  │               S1_20
+                                                  └────────────────( R )──
+```
+
+⭐ Đọc: *"đang ở bước 10 **và** chặn đã lên → sang bước 20, đồng thời tắt bước 10."*
+
+> ⭐⭐ **Vì sao hai cuộn `( S )` và `( R )` phải nằm trên CÙNG một nấc:** nếu tách ra hai nấc, giữa
+> hai nấc đó ⚠ **có một khoảnh khắc hai bit cùng bật** — và mọi nấc thang đọc bit bước nằm giữa
+> chúng sẽ thấy trạng thái không hợp lệ.
+>
+> ⚡ Đây chính là **bất biến "một bước bật, mọi bước khác tắt"** ở trên, viết ra thành hình.
+
+⭐ Và nấc giám sát bất biến — **luôn có, không bao giờ bỏ**:
+
+```text
+   [ ĐẾM số bit bước đang bật ]  →  Stn1_StepCount
+
+   Stn1_StepCount <> 1                                          M_SeqFault
+ ────────┤ ├─────────────────────────────────────────────────────( )───
+```
+
+> ⚠⚠ **Không có nấc giám sát này thì bit bước là cách viết nguy hiểm.** ⭐ Với biến số bước, bất biến
+> **do kiểu dữ liệu bảo đảm**; với bit bước, **không ai bảo đảm cả** — một lỗi làm hai bit cùng bật
+> thì hai nhánh trình tự chạy song song, và triệu chứng là máy làm những việc **không theo thứ tự
+> nào**.
+>
+> ⚡ Đây là cái giá thật của việc chọn bit bước, và nó là lý do Chương 25 mục 25.4 khuyên cân nhắc
+> kỹ trước khi chọn.
+
+## 26.2a ⭐ Có hãng coi bit bước là một LOẠI THIẾT BỊ riêng
+
+⭐ Ở mục trên, bit bước là những cờ nhớ thường mà bạn tự đặt tên (`S1_10`, `S1_20`…). ⚡ Nhưng có
+hãng đưa hẳn khái niệm này xuống tầng thiết bị: Mitsubishi có loại thiết bị **`S` — *step relay***,
+sinh ra đúng để làm bit bước, dùng kèm chương trình SFC.
+
+| | Bit bước bằng **cờ nhớ thường** | Bit bước bằng **thiết bị chuyên dụng** |
+|---|---|---|
+| Ưu | ⭐ Chạy ở **mọi hệ**, không phụ thuộc hãng; đặt tên tuỳ ý | Công cụ của hãng **hiểu** nó: xem trạng thái bước, gỡ rối trình tự |
+| Nhược | ⚠ Không công cụ nào biết đó là bit bước — bạn **tự giám sát bất biến** | ⚠⚠ **Khoá vào một hãng**, và có **luật dùng riêng** phải nhớ |
+
+> ⚠⚠ **Và đây là một cái bẫy rất cụ thể của loại thiết bị đó.** ⭐ Trong ST, gán thẳng
+> `M0 := S0;` **không hợp lệ** — phải viết `IF S0 THEN M0 := TRUE; ELSE M0 := FALSE; END_IF;`.
+> ⚠ Với dạng chỉ định theo cụm, còn phải **khai đúng kích thước dữ liệu** nữa.
+>
+> ⚡ ⭐ Bài học tổng quát, không phải bài học về một hãng: **khi một khái niệm được hạ xuống thành
+> thiết bị riêng, nó được công cụ hỗ trợ tốt hơn nhưng cũng mang theo luật riêng.** ⚠ Đọc tài liệu
+> lệnh trước khi dùng — đừng suy từ thói quen với cờ nhớ thường.
+
+---
+
 ## 26.2b ⭐ Phương pháp thứ hai — và biết KHI NÀO nó hợp lệ mới là phần khó
 
 Cách ở mục trên — lưu đồ rồi bit bước — là cách **mặc định đúng** cho máy tự động hoá. Nhưng có một
@@ -544,6 +607,12 @@ hai trạm chạy song song, dùng chung một chuyền — và chương này đ
   tiếp, nhánh song song và nhánh lựa chọn) — mô hình khái niệm cho chương này; lệnh `CASE` và khối
   `TON`. *(tiêu chuẩn có bản quyền; chương này chỉ diễn giải ở mức khái niệm)*
 - Đặc tả trình tự hai trạm và bảng thời gian bước của DP-01 — Phụ lục J.
+- **Mitsubishi Electric** — *MELSEC iQ-F FX5 Programming Manual (Program Design)*, ch. 8 *SFC
+  Program* và phần *step relay*: ⭐ loại thiết bị **`S`** dành riêng cho bit bước, và ⚠⚠ luật dùng
+  trong ST — **không gán thẳng** `M0 := S0;` mà phải viết bằng `IF … THEN … ELSE … END_IF`; với dạng
+  chỉ định theo cụm thì phải khai đúng kích thước dữ liệu — nền cho mục 26.2a.
+- **Rockwell Automation** — *Logix5000 Controllers Sequential Function Charts*: nhánh song song và
+  điểm hợp nhất, dùng để đối chiếu ở mục 26.5.
 - **Hugh Jack** — *Automating Manufacturing Systems with PLCs*, ch. 10 *Structured Logic Design*:
   phương pháp **bit trình tự** theo các bước đánh số, và ⭐ **thiết kế theo sơ đồ thời gian** kèm
   ⚠⚠ **điều kiện áp dụng**: chỉ hợp lệ cho quy trình *"phụ thuộc duy nhất vào thời gian"* — nền cho

@@ -384,6 +384,30 @@ Mitsubishi cho dùng nhãn, nhưng mô hình nền vẫn là **thiết bị** (`
   độ rộng bộ đếm (Chương 18);
 - tài liệu và chương trình cũ đều nói bằng ngôn ngữ thiết bị.
 
+### ⭐ Siemens — "khối tối ưu", và cái giá của việc trộn hai kiểu
+
+S7-1200/1500 cho khối dữ liệu **hai kiểu truy cập**: **chuẩn** *(standard)* và ⭐ **tối ưu**
+*(optimized)*. ⚠ Đây không phải một tuỳ chọn hình thức — nó đổi cả cách dữ liệu nằm trong bộ nhớ.
+Bảng dưới là hành vi hãng nêu cho **S7-1500**:
+
+| | Khối **chuẩn** | Khối **tối ưu** |
+|---|---|---|
+| Cách truy cập | Cả **tên** lẫn **địa chỉ tuyệt đối** | ⭐⭐ **Chỉ truy cập theo tên** — không có địa chỉ để mà dùng |
+| Sắp xếp byte | Kiểu cũ; CPU đời mới **phải đổi thứ tự byte** mỗi lần đọc | Khớp sẵn kiến trúc CPU, **không phải đổi** |
+| Đọc một bit | ⚠ CPU đọc **cả byte** rồi che — và **khoá cả byte đó** với truy cập khác | Mỗi bit được cấp một byte riêng, **không phải che** |
+| Kích thước tối đa một khối | 64 kB | ⭐ tới 16 MB |
+
+> ⭐⭐ **Phần đáng nhớ nhất không nằm trong bảng: đừng chép dữ liệu qua lại giữa hai kiểu.** ⚠ Hãng
+> nói thẳng rằng phép chuyển đổi định dạng giữa khối tối ưu và khối chuẩn **tốn nhiều thời gian xử
+> lý**, và khuyến nghị **dùng khối tối ưu cho mọi thứ**.
+>
+> ⚡ Nghĩa là một quyết định trông như chuyện cấu hình — *"khối này để chuẩn cho tiện xem địa chỉ"* —
+> có thể thành **một khoản phí thời gian quét trả lại mỗi vòng**, suốt vòng đời máy.
+
+> ⭐ **Chú ý mối liên hệ với mục 11.1:** khối tối ưu **không có địa chỉ tuyệt đối để mà dùng sai**.
+> ⚡ Cùng một cách chặn lỗi như Rockwell, đến từ một hướng hoàn toàn khác — và cả hai cho thấy
+> ⭐ **cách chặn lỗi rẻ nhất là làm cho lỗi đó không viết ra được**.
+
 Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
 
 ---
@@ -504,6 +528,13 @@ một sợi dây mang một bit, cảm biến gửi cả tham số và trạng t
 - Tài liệu lập trình của từng hệ trong Phụ lục A — dùng cho bảng ở mục 11.8: mô hình tag và địa chỉ,
   nơi chứa dữ liệu, cách khai báo biến giữ được. Đây là chỗ khác nhau nhiều nhất giữa các hãng.
 - Bảng I/O của DP-01 — Phụ lục J; khối khai báo ở mục 11.7 lấy tên tag từ đó.
+- **Siemens** — *Programming Guideline for S7-1200/S7-1500*, ch. 2.6 *Optimized blocks*: ⭐ khối tối
+  ưu **chỉ truy cập được theo tên**; bảng đối chiếu cách lưu dữ liệu trên S7-1500 (có phải đổi thứ
+  tự byte không, ⚠ **đọc một bit thì khoá cả byte** ở khối chuẩn, kích thước tối đa 64 kB so với
+  16 MB); và ⚠⚠ khuyến nghị **tránh chép dữ liệu giữa khối tối ưu và khối chuẩn** vì phép chuyển đổi
+  định dạng **tốn nhiều thời gian xử lý** — nền cho mục 11.8.
+- **Rockwell Automation** — *Logix 5000 Controllers General Instructions* (bản 9/2025): dùng cho
+  hàng "kiểu tự nhiên `DINT`" và mô hình chỉ-có-tag ở bảng mục 11.8.
 
 > ⚡ Quy ước đặt tên ở mục 11.3 là **quy ước của sách này**, không phải chuẩn. Đơn vị của bạn có thể
 > đã có quy ước riêng — và nếu vậy thì **quy ước của đơn vị thắng**. Điều quan trọng không phải chọn

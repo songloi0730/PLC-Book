@@ -335,6 +335,29 @@ thử được. Có bốn đường, khác nhau về chi phí và độ giống 
 tư, sơ đồ đấu, công tắc gạt làm ngõ vào, đèn làm ngõ ra. **Phụ lục G** liệt kê các phần mềm miễn phí
 kèm giới hạn bản quyền thật của từng cái.
 
+### ⭐⭐ Cách tự học đã được kiểm chứng — bốn việc, theo đúng thứ tự
+
+⭐ Có một lối tự học được người dạy nghề đo lường – điều khiển mô tả rất gọn, và nó khác hẳn lối
+"đọc hết sách rồi mới làm":
+
+| Thứ tự | Việc | ⭐ Vì sao đúng thứ tự đó |
+|---|---|---|
+| 1 | **Có một con PLC của riêng bạn** | ⚡ Lập trình **không phải môn thể thao để xem**; chỉ học được bằng thời gian gõ thật |
+| 2 | ⭐ Đọc **tài liệu "Getting Started"** của chính con PLC đó trước tiên | Hãng nào cũng có; nó dẫn bạn qua trọn một vòng nạp – chạy – lưu |
+| 3 | ⭐⭐ Tự lắp một **bàn thực hành**: công tắc làm ngõ vào, đèn làm ngõ ra | ⭐ Học đấu mạch vào/ra **quan trọng ngang** học viết chương trình — Chương 13 |
+| 4 | Viết **chương trình mẫu bé xíu cho từng lệnh**, mỗi lệnh một bài | ⚡ Kiểu *"Hello World"* của nghề PLC: vô dụng khi chạy, cực kỳ có ích khi học |
+
+> ⭐⭐ **Việc thứ tư có một phần mà hầu hết người học bỏ qua: CHÚ THÍCH cho chính mình.** ⭐ Với mỗi
+> chương trình mẫu, ghi lại **năm thứ**: cách dùng đúng · lệnh này làm gì (bằng lời của bạn) · dùng
+> được vào việc thật nào · ⚠ **chỗ nó hành xử lạ** · ⚠⚠ **lỗi bạn đã mắc khi thử nó**.
+>
+> ⚡ Bộ chương trình mẫu có chú thích đó về sau thành **sổ tay riêng của bạn** — và mục thứ năm,
+> danh sách lỗi đã mắc, là mục có giá trị nhất, vì lỗi đã mắc một lần thì rất dễ mắc lại.
+
+> ⭐ **Vì sao "sửa ví dụ có sẵn" dễ hơn "bắt đầu từ trang trắng":** giống hệt học một ngoại ngữ —
+> người ta tập nói lại câu của người khác trước, rồi mới tự đặt câu. ⚡ Cuốn sách này được viết theo
+> đúng giả định đó: mọi chương đều có mã mẫu để bạn chép, chạy, rồi phá ra xem.
+
 > ⚡ **LƯU Ý**
 > Thông tin về bản quyền và giá phần mềm **thay đổi liên tục**. Mọi mục trong Phụ lục G đều ghi ngày
 > kiểm tra; trước khi tải, hãy tự xác nhận lại điều kiện hiện hành.
@@ -424,3 +447,12 @@ trung lập hãng, chọn máy mẫu, quy ước song ngữ) được ghi trong 
 
 - IEC 61131-3 — *Programmable controllers, Part 3: Programming languages*. Tiêu chuẩn có bản quyền;
   sách chỉ diễn giải ở mức khái niệm và **không thay thế bản gốc**.
+- **Kuphaldt, Tony R.** — *Lessons In Industrial Instrumentation*, §12.10 *How to teach yourself PLC
+  programming*: ⭐ trình tự tự học bốn bước ở mục 1.8 — **có PLC của riêng mình** · đọc tài liệu
+  *Getting Started* trước · ⭐ **tự lắp bàn thực hành** (công tắc làm ngõ vào) vì học đấu mạch vào/ra
+  quan trọng ngang học viết chương trình · viết chương trình mẫu bé cho **từng lệnh** kiểu
+  *"Hello World"*; và ⭐⭐ **năm mục phải ghi trong chú thích** của mỗi chương trình mẫu, trong đó có
+  ⚠ *hành vi lạ* và ⚠⚠ *lỗi mình đã mắc*. Cũng là nguồn cho phép so sánh **học lập trình ≈ học một
+  ngoại ngữ**: tập nói lại câu của người khác trước khi tự đặt câu.
+- **AutomationDirect** — *PLC Handbook*: phần dẫn nhập PLC là gì và dùng vào việc gì — nền cho cách
+  đặt vấn đề ở mục 1.1. Phần chọn bộ điều khiển của tài liệu này dùng ở Chương 13.
