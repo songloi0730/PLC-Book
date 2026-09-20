@@ -297,6 +297,60 @@ Ba điều cần biết khi đo cường độ UV:
 
 ---
 
+## 33.8b ⭐⭐ Đọc được cái tên ghi trên bản vẽ: `TT-101`, `PSH-205`
+
+⭐ Mọi thiết bị đo trong mục này, khi lên **bản vẽ của khách** hoặc lên **datasheet**, đều mang một
+cái tên theo cùng một quy ước. ⚠ Không đọc được nó thì bạn không biết cái hộp trên bản vẽ là **cảm
+biến**, **bộ hiển thị** hay **công tắc** — dù cả ba đều đo cùng một đại lượng.
+
+```text
+        T  T  -  1 0 1
+        │  │     └──── số hiệu vòng đo
+        │  └────────── CHỨC NĂNG:  T = truyền tín hiệu đi  (transmitter)
+        └───────────── ĐẠI LƯỢNG:  T = nhiệt độ            (temperature)
+```
+
+| Chữ **đầu** — đo đại lượng gì | | Chữ **sau** — nó làm gì |
+|---|---|---|
+| **T** nhiệt độ | | **E** phần tử cảm biến — ⭐ cái chạm vào quá trình |
+| **P** áp suất, chân không | | **T** truyền tín hiệu đi *(transmitter)* |
+| **F** lưu lượng | | **I** hiển thị tại chỗ |
+| **L** mức | | ⭐ **S** công tắc — ⚠ chỉ cho **một bit**, không cho giá trị |
+| **S** tốc độ, tần số | | **C** bộ điều khiển |
+| **W** khối lượng, lực | | **A** báo động |
+| ⭐ **Z** vị trí, kích thước | | **V** van, cửa chắn |
+| **A** phân tích | | **Y** rơ-le, khối tính toán |
+
+⭐ Ghép lại thì đọc được ngay, và **thêm `H` / `L` ở cuối là ngưỡng cao / thấp**:
+
+| Tên | Đọc là | ⭐ Với người lập trình nghĩa là |
+|---|---|---|
+| `TE-101` | Phần tử đo nhiệt độ | Chính cái RTD hoặc can nhiệt (mục 33.3) |
+| `TT-101` | Bộ truyền tín hiệu nhiệt độ | ⭐ Cho ra **4–20 mA** → một kênh `AI_` |
+| ⭐ `PSH-205` | Công tắc áp suất, ngưỡng **cao** | ⚠ Chỉ **một bit** → một kênh `DI_`, **không đọc được giá trị** |
+| `LSL-310` | Công tắc mức, ngưỡng **thấp** | Một kênh `DI_` |
+| `FIC-402` | Bộ điều khiển lưu lượng có hiển thị | ⭐ Thiết bị **rời** tự điều khiển — mục 35.9 |
+| `ZS-12` | Công tắc vị trí | Reed xy-lanh, công tắc hành trình (Chương 4) |
+
+> ⭐⭐ **Vì sao chữ thứ hai quan trọng với bạn hơn chữ thứ nhất:** ⚡ nó quyết định **kênh loại nào**
+> trên bảng I/O của bạn. `PT` là **analog**, `PS` là **số** — cùng đo áp suất, nhưng hai dòng khác
+> nhau hoàn toàn trong Phụ lục C.1, hai module khác nhau, hai cách xử lý khác nhau.
+>
+> ⚠ Đọc nhầm `PSH` thành `PT` khi lập bảng I/O là mua nhầm module — và phát hiện lúc đấu tủ.
+
+> ⭐ **Phạm vi: quy ước này đến từ ngành quá trình** (nhà máy hoá chất, thực phẩm, nước), nơi bản vẽ
+> công nghệ dùng nó triệt để. ⚡ Máy lắp ráp rời rạc **thường không vẽ bản vẽ kiểu đó** — nhưng
+> ⭐ **datasheet của thiết bị đo thì vẫn dùng các chữ này**, và khách hàng ngành quá trình thì đưa
+> bản vẽ kiểu đó cho bạn.
+>
+> ⚠ Đây là **quy ước đọc hiểu**, không phải quy ước đặt tên tag trong chương trình — tag trong
+> chương trình vẫn theo Chương 23 và Phụ lục C.1. ⚠⚠ **Đừng trộn hai hệ tên.** ⭐ Ngay trên máy
+> mẫu: công tắc áp suất khí nén mang tên **`PSL`** trên bản vẽ của người thiết kế khí nén, còn
+> trong chương trình nó là **`DI_AirOK`** — ⭐ và **bảng I/O là chỗ duy nhất ghi cả hai cạnh
+> nhau** (Phụ lục C.1, cột ghi chú).
+
+---
+
 ## 33.9 ⭐ Bảng chọn — đo cái gì, dùng loại nào, bẫy gì
 
 | Đo cái gì | Loại thường dùng | ⚠ Bẫy chính |
@@ -490,6 +544,10 @@ biệt hữu ích trong lắp ráp điện tử: **lực theo hành trình** —
 
 ### Nguồn tham khảo chương 33
 
+- **Bryan, L.A. & Bryan, E.A.** — *Programmable Controllers: Theory and Implementation*,
+  Phụ lục D *P&ID Symbols*: bảng **chữ định danh thiết bị đo** — chữ đầu chỉ đại lượng, chữ
+  sau chỉ chức năng (E phần tử · T truyền · I hiển thị · S công tắc · C điều khiển · A báo
+  động · V van · Y rơ-le/tính toán) — nền cho mục 33.8b.
 - IEC 60751 — *Industrial platinum resistance thermometers and platinum temperature sensors*: đặc
   tính Pt100/Pt1000, hệ số nhiệt, và cấp chính xác. *(tiêu chuẩn có bản quyền)*
 - IEC 60584 (bộ) — *Thermocouples*: các loại can nhiệt, bảng chuyển đổi điện áp–nhiệt độ, dung sai,

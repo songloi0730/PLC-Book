@@ -2661,6 +2661,79 @@ Phụ lục C và D; và ⭐ không phải đánh số lại 58 chương.
 
 ---
 
+## Đợt 53 — 2026-09-20 · Đối chiếu MỤC LỤC sách này với mục lục các sách giáo khoa cùng ngành
+
+⭐ Đợt 52 rút ra: **mọi thước đo nội bộ chỉ đo những gì sách đã có, so với nhau**. Đợt này dùng tiếp
+một thước **bên ngoài**, và là thước rẻ nhất trong loại đó: ⭐⭐ **so mục lục sách này với mục lục các
+sách giáo khoa PLC kinh điển** — thứ mà bộ chỉ mục nguồn (`chi_muc_nguon.json`, 72 tài liệu, 13024
+mục) cho làm chỉ bằng một lệnh.
+
+### A — Chương mà ba sách giáo khoa đều có, sách này không có
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 438 | ⭐ **Petruzella** dành hẳn *"Chapter 3 — Number Systems and Codes"* ở **cả ba bản** (6th ed · bản 2025 · Activities Manual); **Bryan & Bryan** có *"Chapter 2 — Number Systems and Codes"*; **Hugh Jack** có *"13. NUMBERS AND DATA"*. ⚠⚠ Sách này: **hex 0 tệp · BCD 0 tệp · mã Gray 0 tệp** | ⚠⚠ |
+| 439 | ⭐ Kiểm xem đây có phải chủ đề *"chỉ có trong trường"* không — và **không phải**: tra bộ tài liệu hãng cho thấy **BCD là lệnh hạng nhất** trong tập lệnh của các hãng phổ biến ở Việt Nam. Đếm số chỗ khớp: **H3U 76 · H5U 41 · tài liệu Mitsubishi 15** | ⚠⚠ |
+| 440 | ⭐⭐ Và hãng còn cho hẳn **lệnh chuyên dụng cho thiết bị BCD**: đọc thẳng **công tắc xoay số**, xuất thẳng ra **đèn bảy đoạn**, giải mã bảy đoạn — cộng một họ lệnh quy đổi: nhị phân ↔ BCD, hex ↔ ASCII, tách/gộp byte, tách/gộp 4 bit. ⚡ Nghĩa là người mới làm với các hệ đó **gặp BCD ngay tuần đầu** | ⚠⚠ |
+| 441 | ⭐ Ngược lại, hai chủ đề khác trong mục lục các sách đó thì **bỏ đúng**: *Fuzzy Logic* (Bryan ch.17, Hugh Jack ch.26) và *Artificial Intelligence and PLC Systems* (Bryan ch.16) — ⭐ không thuộc phạm vi máy lắp ráp rời rạc | ✔ |
+| 442 | ⭐ Và ba chủ đề tưởng thiếu thì **đã có**: *Sequencer* và *Shift Register* (Ch.19 mục 19.6, Ch.25), *Open Controllers* (Ch.2, 13), *Internet* (Ch.45) | ✔ |
+
+### B — Mục 19.5b mới: ba kiểu mã hoá, và cái bẫy của BCD
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 443 | ⭐ Viết theo hướng **thực dụng, không phải hướng trường học**: mỗi kiểu mã mở đầu bằng ***"bạn gặp nó ở đâu"*** — hex ở mã lỗi và mặt nạ bit; BCD ở công tắc xoay số, đèn bảy đoạn và thiết bị đời cũ; Gray ở bộ mã hoá vị trí tuyệt đối | ➕➕ |
+| 444 | ⭐⭐ **Cái bẫy trung tâm, và nó thuộc loại tệ nhất — kết quả sai mà TRÔNG HỢP LÝ**: BCD `25` đọc như nhị phân ra **37**; BCD `99` ra **153**. ⭐ Không báo lỗi, không giá trị vô lý. ⚡ Triệu chứng nhận ra được: **con số luôn lớn hơn giá trị thật, và sai số tăng dần theo giá trị** | ➕➕ |
+| 445 | ⭐ Hai điều thực dụng về BCD: nó **phí bit** (16 bit chứa 0–65535 ở nhị phân nhưng chỉ **0–9999** ở BCD), và ⚠ **không được tính toán trên BCD**. Kèm lý do nó vẫn tồn tại: ⭐ **đổi thẳng ra chữ số hiển thị mà không cần phép chia** — đèn bảy đoạn là mạch điện, không phải máy tính | ➕➕ |
+| 446 | ⭐⭐ **Mã Gray giải thích bằng cơ chế, không bằng định nghĩa**: ở bộ mã hoá tuyệt đối, các bit đọc từ **các rãnh khác nhau trên cùng một đĩa**; qua ranh giới 7→8 nhị phân đổi **cả bốn bit** và chúng **không bao giờ đổi đúng cùng lúc** — khoảnh khắc đó đọc về có thể là **bất kỳ số nào từ 0 tới 15**. ⭐ Với Gray chỉ một bit đổi nên chỉ có thể ra **7 hoặc 8** | ➕➕ |
+| 447 | ⭐ Và phần thực tế đi kèm: ⚡ **thường bạn không phải tự giải mã Gray** — module đã làm. ⚠ Nhưng đặt sai cấu hình Gray/nhị phân thì **vị trí nhảy loạn đúng ở các ranh giới**, một triệu chứng rất dễ bị đổ cho cơ khí | ➕➕ |
+| 448 | ⭐⭐ Bảng chọn bốn kiểu theo bất biến **B18**, và một quy tắc rút gọn: ⭐ **quy đổi về nhị phân NGAY TẠI BIÊN, bên trong chương trình chỉ dùng nhị phân** — ⚡ cùng nguyên tắc với tín hiệu analog ở Chương 32 | ➕➕ |
+| 449 | ⭐ Thêm **Bẫy 10** ở Ch.19 và **một hàng mới trong Phụ lục E.5b** cho triệu chứng đó — nhóm E.5b vừa dựng ở đợt 51 nhận thêm nội dung ngay đợt sau | ➕ |
+| 450 | ⚠ **Hai bộ kiểm bắt lỗi của tôi ngay khi viết.** Bộ kiểm **lát cắt**: dùng chữ *"Modbus"* và *"biến tần"* (lát cắt 3–4) trong Ch.19 (lát cắt 1). Bộ kiểm **tag**: tôi bịa tag `DI_AirPressHigh` không có trong bảng I/O chính thức — ⭐ thay bằng tag thật của máy mẫu, `DI_AirOK`, và ví dụ còn hay hơn vì đó **đúng là một công tắc áp suất** | ⚠ |
+
+### C — Mục 33.8b mới: đọc được cái tên trên bản vẽ của khách
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 451 | ⭐ **Bryan & Bryan Phụ lục D** có bảng đầy đủ **chữ định danh thiết bị đo** (`TT-101`, `PSH-205`). Sách này có cả một chương về cảm biến quá trình (Ch.33) mà ⚠ **không nhắc quy ước đó một lần nào** | ⚠ |
+| 452 | ⭐⭐ Viết gọn thành một mục, và xoáy vào điều có ích nhất cho **người lập trình**: ⚡ **chữ thứ hai quan trọng hơn chữ thứ nhất**, vì nó quyết định kênh loại nào. `PT` là **analog**, `PS` là **số** — cùng đo áp suất, hai dòng khác hẳn nhau trong bảng I/O, hai module khác nhau | ➕➕ |
+| 453 | ⚠ Kèm cảnh báo ranh giới: đây là **quy ước ĐỌC HIỂU**, không phải quy ước đặt tên tag. ⭐ `PSH-205` là tên trên bản vẽ, `DI_AirPressHigh` là tên trong chương trình, và **bảng I/O là chỗ ghi cả hai cạnh nhau** | ➕ |
+| 454 | ⭐ Và ghi rõ phạm vi thật: quy ước này đến từ **ngành quá trình**; máy lắp ráp rời rạc thường không vẽ bản vẽ kiểu đó — ⚡ **nhưng datasheet thiết bị đo thì vẫn dùng**, và khách ngành quá trình thì đưa bản vẽ kiểu đó cho bạn | ✔ |
+
+### Kết quả đợt 53
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **17** |
+| ➕➕ Bổ sung giá trị cao | 8 |
+| ➕ Bổ sung | 2 |
+| ⚠⚠ Lỗ hổng lớn phát hiện | 3 chủ đề (hex · BCD · mã Gray) + quy ước tên thiết bị đo |
+| ⚠ Lỗi của tôi, bộ kiểm bắt được | 2 |
+| ✔ Xác nhận không có vấn đề | 3 |
+| Mục mới | 2 — Ch.19 mục 19.5b, Ch.33 mục 33.8b |
+| Nguồn ngoài mới được dẫn | 1 (Bryan & Bryan Phụ lục D) |
+
+> ⭐⭐ **Bài học 1 — mục lục của sách khác là thước đo bên ngoài rẻ nhất có thể có.**
+>
+> Đợt 52 tìm ra lỗ hổng nhờ một câu hỏi từ người thật. ⚡ Nhưng không phải lúc nào cũng có câu hỏi
+> đó. ⭐ Bộ chỉ mục nguồn đã nằm sẵn trong kho từ lâu và **chưa lần nào được dùng theo cách này**:
+> in mục lục cấp 1 của bốn sách giáo khoa cùng ngành, rồi hỏi ⭐⭐ ***"chương nào họ có mà mình
+> không?"*** — mất vài phút, ra ngay một chương mà **cả ba sách đều có**.
+>
+> ⚠ Và nó cũng cho câu trả lời ngược, quan trọng không kém: **Fuzzy Logic** và **AI** thì cả hai
+> sách kia đều có mà bỏ đúng — ⭐ **không phải cái gì sách khác có cũng là thiếu sót**.
+
+> ⚠⚠ **Bài học 2 — "nghe như chủ đề trường học" là một thiên kiến, và nó có cách kiểm.**
+>
+> Hex, BCD, mã Gray bị bỏ vì **chúng nghe như bài giảng năm nhất**. ⭐ Phép kiểm để bác bỏ thiên
+> kiến đó rất cụ thể: ⚡ **tra chính bộ tài liệu hãng xem nó có bao nhiêu lệnh dành cho chủ đề
+> này**. Kết quả: BCD có mặt **76 lần** trong một tập lệnh, kèm lệnh chuyên dụng cho công tắc xoay
+> số và đèn bảy đoạn.
+>
+> ⭐ Một chủ đề mà **hãng dành hẳn lệnh riêng** thì không thể là chủ đề chỉ có trong trường.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

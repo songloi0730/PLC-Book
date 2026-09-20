@@ -201,6 +201,7 @@ sản lượng, bộ đếm, thời gian, giá trị tính toán.
 | Hai bộ định thời **ảnh hưởng lẫn nhau** | ⭐ Dùng chung **một thể hiện** — chép nấc thang mà quên đổi tên khối | 14 mục 14.3 · 17 mục 17.6 |
 | ⭐ Đổi công thức nhưng máy **vẫn chạy tham số cũ** | Tham số nạp một lần lúc khởi động; hoặc đổi giữa chu trình nên chưa có hiệu lực | ⭐ **29 mục 29.5** |
 | ⚠ Cùng một chương trình, **hai máy cho hai kết quả** | Độ phân giải bộ định thời theo **thiết bị/lệnh**; hoặc thời gian quét khác nhau | 17 mục 17.7 · 10 · 56 mục 56.4 |
+| ⭐⭐ Con số **luôn lớn hơn** giá trị thật, ⭐ **sai số tăng dần theo giá trị** (25→37, 99→153) | ⚠⚠ **Giá trị BCD bị đọc như nhị phân** — thiết bị đời cũ, công tắc xoay số | ⚠ **19 mục 19.5b** |
 | Con số trên màn hình **khác** con số trong PLC | Quy đổi thang ở phía màn hình; hoặc đọc biến khác | 44 · 32 mục 32.3 |
 
 > ⭐⭐ **Phép thử rẻ nhất cho cả nhóm này: đặt một bộ đếm thứ hai lên tín hiệu CHƯA lọc, rồi hiển thị

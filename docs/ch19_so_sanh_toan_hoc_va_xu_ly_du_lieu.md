@@ -302,6 +302,112 @@ lệnh mặc định của mỗi hệ khác nhau. Với một chiều dài đo�
 
 ---
 
+## 19.5b ⭐⭐ Cùng một con số, ba kiểu mã hoá — và chuyện gì xảy ra khi đọc nhầm kiểu
+
+⚠ Mục này nghe như bài học ở trường. ⭐ Nó không phải — ba kiểu mã dưới đây bạn gặp **trong công
+việc hằng ngày**, và đọc nhầm kiểu là một lớp lỗi cho ra **con số sai mà trông hợp lý**.
+
+| Kiểu mã | ⭐ Bạn gặp nó ở đâu trong thực tế |
+|---|---|
+| **Thập lục phân** *(hexadecimal)* | ⭐⭐ **Mã lỗi** của CPU và của thiết bị · địa chỉ thanh ghi khi trao đổi dữ liệu · mặt nạ bit · địa chỉ thiết bị trên mạng |
+| **BCD** *(binary coded decimal)* | ⭐ Công tắc xoay số *(thumbwheel)* · đèn bảy đoạn · ⚠ **thiết bị đời cũ báo giá trị qua mạng** |
+| **Mã Gray** *(Gray code)* | ⭐ **Bộ mã hoá vị trí tuyệt đối** — và một số cảm biến vị trí nhiều bit |
+
+### ⭐ Thập lục phân — thứ bạn phải đọc được, không phải thứ phải tính nhẩm
+
+⭐ Mỗi chữ số hex = **đúng 4 bit**, nên nó là cách viết gọn của một chuỗi bit:
+
+```text
+   Bit:   0010 0101 1010 1111
+   Hex:     2    5    A    F      →  16#25AF
+```
+
+> ⭐⭐ **Vì sao nó tiện hơn thập phân trong nghề này:** ⚡ nhìn `16#25AF` là **thấy ngay bit nào bật**
+> theo từng nhóm bốn; nhìn `9647` thì không thấy gì cả. ⭐ Đó là lý do mọi tài liệu hãng viết mã lỗi
+> và mặt nạ bit bằng hex.
+>
+> ⚠ **Cách viết khác nhau giữa các hệ** — `16#25AF` theo chuẩn IEC, `H25AF` hoặc `25AFh` ở hệ khác.
+> ⭐ Cùng một con số; đừng nhầm cách viết với kiểu dữ liệu.
+
+### ⚠⚠ BCD — và cái bẫy cho ra con số sai mà trông hợp lý
+
+⭐ BCD mã hoá **từng chữ số thập phân bằng 4 bit riêng**. Số 25 trong BCD **không phải** là 25 ở
+dạng nhị phân:
+
+```text
+   Số thập phân:        2        5
+   BCD (4 bit mỗi số):  0010     0101
+   Gộp lại:             0010 0101
+
+   ⭐ Máy đọc chuỗi bit đó THEO BCD   →  25   ✓ đúng
+   ⚠ Máy đọc chuỗi bit đó THEO NHỊ PHÂN →  37   ✗ sai
+```
+
+> ⚠⚠ **Đây là cái bẫy, và nó là loại bẫy tệ nhất: kết quả sai nhưng TRÔNG HỢP LÝ.** ⭐ Không có báo
+> lỗi, không có giá trị vô lý — chỉ là một con số khác. ⚡ Và nó **lệch nhiều hơn khi giá trị lớn
+> hơn**: BCD `99` đọc nhầm thành nhị phân cho ra **153**.
+>
+> ⭐ Triệu chứng đặc trưng để nhận ra: ⭐⭐ **con số đọc về luôn LỚN HƠN giá trị thật, và sai số tăng
+> dần theo giá trị** — xem **Phụ lục E.5b**.
+
+**Hai điều nữa về BCD, cả hai đều thực dụng:**
+
+| Điều | Nội dung |
+|---|---|
+| ⭐ **Nó phí bit** | Một từ 16 bit chứa được **0–65535** ở nhị phân, nhưng chỉ **0–9999** ở BCD (bốn chữ số). ⚠ Vượt 9999 là tràn, sớm hơn bạn tưởng |
+| ⭐⭐ **Đừng tính toán trên BCD** | Quy đổi về nhị phân → tính → quy đổi lại khi hiển thị. ⚠ Cộng hai số BCD như cộng nhị phân cho ra rác |
+
+> ⭐ **Vì sao BCD vẫn còn tồn tại dù phí bit:** ⚡ vì nó **đổi thẳng ra chữ số hiển thị** mà không
+> cần phép chia. Đèn bảy đoạn và công tắc xoay số là mạch điện, không phải máy tính — với chúng,
+> mỗi chữ số một nhóm bốn bit là cách rẻ nhất.
+
+### ⭐ Mã Gray — và vì sao nó tồn tại
+
+⭐ Trong mã Gray, ⭐⭐ **hai giá trị liền nhau chỉ khác nhau đúng MỘT bit**:
+
+```text
+   Thập phân   Nhị phân      Mã Gray
+       6         0110          0101
+       7         0111          0100
+       8         1000   ⚠       1100        ← nhị phân đổi CẢ BỐN bit
+```
+
+> ⚠⚠ **Vấn đề mà mã Gray giải:** ở bộ mã hoá vị trí tuyệt đối, các bit được đọc từ **các rãnh khác
+> nhau trên cùng một đĩa**. ⭐ Khi đĩa quay qua ranh giới 7→8, bốn bit phải đổi **cùng một lúc** —
+> ⚠ mà thực tế chúng không bao giờ đổi đúng cùng một lúc.
+>
+> ⚡ Trong khoảnh khắc đó, giá trị đọc về có thể là **bất kỳ số nào từ 0 tới 15**. ⭐⭐ Với mã Gray,
+> vì chỉ **một bit** đổi, giá trị đọc về trong lúc chuyển chỉ có thể là **7 hoặc 8** — hai giá trị
+> đều **đúng hoặc gần đúng**.
+
+> ⭐ **Thực tế bạn có phải tự giải mã Gray không?** ⚡ Thường là **không** — module hoặc chính bộ mã
+> hoá đã quy đổi. ⚠ Nhưng bạn **phải biết nó tồn tại**, vì: ⭐ tài liệu thiết bị ghi rõ đầu ra là
+> Gray hay nhị phân, và ⚠⚠ **đặt sai cấu hình đó thì vị trí đọc về nhảy loạn ở đúng các ranh giới**
+> — một triệu chứng rất dễ bị đổ cho cơ khí.
+
+### ⭐⭐ Chọn kiểu nào — và câu trả lời gần như luôn giống nhau
+
+| Kiểu | ⭐ Ưu | ⚠ Nhược | Dùng khi |
+|---|---|---|---|
+| **Nhị phân** *(mặc định)* | Dùng hết dải; tính toán trực tiếp | Khó đọc bằng mắt | ⭐⭐ **Mọi tính toán và lưu trữ bên trong chương trình** |
+| **Hex** | ⭐ Là **cách VIẾT** của nhị phân, không phải kiểu khác; đọc bit rất nhanh | Phải quen | ⭐ Đọc mã lỗi, mặt nạ bit, địa chỉ |
+| **BCD** | Đổi thẳng ra chữ số hiển thị | ⚠ Phí bit; ⚠⚠ không tính toán được | ⭐ **Chỉ ở biên giới với thiết bị đòi BCD** — quy đổi ngay khi vào |
+| **Gray** | ⭐⭐ Không có giá trị rác lúc chuyển | Không tính toán được | ⭐ **Chỉ trên đường truyền từ bộ mã hoá về** |
+
+> ⭐⭐ **Quy tắc rút gọn, và nó áp cho cả ba:** ⚡ **quy đổi về nhị phân NGAY TẠI BIÊN, rồi bên trong
+> chương trình chỉ dùng nhị phân.**
+>
+> ⭐ Giống hệt nguyên tắc ở Chương 32 với tín hiệu analog: ⭐⭐ **đổi từ giá trị thô sang đại lượng kỹ
+> thuật một lần, ở một chỗ**. ⚠ Để BCD hoặc Gray len vào giữa logic là tự tạo ra một lớp lỗi mà
+> không được gì.
+
+> ⚡ **Tên lệnh quy đổi khác nhau giữa các hãng** — hệ kiểu thiết bị thường có sẵn một họ lệnh đổi
+> qua lại: nhị phân ↔ BCD, hex ↔ ASCII, tách/gộp byte, và cả lệnh **đọc thẳng công tắc xoay số** hay
+> **xuất thẳng ra đèn bảy đoạn**. ⭐ Tra Phụ lục A2 và tài liệu lệnh của hệ bạn dùng trước khi tự
+> viết phép quy đổi bằng tay.
+
+---
+
 ## 19.6 ⭐ Thanh ghi dịch — theo dõi sản phẩm dọc chuyền
 
 ### Bài toán
@@ -603,6 +709,13 @@ tức**, và không ai hiểu vì sao.
 ký tự và loại hẳn một nhóm lỗi (Chương 30).
 
 ---
+
+### 🔍 BẪY 10 — Đọc giá trị BCD như giá trị nhị phân
+
+**Hiện tượng:** con số đọc về từ một thiết bị **luôn lớn hơn** giá trị thật, và ⭐ **sai số tăng dần
+theo giá trị** — 25 thành 37, 99 thành 153. ⚠ Không có báo lỗi nào, và con số trông hoàn toàn hợp lý.
+**Cách sửa:** tra tài liệu thiết bị xem nó gửi BCD hay nhị phân; ⭐ dùng lệnh quy đổi **ngay tại chỗ
+đọc về**, đừng để giá trị BCD đi sâu vào chương trình (mục 19.5b).
 
 ## 19.11 Bảng chốt
 
