@@ -96,6 +96,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | ⚠ **Cáp gãy lõi trong xích động** | ⭐ Chập chờn **theo tư thế**; đo tĩnh vẫn tốt | 49 mục 49.7 |
 | Đầu cốt lỏng | ⚠ **Nặng dần theo thời gian** | 3, 49 |
 | Bit bị ghi đè trong chương trình | Bit "nhấp nháy" hoặc không bao giờ giữ | 22, 51 |
+| ⭐⭐ **Tám ngõ vào đầu đúng, từ cái thứ CHÍN trở đi sai** | ⚠⚠ Hệ đánh số thiết bị theo **bát phân** — ánh xạ số dây sang số thiết bị bị lệch | ⚠ **11 mục 11.8** |
 
 > ⭐⭐ **Bước 1 loại được nhiều nhất và mất ít thời gian nhất.** Nhìn đèn trên cảm biến trước khi mở
 > phần mềm — nó chia đôi bài toán ngay lập tức.

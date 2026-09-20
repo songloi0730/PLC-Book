@@ -384,6 +384,43 @@ Mitsubishi cho dùng nhãn, nhưng mô hình nền vẫn là **thiết bị** (`
   độ rộng bộ đếm (Chương 18);
 - tài liệu và chương trình cũ đều nói bằng ngôn ngữ thiết bị.
 
+#### ⚠⚠ Và một chi tiết đánh số mà người mới vấp ngay: `X` và `Y` đếm theo hệ **bát phân**
+
+⭐ Trên hệ kiểu thiết bị, ngõ vào và ngõ ra thường được đánh số theo **hệ 8** — chữ số chỉ chạy từ
+**0 tới 7**:
+
+```text
+   X0  X1  X2  X3  X4  X5  X6  X7   X10  X11 …
+                                     ↑
+                        ⚠ KHÔNG có X8 và X9 — sau X7 là X10
+```
+
+> ⚠⚠ **Hậu quả trực tiếp: `X10` là ngõ vào thứ CHÍN, không phải thứ mười một.** ⭐ Đánh số dây trong
+> tủ từ 1 tới 16 rồi ánh xạ thẳng sang `X1`…`X16` là **sai từ điểm thứ tám trở đi**, và
+> ⚡ **trình biên dịch không báo gì** — `X16` là một địa chỉ hợp lệ, chỉ là **không phải cái bạn
+> tưởng**.
+
+⭐ Cách xác nhận nhanh nhất là nhìn chính **dải thiết bị** ghi trong tài liệu:
+
+| Thiết bị | Dải ghi trong tài liệu | Số điểm | ⭐ Hệ đếm |
+|---|---|---|---|
+| `X` ngõ vào | `X0` – `X1777` | **1024** | ⚠ **Bát phân** |
+| `Y` ngõ ra | `Y0` – `Y1777` | **1024** | ⚠ **Bát phân** |
+| `M` cờ nhớ | `M0` – `M7999` | 8000 | Thập phân |
+
+> ⭐⭐ **Phép kiểm trong đầu, mất năm giây:** `1777` mà là **thập phân** thì phải là 1778 điểm; nó
+> ghi **1024 điểm**, mà `1777` trong hệ 8 đúng bằng **1023** — ⭐ nên dải đó **chắc chắn là bát
+> phân**. Còn `M7999` ↔ 8000 điểm thì khớp ở hệ 10.
+>
+> ⚡ Dùng chính con số trong tài liệu để tự suy ra hệ đếm — **đừng đoán, và đừng giả định cả bảng
+> dùng chung một hệ**: ⚠⚠ trong cùng một bảng thiết bị, `X`/`Y` bát phân còn `M`/`D` thập phân.
+
+> ⭐ Cách né hẳn nhóm lỗi này: **dùng nhãn có tên** cho mọi thứ trong chương trình, và để việc ánh xạ
+> tên ↔ thiết bị ở **đúng một chỗ** (mục 11.3). ⚠ Nhưng bạn vẫn phải đọc được số thiết bị, vì bảng
+> I/O, sơ đồ điện và chương trình cũ đều nói bằng ngôn ngữ đó.
+>
+> ⚡ Về các hệ đếm nói chung — hệ 16 ở mã lỗi, BCD, mã Gray — xem **Chương 19 mục 19.5b**.
+
 ### ⭐ Siemens — "khối tối ưu", và cái giá của việc trộn hai kiểu
 
 S7-1200/1500 cho khối dữ liệu **hai kiểu truy cập**: **chuẩn** *(standard)* và ⭐ **tối ưu**
@@ -471,6 +508,13 @@ có bảng đó.
 **Cách sửa:** tên nói **là gì**, không nói **ở đâu** (mục 11.3, Chương 30).
 
 ---
+
+### 🔍 BẪY 10 — Ánh xạ số dây sang số thiết bị trên hệ đánh số bát phân
+
+**Hiện tượng:** tám ngõ vào đầu đúng, ⭐ **từ ngõ vào thứ chín trở đi thì sai** — bit lên nhưng
+không phải bit bạn chờ. ⚠ Không có báo lỗi biên dịch, vì `X8` không tồn tại nhưng `X16` thì hợp lệ.
+**Cách sửa:** kiểm hệ đếm của dải thiết bị bằng chính con số trong tài liệu (mục 11.8); và
+⭐ **kiểm I/O 1-1 bằng cách tác động thật** — Phụ lục C.6 bắt được nhóm lỗi này ngay.
 
 ## 11.10 Bảng chốt
 

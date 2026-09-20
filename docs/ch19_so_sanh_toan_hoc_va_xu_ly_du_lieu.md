@@ -393,6 +393,7 @@ dạng nhị phân:
 | **Hex** | ⭐ Là **cách VIẾT** của nhị phân, không phải kiểu khác; đọc bit rất nhanh | Phải quen | ⭐ Đọc mã lỗi, mặt nạ bit, địa chỉ |
 | **BCD** | Đổi thẳng ra chữ số hiển thị | ⚠ Phí bit; ⚠⚠ không tính toán được | ⭐ **Chỉ ở biên giới với thiết bị đòi BCD** — quy đổi ngay khi vào |
 | **Gray** | ⭐⭐ Không có giá trị rác lúc chuyển | Không tính toán được | ⭐ **Chỉ trên đường truyền từ bộ mã hoá về** |
+| ⚠ **Bát phân** *(hệ 8)* | — | ⚠⚠ Không phải lựa chọn của bạn | ⭐ **Bạn không chọn nó — một số hệ ĐÁNH SỐ ngõ vào/ra theo hệ 8**, xem Chương 11 mục 11.8 |
 
 > ⭐⭐ **Quy tắc rút gọn, và nó áp cho cả ba:** ⚡ **quy đổi về nhị phân NGAY TẠI BIÊN, rồi bên trong
 > chương trình chỉ dùng nhị phân.**

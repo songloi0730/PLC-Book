@@ -2734,6 +2734,68 @@ mục) cho làm chỉ bằng một lệnh.
 
 ---
 
+## Đợt 54 — Đào sâu thước ngoài: mục lục cấp 2, và một cái bẫy đánh số
+
+⭐ Đợt 53 so mục lục **cấp 1**. Đợt này xuống **cấp 2**, và thử thêm một thước nữa: ⭐ **các đặc tả
+mở và whitepaper trong kho đã được khai thác hết chưa?**
+
+### A — Thước "dự phòng mạng": tra ra **không có lỗ hổng**
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 455 | Kho có *Rockwell Resilient Ethernet Architecture* và *EtherCAT/TSN whitepaper*; sách **0 lần** nhắc `DLR` `MRP` `PRP` `HSR`. Thoạt nhìn giống lỗ hổng | ⚠ |
+| 456 | ⭐ **Không phải.** Ch.40 mục 40.6 đã phủ đúng phần cần phủ — cấu trúc vòng, và ⭐⭐ bẫy trung tâm *"một vòng Ethernet **không có giao thức quản lý** thì không phải dự phòng — nó là **một sự cố**"*, gói quảng bá chạy vô tận làm **mạng chết hoàn toàn**. ⭐ Các tên viết tắt là **đặc thù hãng** và được trừu tượng hoá có chủ ý | ✔ |
+
+### B — Mục lục cấp 2: một mục thật trong 49 mục nghi
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 457 | ⚠ Phép lọc *"mục cấp 2 nào không có từ khoá nào xuất hiện trong sách"* cho **49 mục** — và ⭐ **gần như toàn bộ là dương tính giả**, vì sách viết bằng tiếng Việt nên `Contactors`, `Latching Relays`, `Cascading Timers` không khớp chuỗi dù nội dung đã có | ⚠ |
+| 458 | ⭐ Nhưng một mục thì thật: **`Octal System`** — Petruzella mục 3.4, Bryan chương 2 liệt kê *"binary, **octal**, decimal, hexadecimal"* là bốn hệ dùng khi **gán địa chỉ I/O**. Sách này: chỉ **1 lần**, trong Phụ lục A1 | ⚠⚠ |
+
+### C — Và nó không phải chuyện sách vở: hai hãng phổ biến ở Việt Nam đánh số I/O theo hệ 8
+
+| # | Bằng chứng | KQ |
+|---|:--|:--:|
+| 459 | ⭐⭐ Tài liệu Inovance H5U ghi rõ: `X0 to X1777` — **1024 điểm, octal**; `Y0 to Y1777` — **1024 điểm, octal**. Xác nhận ở **hai tài liệu riêng** (Instruction Guide và Programming Guide) | ⚠⚠ |
+| 460 | ⚠⚠ **Và trong CÙNG bảng thiết bị đó, `M0 to M7999` là 8000 điểm — thập phân.** ⭐ Hai hệ đếm trong một bảng, không có gì đánh dấu | ⚠⚠ |
+| 461 | ⭐⭐ **Hậu quả trực tiếp: `X10` là ngõ vào thứ CHÍN, không phải thứ mười một** — và không có `X8`, `X9`. ⚡ Đánh số dây trong tủ từ 1 tới 16 rồi ánh xạ thẳng sang `X1`…`X16` là **sai từ điểm thứ tám trở đi**, mà ⚠ **trình biên dịch không báo gì** vì `X16` là địa chỉ hợp lệ — chỉ không phải cái bạn tưởng | ➕➕ |
+| 462 | ⭐⭐ **Phép kiểm trong đầu, mất năm giây, và nó dùng chính con số trong tài liệu:** `1777` nếu là thập phân thì phải là 1778 điểm; tài liệu ghi **1024 điểm**, mà `1777` hệ 8 đúng bằng **1023** → ⭐ dải đó **chắc chắn bát phân**. Còn `M7999` ↔ 8000 điểm thì khớp hệ 10 | ➕➕ |
+| 463 | ⭐ Bổ sung vào **Ch.11 mục 11.8** (chỗ đã bàn mô hình thiết bị), cộng **Bẫy 10** của Ch.11, một hàng ở **Phụ lục E.3** *(tám ngõ vào đầu đúng, từ cái thứ chín trở đi sai)*, và một hàng ở bảng chọn hệ đếm của **mục 19.5b** vừa viết ở đợt 53 | ➕➕ |
+| 464 | ⭐ Cách né hẳn nhóm lỗi: **dùng nhãn có tên**, ánh xạ tên ↔ thiết bị ở đúng một chỗ. ⚠ Nhưng vẫn phải **đọc được** số thiết bị, vì bảng I/O, sơ đồ điện và chương trình cũ đều nói bằng ngôn ngữ đó | ➕ |
+
+### Kết quả đợt 54
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **10** |
+| ➕➕ Bổ sung giá trị cao | 3 |
+| ➕ Bổ sung | 1 |
+| ⚠⚠ Lỗ hổng thật | 1 — đánh số bát phân |
+| ✔ Xác nhận không có vấn đề | 1 — dự phòng mạng đã phủ đủ |
+| ⚠ Thước cho nhiều nhiễu | 1 — lọc từ khoá tiếng Anh trên sách tiếng Việt |
+
+> ⭐⭐ **Bài học 1 — thước ngoài mòn nhanh hơn thước trong, và đó là chuyện bình thường.**
+>
+> Đợt 53 dùng mục lục cấp 1: ra một chương lớn còn thiếu. ⚡ Đợt 54 xuống cấp 2: ra **một mục**, và
+> phải lọc qua 48 dương tính giả để thấy nó. ⭐ Không phải thước hỏng — mà là **thước đã làm xong
+> phần việc của nó**. Ghi lại để đợt sau không xuống tiếp cấp 3 và mong đợi nhiều.
+
+> ⚠ **Bài học 2 — lọc theo từ khoá tiếng Anh trên một cuốn sách tiếng Việt cho tỉ lệ nhiễu ~98 %.**
+>
+> `Contactors`, `Latching Relays`, `Hydraulics` đều báo "thiếu" trong khi nội dung đã có bằng tiếng
+> Việt. ⭐ Phép lọc chỉ hữu ích cho ⭐⭐ **thuật ngữ mà tiếng Việt vẫn giữ nguyên dạng tiếng Anh** —
+> `octal`, `BCD`, `Gray`, tên giao thức, tên lệnh. ⚡ Lần sau nên **giới hạn phép lọc vào đúng nhóm
+> từ đó** ngay từ đầu, thay vì lọc tất rồi đọc tay 49 dòng.
+
+> ⭐ **Bài học 3 — con số trong tài liệu hãng tự tố cáo hệ đếm của nó.**
+>
+> Không cần tài liệu nào nói *"đây là hệ 8"*. ⚡ Chỉ cần **số điểm** và **địa chỉ cuối** là suy ra
+> được: `1777` ↔ 1024 điểm chỉ đúng ở hệ 8. ⭐⭐ Đây là loại phép kiểm đáng dạy, vì nó **không phụ
+> thuộc hãng nào** và dùng được ngay cả khi tài liệu viết bằng thứ tiếng bạn không đọc được.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
