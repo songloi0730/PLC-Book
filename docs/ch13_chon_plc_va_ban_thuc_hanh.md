@@ -222,6 +222,11 @@ nó cũng là thứ bạn đưa ra khi cần giải thích lựa chọn cho ngư
 
 Mục 8, 9, 10 là ba mục hay để trống. Chúng cũng là ba mục gây đau đớn nhất về sau.
 
+> ⭐ **Điền xong bảng này chưa phải là xong việc chọn.** ⚡ Bước kế tiếp là biến lựa chọn đó thành
+> **bản đồ khe cắm** — module nào ở khe nào, địa chỉ nào, còn mấy kênh dự phòng — rồi từ đó ra
+> **danh mục vật tư** để đặt hàng. ⭐ Hai biểu mẫu: **Phụ lục C.10** và **C.11**; thứ tự chín bước
+> của cả giai đoạn: **Chương 23 mục 23.2b**.
+
 ---
 
 ## 13.5 Sai lầm thường gặp khi chọn

@@ -60,7 +60,7 @@ của nó rất đắt.
 | # | Hạng mục | ⚠ Bỏ quên thì hậu quả |
 |---|---|---|
 | 1 | ⭐ **Dự án PLC** (logic + chú thích + tên biến) | Có logic nhưng không đọc được |
-| 2 | ⭐ **Cấu hình phần cứng** *(hardware configuration)* — khe cắm, module, địa chỉ, tham số module | CPU mới không nhận I/O |
+| 2 | ⭐ **Cấu hình phần cứng** *(hardware configuration)* — khe cắm, module, địa chỉ, tham số module; ⭐ biểu mẫu **Phụ lục C.10** | CPU mới không nhận I/O |
 | 3 | ⭐ **Tham số biến tần / servo driver** — ⚠⚠ **kể cả tham số CHỨC NĂNG AN TOÀN của drive** | ⚠ **Động cơ chạy sai hoặc không chạy**; chỉnh lại tay mất hàng ngày (Chương 36–37). ⚠⚠ Và nếu thiếu tham số an toàn: máy **chạy bình thường** nhưng chức năng an toàn **không còn như đã nghiệm thu**, ⭐ **không báo động nào nói điều đó** (Chương 37 mục 37.6b) |
 | 4 | ⭐ **Dự án HMI / SCADA** | Có máy chạy nhưng ⚠ **không ai điều khiển được** (Chương 44) |
 | 5 | **Công thức và tham số sản phẩm** | Mất toàn bộ dữ liệu sản phẩm (Chương 32) |

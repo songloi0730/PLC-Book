@@ -125,6 +125,29 @@ Hai cách gán địa chỉ, và khác biệt giữa chúng ảnh hưởng trự
 Chừa sẵn khe trống ở **cuối** rack, không phải ở giữa. Thêm module vào cuối thì địa chỉ các module cũ
 không đổi.
 
+### ⭐⭐ Bản đồ khe cắm phải là một TÀI LIỆU
+
+⭐ Hai mục trên dẫn tới một kết luận mà người ta hay bỏ qua: nếu **thứ tự khe quyết định địa chỉ**,
+thì ⭐⭐ **thứ tự khe là một phần của chương trình** — chỉ có điều nó **không nằm trong tệp dự án**.
+Nó nằm trong cái rack, và trong đầu người đã lắp.
+
+> ⚠⚠ **Cả hai chỗ đó đều không đáng tin sau hai năm.** Người lắp đã đổi việc; còn cái rack thì
+> ⭐ **không nói được vì sao khe 5 để trống** — để dự phòng, hay vì module ở đó đã tháo đi mà chưa
+> ai cập nhật gì?
+
+⭐ Vì vậy cấu hình phần cứng phải được ghi thành một bảng, và bảng đó phải trả lời được **bốn câu**:
+
+| # | Câu hỏi | ⚠ Không trả lời được thì |
+|---|---|---|
+| 1 | Tag này nằm ở **module nào, khe nào, kênh nào**? | Phải mở tủ đếm — mỗi lần chẩn đoán mất thêm mười phút |
+| 2 | ⭐ **Còn bao nhiêu kênh dự phòng** trên mỗi module? | Không trả lời được khách khi họ hỏi *"thêm một cảm biến được không"* |
+| 3 | Module này **phiên bản firmware nào**? | ⚠ Thay bằng module cùng mã khác phiên bản có thể **đổi hành vi** mà không báo gì |
+| 4 | ⭐⭐ Khe trống này để **dự phòng** hay là **chỗ module đã tháo**? | ⚠ Người sau sẽ cắm vào đó, và **địa chỉ dịch** — đúng lỗi im lặng ở khung trên |
+
+> ⭐ **Biểu mẫu sẵn có: Phụ lục C.10.** Nó cũng là **mục số 2** trong bộ sao lưu bảy hạng mục ở
+> Phụ lục C.9 — ⚡ nghĩa là không có nó thì **bộ sao lưu của bạn chưa đầy đủ**, dù tệp dự án PLC đã
+> lưu đủ (Chương 54).
+
 ---
 
 ## 8.5 I/O tại chỗ, mở rộng, và phân tán

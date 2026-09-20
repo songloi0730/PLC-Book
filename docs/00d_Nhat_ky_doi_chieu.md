@@ -2379,6 +2379,97 @@ cách rà cho ít kết quả thì **đổi thước đo**, đừng rà kỹ hơ
 
 ---
 
+## Đợt 50 — 2026-09-20 · Quy trình khởi động dự án: hai biểu mẫu sách tự đòi mà chưa từng dạy cách lập
+
+Câu hỏi của chủ dự án: *"sách đã có quy trình khi bắt đầu dự án PLC — lập bảng I/O, danh mục vật tư,
+cấu hình PLC — chưa?"*, kèm yêu cầu ⭐ *"các đặc tả có nội dung chi tiết và yêu cầu đối với kết quả
+mong muốn thì càng tốt"*.
+
+> ⭐⭐ **Thước đo của đợt này, và nó là thước sắc nhất từng dùng: sách ĐÒI tài liệu nào mà không DẠY
+> cách lập tài liệu đó?**
+>
+> Phiếu bàn giao C.9 là một danh mục 12 mục cộng bộ sao lưu bảy hạng mục. ⚡ Mỗi mục trong đó là một
+> lời hứa: *"sách này cho rằng bạn phải có thứ này"*. ⭐ Đối chiếu ngược 19 mục đó với phần còn lại
+> của sách thì ⚠ **hai mục không có chương nào dạy và không có biểu mẫu nào**.
+
+### A — Hai lỗ hổng, và bằng chứng của chúng
+
+| # | Phát hiện | KQ |
+|---|:--|:--:|
+| 372 | ⚠⚠ **Danh mục vật tư**: sách **đòi** nó ở **bốn chương và hai phụ lục** — Ch.7 (*"ghi rõ yêu cầu vật liệu tiêu tán trong danh mục vật tư"*), Ch.48, Ch.49 mục 49.10, Ch.52, Phụ lục D, và ⭐ **Phiếu bàn giao C.9 mục 9**. ⚠ Nhưng **không chương nào dạy cách lập, và không có biểu mẫu**. Thứ duy nhất có là §13.8 — danh sách vật tư **bàn thực hành**, không phải máy thật | ⚠⚠ |
+| 373 | ⚠⚠ **Bảng cấu hình phần cứng**: bộ sao lưu bảy hạng mục ở C.9 có *"cấu hình phần cứng"* là **mục số 2**, Ch.54 nhắc nó **năm lần** (*"thiếu cấu hình phần cứng → không nạp được"*). ⭐ Và bảng ánh xạ giai đoạn ở cuối Phụ lục C ghi hẳn dòng **"Bảng I/O & phần cứng → C.1"** — ⚠ nhưng C.1 chỉ là bảng I/O; **phần "& phần cứng" không tồn tại** | ⚠⚠ |
+| 374 | ⚠ **Không có quy trình khởi động gom về một chỗ.** Người bắt đầu dự án thật phải tự ghép từ Ch.13 (chọn PLC) + Ch.23 (đặc tả) + Ch.57 (truyện kể về máy mẫu) + Phụ lục C. ⭐ Ch.57 mục 57.3 có bảng *"Đầu ra của giai đoạn 1"*, nhưng ⚠ **mục 57.4 — giai đoạn bảng I/O và chọn phần cứng — không có bảng đầu ra tương ứng** | ⚠ |
+| 375 | ⭐ Ngược lại, phần **đã có** thì khá đầy đủ: bộ đặc tả sáu phần (Ch.23 mục 23.2, có cả URS/FS/SOO), bảng I/O làm trước (23.3), biểu mẫu bảng I/O 10 cột kèm số dây và cầu đấu (C.1), 10 tiêu chí chọn PLC và bảng công tác 11 mục (§13.2, §13.2b, §13.4), đánh địa chỉ theo khe (§8.4), tính nguồn 24 V (§8.7, §9.5) | ✔ |
+
+### B — Phụ lục C: thêm hai biểu mẫu, chín thành mười một
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 376 | ⭐⭐ **C.10 Bảng cấu hình phần cứng** — hai bảng: **bản đồ khe cắm** (rack·khe · mã · loại · số kênh · địa chỉ đầu–cuối · ⭐ **dùng/dự phòng** · ⭐ **firmware** · nguồn cấp · ghi chú) và **thiết bị trên mạng** (giao thức · địa chỉ/trạm · ⭐ **tệp mô tả thiết bị và phiên bản**) | ➕➕ |
+| 377 | ⭐ Hai cột ít ai nghĩ tới mà đắt nhất khi thiếu: ⭐ **"Dùng / Dự phòng"** trả lời câu *"thêm một cảm biến được không"* mà không phải mở tủ; ⭐⭐ **"Firmware"** — ⚠ thay module **cùng mã khác phiên bản** có thể đổi hành vi mà không báo gì | ➕➕ |
+| 378 | ⭐⭐ **C.11 Danh mục vật tư** — và nguyên tắc quan trọng nhất của nó: ⚠ **đừng viết như tài liệu độc lập**. Mọi dòng phải **sinh ra từ** C.1 hoặc C.10, và có hẳn cột ⭐ **"Sinh từ"** để chuyện lệch nhau không xảy ra âm thầm | ➕➕ |
+| 379 | ⭐⭐ **Chọn phụ tùng dự phòng bằng ba câu hỏi, không bằng cảm tính** — và câu quyết định là một **phép so sánh**: *thời gian có hàng có dài hơn mức dừng máy chấp nhận được không?* ⚡ Một module rẻ **giao tám tuần** đáng dự phòng hơn một CPU đắt **có sẵn ngày mai**. ⚠ Phần lớn danh mục phụ tùng bị lập ngược — theo giá | ➕➕ |
+| 380 | ⚠⚠ **Thiết bị an toàn là trường hợp riêng**: dự phòng một rơ-le an toàn **không** nghĩa là thay vào là chạy — đổi thiết bị trong chuỗi an toàn thường kéo theo **đánh giá lại và nghiệm thu lại**. ⭐ Phải ghi điều này vào cột ghi chú **ngay từ lúc lập danh mục**, để người mua hàng sáu tháng sau không tự ý đổi sang "mã tương đương" | ➕➕ |
+| 381 | ⭐ Mỗi biểu mẫu mới có một ⭐⭐ **phép thử một phút** — thứ biến "đã điền xong" thành một phát biểu kiểm được. C.10: *đưa bảng cho người chưa từng mở tủ, hỏi `DI_BoardStn1` nằm ở khe nào, kênh nào*. C.11: *chọn ngẫu nhiên ba tag, hỏi mã gì, bao lâu có hàng, có dự phòng không* | ➕➕ |
+| 382 | ⭐ Đổi số mục *"Cách dùng bộ biểu mẫu này"* từ **C.10 → C.12**; ⭐ đã kiểm trước: **không chương nào dẫn "C.10"**, chỉ có Ch.39 dẫn C.5 và các chỗ khác dẫn "Phụ lục C" chung — đổi số an toàn | ✔ |
+| 383 | ⭐ Sửa bảng ánh xạ giai đoạn: dòng **"Bảng I/O & phần cứng"** tách thành ba dòng đúng với thực tế — *Bảng I/O → C.1* · *Chọn và cấu hình phần cứng → C.10* · *Đặt hàng & nhận hàng → C.11* | ⚠ |
+
+### C — Ch.23: chín bước đầu dự án, và yêu cầu chất lượng cho sáu phần đặc tả
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 384 | ⭐⭐ **Mục 23.2b mới — chín bước, mỗi bước có: sản phẩm · cái nó chặn · ai duyệt.** Chín bước này nằm gọn trong giai đoạn 1 và 2 của Ch.57; ⭐ khác biệt là Ch.57 **kể chúng như một câu chuyện** về một cỗ máy, còn đây là **bảng công tác dùng được cho máy của bạn** | ➕➕ |
+| 385 | ⭐⭐ **Định nghĩa "xong" kiểm được cho từng bước** — ⚠ vì *"đã viết đặc tả rồi"* không phải một trạng thái kiểm được. Chín phát biểu, mỗi phát biểu trả lời được bằng có/không, ⭐ **không có "gần xong"** | ➕➕ |
+| 386 | ⚠⚠ **Ba quan hệ chặn quan trọng nhất**, kèm hậu quả khi đảo: đánh giá rủi ro chặn việc chọn phần cứng (đảo → **sửa thiết kế** hoặc ⚠⚠ **hạ chuẩn an toàn cho vừa thiết kế**) · bảng I/O chặn việc đấu tủ (đảo → số dây không khớp tên tag, **theo máy suốt vòng đời**) · phép tính nguồn chặn việc chốt đơn hàng | ➕➕ |
+| 387 | ⭐⭐ **Phép kiểm nhanh xem dự án có đi đúng thứ tự không:** hỏi *"đã đặt hàng chưa?"* và *"bảng I/O đã ký chưa?"*. ⚠ Câu đầu **rồi** mà câu sau **chưa** → dự án đang đi ngược, và phần chênh sẽ hiện ra ở khâu đấu tủ | ➕➕ |
+| 388 | ⭐⭐ Bảng **"sáu phần đặc tả đạt yêu cầu khi nào"** — mỗi phần có **nội dung tối thiểu**, **phát biểu kiểm được**, và ⚠ **chỗ hay thiếu nhất**. Ví dụ phần 3 hay thiếu **thời gian tối đa từng bước** — thứ về sau chính là timeout, thiếu ở đặc tả thì lập trình sẽ **đoán** | ➕➕ |
+| 389 | ⭐⭐ Và một quan sát dùng được ngay: **phần 2 (chế độ) và phần 4 (xử lý bất thường) là nơi chi phí ẩn nấp**, vì ⚡ phần 1, 3, 5 mô tả **máy chạy đúng** — ai cũng hình dung được — còn phần 2 và 4 mô tả **máy không chạy đúng**, trạng thái mà lúc ngồi viết **chưa ai từng thấy**. ⭐ Dấu hiệu: phần 3 dài gấp nhiều lần phần 4 thì **phần 4 còn thiếu**, không phải máy ít lỗi | ➕➕ |
+
+### D — Ch.8 và Ch.57: nối hai biểu mẫu mới vào chỗ chúng thuộc về
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 390 | ⭐⭐ **Ch.8 mục 8.4** — rút ra kết luận mà hai mục trước của chính nó dẫn tới nhưng chưa nói: nếu thứ tự khe quyết định địa chỉ thì ⭐ **thứ tự khe là một phần của chương trình, chỉ có điều nó không nằm trong tệp dự án**. Nó nằm trong cái rack và trong đầu người đã lắp — ⚠ **cả hai đều không đáng tin sau hai năm** | ➕➕ |
+| 391 | ⭐ Kèm **bốn câu** bảng cấu hình phải trả lời được, trong đó câu thứ tư là câu ít ai nghĩ tới: ⭐⭐ *khe trống này để **dự phòng** hay là **chỗ module đã tháo**?* ⚠ Không trả lời được thì người sau sẽ cắm vào đó và **địa chỉ dịch** — đúng lỗi im lặng mà khung cảnh báo ngay phía trên mô tả | ➕➕ |
+| 392 | ⭐ **Ch.57 mục 57.4** nay có **"Đầu ra của giai đoạn 2"**, đối xứng với bảng đã có ở 57.3 — năm tài liệu, mỗi tài liệu kèm **"coi là xong khi"** và người duyệt. ⚠ Kèm cảnh báo: giai đoạn này là **điểm không quay lại của phần cứng** | ➕➕ |
+| 393 | ⭐ Trỏ hai biểu mẫu mới vào **bảy chỗ đã đòi chúng**: Ch.7, Ch.13 (sau bảng công tác §13.4), Ch.48, Ch.49, Ch.52, Ch.54, Phụ lục D. ⚡ Không có các con trỏ này thì biểu mẫu tồn tại mà **không ai tìm ra** | ➕ |
+| 394 | ⚠ Mục lục còn ghi Ch.57 có *"analog & **PID gia nhiệt keo** (Ch.32, 35)"* — ⭐ **đúng chỗ đã sửa trong chương ở đợt 48** (claim #341) mà **quên sửa ở mục lục**. Đã sửa | ⚠ |
+
+### Kết quả đợt 50
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **23** |
+| ➕➕ Bổ sung giá trị cao | 15 |
+| ➕ Bổ sung | 1 |
+| ⚠ Phát hiện thiếu sót / sửa | 5 |
+| ✔ Xác nhận không có vấn đề | 2 |
+| Biểu mẫu mới | **2** — C.10, C.11 (Phụ lục C: 9 → **11** biểu mẫu) |
+| Mục mới | 4 — Ch.23 §23.2b và bảng chất lượng đặc tả, Ch.8 §8.4, Ch.57 §57.4 |
+| Chỗ được trỏ tới biểu mẫu mới | 7 chương/phụ lục |
+
+> ⭐⭐ **Bài học 1 — danh mục bàn giao là một thước đo ngược, và là thước rẻ nhất trong năm mươi đợt.**
+>
+> Phiếu bàn giao liệt kê **thứ sách cho rằng bạn phải có**. ⚡ Đối chiếu ngược từng mục với phần còn
+> lại của sách trả lời được câu *"sách có dạy cách làm ra thứ nó đòi không?"* — và hai mục trong
+> mười chín là **không**. ⭐ Cùng ý tưởng áp được cho bất kỳ sách kỹ thuật nào có checklist cuối:
+> **checklist là lời hứa; đi ngược nó là cách kiểm lời hứa**.
+
+> ⚠ **Bài học 2 — "sách nhắc tới nó nhiều lần" KHÔNG có nghĩa là sách đã dạy nó.**
+>
+> Cụm *"danh mục vật tư"* xuất hiện ở sáu chỗ, luôn ở thế **được viện dẫn**: *đối chiếu với danh mục
+> vật tư · ghi rõ trong danh mục vật tư · danh mục vật tư khi bàn giao*. ⚡ Đọc lướt thì cảm giác
+> chủ đề này đã được phủ kỹ. ⭐ Phép đếm đúng không phải *"nhắc bao nhiêu lần"* mà là ⭐⭐ ***"có chỗ
+> nào ĐỊNH NGHĨA nó không"*** — và câu trả lời là không.
+
+> ⭐ **Bài học 3 — mỗi biểu mẫu cần một phép thử, không chỉ một danh mục kiểm.**
+>
+> Danh mục kiểm trả lời *"đã điền đủ chưa"*. ⚡ Phép thử một phút trả lời một câu khác và khó hơn:
+> ⭐⭐ ***"điền xong rồi thì nó có dùng được không"***. ⚠ Một bảng cấu hình điền đủ mọi ô mà vẫn
+> phải mở tủ ra đếm mới biết tag nằm ở khe nào thì **đã hỏng**, dù không ô nào trống.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

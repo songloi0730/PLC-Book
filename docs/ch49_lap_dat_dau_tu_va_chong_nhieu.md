@@ -383,7 +383,7 @@ Việc của người lập trình khi tiếp nhận tủ (Chương 52, mục 52
 
 | Kiểm | Cách |
 |---|---|
-| Đúng thiết bị, đúng mã | Đối chiếu nhãn với danh mục vật tư |
+| Đúng thiết bị, đúng mã | Đối chiếu nhãn với danh mục vật tư (**Phụ lục C.11**) |
 | ⭐ **Dây có số ở hai đầu, khớp bản vẽ** | Lấy mẫu vài chục dây |
 | **Đầu cốt siết đủ chặt** | Kéo nhẹ từng dây; siết lại theo lực quy định |
 | ⭐ **Tách máng đúng ba nhóm** | Nhìn — đây là thứ dễ kiểm nhất và hay sai nhất |

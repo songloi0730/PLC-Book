@@ -44,7 +44,8 @@
 ### Cơ khí và lắp đặt
 
 - [ ] Thiết bị lắp chắc, đúng chiều, đủ khoảng thoát nhiệt theo hướng dẫn nhà sản xuất
-- [ ] ⭐ Nhãn thiết bị **khớp danh mục vật tư** — đúng mã, đúng phiên bản
+- [ ] ⭐ Nhãn thiết bị **khớp danh mục vật tư** (Phụ lục C.11) — đúng mã, đúng phiên bản
+- [ ] ⭐ Module cắm **đúng khe** theo bảng cấu hình phần cứng (Phụ lục C.10) — ⚠ sai khe là **dịch địa chỉ**
 - [ ] ⚠⚠ **Bộ nguồn 24 V có nhãn SELV / PELV / Class 2 / Limited Power** — ⭐ **không có nhãn thì
       tra datasheet, đừng giả định** (Chương 3, mục 3.3)
 - [ ] Không có mạt kim loại, đầu dây thừa, dụng cụ bỏ quên trong tủ

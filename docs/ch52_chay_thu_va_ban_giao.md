@@ -77,7 +77,7 @@ Làm khi **chưa cấp điện**, đối chiếu với bản vẽ và bảng I/O
 
 | Kiểm | Cách |
 |---|---|
-| Đúng thiết bị, đúng mã | Đối chiếu nhãn với danh mục vật tư |
+| Đúng thiết bị, đúng mã | Đối chiếu nhãn với danh mục vật tư (**Phụ lục C.11**) |
 | Dây đúng cỡ, đầu cốt siết đủ chặt | Kéo nhẹ từng dây; siết lại theo lực quy định |
 | Không có dây thừa, không có đầu dây hở | Nhìn kỹ; đầu hở là nguồn ngắn mạch |
 | Nối đất đầy đủ | Đo thông mạch từ vỏ tủ tới thanh đất |

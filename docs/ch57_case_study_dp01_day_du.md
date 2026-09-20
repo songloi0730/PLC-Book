@@ -89,6 +89,28 @@ Số liệu đầy đủ: **Phụ lục J**.
 | Chọn thiết bị mạng và kiến trúc | 40 |
 | ⚠ Chọn thiết bị an toàn theo mức đã xác định ở giai đoạn 1 | 47, 48 |
 
+### ⭐ Đầu ra của giai đoạn 2
+
+⚠ Bảng trên liệt kê **việc phải làm**. ⭐ Còn đây là **thứ phải cầm được trên tay** khi giai đoạn này
+kết thúc — vì một giai đoạn không đẻ ra tài liệu thì không có cách nào biết nó đã xong.
+
+| Tài liệu | Biểu mẫu | ⭐ Coi là xong khi | Ai duyệt |
+|---|---|---|---|
+| ⭐⭐ **Bảng I/O** | **C.1** | Mọi tag có một nghĩa · ⭐ còn **≥ 20 %** kênh dự phòng · tín hiệu an toàn tách riêng | Nội bộ, khách xem |
+| Bảng công tác chọn PLC | **§13.4** | Đủ **11 mục**, ⚠ kể cả ba mục hay để trống: bản quyền · thời gian có hàng thay thế · dòng còn sản xuất bao lâu | Nội bộ |
+| ⭐ **Bảng cấu hình phần cứng** | **C.10** | ⭐ Phép thử một phút đạt; khe dự phòng ở **cuối** rack; firmware đã ghi | Nội bộ |
+| ⭐ **Danh mục vật tư** | **C.11** | Mọi dòng có cột *"Sinh từ"*; ⚠ **thời gian có hàng** điền bằng tuần cho mọi dòng | Mua hàng |
+| Các phép tính | — | Công suất nguồn 24 V · tuổi thọ van và cáp — ⭐ **có ghi giả định**, đã nhân hệ số dự phòng | Nội bộ |
+
+> ⭐⭐ **Hai tài liệu giữa bảng là hai tài liệu mà Phiếu bàn giao đòi.** Bộ sao lưu bảy hạng mục ở
+> C.9 có *"cấu hình phần cứng"* là mục 2, và phiếu bàn giao có *"danh mục vật tư + phụ tùng khuyến
+> nghị"* là mục 9. ⚡ Lập chúng **ở đây** thì cuối dự án chỉ việc cập nhật; ⚠ để tới lúc bàn giao
+> mới lập thì chúng sẽ được **dựng lại từ trí nhớ**, và sẽ sai.
+
+> ⚠⚠ **Giai đoạn này là điểm không quay lại của phần cứng.** ⭐ Sau khi đặt hàng, mọi thay đổi về số
+> kênh, kiểu ngõ ra hay kiểu đấu **đều tốn tiền và tốn thời gian chờ hàng**. ⚡ Đó là lý do bảng I/O
+> phải xong **trước**, không phải song song — chín bước và quan hệ chặn ở **Chương 23 mục 23.2b**.
+
 ### ⭐ Bảng I/O rút gọn của DP-01
 
 | Nhóm | Tag tiêu biểu | Chương |

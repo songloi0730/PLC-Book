@@ -59,6 +59,95 @@ nghiệm thu — nên **phác trước, hoàn thiện sau**: xem mục 23.6.
 
 ---
 
+### ⭐⭐ Sáu phần đó đạt yêu cầu khi nào — và chỗ hay thiếu nhất ở từng phần
+
+⚠ *"Đã có đủ sáu phần"* không nói được gì về chất lượng. ⭐ Bảng dưới là **nội dung tối thiểu** và
+**phát biểu kiểm được** cho từng phần — cộng với ⚠ **chỗ hay thiếu nhất**, là chỗ mà đặc tả trông
+đầy đủ nhưng sẽ vỡ ở khâu lập trình.
+
+| # | Phần | ⭐ Nội dung tối thiểu | ⭐⭐ Đạt khi | ⚠ Chỗ hay thiếu nhất |
+|---|---|:--|:--|:--|
+| 1 | **Bảng I/O** | Mọi tín hiệu vật lý · kiểu thiết bị · NO/NC · PNP/NPN · trạng thái nghỉ · ⭐ **phân loại** (an toàn / quá trình / chẩn đoán) | Danh mục kiểm ở **C.1** đạt hết, không mục nào bỏ trống | ⚠⚠ **Cột phân loại** — thiếu nó thì tín hiệu an toàn bị xử lý như tín hiệu thường (Bẫy 3) |
+| 2 | **Danh sách chế độ** | Tên chế độ · ai được dùng · làm được gì · ⭐ **điều kiện vào VÀ điều kiện ra** · ngõ ra nào còn tác dụng trong chế độ đó | Vẽ được **bảng chuyển trạng thái C.4** mà không phải hỏi lại ai | ⚠⚠ **Điều kiện RA khỏi chế độ**, và ⭐ **cơ cấu đang giữa chừng thì sao** khi đổi chế độ |
+| 3 | **Mô tả trình tự** | Từng bước: điều kiện vào · hành động · ⭐ **điều kiện ra là PHẢN HỒI THẬT** · ⭐ **thời gian tối đa** | Người khác đọc rồi **vẽ lại lưu đồ trùng với lưu đồ của bạn** | ⚠ **Thời gian tối đa từng bước** — nó chính là timeout về sau; thiếu ở đây thì lập trình sẽ **đoán** (Chương 26 mục 26.4) |
+| 4 | **Xử lý bất thường** | Với mỗi lỗi: máy làm gì **ngay** · ngõ ra nào **giữ nguyên** · phục hồi ra sao · ⭐ **ai được phép reset** | ⭐⭐ **Mọi thiết bị trong bảng I/O** đều xuất hiện ít nhất một lần trong câu hỏi *"nếu cái này hỏng thì sao"* | ⚠⚠ **Phần phục hồi.** Người ta viết *"báo lỗi và dừng"* rồi hết — nhưng **dừng rồi làm sao chạy tiếp** mới là phần tốn thời gian nhất khi lập trình |
+| 5 | **Tham số & công thức** | Tên · đơn vị · ⭐ **dải hợp lệ** · giá trị mặc định · ai được sửa · ⭐ **sửa được lúc nào** | Điền kín **C.5**, không ô nào để trống dải hợp lệ | ⚠ **Dải hợp lệ** và ⚠⚠ **"sửa được lúc nào"** — đổi công thức giữa chu trình là một lớp lỗi riêng (Chương 29) |
+| 6 | **Tiêu chí nghiệm thu** | Mỗi chỉ tiêu: **làm gì · kỳ vọng gì · đo bao lâu** | Không dòng nào chứa từ *"ổn định"*, *"tốt"*, *"đạt yêu cầu"* — xem mục 23.6 | ⚠ **Cách đo**. Có chỉ tiêu mà không có cách đo thì nó sẽ được **đo theo cách có lợi cho bên đang vội** |
+
+> ⭐⭐ **Phần 2 và phần 4 là nơi chi phí ẩn nấp, và cũng là hai phần bị viết sơ sài nhất.**
+>
+> ⚡ Phần 1, 3, 5 dễ viết vì chúng mô tả **máy chạy đúng** — ai cũng hình dung được. ⚠ Phần 2 và 4
+> mô tả **máy không chạy đúng**, và đó là trạng thái mà lúc ngồi viết đặc tả **chưa ai từng thấy**.
+>
+> ⭐ Kinh nghiệm dùng được: khi đặc tả có phần 3 dài gấp nhiều lần phần 4, ⚠ **gần như chắc chắn
+> phần 4 còn thiếu** — chứ không phải máy này ít lỗi.
+
+> ⚠ **Một quy tắc về người duyệt.** ⭐ Phần 1 và 3 nên có **người vận hành thật** đọc, không chỉ kỹ
+> sư — họ là người phát hiện *"chỗ này thực tế không làm thế"*. ⚠⚠ Còn phần liên quan an toàn thì
+> ⭐ **kỹ sư duyệt không thay được người có thẩm quyền về an toàn** (Chương 6, 47).
+
+---
+
+## 23.2b ⭐⭐ Chín bước đầu dự án — thứ tự, sản phẩm, và cái gì chặn cái gì
+
+Mục trên nói **đặc tả gồm gì**. ⭐ Mục này nói **làm theo thứ tự nào, mỗi bước đẻ ra tài liệu gì, và
+bước nào không xong thì kẹt bước nào** — vì sai lầm đắt nhất ở đầu dự án hiếm khi là viết sai một
+tài liệu; nó là **làm đúng tài liệu nhưng sai thứ tự**.
+
+> ⭐ Chín bước này nằm gọn trong **giai đoạn 1 và 2 của Chương 57**. Chương 57 kể chúng như một câu
+> chuyện về một cỗ máy cụ thể; ⭐ ở đây chúng là một **bảng công tác** dùng được cho máy của bạn.
+
+| # | Bước | ⭐ Sản phẩm | ⚠ Không xong thì chặn | Ai duyệt |
+|---|---|---|---|---|
+| 1 | Nhận yêu cầu, **hỏi bốn nhóm câu hỏi** (mục 23.5) | Biên bản họp, có **danh sách câu chưa trả lời được** | Mọi bước sau | Khách hàng |
+| 2 | ⚠⚠ **Đánh giá rủi ro** | Hồ sơ rủi ro + **mức an toàn yêu cầu** cho từng chức năng | ⭐ **Bước 5 và 6** — chưa biết mức thì không chọn được thiết bị | ⭐ **Người có thẩm quyền về an toàn** |
+| 3 | Viết đặc tả sáu phần (mục 23.2) | FS, kèm biểu mẫu **C.3 · C.4 · C.5** | Bước 4, và mọi việc lập trình | ⭐⭐ Khách hàng **ký** (Bẫy 5) |
+| 4 | ⭐⭐ **Lập bảng I/O** (mục 23.3) | ⭐ **C.1** | Bước 5, 6, 7 và **đấu tủ** | Nội bộ + khách xem |
+| 5 | Chọn PLC | Bảng công tác **§13.4** đã điền đủ 11 mục | Bước 6 | Nội bộ |
+| 6 | ⭐ **Lập cấu hình phần cứng** | ⭐ **C.10** — bản đồ khe cắm + thiết bị mạng | Bước 7, **đấu tủ**, và việc dựng lại CPU sau này | Nội bộ |
+| 7 | ⭐ **Lập danh mục vật tư** | ⭐ **C.11** | ⚠ **Đặt hàng** — và thời gian có hàng quyết định tiến độ | Mua hàng |
+| 8 | Các phép tính | Công suất nguồn 24 V (§8.7, §9.5) · tuổi thọ van và cáp (§9.3, §49.7) | ⭐ Chốt bước 7 — đổi kết quả tính là đổi đơn hàng | Nội bộ |
+| 9 | Phác **tiêu chí nghiệm thu** (mục 23.6) | Bản phác, hoàn thiện sau | — | Khách hàng |
+
+### ⭐⭐ "Xong" nghĩa là gì — định nghĩa kiểm được cho từng bước
+
+⚠ *"Đã viết đặc tả rồi"* không phải một trạng thái kiểm được. ⭐ Dưới đây là phát biểu kiểm được, và
+⭐⭐ **mỗi dòng phải trả lời được bằng có hoặc không, không có "gần xong"**:
+
+| # | ⭐ Bước này xong khi… |
+|---|:--|
+| 1 | ⭐ **Danh sách câu chưa trả lời được đã rỗng**, hoặc mỗi câu còn lại có **tên người chịu trách nhiệm và hạn** |
+| 2 | Mọi mối nguy đã liệt kê đều có **biện pháp và mức yêu cầu**; ⚠ không mối nguy nào ở trạng thái *"sẽ xử lý bằng phần mềm, tính sau"* |
+| 3 | ⭐⭐ Một người **không tham gia viết** đọc đặc tả và **mô tả lại được một chu trình** cùng **hai tình huống lỗi** |
+| 4 | Mọi tag có **một** nghĩa; ⭐ còn **≥ 20 % kênh dự phòng**; tín hiệu an toàn đã tách riêng — xem danh mục kiểm ở **C.1** |
+| 5 | Cả **11 mục** của §13.4 đã điền, ⚠ **kể cả mục 8, 9, 10** — ba mục hay để trống nhất |
+| 6 | ⭐ Phép thử một phút ở **C.10** đạt: người chưa mở tủ chỉ ra được một tag nằm ở khe nào, kênh nào |
+| 7 | ⭐ Phép thử một phút ở **C.11** đạt: ba tag bất kỳ đều trả lời được *mã gì, bao lâu có hàng, có dự phòng không* |
+| 8 | ⭐⭐ Mọi con số đã **nhân hệ số dự phòng**, và ⚠ **ghi rõ giả định** — dòng đỉnh giả định mấy cơ cấu cùng tác động |
+| 9 | Mỗi chỉ tiêu có **cách đo** đi kèm; ⚠ *"máy chạy ổn định"* không phải tiêu chí — xem mục 23.6 |
+
+### ⚠⚠ Ba quan hệ chặn quan trọng nhất, và vì sao đảo thứ tự là tốn tiền thật
+
+| Quan hệ | Đảo thứ tự thì sao |
+|---|---|
+| ⚠⚠ **Bước 2 chặn bước 5 và 6** | Chọn xong phần cứng rồi mới đánh giá rủi ro thì chỉ còn hai lối: **sửa thiết kế** (mất tiền) hoặc ⚠⚠ **hạ chuẩn an toàn cho vừa thiết kế** (không được phép). Chương 57 Bẫy 2 |
+| ⭐⭐ **Bước 4 chặn bước 6, 7 và việc đấu tủ** | Đấu tủ trước khi có bảng I/O thì **số dây không khớp tên tag**, và cái lệch đó **theo máy suốt vòng đời** — không sửa được rẻ ở bất kỳ thời điểm nào sau đó. Chương 57 Bẫy 3 |
+| ⭐ **Bước 8 chặn chốt bước 7** | Tính công suất nguồn **sau khi** đã đặt hàng nghĩa là hoặc đổi đơn, hoặc ⚠ dùng nguồn thiếu — và nguồn thiếu cho ra **lỗi lạ khi nhiều cơ cấu cùng tác động**, loại lỗi bị đi tìm trong chương trình (Chương 8 mục 8.7) |
+
+> ⭐⭐ **Một cách kiểm tra rất nhanh xem dự án có đang đi đúng thứ tự không:** hỏi *"đã đặt hàng
+> chưa?"* và *"bảng I/O đã ký chưa?"*. ⚠ Nếu câu đầu là **rồi** mà câu sau là **chưa**, ⭐ dự án
+> đang đi ngược, và phần chênh sẽ hiện ra ở khâu đấu tủ.
+
+> ⚡ **Về việc chín bước này mất bao lâu.** ⚠ Không có con số chung — tuỳ quy mô máy. ⭐ Nhưng có một
+> tỉ lệ đáng tham khảo: với máy cỡ máy mẫu của sách, ⭐⭐ **phần việc từ bước 1 tới bước 9 thường
+> chiếm 15–25 % tổng thời gian dự án**, và ⚠ nhóm nào rút nó xuống dưới 10 % gần như luôn trả lại
+> phần chênh đó ở khâu chạy thử — cộng lãi.
+>
+> ⭐ Con số này là **kinh nghiệm nghề, không phải chuẩn**. Hãy tự đo trên hai, ba dự án của chính bạn
+> rồi dùng con số của mình.
+
+---
+
 ## 23.3 Bảng I/O — làm trước, không làm sau
 
 Bảng I/O là thứ **duy nhất** trong đặc tả mà cả bốn bên đều dùng: người thiết kế điện đấu dây theo nó,

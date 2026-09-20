@@ -376,7 +376,7 @@ Bẫy trung tâm của chương. Nó xảy ra vì thiết bị phụ trợ thư�
 đoạn khác, và **không ai đặt câu hỏi ở mục 48.6**.
 
 **Cách phòng:** đưa câu hỏi đó vào biểu mẫu đặc tả (Chương 23) như một mục bắt buộc, áp cho **mọi**
-thiết bị trong danh mục vật tư — kể cả những thứ không nối vào PLC.
+thiết bị trong danh mục vật tư (**Phụ lục C.11**) — kể cả những thứ không nối vào PLC.
 
 ### 🔍 BẪY 7 — Báo động cho mọi thứ
 

@@ -307,7 +307,8 @@ Dòng thứ ba đáng chú ý với người làm điều khiển: van khí tron
 Sự cố ở mục 7.1. Người thay gá thấy hai miếng nhựa giống hệt nhau về hình dạng và cứng như nhau — và
 không có cách nào **nhìn** ra một miếng là tiêu tán, một miếng là cách điện.
 
-**Cách phòng:** ghi rõ yêu cầu vật liệu tiêu tán **trong danh mục vật tư và trên bản vẽ**, không chỉ
+**Cách phòng:** ghi rõ yêu cầu vật liệu tiêu tán **trong danh mục vật tư (Phụ lục C.11) và trên bản
+vẽ**, không chỉ
 trong đầu người thiết kế. Và dán nhãn trên chi tiết đó.
 
 ### 🔍 BẪY 2 — Tin rằng "không thấy giật thì không sao"
