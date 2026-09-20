@@ -308,7 +308,9 @@ RS-232 chỉ để dạy Ch.38 sẽ **sai thực tế**.
 
 Bộ điều khiển nhiệt độ rời được chọn thay thế vì ba lý do:
 
-- Đây là **thiết bị nối tiếp phổ biến nhất** trong chế tạo máy — RS-485 với Modbus RTU.
+- Đây là một **kiểu ghép nối tiếp thường gặp** ở thiết bị loại này — RS-485 với Modbus RTU.
+  ⚠ Sách **không khẳng định** nó còn là lựa chọn phổ biến nhất hiện nay: đó là **hạng mục còn treo**,
+  ghi ở Phụ lục J mục J.9.
 - Nó có sẵn lý do tồn tại trên DP-01: bộ gia nhiệt keo cần nhiệt độ ổn định, và dùng bộ điều khiển
   chuyên dụng là lựa chọn rất thường gặp.
 - ⭐ Nó tạo ra một **quyết định thiết kế đáng dạy** ở Ch.35: *khi nào dùng bộ điều khiển rời, khi nào

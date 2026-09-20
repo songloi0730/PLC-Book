@@ -2796,6 +2796,94 @@ mở và whitepaper trong kho đã được khai thác hết chưa?**
 
 ---
 
+## Đợt 55 — Soát tính chính xác: một khẳng định sai do chủ dự án chỉ ra, và ba chỗ cùng bệnh
+
+⭐ Chủ dự án đọc mục 4.5 và phản biện: *"sách nói cảm biến tiệm cận cảm ứng được dùng nhiều nhất,
+nhưng các máy tôi gặp có vẻ không phải vậy."* ⚡ Kèm yêu cầu soát rộng: tính thống nhất, đánh số, và
+**nội dung tự bịa**.
+
+### A — ⚠⚠ Khẳng định sai, và sách tự mâu thuẫn với chính nó
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 465 | ⚠⚠ Ch.4 mục 4.5 viết *"Đây là loại được dùng nhiều nhất trong máy tự động hoá"* về cảm biến tiệm cận cảm ứng. ⭐ **Không nguồn, và không đúng như một phát biểu chung** | ⚠⚠ |
+| 466 | ⭐⭐ **Bằng chứng mạnh nhất nằm ngay trong sách:** đếm bảng I/O đầy đủ của máy mẫu (Phụ lục J mục J.2) được **10 cảm biến reed xy-lanh · 4 cảm biến quang · 0 cảm biến tiệm cận cảm ứng**. ⚡ Sách khẳng định một loại là phổ biến nhất trong khi **máy mẫu của chính nó không dùng cái nào** | ⚠⚠ |
+| 467 | ⭐ Sửa: bỏ câu đó, thay bằng mục mới **"Loại nào dùng nhiều nhất? Đó là câu hỏi sai"** — bảng năm nhóm máy với loại chiếm đa số ở mỗi nhóm, và ⭐⭐ **bốn câu hỏi chọn cảm biến** (vật là gì · chạm được không · môi trường · tầm xa) không nhắc tới chữ *"phổ biến"* nào | ➕➕ |
+| 468 | ⭐ Nêu thẳng cả hai phía để người đọc không đổi một thiên kiến lấy một thiên kiến khác: máy gia công kim loại thì **tiệm cận cảm ứng đúng là chiếm đa số**; máy lắp ráp khí nén thì **reed xy-lanh**; lắp ráp điện tử thì **quang** — ⚡ vì board mạch không phải khối kim loại liền | ➕➕ |
+
+### B — Cùng bệnh, ba chỗ khác
+
+| # | Chỗ | Sửa | KQ |
+|---|---|:--|:--:|
+| 469 | ⚠⚠ **Ch.38 và `case_study`** | *"thiết bị nối tiếp **phổ biến nhất** trong chế tạo máy"* (RS-485/Modbus RTU) — ⭐⭐ **mâu thuẫn trực tiếp với Phụ lục J mục J.9**, nơi chính sách liệt kê *"bộ điều khiển nhiệt độ rời có còn phổ biến không"* là **hạng mục CHƯA XÁC MINH**. Sửa cả hai chỗ thành *"kiểu ghép thường gặp"* và dẫn thẳng tới J.9 | ⚠⚠ |
+| 470 | ⚠ **Ch.5** | *"van điện từ là cơ cấu chấp hành phổ biến nhất trên máy tự động hoá"* → thu hẹp thành **"chiếm đa số trên máy lắp ráp dùng khí nén"**, kèm đối chứng: máy gia công kim loại thì động cơ và trục chiếm đa số | ⚠ |
+| 471 | ⚠ **Ch.39** | *"Modbus vẫn là giao thức phổ biến nhất"* → ⭐ **hai cách đếm cho hai câu trả lời**: theo **số nút mạng** thì Ethernet công nghiệp đã vượt ở máy đời mới; theo **số chủng loại thiết bị có hỗ trợ** thì Modbus vẫn dẫn. ⚡ Nên câu đáng nói là **"ở đâu cũng gặp"**, không phải **"nhiều nhất"** | ➕➕ |
+| 472 | ⭐ Quét toàn sách | **294 câu khẳng định tuyệt đối**, lọc còn **55 câu** nhóm nguy hiểm. ⭐⭐ Phần lớn là *"lỗi phổ biến nhất"*, *"nhầm lẫn phổ biến nhất"* — **nhận định nghề, đúng thể loại, giữ nguyên**. ⚠ Chỉ nhóm **khẳng định về thị trường** mới phải sửa | ✔ |
+
+### C — Bộ kiểm thứ tư: đánh số
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 473 | ⭐ `kiem_danh_so.py` mới soát ba dãy số mà chưa bộ kiểm nào đụng tới: **số mục** (trùng · thủng · sai thứ tự · sai số chương), **số hình** (nhắc *Hình N.k* mà không có chú thích hình đó), **số bẫy** (dãy 1,2,3… có liền mạch không) | ➕➕ |
+| 474 | ⭐⭐ **Kết quả: 0 lỗi** — và đã **thử trước khi tin**: chèn ba lỗi giả (đổi 17.5→17.7 · đổi BẪY 3→BẪY 4 · nhắc *Hình 17.9* không tồn tại), bộ kiểm bắt đủ **5 thông báo** rồi khôi phục | ✔ |
+| 475 | ⭐ Nối vào `gop_sach.sh` — **bốn bộ kiểm** nay chặn việc ghép sách | ➕ |
+
+### D — Soát số liệu bịa: ba chỗ tra ra ĐÚNG
+
+⭐⭐ **Kết quả âm tính, và đáng ghi đúng bằng kết quả dương tính.**
+
+| # | Con số bị nghi | Đối chiếu | KQ |
+|---|:--|:--|:--:|
+| 476 | Ch.9 mục 9.5 ghi máy mẫu có **8 reed**, nhưng Phụ lục J liệt kê **5 cặp = 10 reed** | ⭐ **Không sai**: mục 9.5 ước tính cho **lát cắt 1**, mà cặp reed cửa chắn thuộc **lát cắt 5**. 4 cặp × 2 = đúng 8. ⚡ Cột *"Lát cắt"* của Phụ lục J giải quyết mâu thuẫn tưởng tượng này | ✔ |
+| 477 | Ch.8 mục 8.7b: **"lắp đứng giảm ~10 °C định mức"** | ⭐⭐ **Đúng nguyên văn**: tài liệu Siemens ghi *"For vertical mounting, the maximum allowable ambient temperature is reduced by 10 degrees C"*, và bảng thông số xác nhận **−20…60 °C nằm ngang → −20…50 °C lắp đứng** | ✔ |
+| 478 | Ví dụ kèm theo — *"module ghi 0–55 °C lắp ngang còn 0–45 °C khi lắp đứng"* | ⭐ Là ví dụ **chung chung có chủ ý**, không phải số của Siemens; con số chịu tải của lập luận là **hiệu 10 °C** thì đã xác minh. ⭐ Giữ nguyên | ✔ |
+| 479 | Khảo sát diện rộng | ⭐ **206 con số kỹ thuật** khác nhau, **90 con chỉ xuất hiện một lần**. Mẫu kiểm không tìm ra con số nào bịa — các con số đáng ngờ nhất đều có dẫn nguồn tại chỗ | ✔ |
+
+### E — "Nhắc tới mà không nói cách phân biệt": quét xong, chỉ có đúng chỗ chủ dự án chỉ
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 480 | ⭐ Dựng phép quét theo đúng khuôn mẫu của lỗi vừa tìm ra: **mục nào liệt kê ≥3 LOẠI có tên tiếng Anh mà không có bảng so sánh lẫn hướng dẫn chọn?** | ➕ |
+| 481 | ⭐⭐ Cả sách chỉ có **hai mục ứng viên**: Ch.4 mục 4.5 *(5 loại cảm biến)* và Ch.17 mục 17.2 *(3 loại timer)*. ⚡ Ch.17 vốn đã có bảng; Ch.4 **đạt sau khi sửa ở mục A**. ⭐ Nhóm này nay sạch | ✔ |
+
+### Kết quả đợt 55
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **17** |
+| ⚠⚠ Khẳng định sai đã sửa | 4 chỗ (Ch.4 · Ch.5 · Ch.38 + case study · Ch.39) |
+| ➕➕ Bổ sung giá trị cao | 4 |
+| ✔ Xác nhận không có vấn đề | 7 |
+| Bộ kiểm mới | **1** — `kiem_danh_so.py`, đã nối vào `gop_sach.sh` (nay **4** bộ kiểm) |
+| Mục mới | 1 — Ch.4 *"Loại nào dùng nhiều nhất? Đó là câu hỏi sai"* |
+
+> ⭐⭐ **Bài học 1 — loại sai nguy hiểm nhất của cuốn sách này không phải số liệu, mà là TÍNH TỪ SO
+> SÁNH NHẤT.**
+>
+> Soát 206 con số kỹ thuật: không tìm ra con nào bịa, vì mỗi con số đều **có chỗ để tra**. ⚡ Nhưng
+> *"phổ biến nhất"* thì **không có chỗ nào để tra** — nó trôi vào bản thảo như một câu nối, không ai
+> đòi nguồn, và nó **nghe có thẩm quyền**.
+>
+> ⭐ Quy tắc từ nay: mỗi *"…nhất"* về **thị trường hay tần suất dùng** phải hoặc **có nguồn**, hoặc
+> **thu hẹp phạm vi** (*"chiếm đa số trên nhóm máy X"*), hoặc **bị xoá**. ⚠ *"…nhất"* về **lỗi hay
+> sai lầm** thì khác — đó là nhận định nghề, và sách được phép nêu.
+
+> ⭐⭐ **Bài học 2 — máy mẫu là máy phát hiện nói dối của chính cuốn sách.**
+>
+> Không cần khảo sát thị trường để bác bỏ *"tiệm cận cảm ứng phổ biến nhất"*. ⚡ Chỉ cần **đếm bảng
+> I/O của DP-01**: 10 reed, 4 quang, **0 tiệm cận**. ⭐ Một cuốn sách có máy mẫu xuyên suốt thì mọi
+> khẳng định chung của nó đều **kiểm được ngược lại bằng chính máy mẫu** — và chỗ nào máy mẫu mâu
+> thuẫn với lời khẳng định thì **ít nhất một trong hai cái sai**.
+
+> ⚠ **Bài học 3 — người đọc thật tìm ra thứ năm mươi tư đợt tự rà không tìm ra.**
+>
+> Đợt 52 đã ghi *"mọi thước đo nội bộ chỉ đo những gì sách đã có, so với nhau"*. ⭐ Đợt này là ví dụ
+> thứ hai, và mạnh hơn: ⚡ phép quét *"liệt kê loại mà không có cách phân biệt"* — dựng **sau** khi
+> biết lỗi — quét cả sách ra **đúng hai mục**, một trong đó là mục chủ dự án đã chỉ. ⭐⭐ Phép quét đó
+> **hoàn toàn dựng được trước**; chỉ là **không ai nghĩ ra nếu chưa thấy một ví dụ thật**.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

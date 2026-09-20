@@ -23,8 +23,12 @@ Chương này về những gì nằm ở **đầu ra** của PLC — và về m�
 
 ## 5.2 Van điện từ
 
-**Van điện từ** *(solenoid valve)* là cơ cấu chấp hành phổ biến nhất trên máy tự động hoá: PLC cấp
-điện cho cuộn hút, cuộn hút đẩy lõi van, van đổi đường khí (Chương 6).
+**Van điện từ** *(solenoid valve)* là cơ cấu chấp hành **chiếm đa số trên máy lắp ráp dùng khí
+nén**: PLC cấp điện cho cuộn hút, cuộn hút đẩy lõi van, van đổi đường khí (Chương 6).
+
+> ⚠ **Chiếm đa số ở nhóm máy nào thì tuỳ máy đó chạm vào cái gì** — máy gia công kim loại thì động
+> cơ và trục servo chiếm đa số, không phải van. ⭐ Cùng lý do với cảm biến ở **Chương 4 mục 4.5**:
+> đừng chọn theo *"loại nào phổ biến"*, chọn theo **việc cần làm và môi trường**.
 
 Về mặt **điện**, van điện từ chỉ là một cuộn dây. Ba thông số cần đọc:
 

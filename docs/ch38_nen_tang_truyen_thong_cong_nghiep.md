@@ -459,7 +459,7 @@ Theo số liệu đã chốt (Phụ lục J §J.1):
 
 | Liên kết | Giao diện | Vì sao |
 |---|---|---|
-| **Bộ điều khiển nhiệt độ keo** | ⭐ **RS-485, Modbus RTU** | Thiết bị nối tiếp phổ biến nhất trong chế tạo máy; đủ dùng cho dữ liệu đổi chậm |
+| **Bộ điều khiển nhiệt độ keo** | ⭐ **RS-485, Modbus RTU** | ⚠ Ghép nối tiếp vẫn thường gặp ở thiết bị loại này — ⭐ nhưng xem Phụ lục J mục J.9; đủ dùng cho dữ liệu đổi chậm |
 | Đầu đọc mã 2D | **Ethernet** | Theo thực tế thị trường (Chương 42) |
 | Màn hình vận hành | Ethernet | Chương 44 |
 | Hệ thống trên (MES) | Ethernet | Chương 42, 45 |

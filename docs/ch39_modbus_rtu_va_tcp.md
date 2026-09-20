@@ -25,8 +25,13 @@ bị, cũng không sai với PLC.
 
 ## 39.2 Vì sao Modbus ở khắp nơi
 
-Modbus ra đời từ những năm 1970 và vẫn là giao thức phổ biến nhất trong tự động hoá công nghiệp. Lý
-do không phải vì nó tốt nhất.
+Modbus ra đời từ những năm 1970 và ⭐ **vẫn có mặt ở gần như mọi nhà máy** — hiếm thiết bị công
+nghiệp nào không hỗ trợ nó ở dạng nào đó. Lý do không phải vì nó tốt nhất.
+
+> ⚠ **Không nên phát biểu thành "giao thức phổ biến nhất".** ⭐ Đếm theo **số nút mạng** thì các
+> giao thức Ethernet công nghiệp ở Chương 40 đã vượt từ lâu ở máy đời mới; đếm theo **số chủng loại
+> thiết bị có hỗ trợ** thì Modbus vẫn dẫn. ⚡ Hai cách đếm, hai câu trả lời — nên câu đáng nói là
+> **"ở đâu cũng gặp"**, không phải **"nhiều nhất"**.
 
 | Lý do | Giải thích |
 |---|---|
