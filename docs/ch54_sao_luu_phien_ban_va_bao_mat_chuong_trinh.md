@@ -291,7 +291,7 @@ DP01_PLC_v2.4_2026-08-15_them-tre-200ms-tram1.zip
 | 3b — Tham số servo trục Z | Chương 37 |
 | 4 — Dự án HMI | Chương 44 |
 | 5 — Công thức sản phẩm | Đường chạy keo, thời gian sấy UV theo loại board (Chương 32) |
-| 6 — ⚠⚠ **Cấu hình rơ-le an toàn + mã kiểm tra** | Kèm hồ sơ kiểm định (Chương 48) |
+| 6 — ⚠⚠ **Cấu hình rơ-le an toàn + mã kiểm tra** | Kèm hồ sơ kiểm định (Chương 47) |
 | 7 — Cấu hình mạng | Địa chỉ scanner, bộ điều khiển nhiệt RS-485, biến tần (Chương 38, 40) |
 
 | Quy tắc | Quyết định |

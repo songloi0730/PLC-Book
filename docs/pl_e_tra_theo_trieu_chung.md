@@ -5,6 +5,10 @@
 >
 > Phụ lục này sắp xếp theo **thứ bạn quan sát được**, không theo thứ bạn cần biết — vì lúc máy hỏng,
 > bạn chưa biết mình cần biết gì.
+>
+> ⭐ Và **không phải triệu chứng nào cũng là máy dừng**: hai nhóm **E.4b** *(thao tác không ăn)*
+> và **E.5b** *(máy chạy bình thường nhưng con số sai)* là những nhóm mà máy **vẫn chạy** — nên
+> ⚠ chúng sống lâu nhất trước khi có ai đi tìm.
 
 ---
 
@@ -123,6 +127,39 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 
 ---
 
+## E.4b ⭐ Thao tác của người vận hành không ăn
+
+⚠ **Nhóm này bị bỏ sót nhiều nhất khi chẩn đoán, vì người ta coi nó là "người dùng thao tác sai".**
+⭐ Phần lớn lần thì không phải.
+
+| Quan sát | Nghi trước | Chương |
+|---|---|---|
+| Nhấn nút, **không có gì xảy ra** | Điều kiện cho phép chưa đạt — ⭐ đi theo **E.2** trước khi nghi nút | E.2 · 25 |
+| ⭐ **Nhấn một lần, máy làm hai lần** | ⭐⭐ **Thiếu bắt cạnh**, hoặc rung tiếp điểm chưa được chống | 16 mục 16.5 · 17 mục 17.4 |
+| ⭐ Phải **giữ nút** mới chạy, nhả ra là dừng | ⭐⭐ **Thiếu mạch tự giữ** — hoặc nhánh tự giữ mắc sai | 15 mục 15.4 |
+| ⚠⚠ **Nút Dừng không dừng được máy** | ⭐⭐ Nhánh tự giữ **vòng qua cả nút Dừng** — xem Hình 15.2 | ⚠ **15 mục 15.4** |
+| Nút Reset **không xoá được lỗi** | Nguyên nhân gốc **chưa hết**; hoặc bit lỗi là loại **giữ được** nên cần lệnh xoá tường minh | 16 mục 16.4 · 28 |
+| ⭐ Ngõ ra **bật rồi tự tắt ngay trong cùng vòng quét** | ⭐⭐ **Cuộn dây trùng** — một tag được ghi ở hai chỗ, chỗ sau đè chỗ trước | ⚠ **15 mục 15.3** · 22 |
+| Đổi công tắc chế độ mà máy **không đổi chế độ** | Điều kiện chuyển chế độ không cho phép đổi khi đang chạy dở | 28 |
+| ⭐ Nút **chỉ ăn đôi khi**, càng cũ càng hay trượt | Rung tiếp điểm; tiếp điểm mòn — ⚠ **xung ngắn hơn một vòng quét thì PLC không thấy** | 4 · ⭐ **10 mục 10.3** |
+| Thao tác ăn trên màn hình nhưng **không ăn trên nút cứng** (hoặc ngược lại) | Hai đường lệnh không đi qua cùng một chỗ — ⭐ kiểm chỗ **gom lệnh** | 44 · 27 |
+
+> ⭐⭐ **Phép thử tách đôi bài toán trong ba mươi giây:** mở màn hình theo dõi, **nhìn bit của nút**
+> khi nhấn.
+>
+> ⚡ Bit **không lên** → bài toán nằm ở **phần cứng**: nút, dây, module, kiểu đấu (đi tiếp theo E.3).
+> ⚡ Bit **lên mà máy không phản ứng** → bài toán nằm ở **logic**: điều kiện cho phép, bắt cạnh,
+> tự giữ, hoặc cuộn dây trùng.
+>
+> ⭐ Hai nhánh đó dẫn tới hai nhóm chương hoàn toàn khác nhau — **đừng đoán, hãy nhìn bit**.
+
+> ⚠⚠ **Một cảnh báo riêng cho hàng "nút Dừng không dừng được".** ⭐ Đây **không** phải lỗi để
+> "xử lý sau". Và quan trọng hơn: ⚠⚠ **nút Dừng trong chương trình không phải chức năng dừng khẩn
+> cấp** — dừng khẩn cấp phải cắt bằng phần cứng, không đi qua logic PLC (Chương 47, 48). ⭐ Nếu máy
+> đang dựa vào nút Dừng mềm để đảm bảo an toàn thì vấn đề lớn hơn một nấc thang mắc sai.
+
+---
+
 ## E.5 Giá trị analog sai hoặc nhảy loạn
 
 | Quan sát | Nghi trước | Chương |
@@ -142,6 +179,43 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 >
 > ⭐ Đây là lý do phải **ghi mốc lúc nghiệm thu** (Chương 8, 36, 40, 49): một phép đo chỉ có nghĩa khi
 > có cái để so.
+
+---
+
+## E.5b ⭐⭐ Máy chạy bình thường nhưng CON SỐ sai
+
+⚠ **Máy không dừng, không báo động, không ai thấy gì lạ — chỉ có con số là sai.** ⭐ Nhóm này gần
+với E.8, nhưng khác ở chỗ: ở E.8 **sản phẩm** hỏng; ở đây **sản phẩm vẫn tốt**, chỉ **con số** sai —
+sản lượng, bộ đếm, thời gian, giá trị tính toán.
+
+| Quan sát | Nghi trước | Chương |
+|---|---|---|
+| ⭐ **Sản lượng đếm thiếu** so với đếm tay | ⭐⭐ Xung ngắn hơn một vòng quét → **PLC không thấy**; hoặc thiếu bộ đếm tốc độ cao | ⭐ **10 mục 10.3** · 18 mục 18.5 |
+| ⭐ **Sản lượng đếm thừa** | ⭐⭐ **Cạnh giả** do rung tiếp điểm hoặc nhiễu — chân đếm tự bắt cạnh nhưng **cạnh giả thì vẫn đếm** | ⚠ **18 mục 18.4** |
+| Bộ đếm **về 0 sau mỗi lần mất điện** | Biến khai là **không giữ được** | 16 mục 16.4 · 11 mục 11.4 |
+| ⚠⚠ Bộ đếm **luôn bằng 0** hoặc **không bao giờ xoá được** | ⭐ **Cực tính chân đặt lại khác nhau giữa các hãng** — nối nhầm thì bị xoá mỗi vòng quét | ⚠ **18 mục 18.6b** |
+| ⭐ Con số **nhảy âm** hoặc nhảy sang một giá trị rất lớn | ⭐⭐ **Tràn số** — bộ đếm tích luỹ khai `INT` thay vì `DINT` | ⚠ **19 mục 19.4** · 18 |
+| Phép chia cho kết quả **bằng 0** hoặc mất phần lẻ | Chia số nguyên; hoặc thứ tự phép tính làm mất độ chính xác | 19 mục 19.3 |
+| ⭐ Một bước **kéo dài không đúng con số đã đặt** | Độ phân giải bộ định thời; hoặc giá trị đặt bị hiểu theo **đơn vị khác** | ⭐ **17 mục 17.3** · 17 mục 17.7 |
+| ⚠⚠ **Bộ định thời không bao giờ chạy xong** | ⭐⭐ Khối nằm trong **nhánh không được thực thi** ở vòng quét này — nó **đóng băng**, không chạy tiếp | ⚠ **17 mục 17.6** · 15 mục 15.4b |
+| Hai bộ định thời **ảnh hưởng lẫn nhau** | ⭐ Dùng chung **một thể hiện** — chép nấc thang mà quên đổi tên khối | 14 mục 14.3 · 17 mục 17.6 |
+| ⭐ Đổi công thức nhưng máy **vẫn chạy tham số cũ** | Tham số nạp một lần lúc khởi động; hoặc đổi giữa chu trình nên chưa có hiệu lực | ⭐ **29 mục 29.5** |
+| ⚠ Cùng một chương trình, **hai máy cho hai kết quả** | Độ phân giải bộ định thời theo **thiết bị/lệnh**; hoặc thời gian quét khác nhau | 17 mục 17.7 · 10 · 56 mục 56.4 |
+| Con số trên màn hình **khác** con số trong PLC | Quy đổi thang ở phía màn hình; hoặc đọc biến khác | 44 · 32 mục 32.3 |
+
+> ⭐⭐ **Phép thử rẻ nhất cho cả nhóm này: đặt một bộ đếm thứ hai lên tín hiệu CHƯA lọc, rồi hiển thị
+> cả hai.** ⚡ Hiệu số giữa hai con số **chính là số cạnh giả** — bạn **đo** được vấn đề thay vì đoán,
+> và biết luôn việc lọc có tác dụng hay không (Chương 18).
+>
+> ⭐ Cùng tinh thần đó áp cho mọi con số nghi ngờ: **thêm một phép đo độc lập** rồi so, đừng tranh
+> luận xem con số nào đúng.
+
+> ⚠⚠ **Vì sao nhóm này nguy hiểm hơn vẻ ngoài của nó.** ⭐ Con số sai **không làm máy dừng**, nên
+> nó sống rất lâu — và nó đi thẳng vào những chỗ người ta ra quyết định: báo cáo sản lượng, tính
+> hiệu suất, lịch bảo trì theo số lần tác động, truy xuất nguồn gốc.
+>
+> ⚡ Một bộ đếm sai 2 % không ai để ý trong ba tháng, nhưng nó làm **lịch thay vật tư lệch đi ba
+> tháng** (Chương 53) và làm **mọi phép tính hiệu suất sai** (Chương 55).
 
 ---
 
@@ -297,6 +371,8 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | Bạn cần | Đọc |
 |---|---|
 | Phương pháp chẩn đoán có hệ thống | ⭐ **Chương 51** |
+| ⭐ Thao tác không ăn: tự giữ, bắt cạnh, cuộn dây trùng | Chương 15, 16 — và **mục E.4b** |
+| ⭐ Con số sai mà máy vẫn chạy: đếm, thời gian, tràn số | Chương 17, 18, 19 — và **mục E.5b** |
 | Thiết kế báo động nói được **phải làm gì** | Chương 44 |
 | Quy tắc lắp đặt và chống nhiễu | ⭐ **Chương 49** |
 | Đo chu kỳ, tìm nút cổ chai | Chương 55 |

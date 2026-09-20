@@ -49,6 +49,7 @@ echo "== Ghep sach phien ban ${VERSION} =="
 echo "-- Chay bo kiem truoc khi ghep"
 python tools/kiem_tra_chuong.py > "$TMP/k1.txt" 2>&1 || { cat "$TMP/k1.txt"; echo "!! kiem_tra_chuong.py bao LOI — dung ghep"; exit 1; }
 python tools/kiem_nhat_quan.py  > "$TMP/k2.txt" 2>&1 || { cat "$TMP/k2.txt"; echo "!! kiem_nhat_quan.py bao LOI — dung ghep"; exit 1; }
+python tools/kiem_tro_muc.py   > "$TMP/k3.txt" 2>&1 || { cat "$TMP/k3.txt"; echo "!! kiem_tro_muc.py bao LOI — con tro toi so muc khong ton tai"; exit 1; }
 tail -2 "$TMP/k1.txt"; tail -2 "$TMP/k2.txt"
 
 # 1. Cap nhat so phien ban trong bia

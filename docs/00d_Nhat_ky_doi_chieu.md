@@ -2470,6 +2470,109 @@ mong muốn thì càng tốt"*.
 
 ---
 
+## Đợt 51 — 2026-09-20 · Soát con trỏ, và hai nhóm triệu chứng mà Phụ lục E bỏ sót
+
+Thước đo đợt này: ⭐ **con trỏ trong sách có trỏ đúng chỗ không** — chưa bộ kiểm nào soát chuyện đó.
+Và ⭐ **chỉ mục triệu chứng có phủ hết các loại triệu chứng không**.
+
+### A — Bộ kiểm thứ ba: `kiem_tro_muc.py`
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 395 | ⭐⭐ **Bộ kiểm mới soát mọi con trỏ dạng *"mục N.M"* · *"§N.M"* · *"Phụ lục X.N"* có trỏ tới tiêu đề CÓ THẬT không.** ⚠ `kiem_nhat_quan.py` soát **trôi dạt thuật ngữ**, không soát số mục — nên lớp lỗi này chưa từng được kiểm | ➕➕ |
+| 396 | ⭐ **Kết quả: 1699 con trỏ, 0 sai.** Một kết quả âm tính — và là kết quả đáng ghi, vì nó nói rằng công sức nên dồn sang chỗ khác | ✔ |
+| 397 | ⚠ **Đã THỬ bộ kiểm trước khi tin con số 0** — chèn ba con trỏ hỏng (`99.7`, `C.77`, `10.4b`) và một con trỏ đúng (`8.6`), bộ kiểm bắt đúng ba, bỏ qua đúng một. ⭐ Rút từ bài học đợt 36–37: **không tuyên bố công cụ làm được gì mà chưa chạy thử** | ✔ |
+| 398 | ⭐ Nối bộ kiểm vào `gop_sach.sh` — từ nay **không ghép được sách nếu có con trỏ hỏng**. Và nó bắt lỗi ngay trong chính đợt này: 25 con trỏ mới viết ở mục D đều được kiểm tự động | ➕ |
+
+### B — ⚠ Con trỏ ĐÚNG SỐ MỤC nhưng TRỎ NHẦM CHƯƠNG — lớp lỗi bộ kiểm không bắt được
+
+⭐⭐ **Đây là phát hiện quan trọng nhất của đợt.** Một con trỏ có thể hoàn toàn hợp lệ về hình thức —
+mục tồn tại, số đúng — mà vẫn **dẫn người đọc sang một chương không nói gì về chủ đề đó**.
+
+| # | Chỗ sai | Bằng chứng | KQ |
+|---|:--|:--|:--:|
+| 399 | ⚠⚠ **Ch.56 mục 56.4**: *"Logic phụ thuộc thời gian quét sẽ chạy khác **(Chương 7)**"* | ⭐ Ch.7 là *ESD & môi trường sản xuất điện tử* và có **0 lần** nhắc "thời gian quét" hay "vòng quét"; Ch.10 có **48 lần**. Sửa thành **Chương 10** | ⚠ |
+| 400 | ⚠⚠ **Phụ lục A1**: *"giá trị ngõ vào KHÔNG đổi trong suốt một vòng quét **(Chương 7)**"* | ⭐ Cùng một lỗi, cùng một chương đích sai. ⚡ Hai chỗ cùng sai như nhau gợi ý đây là **vết của một lần đánh số lại chương** chưa cập nhật hết. Sửa thành **Chương 10** | ⚠ |
+| 401 | ⚠ **Ch.54**: *"Cấu hình rơ-le an toàn + mã kiểm tra — kèm hồ sơ kiểm định **(Chương 48)**"* | ⭐ Ch.48 có **0 lần** "rơ-le an toàn" và **1 lần** "kiểm định"; Ch.47 có **11** và **10**. Sửa thành **Chương 47** | ⚠ |
+| 402 | ⚠⚠ **Tự động hoá lớp lỗi này** | ⚠⚠ **Đã thử và THẤT BẠI.** Cách thử: với mỗi trích dẫn *"(Chương N)"*, lấy các cụm **in đậm** trong cùng câu rồi kiểm xem cụm đó có trong Ch.N không. ⭐ Kết quả **334 nghi vấn — gần như toàn bộ là dương tính giả**, vì cụm in đậm là **diễn giải**, không phải thuật ngữ nguyên văn. ⚡ **Rút lại, không đưa vào bộ kiểm** | ⚠ |
+| 403 | ⭐ **Bản thu hẹp** | ⭐ Dùng được: chỉ xét ~17 thuật ngữ lõi **có đúng một chương chủ nhà** (*thời gian quét*→10, *ESD*→7, *load cell*→34, *Modbus*→39…), và chỉ báo khi trích dẫn trỏ sang chương **không hề nhắc** thuật ngữ đó. ⭐ **10 nghi vấn, 3 sai thật** — tỉ lệ dùng được | ✔ |
+
+> ⚠ **Hai lần tôi tự sai trong đợt này, cả hai đều do `grep` phân biệt hoa thường.**
+>
+> Lần một: kết luận *"Ch.17 không nhắc chống rung"* — ⭐ sai, Ch.17 mục 17.4 có hẳn tiểu mục
+> **"Chống rung tiếp điểm nút bấm"** viết hoa chữ C. Lần hai: đếm sót một nửa số lần xuất hiện của
+> *"lọc rung"* vì các câu bắt đầu bằng **"Lọc rung"**.
+>
+> ⭐⭐ **Hệ quả: một kết luận phủ định rút ra từ `grep` phải chạy lại với `-i` trước khi tin.** Cùng
+> loại bài học với đợt 36–37, chỉ khác công cụ.
+
+### C — ⭐ Nghi vấn thuật ngữ "chống rung" / "lọc rung" — tan sau khi soi kỹ
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 404 | Sách dùng **cả hai cụm**: *"lọc rung"* 11 lần (Ch.16, 18, 57, Phụ lục L), *"chống rung"* 5 lần (Ch.4, 9, 51, Phụ lục L, và Ch.17). Thoạt nhìn giống trôi dạt thuật ngữ kiểu *"tra chéo / tham chiếu chéo"* ở đợt 40 | ⚠ |
+| 405 | ⭐⭐ **Nhưng không phải trôi dạt: hai cụm nói hai tầng khác nhau.** *Chống rung* là **mục tiêu** (và là từ Phụ lục F chọn làm cặp với *debounce*); *lọc rung* là **cách làm** — cho tín hiệu qua `TON`. Ch.17 mục 17.4 dạy mục tiêu, Ch.18 dạy cách làm. ⭐ **Không mass-replace** — ép một từ sẽ làm hỏng văn ở cả hai chỗ (*"chống rung bằng TON"* dở hơn *"lọc rung bằng TON"*) | ✔ |
+| 406 | ⭐ Và con trỏ *"Lọc rung trước khi đưa vào chân đếm (Chương 17, mục 17.4)"* ở Ch.18 — ⭐ **đúng**, vì mục 17.4 chính là chỗ có tiểu mục chống rung nút bấm | ✔ |
+
+### D — Phụ lục E thiếu hai nhóm triệu chứng, và đó là hai nhóm sống lâu nhất
+
+⭐ Đo bằng cách: ⚠ **chương nào CÓ bẫy mà Phụ lục E không dẫn tới?** *(Phép đo lần đầu cho kết quả
+sai — 46 chương — vì regex bỏ sót cách Phụ lục E ghi số chương trần trong cột bảng. ⭐ Đo lại đúng:
+E dẫn tới **35/58** chương.)*
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 407 | ⭐ Phần lớn trong 23 chương còn lại **đúng là không nên có** trong một chỉ mục triệu chứng — Ch.13 *chọn PLC*, Ch.23 *đặc tả*, Ch.30 *chuẩn hoá*, Ch.50 *kiểm thử*, Ch.57 *case study*: ⚡ không ai tra chúng lúc hai giờ sáng | ✔ |
+| 408 | ⚠⚠ **Nhưng năm chương thì có: Ch.16, 17, 18, 19, 29.** Chúng sinh ra triệu chứng rất thật — đếm sai, bộ định thời không chạy xong, tràn số, đổi công thức không ăn — mà **không nhóm nào trong E.2–E.12 dẫn tới** | ⚠⚠ |
+| 409 | ⭐⭐ **Nguyên nhân của lỗ hổng, và nó là một nguyên nhân có hình dạng rõ ràng:** cả mười một nhóm sẵn có đều giả định **máy đã dừng hoặc đã hỏng** — không khởi động được · ngõ vào không lên · chu trình dừng · sản phẩm hỏng · chuyền tắc. ⚡ **Không nhóm nào dành cho trường hợp máy VẪN CHẠY BÌNH THƯỜNG** | ⚠⚠ |
+| 410 | ⭐⭐ **E.4b mới — "Thao tác của người vận hành không ăn"**: nhấn một lần ra hai lần · phải giữ nút mới chạy · ⚠⚠ **nút Dừng không dừng được** · nút Reset không xoá được lỗi · ngõ ra bật rồi tự tắt (cuộn dây trùng) · nút chỉ ăn đôi khi | ➕➕ |
+| 411 | ⭐⭐ Kèm **phép thử tách đôi bài toán trong ba mươi giây**: mở màn theo dõi, **nhìn bit của nút**. Bit không lên → phần cứng (đi tiếp E.3). Bit lên mà máy không phản ứng → logic. ⚡ Hai nhánh dẫn tới hai nhóm chương khác hẳn nhau | ➕➕ |
+| 412 | ⚠⚠ Và một cảnh báo phải có ở đó: **nút Dừng trong chương trình KHÔNG phải chức năng dừng khẩn cấp**. Máy đang dựa vào nút Dừng mềm để đảm bảo an toàn thì vấn đề lớn hơn một nấc thang mắc sai (Ch.47, 48) | ➕➕ |
+| 413 | ⭐⭐ **E.5b mới — "Máy chạy bình thường nhưng CON SỐ sai"**: đếm thiếu (xung ngắn hơn vòng quét) · đếm thừa (cạnh giả) · bộ đếm luôn bằng 0 (cực tính chân đặt lại) · tràn số · bộ định thời **đóng băng** vì nằm trong nhánh không được thực thi · hai bộ định thời dùng chung một thể hiện · đổi công thức mà vẫn chạy tham số cũ | ➕➕ |
+| 414 | ⭐ **Phép thử rẻ nhất cho cả nhóm**: đặt **một bộ đếm thứ hai trên tín hiệu CHƯA lọc** rồi hiển thị cả hai — hiệu số **chính là số cạnh giả**. ⚡ Đo được thay vì đoán. ⭐ Tổng quát hoá: với mọi con số nghi ngờ, **thêm một phép đo độc lập rồi so**, đừng tranh luận xem con số nào đúng | ➕➕ |
+| 415 | ⚠ Vì sao nhóm E.5b nguy hiểm hơn vẻ ngoài: ⭐ con số sai **không làm máy dừng** nên nó sống rất lâu, và nó đi thẳng vào chỗ người ta **ra quyết định** — báo cáo sản lượng, lịch bảo trì theo số lần tác động, truy xuất nguồn gốc. ⚡ Một bộ đếm sai 2 % làm **lịch thay vật tư lệch ba tháng** | ➕➕ |
+
+### Kết quả đợt 51
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **21** |
+| ➕➕ Bổ sung giá trị cao | 8 |
+| ➕ Bổ sung | 2 |
+| ⚠ Sửa lỗi thật | 3 con trỏ trỏ nhầm chương |
+| ⚠ Công cụ thử rồi rút lại | 1 |
+| ✔ Xác nhận không có vấn đề | 6 |
+| Bộ kiểm mới | **1** — `kiem_tro_muc.py`, đã nối vào `gop_sach.sh` |
+| Mục mới | 2 — Phụ lục E.4b, E.5b |
+| Con trỏ được kiểm tự động từ nay | **1726** |
+
+> ⭐⭐ **Bài học 1 — "hợp lệ" và "đúng" là hai chuyện khác nhau, và bộ kiểm chỉ bắt được cái thứ nhất.**
+>
+> 1699 con trỏ đều trỏ tới mục **có thật**. ⚡ Ba trong số đó vẫn dẫn người đọc sang **chương không
+> nói gì về chủ đề** — và bộ kiểm không thể biết, vì về hình thức chúng hoàn hảo.
+>
+> ⭐ Hệ quả cho các đợt sau: sau khi một bộ kiểm báo sạch, ⚠ **đừng kết luận "phần này ổn"** — chỉ
+> kết luận *"phần này không còn lỗi thuộc loại bộ kiểm đó bắt được"*.
+
+> ⭐⭐ **Bài học 2 — cách tìm lỗ hổng trong một chỉ mục: hỏi nó GIẢ ĐỊNH gì.**
+>
+> Đếm chương không được dẫn tới cho ra một danh sách dài mà phần lớn là nhiễu. ⭐ Câu hỏi cho ra kết
+> quả là câu khác: ***"mười một nhóm này có điểm chung gì?"*** — và điểm chung là **tất cả đều giả
+> định máy đã dừng hoặc đã hỏng**.
+>
+> ⚡ Lỗ hổng của một chỉ mục **không nằm trong những mục nó có**; nó nằm trong **giả định chung của
+> tất cả các mục**. Tìm giả định đó rồi phủ định nó — *"nếu máy vẫn chạy bình thường thì sao?"* —
+> là ra ngay hai nhóm còn thiếu.
+
+> ⚠ **Bài học 3 — `grep` phân biệt hoa thường, và kết luận phủ định thì không được phép sai.**
+>
+> Hai lần trong đợt này tôi kết luận *"chương X không nhắc tới Y"* và cả hai lần đều sai vì Y được
+> viết hoa ở đầu câu. ⭐ Kết luận **khẳng định** sai thì dễ lộ; kết luận **phủ định** sai thì **âm
+> thầm** và dẫn tới sửa nhầm thứ đang đúng. ⚡ Quy tắc từ nay: mọi *"không có X trong Y"* phải chạy
+> lại bằng `grep -i` trước khi ghi vào nhật ký.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

@@ -158,7 +158,7 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 > ⚠⚠ **Hàng cuối là khác biệt về HÀNH VI có hậu quả thật.**
 >
 > Mô hình cổ điển — đọc toàn bộ ngõ vào ở đầu vòng quét, chạy chương trình, ghi toàn bộ ngõ ra ở cuối
-> — làm cho ⭐ **giá trị ngõ vào KHÔNG đổi trong suốt một vòng quét** (Chương 7).
+> — làm cho ⭐ **giá trị ngõ vào KHÔNG đổi trong suốt một vòng quét** (Chương 10).
 >
 > ⚠ Ở hệ mà I/O cập nhật không đồng bộ với việc quét chương trình (đặc trưng của Rockwell
 > ControlLogix), giả định đó **không còn đúng** — cùng một tag ngõ vào có thể cho hai giá trị khác
