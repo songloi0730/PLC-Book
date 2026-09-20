@@ -463,7 +463,7 @@ Bảng tra nhanh. Dùng khi bạn đã biết triệu chứng và cần đườn
 | Triệu chứng | Nguyên nhân khả dĩ | Phép kiểm xác nhận |
 |---|---|---|
 | Không đèn nào sáng | Mất nguồn tổng; aptomat nhảy; cầu chì đứt | Đo điện áp vào tủ, rồi sau aptomat |
-| CPU không vào RUN | Có lỗi hệ thống; công tắc ở STOP; thiếu cấu hình phần cứng | Đọc bộ đệm lỗi trong phần mềm |
+| CPU không vào RUN | Có lỗi hệ thống; công tắc ở STOP; thiếu cấu hình phần cứng | ⭐ Đọc **bộ đệm chẩn đoán** — cách đọc và vì sao đọc trước khi mở code: **Phụ lục M.6** |
 | CPU tự chuyển sang STOP khi chạy | Watchdog quá thời gian quét; lỗi truy cập bộ nhớ | Xem quét lớn nhất; đọc mã lỗi kèm dấu thời gian |
 | Máy tự khởi động lại ngẫu nhiên | Sụt áp nguồn 24 V; nhiễu; lỏng đầu cốt nguồn | Đo min điện áp 24 V khi tải nặng (mục 51.8 ④) |
 | Thời gian quét tăng dần theo thời gian | Rò rỉ bộ nhớ; vòng lặp phụ thuộc dữ liệu | So sánh quét lớn nhất với con số lúc bàn giao |

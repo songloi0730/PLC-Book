@@ -272,7 +272,7 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 
 ## C.10 Bảng cấu hình phần cứng
 
-⭐ **Dùng để:** ghi lại **cái gì cắm ở đâu** — bản đồ khe cắm, địa chỉ, phiên bản. Đây là tài liệu
+⭐ **Dùng để:** ghi lại **cái gì cắm ở đâu** — bản đồ khe cắm, địa chỉ, phiên bản. ⭐ Danh sách **tham số từng loại module** phải đặt: **Phụ lục M.2**. Đây là tài liệu
 bạn đưa cho người đấu tủ, và là tài liệu bạn cần khi **dựng lại một CPU đã hỏng** (Chương 8 mục 8.4,
 Chương 54).
 

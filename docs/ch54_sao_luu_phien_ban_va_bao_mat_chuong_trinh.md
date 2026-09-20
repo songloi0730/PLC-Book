@@ -169,7 +169,7 @@ bản sao lưu**:
 
 | Nội dung | Ví dụ |
 |---|---|
-| Thứ tự khôi phục | Cấu hình phần cứng → chương trình → tham số driver → HMI |
+| Thứ tự khôi phục | Cấu hình phần cứng → chương trình → tham số driver → HMI — ⭐ chi tiết **Phụ lục M.8** |
 | Phần mềm và **phiên bản** cần có | Kèm nơi lấy giấy phép |
 | Mật khẩu lấy ở đâu | ⚠ Không phải chính mật khẩu — mà **nơi giữ nó** |
 | Việc phải làm sau khi khôi phục | ⭐ Về gốc các trục, ⚠ **kiểm tra chức năng an toàn**, đối chiếu công thức |

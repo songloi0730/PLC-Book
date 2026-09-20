@@ -267,6 +267,10 @@ Thành thật về những gì mô phỏng **không** phát hiện được, đ�
 | **Đấu dây sai** | Mô phỏng dùng biến nội, không đi qua dây |
 | **Hành vi thiết bị bên thứ ba** | Máy lân cận, đầu đọc mã, hệ thống trên — mỗi cái có nét riêng |
 | **Trạng thái ngõ ra khi CPU lỗi** | Phải thử thật (Chương 10, mục 10.5) |
+
+> ⭐ **Bảng trên là giới hạn về THẾ GIỚI VẬT LÝ. Còn một nhóm giới hạn thứ hai, ít ai nghĩ tới: CẤU HÌNH.** ⚡ Mô phỏng chạy trên một cấu hình lý tưởng, nên nó **không kiểm được** kiểu đấu sink/source, tham số module (dải analog, thời gian lọc ngõ vào, loại cảm biến nhiệt), địa chỉ mạng, hay hành vi giữ / không giữ khi nạp lại.
+>
+> ⭐⭐ Đó là nhóm nguy hiểm vì ⚠ **logic của bạn đúng hoàn toàn mà máy vẫn sai** — và không có báo lỗi biên dịch nào. Danh sách đầy đủ kèm danh mục kiểm: ⭐ **Phụ lục M**, đặc biệt mục **M.9**.
 | **Chức năng an toàn** | Bắt buộc thử thật, do người có thẩm quyền |
 
 Vì vậy trình tự đúng là: **mô phỏng để loại hết lỗi logic → ra hiện trường chỉ để xử lý những thứ chỉ

@@ -2573,6 +2573,94 @@ E dẫn tới **35/58** chương.)*
 
 ---
 
+## Đợt 52 — 2026-09-20 · Phụ lục M: khoảng cách giữa bài tập mô phỏng và dự án thật
+
+Nhận xét của chủ dự án: ⭐ *"ở trường chương trình PLC thường chỉ mô phỏng và lập tag I/O đơn giản;
+chương trình thực tế còn phải xử lý nhiều vấn đề hơn — cấu hình, cài đặt IP…"*.
+
+> ⭐⭐ **Thước đo của đợt này: sách 58 chương có tự mắc đúng cái lỗ hổng của trường học không?**
+>
+> ⚡ Đếm số tệp có nhắc tới từng hạng mục cấu hình mà một dự án thật bắt buộc phải làm. ⚠ Kết quả
+> cho thấy sách dạy **kỷ luật kỹ thuật** rất kỹ, nhưng có một tầng bị bỏ trống gần như hoàn toàn:
+> **những việc phải làm TRONG phần mềm lập trình**.
+
+### A — Đo lỗ hổng
+
+| # | Hạng mục | Số tệp có nhắc | KQ |
+|---|:--|:--|:--:|
+| 416 | ⚠⚠ **Bộ đệm chẩn đoán** *(diagnostic buffer)* | **0** — trong khi Ch.51 có hẳn một hàng bảo *"đọc bộ đệm lỗi trong phần mềm"* mà không chương nào nói nó là gì | ⚠⚠ |
+| 417 | ⚠⚠ **Khởi động nóng / xoá bộ nhớ / vòng quét đầu tiên** | **0** — dù Ch.10 là chương vòng quét và Ch.28 là chương phục hồi | ⚠⚠ |
+| 418 | ⚠⚠ **Bảo vệ know-how, bảo vệ mã nguồn** | **0** | ⚠ |
+| 419 | ⚠ **Đồng bộ thời gian / múi giờ** | **0–2** — trong khi dấu thời gian là nền của báo động (Ch.43), truy xuất (Ch.42) và chẩn đoán (Ch.51) | ⚠⚠ |
+| 420 | ⚠⚠ **Địa chỉ IP, mạng con** | **1 tệp** — và đó là Ch.54, nhắc như một **hạng mục sao lưu**, không phải như việc phải thiết kế | ⚠⚠ |
+| 421 | ⚠⚠ **Tham số module** (dải analog, thời gian lọc, loại cảm biến nhiệt) | **1 tệp** — cũng là Ch.54, cũng chỉ như hạng mục sao lưu | ⚠⚠ |
+| 422 | Phần đã có | ⭐ Ngược lại, phần **đã có** thì rất chắc: vòng quét (Ch.10), biến giữ được (15 tệp), cưỡng bức I/O (24 tệp), thẻ nhớ và firmware (7–9 tệp), giới hạn mô phỏng (Ch.50 mục 50.6) | ✔ |
+
+> ⭐⭐ **Hình dạng của lỗ hổng rất gọn: sách dạy đầy đủ những gì xảy ra TRÊN MÁY, và dạy đầy đủ
+> những gì xảy ra TRONG LOGIC — nhưng gần như không dạy những gì xảy ra TRONG PHẦN MỀM LẬP TRÌNH.**
+>
+> ⚡ Đó đúng là tầng mà người học ở trường không bao giờ gặp, vì bộ mô phỏng **làm hộ hết**.
+
+### B — Phụ lục M mới
+
+⭐ Chọn làm **phụ lục** chứ không phải chương mới: nó là **danh mục việc phải làm**, đúng thể loại của
+Phụ lục C và D; và ⭐ không phải đánh số lại 58 chương.
+
+| # | Mục | Nội dung đáng chú ý | KQ |
+|---|---|:--|:--:|
+| 423 | **M.1** Khoảng cách trường ↔ thực tế | Bảng bảy hàng đối chiếu. ⭐ Và một phép đo khoảng cách đó: **đếm số thứ phải đặt ĐÚNG trước khi dòng lệnh đầu tiên có ý nghĩa** — mô phỏng: gần như không có; máy thật: sáu nhóm, và ⚠ **phần lớn không báo lỗi biên dịch** | ➕➕ |
+| 424 | **M.2** Cấu hình phần cứng | ⭐ Bảng **tham số từng loại module**, và ⚠⚠ ba tham số mà **sai thì không có báo lỗi nào, triệu chứng trông y hệt lỗi lập trình**: kiểu tín hiệu analog · loại cảm biến nhiệt và số dây · thời gian lọc ngõ vào đặt quá dài | ➕➕ |
+| 425 | **M.3** Mạng | Địa chỉ tĩnh · tên trạm · sơ đồ địa chỉ · ⭐⭐ **tách mạng máy khỏi mạng nhà máy** để sự cố mạng văn phòng không dừng sản xuất. ⭐ Kèm chi tiết đã xác minh: **xoá bộ nhớ CPU không xoá địa chỉ IP đã lưu, cũng không xoá bộ đệm chẩn đoán** | ➕➕ |
+| 426 | **M.4** Khởi động | ⭐ Bảng STOP/STARTUP/RUN; ⭐⭐ bảng đối chiếu **khởi động lại nóng** với **xoá bộ nhớ** (khác nhau ở chỗ dữ liệu giữ được **được giữ** hay **bị xoá**) | ➕➕ |
+| 427 | **M.4** — bẫy khi nạp lại | ⚠⚠ Cái bẫy không bài tập nào dạy: ⭐ **nạp lại một khối dữ liệu có thể đặt giá trị giữ được về giá trị khởi tạo** — ⚡ bộ đếm sản lượng, tuổi thọ vật tư, số giờ chạy **về 0 sau một lần sửa chương trình**, và không ai nhận ra cho tới khi cần con số đó | ➕➕ |
+| 428 | **M.4** — vòng quét đầu | ⭐⭐ Bảng **nên làm gì / KHÔNG được làm gì** — ⚠⚠ không tự cho phép chuyển động, không tự về gốc. Nguyên tắc: *sau khi có điện lại, máy phải ở trạng thái an toàn và **biết rằng mình không biết gì*** | ➕➕ |
+| 429 | **M.5** Đồng hồ | ⭐ Vì sao đáng một mục riêng: công cụ chẩn đoán mạnh nhất là **đối chiếu thời điểm** giữa bản ghi của PLC, màn hình và hệ thống trên — ⚠ ba đồng hồ lệch vài phút thì phép đối chiếu đó **vô nghĩa** | ➕➕ |
+| 430 | **M.6** Chẩn đoán của chính CPU | ⭐⭐ *Đọc thứ CPU đã tự ghi lại TRƯỚC khi mở code*. Bộ đệm chẩn đoán ⭐ **sống sót qua cả lệnh xoá bộ nhớ** — là bản ghi pháp y của CPU | ➕➕ |
+| 431 | **M.6** — bẫy an toàn | ⚠⚠ **Bẫy an toàn lớn nhất của cả phụ lục:** nhiều hệ cho viết **thủ tục xử lý lỗi** để xoá lỗi nặng rồi chạy tiếp. ⭐ Về kỹ thuật nó chạy; ⚠⚠ về an toàn nó biến *"máy dừng vì có gì đó sai"* thành *"máy chạy tiếp và không ai biết"*. Quy tắc: chỉ dùng để **về trạng thái an toàn rồi dừng có kiểm soát**, không bao giờ để giấu lỗi | ➕➕ |
+| 432 | **M.7** Mật khẩu và bảo vệ mã nguồn | ⭐⭐ Nêu rõ đây là **quyết định hợp đồng, không phải quyết định kỹ thuật** — khoá mã rồi bàn giao nghĩa là mỗi lần khách sửa một con số họ phải gọi bạn, ⚠ **và lúc hai giờ sáng thì bạn không nghe máy** | ➕➕ |
+| 433 | **M.9** Giới hạn mô phỏng | ⚠⚠ **Mô phỏng KHÔNG kiểm được gì** — bảng hai cột. ⭐ Phát biểu gọn nhất về ranh giới: ⚡ **mô phỏng kiểm được thứ bạn ĐÃ NGHĨ TỚI**; phần lớn sự cố thật đến từ thứ chưa ai nghĩ tới. Và một ranh giới tuyệt đối: ⚠⚠ **không bao giờ nghiệm thu chức năng an toàn bằng mô phỏng** | ➕➕ |
+| 434 | **M.10** Danh mục kiểm | 18 mục, chia sáu nhóm; trong đó ⭐⭐ *"đã thử **mất điện giữa chu trình** rồi cấp lại — máy về trạng thái an toàn, không tự chuyển động"* và ⭐ *"con số tích luỹ **đã ghi lại trước khi nạp**"* | ➕➕ |
+
+### C — Nối vào phần còn lại của sách
+
+| # | Việc | KQ |
+|---|:--|:--:|
+| 435 | ⭐ Ch.50 mục 50.6 *"Giới hạn của mô phỏng"* nay có thêm **nhóm giới hạn thứ hai**: bảng sẵn có chỉ nói về **thế giới vật lý**; nhóm thiếu là **cấu hình** — ⚠ logic đúng hoàn toàn mà máy vẫn sai, không báo lỗi biên dịch nào | ➕➕ |
+| 436 | ⭐ Trỏ Phụ lục M vào bốn chỗ đã cần nó: Ch.1 (bảng tra nhanh, dòng *"sắp làm dự án thật đầu tiên"*), Ch.51 (hàng *"đọc bộ đệm lỗi"* nay nói được đọc ở đâu), Ch.54 (thứ tự khôi phục), Phụ lục C.10 (tham số module) | ➕ |
+| 437 | ⭐ Đăng ký Phụ lục M vào `gop_sach.sh` và mục lục; **34 con trỏ mới trong M đều được `kiem_tro_muc.py` kiểm tự động ngay khi viết** — bộ kiểm dựng ở đợt 51 dùng được ngay ở đợt 52 | ✔ |
+
+### Kết quả đợt 52
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **22** |
+| ➕➕ Bổ sung giá trị cao | 13 |
+| ➕ Bổ sung | 1 |
+| ⚠⚠ Lỗ hổng lớn phát hiện | 6 hạng mục gần như không có trong sách |
+| ✔ Xác nhận không có vấn đề | 2 |
+| Phụ lục mới | **1** — Phụ lục M (13 phụ lục → **14**) |
+| Nguồn ngoài mới được dẫn | 2 (Siemens S7-1200 System Manual · Rockwell 1756-PM014) |
+
+> ⭐⭐ **Bài học 1 — một cuốn sách kỹ thuật có thể mắc đúng cái lỗ hổng mà nó phê phán.**
+>
+> Sách này nói rất nhiều về *"đừng chỉ học lý thuyết"*, có 58 chương về kỷ luật kỹ thuật thật, có
+> case study đầy đủ. ⚡ Nhưng đo ra thì **bộ đệm chẩn đoán: 0 tệp · khởi động nóng: 0 · đồng bộ thời
+> gian: 0 · IP: 1** — đúng những thứ mà người học ở trường không gặp vì **bộ mô phỏng làm hộ**.
+>
+> ⭐ Lý do rất con người: các hạng mục đó **không thú vị để viết**. Chúng không có bẫy hay, không có
+> câu chuyện. ⚠ Nhưng chúng là thứ chặn một dự án thật ở ngày đầu tiên.
+
+> ⭐ **Bài học 2 — câu hỏi của người ngoài tìm ra lỗ hổng mà 51 đợt tự rà không tìm ra.**
+>
+> Năm mươi mốt đợt trước đều rà **từ bên trong**: đếm bẫy, đếm hình, đếm con trỏ, soi bảng chốt. ⚡
+> Không thước nào trong số đó phát hiện được tầng *"việc phải làm trong phần mềm lập trình"*, vì
+> ⭐⭐ **mọi thước đo nội bộ đều đo những gì sách ĐÃ CÓ, so với nhau**.
+>
+> ⭐ Thước duy nhất tìm ra tầng thiếu là một câu hỏi từ bên ngoài: *"người mới ra trường thiếu cái
+> gì?"* — ⚡ tức là **so sách với thực tế, không so sách với chính nó**.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
