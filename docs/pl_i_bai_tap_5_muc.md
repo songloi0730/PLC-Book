@@ -15,7 +15,7 @@
 | 1 | ⭐⭐ **VIẾT BẢNG I/O TRƯỚC KHI VẼ RUNG ĐẦU TIÊN** | ⭐ Đây là thói quen quan trọng nhất của cả cuốn sách (Chương 23, 57) |
 | 2 | ⭐ **Viết ra: "chạy đúng nghĩa là gì?"** trước khi viết chương trình | Không có tiêu chí thì không biết lúc nào xong |
 | 3 | ⭐ **Nghĩ tình huống xấu**: mất điện giữa chừng, nhấn nút hai lần, cảm biến hỏng | Chương 57 mục 57.8 |
-| 4 | Chú thích giải thích **vì sao**, không phải **cái gì** | Chương 24 |
+| 4 | Chú thích giải thích **vì sao**, không phải **cái gì** | Chương 30 mục 30.4 |
 | 5 | ⭐ Chạy thử **cả trường hợp sai**, không chỉ trường hợp đúng | Chương 50 |
 
 > ⭐⭐ **Quy tắc 1 nghe thừa với bài "đèn giao thông" — và đó chính là lý do phải làm.**

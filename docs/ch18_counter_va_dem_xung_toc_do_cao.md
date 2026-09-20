@@ -175,7 +175,7 @@ và cả bốn đều tạo ra **cạnh thật** mà khối đếm không có c�
 | Nguyên nhân | Hiện tượng | Cách chặn |
 |---|---|---|
 | **Sản phẩm rung / lùi lại** | Đếm thừa, số lẻ tẻ | Khoảng chết theo thời gian (bên dưới) |
-| **Cảm biến nhiễu** | Đếm thừa ngẫu nhiên, cả khi không có sản phẩm | Lọc rung bằng `TON`; kiểm nối đất, đi dây tách khỏi cáp động lực (Chương 51) |
+| **Cảm biến nhiễu** | Đếm thừa ngẫu nhiên, cả khi không có sản phẩm | Lọc rung bằng `TON`; kiểm nối đất, đi dây tách khỏi cáp động lực (Chương 49) |
 | **Sản phẩm trong suốt / bề mặt lỗ** | Một sản phẩm cho nhiều cạnh khi đi qua | Đổi loại cảm biến; hoặc chốt trạng thái bằng cơ cấu chặn |
 | **Rung tiếp điểm** (nếu đếm từ nút bấm hoặc tiếp điểm cơ khí) | Một lần tác động ra nhiều cạnh | Lọc rung **trước** khi đưa vào chân đếm (Chương 17, mục 17.4) |
 

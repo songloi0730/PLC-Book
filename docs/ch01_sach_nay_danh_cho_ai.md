@@ -332,8 +332,8 @@ thử được. Có bốn đường, khác nhau về chi phí và độ giống 
 | PLC cũ mua lại | Thấp | Cao, đúng thiết bị đang chạy ngoài nhà máy | Người muốn sát thực tế nhất |
 
 **Chương 13** so sánh đầy đủ bốn đường này, kèm hướng dẫn **tự dựng một bàn thực hành** — danh sách vật
-tư, sơ đồ đấu, công tắc gạt làm ngõ vào, đèn làm ngõ ra. **Phụ lục G** liệt kê các phần mềm miễn phí
-kèm giới hạn bản quyền thật của từng cái.
+tư, sơ đồ đấu, công tắc gạt làm ngõ vào, đèn làm ngõ ra. **Phụ lục G** liệt kê **công cụ nào tồn tại** và
+mỗi loại làm được gì.
 
 ### ⭐⭐ Cách tự học đã được kiểm chứng — bốn việc, theo đúng thứ tự
 
@@ -358,9 +358,13 @@ kèm giới hạn bản quyền thật của từng cái.
 > người ta tập nói lại câu của người khác trước, rồi mới tự đặt câu. ⚡ Cuốn sách này được viết theo
 > đúng giả định đó: mọi chương đều có mã mẫu để bạn chép, chạy, rồi phá ra xem.
 
-> ⚡ **LƯU Ý**
-> Thông tin về bản quyền và giá phần mềm **thay đổi liên tục**. Mọi mục trong Phụ lục G đều ghi ngày
-> kiểm tra; trước khi tải, hãy tự xác nhận lại điều kiện hiện hành.
+> ⚡ **LƯU Ý — và đây là lý do Phụ lục G được viết theo cách khác thường**
+> ⭐ Điều kiện bản quyền và giá phần mềm **thay đổi liên tục**: miễn phí năm nay có thể thu phí năm
+> sau, bản dùng thử 30 ngày có thể thành 21 ngày. ⚠ Nên Phụ lục G **cố ý KHÔNG liệt kê điều kiện
+> bản quyền cụ thể** — một bảng như vậy sẽ sai trước khi bạn đọc tới.
+>
+> ⭐⭐ Thay vào đó nó cho bạn **danh mục câu hỏi phải tự kiểm** (mục G.5), và yêu cầu **bạn** ghi
+> lại ngày mình kiểm. ⚡ Một danh mục câu hỏi thì không hết hạn; một bảng điều kiện thì có.
 
 ---
 

@@ -51,6 +51,7 @@ python tools/kiem_tra_chuong.py > "$TMP/k1.txt" 2>&1 || { cat "$TMP/k1.txt"; ech
 python tools/kiem_nhat_quan.py  > "$TMP/k2.txt" 2>&1 || { cat "$TMP/k2.txt"; echo "!! kiem_nhat_quan.py bao LOI — dung ghep"; exit 1; }
 python tools/kiem_tro_muc.py   > "$TMP/k3.txt" 2>&1 || { cat "$TMP/k3.txt"; echo "!! kiem_tro_muc.py bao LOI — con tro toi so muc khong ton tai"; exit 1; }
 python tools/kiem_danh_so.py  > "$TMP/k4.txt" 2>&1 || { cat "$TMP/k4.txt"; echo "!! kiem_danh_so.py bao LOI — day so muc/hinh/bay bi thung hoac trung"; exit 1; }
+python tools/kiem_chu_nha.py  > "$TMP/k5.txt" 2>&1 || { cat "$TMP/k5.txt"; echo "!! kiem_chu_nha.py: co trich dan tro nham chuong — sua hoac ghi vao bo_qua"; exit 1; }
 tail -2 "$TMP/k1.txt"; tail -2 "$TMP/k2.txt"
 
 # 1. Cap nhat so phien ban trong bia

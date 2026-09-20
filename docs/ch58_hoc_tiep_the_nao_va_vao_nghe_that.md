@@ -242,7 +242,7 @@ Nguyên nhân   → hoá ra là gì
 | "Bạn làm gì khi máy dừng mà chưa biết vì sao?" | Có phương pháp hay đoán mò | Chương 51 — thu hẹp dần, ⭐ **đổi một thứ mỗi lần** |
 | ⚠ "Bạn xử lý phần an toàn thế nào?" | ⭐⭐ **Bạn có biết giới hạn của mình không** | ⭐ Nói thật: hiểu nguyên lý, ⚠ **và biết khi nào phải chuyển cho người có thẩm quyền** |
 | "Bạn sửa chương trình khi máy đang chạy chứ?" | Bạn có coi trọng rủi ro không | Chương 53 — ⭐ **nêu điều kiện, không trả lời có/không** |
-| "Bạn ghi tài liệu thế nào?" | ⭐ Người sau bạn có làm việc được không | Chương 24, 53 — ⭐ **và cho xem** |
+| "Bạn ghi tài liệu thế nào?" | ⭐ Người sau bạn có làm việc được không | Chương 30, 53 — ⭐ **và cho xem** |
 | "Bạn chưa có kinh nghiệm, sao chúng tôi nên nhận bạn?" | Bạn tự đánh giá được không | ⭐ Đưa bằng chứng (mục 58.3) + nói rõ mình cần học gì |
 
 > ⭐⭐ **Câu về an toàn là câu quan trọng nhất, và nhiều người trả lời sai theo hướng tự tin quá.**

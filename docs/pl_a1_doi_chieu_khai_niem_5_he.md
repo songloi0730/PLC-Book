@@ -333,7 +333,7 @@ Nếu bạn chỉ nhớ bốn điều từ phụ lục này:
 |---|---|
 | ⭐ **Đối chiếu LỆNH và cùng một đoạn logic viết 5 lần** | ⭐ **Phụ lục A2** |
 | Khái niệm gốc theo chuẩn IEC | Chương 13–21, 30 · **Phụ lục B** |
-| Vì sao vòng quét quan trọng | Chương 7 |
+| Vì sao vòng quét quan trọng | Chương 10 |
 | ⚠ Chuyển chương trình sang nền mới | ⚠ **Chương 56 mục 56.4** |
 | Vùng nhớ giữ được | Chương 11 · Chương 53 mục 53.5 |
 

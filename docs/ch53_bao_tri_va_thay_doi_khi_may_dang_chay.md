@@ -218,7 +218,7 @@ Cách duy nhất hiệu quả là làm nó thành **một phần của việc s�
 
 | Cách | Nội dung |
 |---|---|
-| ⭐ **Chú thích trong chính chương trình** | Chương 24 — comment ngay chỗ sửa, kèm ngày và lý do; nó **đi theo chương trình**, không lạc mất |
+| ⭐ **Chú thích trong chính chương trình** | Chương 30 mục 30.4 — comment ngay chỗ sửa, kèm ngày và lý do; nó **đi theo chương trình**, không lạc mất |
 | ⭐ **Sao lưu là hành động ghi chép** | Tên tệp sao lưu chứa ngày + lý do (Chương 54) |
 | **Ảnh chụp** | Nhanh hơn vẽ lại sơ đồ; ⚡ đủ dùng cho thay đổi nhỏ |
 | **Một trang duy nhất trong tủ** | Nhật ký thay đổi in sẵn, treo trong tủ điện |

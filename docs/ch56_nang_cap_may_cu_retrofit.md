@@ -331,7 +331,7 @@ cỗ máy ai đó sẽ retrofit trong mười năm nữa.**
 
 | Việc làm hôm nay | Cứu ai đó năm 2036 |
 |---|---|
-| ⭐ Chú thích giải thích **vì sao** | Chương 24 — thứ duy nhất không lạc bản (Ch.53 mục 53.4) |
+| ⭐ Chú thích giải thích **vì sao** | Chương 30 mục 30.4 — thứ duy nhất không lạc bản (Ch.53 mục 53.4) |
 | ⭐⭐ **Tài liệu as-built cập nhật** | Chương 53 — ⭐ **giá trị lớn nhất** |
 | Bảng I/O khớp số dây và tên tag | Chương 23, 49 mục 49.6 |
 | ⭐ Quy trình sao lưu bảy hạng mục | Chương 54 |

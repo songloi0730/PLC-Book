@@ -2884,6 +2884,80 @@ nhưng các máy tôi gặp có vẻ không phải vậy."* ⚡ Kèm yêu cầu 
 
 ---
 
+## Đợt 56 — Thước "lịch sử git", và một cụm trích dẫn tố cáo lần đánh số lại chương
+
+⭐ Thước mới, và là thước đáng lẽ phải dùng từ lâu vì nó **đã nằm sẵn trong kho**: ⭐⭐ **đếm số lần
+commit chạm vào từng tệp chương**. ⚡ Chương nào qua 55 đợt vẫn chỉ có **một** commit thì nó
+**chưa từng được rà**, bất kể nhật ký ghi gì.
+
+### A — Chương chưa từng sửa
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 482 | ⭐ Đếm commit từng tệp: **Ch.58** *(chương cuối sách, 433 dòng)* chỉ có **1 commit** — viết một lần, ⚠ **chưa từng sửa qua 55 đợt**. Cùng nhóm: Phụ lục G (1), Phụ lục H (2), Ch.2 · Ch.12 · Ch.46 (2 mỗi chương) | ⚠ |
+| 483 | ⭐ Đọc lại Ch.58: **không có lỗi lỗi thời** — chương cố ý **không nêu tên chứng chỉ, giá, hay hãng cụ thể**, chỉ nêu nguyên tắc (*"chứng chỉ có giá trị khi nó chứng minh thứ khó tự học hoặc thứ pháp luật yêu cầu"*). ⭐ Thiết kế đúng cho một chương dễ mục nhất | ✔ |
+| 484 | ⚠ Nhưng có một trích dẫn sai: câu phỏng vấn *"Bạn ghi tài liệu thế nào?"* dẫn **Chương 24**. ⭐ Ch.24 là *đại số Boolean*, có **1 lần** nhắc "tài liệu/chú thích"; Ch.30 có **21 lần** và có hẳn mục 30.4 *"Comment — viết như nhật ký kỹ thuật"*. Sửa → **Chương 30** | ⚠ |
+
+### B — ⚠⚠ Lời hứa Ch.1 không khớp với Phụ lục G
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 485 | ⚠⚠ Ch.1 viết: *"**Mọi mục trong Phụ lục G đều ghi ngày kiểm tra**"* và *"Phụ lục G liệt kê các phần mềm miễn phí **kèm giới hạn bản quyền thật của từng cái**"* | ⚠⚠ |
+| 486 | ⭐⭐ **Phụ lục G làm điều ngược lại, và nói rõ là cố ý:** *"phụ lục này **cố ý KHÔNG liệt kê điều kiện bản quyền cụ thể**"* · *"Đừng tin bảng nào — **kể cả bảng này**"*. Nó không ghi ngày cho bất kỳ mục nào; thay vào đó cho **danh mục câu hỏi tự kiểm** (G.5) và bắt **người đọc** ghi ngày | ⚠⚠ |
+| 487 | ⭐ Sửa Ch.1 để mô tả đúng — và cách làm thật của G **đáng nói hơn lời hứa cũ**: ⚡ *"một danh mục câu hỏi thì không hết hạn; một bảng điều kiện thì có"* | ➕➕ |
+
+### C — Cụm "Chương 24" và dấu vết một lần đánh số lại chương
+
+⭐ Mở rộng phép quét trích dẫn của đợt 51 từ 17 lên **31 thuật ngữ lõi**. Ra **19 chỗ nghi**, xét tay
+còn **6 chỗ sai thật** — và chúng **không rải rác**.
+
+| # | Chỗ sai | Bằng chứng | KQ |
+|---|:--|:--|:--:|
+| 488 | ⚠⚠ **Bốn chỗ** dẫn **"Chương 24"** cho việc **ghi chú thích**: Ch.53, Ch.56, Phụ lục I, và Ch.58. Chủ nhà là **Ch.30 mục 30.4** | ⭐⭐ Bốn chỗ cùng sai y hệt là dấu vết của một lần **ĐÁNH SỐ LẠI CHƯƠNG** chưa cập nhật hết — không phải bốn lần sơ ý độc lập | ⚠⚠ |
+| 489 | ⚠ **Phụ lục A1**: *"Vì sao vòng quét quan trọng — **Chương 7**"* | ⭐ Ch.7 là *ESD*, **0 lần** nhắc "vòng quét". ⚡ Và đây là **chỗ thứ hai trong CÙNG tệp** — đợt 51 đã sửa một chỗ Ch.7→Ch.10 ở đây mà **bỏ sót chỗ này**, vì phép quét đợt đó chỉ bắt dạng `(Chương N)` và `Chương N mục`, không bắt dạng **ô bảng** *(Chương N đứng một mình trong một ô)* | ⚠ |
+| 490 | ⚠ **Ch.18**: *"kiểm **nối đất**, đi dây tách khỏi cáp động lực (**Chương 51**)"* | ⭐ Ch.51 có **0 lần** "nối đất"; Ch.49 có **7 lần** và 3 lần "tách cáp". Sửa → **Chương 49** | ⚠ |
+| 491 | Phần còn lại | ⭐ **13 chỗ là báo nhầm** — câu trích dẫn cho **một vế khác** của cùng câu (ví dụ: *"IO-Link chậm hơn… việc **đếm xung tốc độ cao** (Ch.18)"* — dẫn Ch.18 cho đếm xung, không cho IO-Link). ⭐ Đã ghi cả 13 vào danh sách bỏ qua để đợt sau không xét lại | ✔ |
+
+### D — Bộ kiểm thứ năm: `kiem_chu_nha.py`
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 492 | ⭐⭐ **Hai đợt liên tiếp tìm ra cùng một lớp lỗi bằng tay** (đợt 51: 3 chỗ · đợt 56: 6 chỗ) — đủ để biến thành công cụ. Bộ kiểm dùng bảng **30 thuật ngữ có đúng một chương chủ nhà**, và báo khi một dòng vừa chứa thuật ngữ vừa trích dẫn chương **không hề nhắc** thuật ngữ đó | ➕➕ |
+| 493 | ⭐ Bộ kiểm này **được phép báo nhầm** — nên nó có tệp cấu hình với danh sách **bỏ qua** cho 16 trường hợp đã xét tay. ⚡ Mỗi lần xét xong một trường hợp là **xét vĩnh viễn**, không phải xét lại mỗi đợt | ➕➕ |
+| 494 | ⭐ Đã **thử trước khi tin**: chèn *"cách ghi chú thích, xem Chương 12 mục 12.1"* vào Ch.30 — bắt đúng; khôi phục — về 0. Nối vào `gop_sach.sh`: nay **năm bộ kiểm** chặn việc ghép sách | ✔ |
+
+### Kết quả đợt 56
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **13** |
+| ⚠⚠ Lỗi thật đã sửa | 6 trích dẫn trỏ nhầm chương + 2 câu Ch.1 mô tả sai Phụ lục G |
+| ➕➕ Bổ sung giá trị cao | 3 |
+| ✔ Xác nhận không có vấn đề | 3 |
+| Bộ kiểm mới | **1** — `kiem_chu_nha.py` + cấu hình (nay **5** bộ kiểm) |
+
+> ⭐⭐ **Bài học 1 — lịch sử git là bản đồ chỗ chưa ai nhìn, và nó luôn có sẵn.**
+>
+> Nhật ký này ghi rất kỹ **đã rà cái gì**; nhưng nó không ghi được **chưa rà cái gì**, vì không ai
+> viết nhật ký về việc mình không làm. ⚡ `git log` thì ghi hộ: **Ch.58 một commit** là một sự thật
+> không cãi được, và nó chỉ mất một lệnh để biết. ⭐ Đáng chạy lại mỗi vài đợt.
+
+> ⭐⭐ **Bài học 2 — bốn lỗi giống hệt nhau không phải bốn lỗi, mà là MỘT lỗi có bốn dấu vết.**
+>
+> Bốn chỗ dẫn *"Chương 24"* cho chú thích, hai chỗ dẫn *"Chương 7"* cho vòng quét. ⚡ Sơ ý độc lập
+> thì sai **mỗi lần một kiểu**; sai **giống hệt nhau** thì có nguyên nhân chung — ở đây là một lần
+> **đánh số lại chương**. ⭐ Hệ quả thực dụng: tìm thấy một chỗ thuộc loại này thì **phải quét cả
+> sách tìm anh em của nó**, đừng sửa lẻ.
+
+> ⚠ **Bài học 3 — phép quét của tôi ở đợt 51 đã bỏ sót vì thiếu một dạng cú pháp.**
+>
+> Đợt 51 bắt `(Chương N)` và `Chương N mục` nhưng **không bắt ô bảng `| Chương N |`** — nên nó sửa
+> một chỗ trong Phụ lục A1 và **để lại chỗ thứ hai ngay trong cùng tệp**. ⭐ Bài học không phải
+> *"cẩn thận hơn"* mà là: ⭐⭐ **khi viết phép quét, liệt kê trước MỌI DẠNG mà thứ cần tìm có thể
+> mang** — ở đây là ba dạng trích dẫn, và tôi mới nghĩ ra hai.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
