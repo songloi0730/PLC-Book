@@ -2958,6 +2958,84 @@ còn **6 chỗ sai thật** — và chúng **không rải rác**.
 
 ---
 
+## Đợt 57 — Nút Dừng đấu NO: sách đúng, nhưng thiếu nửa câu trả lời
+
+⭐ Chủ dự án phản biện lần thứ hai: *"thực tế nút dừng thường là nút vật lý **thường mở**, trong
+chương trình dùng **thường đóng** — tại sao mọi người hay làm vậy, có phải cách thực hành trong sách
+không phù hợp thực tế không?"*
+
+### A — Kiểm trước: sách có sai không?
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 495 | ⭐⭐ **Sách KHÔNG sai, và đã phân tích đúng trường hợp đó.** Ch.15 mục 15.3 có **bảng bốn tổ hợp**, và cấu hình chủ dự án mô tả chính là **tổ hợp 2** — nút NO + `┤/├` — được đánh dấu ⚠⚠ *"Logic đúng nhưng NGUY HIỂM"*, kèm hẳn một tiểu mục tên **"Vì sao tổ hợp 2 là tổ hợp giết người"** | ✔ |
+| 496 | ⭐ Sách còn kỹ hơn thế: nó nêu **giới hạn của chính bảng đó** — tổ hợp 3 chống được hỏng kiểu **hở**, ⚠ không chống hỏng kiểu **chập**. Và Phụ lục I bài 1.3 bắt người học **mô phỏng đứt dây** cho cả hai tổ hợp | ✔ |
+| 497 | ⭐ `DI_StopPB` của máy mẫu là **NC**, trạng thái nghỉ **1**, nhất quán ở cả Phụ lục J, Ch.3, Ch.4, Ch.11, Ch.15 — không có trôi dạt | ✔ |
+
+### B — ⚠ Nhưng nửa câu hỏi thứ hai thì sách không trả lời
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 498 | ⚠⚠ Sách nói **"đừng làm tổ hợp 2"** nhưng **không nói vì sao ngoài thực tế lại đầy tổ hợp 2**. ⭐ Với người đi một vòng nhà máy và thấy nó ở khắp nơi, khoảng trống đó dẫn thẳng tới kết luận sai: *"hoặc sách lạc hậu, hoặc cả ngành sai"* — ⚡ và **không cái nào đúng** | ⚠⚠ |
+| 499 | ⭐⭐ Mục mới liệt kê **sáu lý do thật**, kèm phán xét từng lý do: khối tiếp điểm trong ngăn kéo là NO *(ràng buộc có thật, nhưng rẻ)* · ⭐ **chép từ máy trước** *(lý do mạnh nhất thực tế — là quán tính, không phải quyết định)* · học trên mô phỏng và màn hình cảm ứng · ❌ *"để ngõ vào bằng 0 cho dễ nhìn"* · ❌ *"NC tốn điện, mòn tiếp điểm"* · ⭐ *"dừng khẩn cấp đã là mạch cứng rồi"* | ➕➕ |
+| 500 | ⭐⭐ **Lý do thứ sáu là lý do duy nhất có lập luận, và nó đúng một nửa.** Đúng: nút Dừng trên bảng điều khiển **không phải chức năng an toàn** nếu dừng khẩn cấp là mạch cứng riêng. ⚠⚠ Sai: **người vận hành không biết sự phân biệt đó** — dây đứt, họ nhấn, không có gì xảy ra, và phản xạ tiếp theo của người đang vội là **thò tay vào máy** | ➕➕ |
+| 501 | ⭐⭐ Câu chốt của cả mục: ⚡ **chức năng được ĐỊNH MỨC của cái nút không phải an toàn, nhưng chức năng được NGƯỜI DÙNG TIN TƯỞNG thì có** — và tai nạn xảy ra theo cái người ta tin, không theo cái ghi trong hồ sơ | ➕➕ |
+
+### C — Hai cách sửa, và cái thứ hai là kỹ thuật mới cho sách
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 502 | ⭐ **Tối thiểu**: lắp khối tiếp điểm NC — phần lớn nút nhấn công nghiệp nhận **hai khối**. Chi phí một khối tiếp điểm | ➕ |
+| 503 | ⭐⭐ **Tốt hơn**: đấu **cả hai khối** vào hai ngõ vào rồi kiểm chúng **luôn ngược nhau** — hai nấc thang bắt được **cả hai kiểu hỏng**: cùng 1 *(khối hỏng)* và cùng 0 *(đứt dây)*. ⚡ Đây là thứ mà **tổ hợp 3 một mình không phát hiện được** | ➕➕ |
+| 504 | ⭐ Ý tưởng không mới — nó là **cách giám sát cặp tiếp điểm ngược chiều** mà thiết bị an toàn vẫn dùng (Ch.47 mục 47.5). ⭐⭐ Điểm đáng nói: **dùng lại được cho một nút thường**, bằng hai ngõ vào và hai nấc thang, **không cần thiết bị an toàn nào**. ⚠ Kèm cảnh báo: làm vậy **không biến nút đó thành chức năng an toàn** — nó chỉ cho bạn **biết khi nó hỏng** | ➕➕ |
+| 505 | ⭐ Và phần thực dụng nhất: **gặp tổ hợp 2 trên máy người khác thì làm gì**. ⚡ Không phải cứ thấy là sửa ngay — sửa nút trên máy đang chạy là thay đổi có quy trình (Ch.53). ⚠⚠ Nhưng **phải ghi lại**, vì **người sau sẽ mặc định là NC**: họ thấy `┤/├` trong code, "sửa lại cho đúng sách" thành `┤ ├`, và máy không chạy được nữa — hoặc tệ hơn, họ đổi nửa đấu dây | ➕➕ |
+| 506 | ⭐ Nối vào hai chỗ người đọc sẽ tới: **Ch.4** (bảng NO/NC của nút Dừng) và **Phụ lục E.4b** — nhóm *"thao tác không ăn"* nay có thêm nguyên nhân thứ hai cho *"nút Dừng không dừng được"*, kèm cách kiểm: **rút dây nút Dừng lúc máy dừng** | ➕ |
+
+### D — Ba lỗi của chính tôi, cả ba do bộ kiểm của sách bắt
+
+| # | Lỗi | KQ |
+|---|:--|:--:|
+| 507 | ⚠ Tôi bịa hai tag `DI_StopNC` / `DI_StopNO`. ⭐⭐ Và luật trong chính tệp cấu hình nói rõ: *"nếu tag mô tả thiết bị **CÓ** trên DP-01 thì đó là drift, **phải sửa chương** chứ không thêm vào danh sách miễn trừ"* — máy mẫu **có** nút Dừng. Đã đổi sang nhãn mô tả *kênh NC / kênh NO*, và ⭐ hoá ra **rõ hơn**, vì kỹ thuật này không gắn với máy mẫu | ⚠ |
+| 508 | ⚠ Dùng chữ **"HMI"** (lát cắt 4) trong Ch.15 (lát cắt 1) → đổi thành *"màn hình cảm ứng"* | ⚠ |
+| 509 | ⚠ Thừa một dòng trống — markdownlint bắt | ⚠ |
+
+### Kết quả đợt 57
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **15** |
+| ➕➕ Bổ sung giá trị cao | 7 |
+| ➕ Bổ sung | 2 |
+| ✔ Xác nhận sách KHÔNG sai | 3 |
+| ⚠ Lỗi của tôi, bộ kiểm bắt được | 3 |
+| Mục mới | 1 — Ch.15 *"Vậy tại sao ngoài thực tế lại đầy tổ hợp 2?"* |
+
+> ⭐⭐ **Bài học 1 — "sách kê đơn mà không giải thích thực tế" là một lớp thiếu sót riêng, và đây là
+> lần thứ hai nó lộ ra.**
+>
+> Đợt 55: sách nói *"tiệm cận cảm ứng dùng nhiều nhất"* mà không nói **tuỳ nhóm máy**. ⚡ Đợt 57:
+> sách nói *"nút Dừng phải NC"* mà không nói **vì sao thực tế đầy NO**. ⭐ Hai chỗ khác hẳn nhau về
+> nội dung nhưng **cùng một hình dạng**: sách đưa ra kết luận đúng, người đọc ra hiện trường thấy
+> ngược lại, và **không có gì bắc cầu giữa hai cái**.
+>
+> ⭐⭐ Quy tắc rút ra: **chỗ nào sách nói "phải làm X" mà thực tế phổ biến là "không X", thì phải
+> giải thích khoảng cách đó** — nếu không, người đọc sẽ tự kết luận rằng sách sai, và bỏ luôn cả
+> phần đúng.
+
+> ⭐ **Bài học 2 — phân biệt "chức năng được định mức" với "chức năng được tin tưởng".**
+>
+> Lập luận *"nút này không phải chức năng an toàn"* đúng về mặt hồ sơ và **sai về mặt con người**.
+> ⚡ Người vận hành không đọc hồ sơ phân loại; họ đọc **chữ DỪNG trên cái nút**. ⭐ Đây là một cách
+> nghĩ dùng được rộng hơn nhiều so với cái nút này — nó áp cho **mọi** thứ trên bảng điều khiển mà
+> người dùng tin là có tác dụng.
+
+> ⚠ **Bài học 3 — bộ kiểm bắt tôi bịa tag LẦN THỨ HAI** (đợt 53: `DI_AirPressHigh`; đợt 57:
+> `DI_StopNC`/`DI_StopNO`). ⭐ Cả hai lần đều xảy ra khi tôi viết một **ví dụ chung** và theo phản xạ
+> khoác cho nó cú pháp tag của máy mẫu. ⚡ Cách tránh: khi ví dụ **không gắn với máy mẫu**, dùng
+> **nhãn mô tả** ngay từ đầu — và cả hai lần, bản sửa đều **đọc rõ hơn** bản bịa.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

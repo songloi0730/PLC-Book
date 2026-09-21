@@ -319,6 +319,8 @@ Toàn bộ cảm biến số của DP-01 dùng **PNP**, module ngõ vào có **c
 | `DI_Stop1Up` / `DI_Stop1Dn` | Reed trên xy-lanh chặn, PNP | NO | Phản hồi vị trí — dùng để chuyển bước, kèm timeout |
 | `DI_Clamp1Up` / `DI_Clamp1Dn` | Reed trên xy-lanh kẹp, PNP | NO | như trên |
 | `DI_StopPB` | Nút nhấn | **NC** | Tín hiệu an toàn: đứt dây → bit 0 → dừng |
+
+> ⚠ **Ngoài thực tế bạn sẽ gặp rất nhiều nút Dừng đấu NO**, và đó không phải vì mọi người không biết. ⭐ Lý do thật — cùng cách xử lý khi gặp — ở **Chương 15 mục 15.3**.
 | `DI_AirOK` | Công tắc áp suất | Kín khi đủ khí | Mất khí **hoặc** đứt dây đều cho bit 0 → dừng |
 
 > ⚡ **LƯU Ý**

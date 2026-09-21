@@ -139,6 +139,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | ⭐ **Nhấn một lần, máy làm hai lần** | ⭐⭐ **Thiếu bắt cạnh**, hoặc rung tiếp điểm chưa được chống | 16 mục 16.5 · 17 mục 17.4 |
 | ⭐ Phải **giữ nút** mới chạy, nhả ra là dừng | ⭐⭐ **Thiếu mạch tự giữ** — hoặc nhánh tự giữ mắc sai | 15 mục 15.4 |
 | ⚠⚠ **Nút Dừng không dừng được máy** | ⭐⭐ Nhánh tự giữ **vòng qua cả nút Dừng** — xem Hình 15.2 | ⚠ **15 mục 15.4** |
+| ⚠⚠ **Nút Dừng không dừng được, và chưa bao giờ có ai thử đứt dây** | ⭐⭐ Nút đấu **NO** trong khi code dùng `┤/├` *(tổ hợp 2)* — đứt dây thì máy **vẫn chạy**. ⚠ Kiểm bằng cách rút dây nút Dừng lúc máy dừng | ⚠⚠ **15 mục 15.3** |
 | Nút Reset **không xoá được lỗi** | Nguyên nhân gốc **chưa hết**; hoặc bit lỗi là loại **giữ được** nên cần lệnh xoá tường minh | 16 mục 16.4 · 28 |
 | ⭐ Ngõ ra **bật rồi tự tắt ngay trong cùng vòng quét** | ⭐⭐ **Cuộn dây trùng** — một tag được ghi ở hai chỗ, chỗ sau đè chỗ trước | ⚠ **15 mục 15.3** · 22 |
 | Đổi công tắc chế độ mà máy **không đổi chế độ** | Điều kiện chuyển chế độ không cho phép đổi khi đang chạy dở | 28 |
