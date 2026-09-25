@@ -1,8 +1,8 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-09-26 (đợt 58)
+**Cập nhật:** 2026-09-26 (đợt 59)
 **Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 14 phụ lục (15 dòng A1–N).** Đang hoàn thiện
-theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 59–62 còn lại).
+theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 59 ✅ · 60–62 còn lại).
 
 ---
 
@@ -22,18 +22,15 @@ theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 5
 
 ### TODO — theo thứ tự
 
-1. **Đợt 59 — tổ chức chương trình:** mô hình `Execute`/`Done` và `Enable`/`Valid` cho khối tự viết
-   (khối xy-lanh là ví dụ điều khiển theo mức; cần thêm một ví dụ theo sườn) · phạm vi biến
-   `VAR_GLOBAL`/`VAR_EXTERNAL` · khung POU chuẩn · ⚠ **thống nhất khung chương trình chính**: Ch.14
-   vẽ `PRG_Main`/`PRG_Safety`/`PRG_Mode`…, Ch.57 dùng `Prg_IoRead`…`Prg_OutputMap`, Ch.27 có danh sách
-   thứ tự gọi riêng — ba cách mô tả một thứ · ⚠ `M_AnyFault` phải **tính lại mỗi vòng** từ các nguồn lỗi
-   (design note 0006, việc còn lại).
+1. ~~**Đợt 59 — tổ chức chương trình**~~ ✅ — hợp đồng `Execute`/`Enable` (Ch.30 mục 30.5b, L.8b) · phạm vi biến (Ch.11 mục 11.6) · khung chương trình chính thống nhất (Ch.14, 27, 57) · ⭐⭐ **đường đi của lỗi** sửa khoá chết Reset (design note 0007, Ch.25 mục 25.5c).
 2. **Đợt 60 — hướng đối tượng** trong Ch.30 (METHOD, PROPERTY, INTERFACE, EXTENDS, IMPLEMENTS,
    REFERENCE, FB_init) + bảng hãng hỗ trợ; đối chiếu cú pháp với tài liệu trực tuyến của CODESYS.
 3. **Đợt 61 — cách thực hiện lệnh:** bảng hành vi thực thi trong Phụ lục B · bẫy `R_TRIG` vòng quét
    đầu · hàm chuỗi + ví dụ tách mã lô ở Ch.42 · dịch bit, `MUX`, `MIN`/`MAX`.
 4. **Đợt 62 — mã mẫu:** ≥ 1 ví dụ hoàn chỉnh mỗi chương 14–30 · SFC nên/không nên · quy ước *"đoạn
-   trích"* ở Ch.1 · ⭐ thêm vào `kiem_cu_phap_st` phép kiểm **biến chưa khai báo** trong ví dụ hoàn chỉnh.
+   trích"* ở Ch.1 · ⭐ thêm vào `kiem_cu_phap_st` phép kiểm **biến chưa khai báo** trong ví dụ hoàn chỉnh ·
+   ⚠ Ch.30 khuyên gói trạng thái trạm vào cấu trúc (`Stn1.Step`) nhưng gần như mọi mã mẫu dùng dạng rời
+   (`Stn1_Step`) — chọn một, hoặc ghi rõ là lệch có chủ ý (Phụ lục N mục N.5).
 5. ⚠ Bản đầy đủ của 3 tài liệu PLCopen (OOP ~2,3 MB · thư viện khối ~12,6 MB · SFC ~1,1 MB) —
    **chỉ tải khi chủ dự án đồng ý từng tệp**. Hiện chỉ có tờ giới thiệu.
 6. ⚠⚠ Tìm chuyên gia an toàn duyệt các chương ở dòng "chặn phát hành".

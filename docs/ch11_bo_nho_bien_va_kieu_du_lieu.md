@@ -291,6 +291,43 @@ trạm thì mảng thắng. Đây là quyết định về **tính dễ đọc**
 Biến đếm vòng lặp `i` là ví dụ điển hình của biến **phải** cục bộ. Nếu nó toàn cục và hai POU cùng
 dùng, một vòng lặp có thể phá chỉ số của vòng lặp kia.
 
+### ⭐ Biến toàn cục đi vào một POU bằng cửa nào
+
+| Cách | IEC 61131-3 nói | Thực tế ở các hệ |
+|---|---|---|
+| **Khai lại bằng `VAR_EXTERNAL`** trong POU | ⭐ **Cách duy nhất** được phép dùng một biến toàn cục bên trong một POU | Có hệ bắt buộc |
+| **Gọi thẳng tên** biến toàn cục | Không cho phép | ⚠ Nhiều hệ **cho phép** — tài liệu CODESYS ghi rõ là không bắt khai `VAR_EXTERNAL`, từ khoá chỉ giữ để tương thích chuẩn |
+
+```iecst
+PROGRAM Prg_Stn1Seq
+VAR_EXTERNAL
+    DI_BoardStn1 : BOOL;         // "chương trình này dùng biến toàn cục DI_BoardStn1" — viết ra
+END_VAR
+    …
+END_PROGRAM
+```
+
+> ⚠⚠ **Hệ cho gọi thẳng thì tiện — và chính cái tiện đó giấu mất sự phụ thuộc.** Đọc phần khai báo
+> của một POU, bạn không còn biết nó đọc những gì từ bên ngoài. ⭐ `VAR_EXTERNAL` biến sự phụ thuộc
+> thành **một dòng nhìn thấy được**.
+
+### ⭐⭐ Quy tắc của sách: khối chức năng KHÔNG đọc biến toàn cục — mọi thứ đi qua chân
+
+| | ✗ Khối đọc thẳng biến toàn cục | ⭐ Mọi thứ đi qua chân |
+|---|---|---|
+| Ví dụ, trong khối xy-lanh | `Done := DI_Clamp1Up;` | `Done := SensWork;` — bên gọi nối `SensWork := DI_Clamp1Up` |
+| Dùng cho xy-lanh thứ hai | ⚠ **Không được** — khối dính chặt vào `DI_Clamp1Up` | ⭐ Tạo thể hiện mới, nối chân khác |
+| Kiểm thử riêng khối | ⚠ Phải dựng cả biến toàn cục mà nó lén đọc | ⭐ Chỉ cần cấp giá trị cho chân |
+| Đọc hiểu | Phải đọc **thân** khối mới biết nó phụ thuộc gì | ⭐ Nhìn **giao diện** là biết |
+
+⭐ Vậy biến toàn cục gặp chân khối ở đâu? Ở **chương trình** (`PROGRAM`) — tầng nối dây: nó đọc tag
+I/O toàn cục và nối vào chân của các thể hiện (Chương 27 mục 27.3). Bộ quy tắc viết mã của PLCopen ghi
+đúng điều này thành quy tắc CP6, mức ưu tiên **cao** (Phụ lục N).
+
+> ⚠ Với biến toàn cục mà nhiều phần cùng **đọc**, giữ đúng một luật: **chỉ một nơi ghi**. Hai nơi cùng
+> ghi một cờ toàn cục thì phép ghi chạy sau thắng — và một lỗi có thể **xoá mất** lỗi khác (Chương 25
+> mục 25.5c).
+
 ---
 
 ## 11.7 Trên máy mẫu DP-01 — khai báo hoàn chỉnh
@@ -579,6 +616,11 @@ một sợi dây mang một bit, cảm biến gửi cả tham số và trạng t
   định dạng **tốn nhiều thời gian xử lý** — nền cho mục 11.8.
 - **Rockwell Automation** — *Logix 5000 Controllers General Instructions* (bản 9/2025): dùng cho
   hàng "kiểu tự nhiên `DINT`" và mô hình chỉ-có-tag ở bảng mục 11.8.
+- **CODESYS** — trợ giúp trực tuyến, mục *Variable: VAR_EXTERNAL* (đối chiếu 2026-09-26): ⭐ hệ này
+  **không bắt** khai `VAR_EXTERNAL` để dùng biến toàn cục trong POU — từ khoá chỉ giữ để tương thích
+  IEC 61131-3; nền cho bảng *"Biến toàn cục đi vào một POU bằng cửa nào"* ở mục 11.6.
+- **PLCopen** — *Coding Guidelines* v1.0, quy tắc CP6 (tránh biến ngoài trong hàm và khối chức năng) —
+  nền cho quy tắc *"khối không đọc biến toàn cục"* ở mục 11.6.
 
 > ⚡ Quy ước đặt tên ở mục 11.3 là **quy ước của sách này**, không phải chuẩn. Đơn vị của bạn có thể
 > đã có quy ước riêng — và nếu vậy thì **quy ước của đơn vị thắng**. Điều quan trọng không phải chọn

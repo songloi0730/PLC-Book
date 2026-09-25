@@ -227,12 +227,12 @@ timeout báo lỗi (Phụ lục J §J.3.1).
 ### ⭐ CODESYS — cột neo (ST)
 
 ```text
+tmrClamp1(IN := (Stn1_Step = 40), PT := T#2S);  // ⭐ gọi MỖI vòng, ngoài CASE — rời bước là tự xoá
+
 CASE Stn1_Step OF
   40:
     DO_Clamp1Vlv := TRUE;
-    tmrClamp1(IN := TRUE, PT := T#2S);      // thể hiện riêng cho bước này
     IF DI_Clamp1Up THEN
-        tmrClamp1(IN := FALSE);
         Stn1_Step := 50;                     // ← phản hồi thật chuyển bước
     ELSIF tmrClamp1.Q THEN
         MaLoi := 3041;                       // ← timeout chỉ báo lỗi
@@ -244,12 +244,12 @@ END_CASE
 ### Siemens (SCL — rất gần CODESYS)
 
 ```text
+#tmrClamp1(IN := (#Stn1_Step = 40), PT := T#2S);  // FB + Instance DB — gọi mỗi vòng, ngoài CASE
+
 CASE #Stn1_Step OF
   40:
     #DO_Clamp1Vlv := TRUE;
-    #tmrClamp1(IN := TRUE, PT := T#2S);      // FB + Instance DB
     IF #DI_Clamp1Up THEN
-        #tmrClamp1(IN := FALSE);
         #Stn1_Step := 50;
     ELSIF #tmrClamp1.Q THEN
         #MaLoi := 3041;
@@ -260,6 +260,12 @@ END_CASE;
 
 > ⭐ **Khác biệt so với CODESYS gần như chỉ là dấu `#` cho biến cục bộ** và việc bộ định thời cần
 > Instance DB. Cấu trúc tư duy giống hệt — vì cả hai bám IEC 61131-3.
+>
+> ⚠⚠ **Vì sao bộ định thời gọi NGOÀI `CASE` ở cả hai bản:** một thể hiện khối **không được gọi thì
+> giữ nguyên trạng thái**. Gọi nó bên trong nhánh `40` thì rời bước là nó đứng yên với `Q` = TRUE
+> (nếu vừa quá giờ) — lần sau vào bước 40 là **báo lỗi ngay** ở vòng quét đầu. Gọi ngoài `CASE` với
+> `IN` lấy từ bước thì rời bước là `IN` = FALSE → tự xoá, và mỗi thể hiện được gọi **đúng một lần**
+> mỗi vòng (PLCopen CP20, Phụ lục N).
 
 ### Mitsubishi (Ladder — mô tả cấu trúc)
 
@@ -281,11 +287,17 @@ END_CASE;
 | ⚠⚠ **`K20` phụ thuộc độ phân giải của `T5`** | ⭐ Phải kiểm dải; xem A2.2 |
 | ⚠ **Không có `CASE`** ở dòng cũ | ⭐ Dùng so sánh `LD= D100 K40` cho mỗi bước |
 | ⭐ **Số bước nằm trong thanh ghi `D100`** | Cùng ý tưởng, khác cách gọi |
-| ⚠ Bộ định thời `T5` phải **xoá khi rời bước** | ⭐ Nếu không, lần sau vào bước nó đã chạy sẵn |
+| ⭐ `OUT T5` nằm **dưới** phép so sánh bước | ⭐ Lệnh **vẫn được thực thi** mỗi vòng quét với điều kiện là phép so sánh — rời bước là điều kiện tắt, bộ định thời thường **tự về 0** (loại giữ giá trị thì không) |
 
-> ⚠⚠ **Hàng cuối là bẫy thật trên hệ kiểu thiết bị:** bộ định thời là **tài nguyên toàn cục**, không
-> phải biến cục bộ của bước. ⭐ **Phải chủ động xoá nó khi rời bước** — điều mà thể hiện FB trên hệ
-> khác xử lý tự nhiên hơn.
+> ⚠⚠ **Hàng cuối ngược với trực giác của người quen CODESYS.** ⭐ Ở đây chính **bộ định thời kiểu
+> thiết bị** mới là bên tự xoá — vì lệnh `OUT T5` luôn được thực thi, chỉ có điều kiện của nó thay
+> đổi. Còn thể hiện khối ở hai bản ST thì **không** tự xoá khi không được gọi — nên chúng mới phải gọi
+> ngoài `CASE`.
+>
+> ⚠ **Bẫy thật của hệ kiểu thiết bị nằm ở chỗ khác:** `T5` là **tài nguyên toàn cục**, không phải biến
+> của bước — dùng lại `T5` ở một bước khác là **cuộn dây trùng**. Và theo chính tài liệu hãng, bộ định
+> thời đang bật mà bị **lệnh nhảy bỏ qua** thì **không đo đúng thời gian nữa** — đừng đặt `OUT T5`
+> trong đoạn có thể bị nhảy qua.
 
 ### Inovance (tuỳ dòng)
 
@@ -301,14 +313,14 @@ END_CASE;
 ### Rockwell (ST — mô tả cấu trúc)
 
 ```text
+tmrClamp1.PRE         := 2000;               // ⭐ mili giây, không phải kiểu TIME
+tmrClamp1.TimerEnable := (Stn1_Step = 40);   // gọi mỗi vòng, ngoài CASE — rời bước là tự xoá
+TONR(tmrClamp1);
+
 CASE Stn1_Step OF
   40:
     DO_Clamp1Vlv := 1;
-    tmrClamp1.PRE := 2000;                   // ⭐ mili giây, không phải kiểu TIME
-    tmrClamp1.TimerEnable := 1;
-    TONR(tmrClamp1);
     IF DI_Clamp1Up THEN
-        tmrClamp1.TimerEnable := 0;
         Stn1_Step := 50;
     ELSIF tmrClamp1.DN THEN
         MaLoi := 3041;
@@ -376,7 +388,7 @@ END_CASE;
 | Lệnh theo chuẩn IEC, không theo hãng | **Phụ lục B** |
 | ⚠ Quy trình chuyển nền đầy đủ | ⚠ **Chương 56** |
 | Trình tự đầy đủ của DP-01 | **Phụ lục J §J.3** |
-| Vì sao chuyển bước bằng phản hồi thật | ⭐ **Chương 21** |
+| Vì sao chuyển bước bằng phản hồi thật | ⭐ **Chương 17, 26** |
 
 ---
 
@@ -388,6 +400,12 @@ END_CASE;
 >
 > ⚠ Phụ lục **mô tả khác biệt, không xếp hạng hãng**. Mỗi hệ có lý do riêng cho các lựa chọn thiết kế
 > của nó, và ⭐ **hệ tốt nhất cho bạn thường là hệ mà nơi bạn làm việc đang dùng**.
+>
+> ⭐ **Nguồn đối chiếu cho hành vi bộ định thời ở A2.8** (kiểm 2026-09-26): tài liệu hướng dẫn lệnh
+> của dòng FX5 — lệnh `OUT` với bộ định thời khi điều kiện chuyển sang OFF (giá trị hiện tại về 0;
+> loại giữ giá trị thì không), và lưu ý của lệnh nhảy `CJ` (bộ định thời đang bật mà bị nhảy qua thì
+> không đo đúng thời gian); tài liệu lệnh chung của Logix 5000 — `TONR` là bộ định thời **không giữ**,
+> đếm khi `TimerEnable` bật.
 >
 > ⚠⚠ Riêng phần **an toàn**: không có bảng đối chiếu nào ở đây áp dụng được. Chức năng an toàn phải
 > được thiết kế và kiểm định cho **hệ thống cụ thể**, bởi **người có thẩm quyền** (Chương 47, 48).

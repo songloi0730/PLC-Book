@@ -2,6 +2,7 @@
 
 - **Ngày:** 2026-09-26
 - **Trạng thái:** Đã áp dụng (đợt 58) — Ch.27 mục 27.3 + Bẫy 7, Phụ lục L mục L.8, Ch.14, Phụ lục N
+- **Cập nhật đợt 59:** chân `Enable` đổi tên **`Permit`** — PLCopen dành chữ `Enable` cho khối theo mức, tắt là xoá ngõ ra, đúng nghĩa ngược với chân này; chân `Reset` nay nối **`M_ClearFaults`** (lệnh xoá của trạng thái `Resetting`) thay vì sườn nút Reset — design note 0007
 - **Phạm vi:** khối `FB_Cylinder2Pos` — khối dùng lại quan trọng nhất của máy mẫu DP-01, được Ch.14,
   26, 27, 30, 57 và Phụ lục L dùng tới
 

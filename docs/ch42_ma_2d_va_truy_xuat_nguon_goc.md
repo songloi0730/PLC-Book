@@ -283,7 +283,7 @@ IF M_MesCommFault THEN
 
     // ⚠ Giới hạn — theo đặc tả, không tự đặt
     IF DegradedCount > MAX_DEGRADED_BOARDS THEN
-        M_AnyFault := TRUE;                     // buộc dừng
+        M_Alm_MesLost := TRUE;                  // buộc dừng — cờ chốt, gom vào M_AnyFault (Ch.25)
         M_FaultCode := 420;
     END_IF;
 END_IF;
@@ -367,7 +367,7 @@ CASE Stn1_Step OF
             M_DegradedMode := TRUE;
             Stn1_Step := 35;                     // chạy tạm với công thức hiện tại
         ELSE
-            M_AnyFault := TRUE;  M_FaultCode := 420;
+            M_Alm_MesLost := TRUE;  M_FaultCode := 420;
         END_IF;
 
     35: // Nạp công thức nếu khác công thức đang dùng (Chương 29)

@@ -92,7 +92,7 @@ mấu chốt: lỗi có thể xảy ra ở bất cứ đâu.*
 | **Running** | Đang chạy chu trình tự động | Nhấn Hold; nhấn Stop; hoặc phát sinh lỗi |
 | **Hold** | Đã dừng có kiểm soát, **giữ nguyên vị trí và sản phẩm** | Tiếp tục → `Running`; huỷ → `Idle` |
 | **Alarm** | Có lỗi. Mọi chuyển động đã dừng | Xử lý xong nguyên nhân → nhấn Reset |
-| **Resetting** | Đang xoá lỗi và kiểm tra điều kiện | Sạch lỗi → `Homing` (không về thẳng `Idle` — xem dưới) |
+| **Resetting** | Đang xoá lỗi và kiểm tra điều kiện | Sạch lỗi → `Homing` (không về thẳng `Idle` — xem dưới); còn lỗi → `Alarm` |
 
 ### Ba quyết định thiết kế cần hiểu, không chỉ chép
 
@@ -140,8 +140,9 @@ Mỗi dòng là một chuyển tiếp, và phải trả lời đủ bốn cột:
 | Running | Bất kỳ điều kiện lỗi nào | Alarm | Bật đèn đỏ + còi; cắt lệnh chuyển động |
 | Hold | `DI_StartPB` | Running | Bật đèn xanh; chạy tiếp từ bước đang nhớ |
 | Hold | Giữ `DI_StopPB` quá 2 giây | Idle | Nhả sản phẩm theo quy trình an toàn, về gốc |
-| Alarm | `DI_ResetPB` và nguyên nhân đã hết | Resetting | Xoá cờ lỗi; tắt còi |
-| Resetting | Đã xoá xong | Homing | Bắt đầu trình tự về gốc |
+| Alarm | Sườn lên `DI_ResetPB` | Resetting | Tắt còi; ra lệnh xoá mọi cờ lỗi (`M_ClearFaults`) |
+| Resetting | Hết thời lượng xoá, **không còn cờ nào** | Homing | Bắt đầu trình tự về gốc |
+| Resetting | Hết thời lượng xoá, **còn cờ chốt lại** — nguyên nhân chưa hết | Alarm | Giữ đèn đỏ; còi không kêu lại |
 | **Mọi trạng thái** | Mất khí / mất mạch an toàn / lỗi cơ cấu | Alarm | Như trên |
 
 Cột thứ tư — **hành động khi vào trạng thái** *(entry action)* — là cột người mới hay bỏ trống, và đó
@@ -170,7 +171,10 @@ END_TYPE
 
 VAR
     MachineState : E_MachineState := Uninitialized;
+    T_Resetting  : TON;
 END_VAR
+
+// M_AnyFault đã được GOM ở đúng một chỗ, ngay trước đoạn này (mục 25.5c)
 
 // ── Chuyển tiếp ưu tiên cao nhất: lỗi từ BẤT KỲ trạng thái nào ──
 // Đặt TRƯỚC khối CASE để nó luôn thắng
@@ -180,6 +184,9 @@ IF M_AnyFault AND MachineState <> Alarm AND MachineState <> Resetting THEN
     DO_Buzzer   := TRUE;
     M_MotionEnable := FALSE;          // cắt mọi lệnh chuyển động
 END_IF;
+
+// Thời lượng của Resetting — gọi đúng MỘT lần, ngoài CASE (Chương 17, Bẫy 5)
+T_Resetting(IN := (MachineState = Resetting), PT := T#200MS);
 
 CASE MachineState OF
 
@@ -196,7 +203,7 @@ CASE MachineState OF
             M_CycleStep := 0;                  // xoá bước chu trình
             MachineState := Idle;
         END_IF;
-        // timeout xử lý bên trong trình tự về gốc → bật M_AnyFault
+        // timeout xử lý bên trong trình tự về gốc → chốt M_Alm_HomeTimeout (Ch.28)
 
     Idle:
         DO_LampYellow := TRUE;
@@ -222,16 +229,20 @@ CASE MachineState OF
 
     Alarm:
         DO_LampRed := TRUE;
-        IF R_TRIG_Reset.Q AND NOT M_AnyFault THEN   // nguyên nhân phải hết TRƯỚC
-            MachineState := Resetting;
+        IF R_TRIG_Reset.Q THEN                 // chỉ cần SƯỜN LÊN — việc xét nguyên nhân
+            MachineState := Resetting;         // giao cho Resetting (mục 25.5c)
         END_IF;
 
     Resetting:
-        M_ClearFaults := TRUE;
+        M_ClearFaults := TRUE;                 // mọi chủ cờ lỗi tự xoá cờ của mình…
         DO_Buzzer     := FALSE;
-        IF M_FaultsCleared THEN
+        IF T_Resetting.Q THEN                  // …và đã có đủ vòng quét để làm việc đó
             M_ClearFaults := FALSE;
-            MachineState  := Homing;           // KHÔNG về thẳng Idle
+            IF M_AnyFault THEN
+                MachineState := Alarm;         // nguyên nhân còn → cờ đã chốt lại
+            ELSE
+                MachineState := Homing;        // KHÔNG về thẳng Idle
+            END_IF;
         END_IF;
 
 END_CASE;
@@ -244,8 +255,11 @@ Ba điểm đáng chú ý trong đoạn trên:
   và sẽ quên ít nhất một chỗ.
 - **Dùng kiểu liệt kê, không dùng số trần.** `MachineState := 3` không nói lên điều gì khi bạn xem
   trạng thái trực tuyến lúc hai giờ sáng; `Running` thì nói.
-- **Reset đòi hỏi `NOT M_AnyFault`.** Nhấn Reset khi nguyên nhân còn nguyên thì không được chuyển —
-  nếu không, máy sẽ quay vòng `Alarm → Resetting → Alarm` liên tục.
+- **Reset chỉ cần sườn lên — việc xét nguyên nhân thuộc về `Resetting`.** Nó ra lệnh xoá, chờ đủ
+  lâu cho mọi nơi giữ cờ lỗi tự xoá rồi **phát hiện lại**, sau đó mới xem còn lỗi không. Nguyên nhân
+  còn thì cờ đã chốt lại → quay về `Alarm`, **một lần cho mỗi lần nhấn** — không quay vòng. ⚠⚠ Đừng
+  viết `IF R_TRIG_Reset.Q AND NOT M_AnyFault`: khi cờ lỗi chỉ được xoá **bên trong** `Resetting`,
+  điều kiện đó không bao giờ đúng và máy **khoá chết** ở `Alarm` (mục 25.5c).
 
 ### Cách 2 — bit trạng thái (Ladder Diagram)
 
@@ -262,8 +276,9 @@ S_Uninit   S_Homing   S_Idle   S_Running   S_Hold   S_Alarm   S_Resetting
 > tổ hợp. Nó chỉ an toàn nếu bạn **cưỡng chế bất biến "đúng một bit bật"** bằng cấu trúc code:
 >
 > - Mọi chuyển tiếp viết theo mẫu **bật bit mới, tắt bit cũ, trong cùng một nấc thang**.
-> - Thêm một nấc **giám sát**: đếm số bit đang bật; khác 1 thì bật `M_AnyFault`. Nấc này là lưới an
->   toàn — nó biến một lỗi logic âm thầm thành một báo động nhìn thấy được.
+> - Thêm một nấc **giám sát**: đếm số bit đang bật; khác 1 thì **chốt** một cờ lỗi riêng,
+>   `M_Alm_StateInvalid`, gom vào `M_AnyFault` như mọi nguồn lỗi khác (mục 25.5c). Nấc này là lưới
+>   an toàn — nó biến một lỗi logic âm thầm thành một báo động nhìn thấy được.
 
 ```text
 // Nấc chuyển tiếp: Idle → Running
@@ -274,7 +289,8 @@ S_Uninit   S_Homing   S_Idle   S_Running   S_Hold   S_Alarm   S_Resetting
 
 // Nấc giám sát bất biến — luôn có, không bao giờ bỏ
    [ĐẾM số bit trạng thái đang bật] → M_StateCount
-   M_StateCount <> 1  ────────────────────────────────( M_AnyFault )
+   M_ClearFaults      ─────────────────────────────( R )──  M_Alm_StateInvalid   // xoá TRƯỚC
+   M_StateCount <> 1  ─────────────────────────────( S )──  M_Alm_StateInvalid   // phát hiện SAU
 ```
 
 ### Chọn cách nào
@@ -367,6 +383,94 @@ bước hoàn tất.
 
 ---
 
+## 25.5c ⭐⭐ Đường đi của lỗi — chốt ở nguồn, gom một chỗ, xoá qua `Resetting`
+
+Máy trạng thái ở mục 25.5 **đọc** một cờ `M_AnyFault`. Nhưng nó bỏ ngỏ hai câu hỏi: **ai ghi cờ đó, và
+ai xoá nó?** ⚠ Trả lời sai hai câu này thì một máy trạng thái đúng từng dòng vẫn **khoá chết**.
+
+### Ba cách hay gặp — cùng một bài toán
+
+Bài toán: DP-01 có ba nguồn lỗi — mất khí, một bước của trạm 1 quá giờ, trình tự về gốc quá giờ.
+
+```iecst
+// ── A · Một cờ chung, SET/RESET ──
+IF NOT DI_AirOK OR T_Stn1Step.Q OR T_Home.Q THEN
+    M_AnyFault := TRUE;
+END_IF;
+IF DI_ResetPB AND DI_AirOK AND NOT T_Stn1Step.Q AND NOT T_Home.Q THEN
+    M_AnyFault := FALSE;
+END_IF;
+
+// ── B · Mỗi nguồn ghi thẳng cờ chung ──
+IF T_Stn1Step.Q THEN  Stn1_Fault := TRUE;  M_AnyFault := TRUE;  END_IF;   // trong trạm 1
+IF T_Home.Q     THEN  M_AnyFault := TRUE;                       END_IF;   // trong trình tự về gốc
+
+// ── C · Mỗi nguồn MỘT cờ của riêng nó, gom MỘT chỗ, xoá qua Resetting ──
+IF M_ClearFaults THEN  Stn1_Fault := FALSE;  END_IF;       // chủ cờ: xoá TRƯỚC…
+IF T_Stn1Step.Q  THEN  Stn1_Fault := TRUE;   END_IF;       // …phát hiện SAU
+M_AnyFault := M_Alm_AirLow OR Stn1_Fault OR M_Alm_HomeTimeout;    // đúng MỘT chỗ gán
+```
+
+| Cách | ⭐ Ưu | ⚠ Nhược |
+|---|---|---|
+| A — một cờ chung | Ngắn nhất | Mất thông tin *lỗi gì*. Nhánh RESET phải **liệt kê lại** mọi nguyên nhân — thêm một nguồn là sửa **hai** chỗ, quên chỗ thứ hai thì Reset xoá một lỗi còn nguyên nhân |
+| B — mỗi nơi ghi thẳng | Đoạn nào cũng tự đứng được | ⚠⚠ **Nhiều nơi ghi một biến**, và **không ai xoá** — chính là thứ gây khoá chết ở dưới |
+| ⭐ **C — chốt ở nguồn, gom một chỗ** | Mỗi cờ **một nơi ghi**; biết đích danh lỗi gì; thêm nguồn = thêm một cờ và một vế `OR`; ⭐ **không phụ thuộc thứ tự gọi** | Thêm một biến lệnh xoá, và `Resetting` phải kéo dài vài trăm mili-giây |
+
+⭐ **Sách dùng cách C** — ở mọi chương về sau.
+
+### ⚠⚠ Vì sao cách B khoá chết máy
+
+Viết `Alarm → Resetting` với điều kiện `R_TRIG_Reset.Q AND NOT M_AnyFault`, trong khi cờ lỗi chỉ được
+xoá **bên trong** `Resetting` — thì:
+
+1. Lỗi xảy ra → cờ chốt → `M_AnyFault` = TRUE → máy vào `Alarm`.
+2. Muốn rời `Alarm` phải có `NOT M_AnyFault`.
+3. Muốn `M_AnyFault` về FALSE phải vào được `Resetting`.
+
+⚡ Vòng tròn khép kín. **Máy chỉ ra khỏi `Alarm` bằng cách tắt nguồn.** Và ⚠ không phải chỉ lý thuyết:
+cờ quá giờ của trạm được chốt ở một chỗ mà khi máy dừng thì **không còn được thực thi** — thân trình tự
+bị cửa vào chặn lại (Chương 26), nên kể cả thêm dòng *"xoá khi nguyên nhân hết"* vào đó cũng vô ích:
+dòng đó không bao giờ chạy.
+
+> ⭐ Mô phỏng từng vòng quét ba khối — nguồn lỗi, gom, tầng máy — ở **cả sáu** thứ tự gọi có thể: cách B
+> kẹt ở `Alarm` ở **cả sáu** với lỗi quá giờ, và với lỗi mất khí thì nhấn Reset một lần có thành công
+> hay không **tuỳ vào thứ tự gọi**. Cách C cho đúng kết quả ở cả sáu.
+
+### ⭐ Ba quy tắc của cách C
+
+| # | Quy tắc | Vì sao |
+|:-:|---|---|
+| 1 | **Mỗi nguồn lỗi tự chốt cờ của chính nó** — `M_Alm_…` cho nguồn chung, `Stn1_Fault` cho trạm, `.Fault` cho khối cơ cấu. Không ai khác ghi vào cờ đó | Một biến, một nơi ghi (Chương 10). Và cờ nói được **lỗi gì** |
+| 2 | ⭐ **`M_AnyFault` được GÁN đúng một chỗ** — phép `OR` của mọi cờ, tính lại mỗi vòng, đặt **sau** tầng cơ cấu và **trước** tầng máy. Không nguồn nào ghi thẳng `M_AnyFault` | Hai nơi cùng ghi thì phép gán chạy sau **xoá mất** lỗi của phép chạy trước |
+| 3 | ⭐⭐ **Xoá đi qua `Resetting`.** Chủ cờ xoá cờ của mình **khi thấy `M_ClearFaults`**, đặt dòng xoá **trước** dòng phát hiện | Nguyên nhân còn thì cờ chốt lại ngay trong vòng đó — `Resetting` nhìn thấy và đưa máy về `Alarm`. ⭐ Việc *"nguyên nhân đã hết chưa"* giao cho **đúng nơi biết nguyên nhân** |
+
+⭐ **Vì sao cách C không phụ thuộc thứ tự gọi:** `M_ClearFaults` kéo dài **nhiều vòng quét**
+(`T_Resetting`), nên chủ cờ đứng trước hay sau tầng máy đều kịp thấy nó; và tầng máy chỉ đọc kết quả
+**sau khi** lệnh xoá đã tắt. Thời lượng 200 ms ở đoạn mã trên phải **lớn hơn vài lần chu kỳ tác vụ chậm
+nhất** có chứa cờ lỗi (Chương 27 mục 27.6).
+
+### Gom lỗi trên DP-01
+
+```iecst
+// ── GOM LỖI — đúng MỘT chỗ gán M_AnyFault; chạy SAU các nguồn lỗi, TRƯỚC tầng máy ──
+M_AnyFault := M_Alm_AirLow                    // nguồn chung (Phụ lục L mục L.11)
+              OR Stn1_Fault OR Stn2_Fault     // tầng trạm (Chương 26)
+              OR M_Alm_HomeTimeout            // trình tự về gốc (Chương 28)
+              OR M_Alm_StateInvalid;          // giám sát bit trạng thái (mục 25.5)
+// Chương 27 thêm cờ của các khối cơ cấu: … OR Clamp1.Fault OR …
+```
+
+> ⚡ **Quy ước cho mọi đoạn trích từ đây về sau:** mỗi nguồn lỗi chỉ viết dòng **chốt**
+> (`M_Alm_… := TRUE`). Dòng **xoá** luôn theo đúng một mẫu nên sách không lặp lại —
+> `IF M_ClearFaults AND <nguyên nhân đã hết> THEN M_Alm_… := FALSE; END_IF;` — đặt **trước** dòng chốt;
+> và mỗi cờ mới là **một vế `OR`** thêm vào phép gom.
+
+> ⭐ Đây chính là cách một khối cơ cấu tốt tự làm bên trong nó — *xoá trước, phát hiện sau* (khối
+> `FB_Cylinder2Pos` ở Chương 27 mục 27.3). Cách C chỉ là áp đúng nguyên tắc đó cho cả cỗ máy.
+
+---
+
 ## 25.6 Trạng thái máy tổng và trạng thái từng trạm
 
 DP-01 có **hai trạm**. Câu hỏi tự nhiên: một máy trạng thái hay ba?
@@ -433,6 +537,9 @@ Ngược lại cũng có: điều kiện ra chặt tới mức không bao giờ 
    sao?"* Mọi trạng thái phải có ít nhất một đường ra khả thi.
 2. Với trạng thái xử lý (`Homing`, `Resetting`), đặt **timeout** — quá thời gian thì sang `Alarm` với
    mã lỗi nói rõ kẹt ở đâu. Trạng thái không có đường thoát là trạng thái chưa thiết kế xong.
+3. ⭐ Kích Reset bằng **sườn lên**, không bằng mức: giữ nút là đủ cho một lần thử, không phải một
+   vòng lặp. Và để `Resetting` — không phải điều kiện vào của nó — quyết định còn lỗi hay không
+   (mục 25.5c).
 
 ### 🔍 BẪY 3 — Nhồi trình tự vào máy trạng thái
 
@@ -530,6 +637,7 @@ Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
 | 9 | ⭐⭐ Kiểm **bất biến** đủ ba vế cho từng trạng thái | Đã bật · vừa được đưa vào · chưa bị đưa ra |
 | 10 | ⚠⚠ **Viết ra thứ tự ưu tiên** của các chuyển tiếp | `Alarm` → `Stopping` → quy trình; có comment |
 | 11 | Với bit trạng thái: **cưỡng chế ưu tiên tường minh** | Đường ưu tiên thấp kèm *"và đường cao không đúng"* |
+| 12 | ⭐⭐ Soát **đường đi của lỗi** | Mỗi nguồn chốt cờ riêng; `M_AnyFault` gán **đúng một chỗ**; `Resetting` xoá (mục 25.5c) |
 
 ---
 

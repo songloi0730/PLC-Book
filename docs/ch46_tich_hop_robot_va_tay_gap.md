@@ -308,7 +308,7 @@ CASE LoadStep OF
         IF DI_RobotDone THEN
             Step := 40;
         ELSIF DI_RobotError THEN
-            M_AnyFault := TRUE;
+            M_Alm_Robot := TRUE;               // cờ chốt — gom vào M_AnyFault (Ch.25)
             M_FaultCode := 460 + RobotErrorCode;  // ⭐ mã cụ thể
         END_IF;
 
@@ -326,7 +326,7 @@ END_CASE;
 // ⚠ Timeout cho mọi bước chờ (Chương 26)
 T_Robot(IN := (LoadStep > 0), PT := T#20S);
 IF T_Robot.Q THEN
-    M_AnyFault := TRUE;  M_FaultCode := 469;
+    M_Alm_Robot := TRUE;  M_FaultCode := 469;
 END_IF;
 ```
 

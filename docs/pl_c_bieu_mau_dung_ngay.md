@@ -70,7 +70,7 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 
 ## C.3 Đặc tả trình tự
 
-⭐ **Dùng để:** mô tả máy làm gì, theo thứ tự nào, và chuyển bước khi nào (Chương 21, 23).
+⭐ **Dùng để:** mô tả máy làm gì, theo thứ tự nào, và chuyển bước khi nào (Chương 23, 26).
 
 | Bước | Hành động | Điều kiện chuyển tiếp | Hết giờ | Nếu hết giờ thì | Ghi chú |
 |---|---|---|---|---|---|

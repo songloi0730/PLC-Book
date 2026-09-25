@@ -3140,6 +3140,104 @@ duyệt; đây là đợt nền.
 
 ---
 
+## Đợt 59 — 2026-09-26 · Tổ chức chương trình: đường đi của lỗi, hợp đồng khối, phạm vi biến
+
+⭐ Đợt thứ hai của kế hoạch 5 đợt (design note 0005). Kế hoạch ban đầu là ba việc — mô hình
+`Execute`/`Enable` cho khối tự viết, phạm vi biến, khung POU. ⚠ Câu hỏi đầu tiên — *"chân `Reset` của
+khối xy-lanh nối vào đâu?"* — mở ra một lỗi kiến trúc lớn hơn cả ba việc đó cộng lại.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 542 | Quy tắc chung cho khối kích bằng sườn theo PLCopen — đối chiếu **hai** tài liệu thư viện khối chuyển động của hai hãng khác nhau: khớp nhau ở tham số chốt ở sườn lên · `Busy` từ sườn lên tới khi xong · `Busy`/`Done`/`Error` loại trừ nhau · kết quả xoá ở sườn xuống và vẫn hiện ít nhất một vòng nếu `Execute` tắt giữa chừng | ✔ |
+| 543 | ⚠ Hai tài liệu **lệch nhau** ở hành vi kích lại khi đang `Busy`: một bên ghi *không phản hồi, không nhận lệnh mới*, bên kia ghi *lệnh trước mất phản hồi*. Sách ghi rõ chỗ lệch, khuyên khối tự viết **bỏ qua** và người gọi **đừng làm** | ⚠ |
+| 544 | Tờ tóm tắt PLCopen về thư viện khối: hai loại khối sườn/mức; ⭐ phát hiện sườn cần **hai vòng quét** — lý do kỹ thuật để chọn mô hình mức | ✔ |
+| 545 | Trợ giúp trực tuyến CODESYS: hệ này **không bắt** khai `VAR_EXTERNAL`; từ khoá chỉ giữ để tương thích IEC 61131-3 — trong khi chuẩn chỉ cho dùng biến toàn cục qua `VAR_EXTERNAL` | ✔ |
+| 546 | ⚠ Phụ lục A2 viết *"bộ định thời T5 phải chủ động xoá khi rời bước — nếu không, lần sau vào bước nó đã chạy sẵn"*. Tài liệu lệnh của dòng FX5: `OUT` bộ định thời khi điều kiện chuyển OFF thì **giá trị hiện tại về 0**. Với sơ đồ trong chính A2 (`OUT T5` dưới phép so sánh bước), T5 **tự xoá** → khẳng định **sai**; viết lại, kèm bẫy thật (dùng lại T5 = cuộn dây trùng) | ⚠ |
+| 547 | Lưu ý của lệnh nhảy `CJ` trong cùng tài liệu: bộ định thời đang bật mà bị nhảy qua thì **không đo đúng thời gian** — sách dùng **đúng mức khẳng định đó**, không viết thêm *"giữ nguyên giá trị"* vì tài liệu không nói vậy | ✔ |
+| 548 | Tài liệu lệnh chung Logix 5000: `TONR` là bộ định thời **không giữ**, đếm khi `TimerEnable` bật — gọi mỗi vòng ngoài `CASE` với `TimerEnable := (bước = 40)` là đúng | ✔ |
+
+### B — ⭐⭐ Đường đi của lỗi: ba cách không ghép được với nhau
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 549 | ⚠⚠ Sách dạy **ba** cách đi từ "có lỗi" tới "Reset được": một cờ chung SET/RESET (Ch.16) · mỗi nơi ghi thẳng `M_AnyFault` (16 chỗ ở Ch.17, 26, 28, 31, 38, 40, 41, 42, 43, 46, L.6, L.9) · mỗi nguồn một cờ rồi gom (L.11) | ⚠⚠ |
+| 550 | ⚠⚠ **Khoá chết**: `Stn1_Fault` được chốt nhưng **không có dòng nào xoá**; Ch.25 chỉ cho rời `Alarm` khi `NOT M_AnyFault`, còn việc xoá lại nằm **trong** `Resetting`. Mô phỏng ba khối ở **cả sáu thứ tự gọi**: kẹt ở `Alarm` ở cả sáu | ⚠⚠ |
+| 551 | ⚠ Lỗi mất khí: nhấn Reset **một lần** có thành công hay không **tuỳ thứ tự gọi** — có thứ tự phải nhấn hai lần | ⚠ |
+| 552 | ⚠ L.11 gán `M_AnyFault := …` trong khi 16 nơi khác ghi `M_AnyFault := TRUE` — **hai nơi ghi một biến**, phép chạy sau xoá mất lỗi của phép chạy trước | ⚠ |
+| 553 | ➕➕ Cách chọn — design note 0007, Ch.25 mục mới **25.5c**: mỗi nguồn **tự chốt cờ của mình** · `M_AnyFault` **gán đúng một chỗ** trước tầng máy · xoá qua `Resetting` (lệnh `M_ClearFaults` kéo dài 200 ms, chủ cờ *xoá trước, phát hiện sau*, còn cờ thì về lại `Alarm`). Mô phỏng: **đúng ở cả sáu thứ tự gọi** | ➕➕ |
+| 554 | Áp đồng bộ: 16 chỗ ghi thẳng → cờ riêng `M_Alm_…`; Ch.16 dạy SET/RESET bằng **một** cờ một nguồn kèm chỉ dẫn sang 25.5c; trạm xoá `Stn1_Fault` **ngoài** cửa vào (Ch.26, L.6); trục ở L.9: cờ lỗi **chính là** bước 90 | ⭐ |
+| 555 | ⚠ L.3: cờ dừng khẩn cấp **không góp vào `M_AnyFault`** — trong khi bảng chuyển trạng thái Ch.25 ghi *"mất mạch an toàn → Alarm"* → thêm `M_Alm_EStop` vào phép gom | ⚠ |
+| 556 | ⚠ L.11 dùng `M_AckPB_Rise` — **không định nghĩa ở đâu**; dòng xoá đặt **sau** dòng chốt; phép gom có cờ thừa trùng với lỗi của khối xy-lanh → sửa | ⚠ |
+| 557 | ⚠ Nấc giám sát bit trạng thái ở Ch.25 ghi `M_AnyFault` như một **cuộn dây** — thêm một nơi ghi nữa → cờ riêng `M_Alm_StateInvalid`, nấc xoá đứng **trước** nấc chốt | ⚠ |
+| 558 | Ch.57: `Prg_Alarm` (gom lỗi) gọi **sau** `Prg_Machine` → chuyển lên trước; Ch.27 thêm bước **gom lỗi** vào thứ tự gọi | ⭐ |
+
+### C — Khối xy-lanh: tên chân phải nói đúng nghĩa
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 559 | ⚠ Chân cho phép của `FB_Cylinder2Pos` tên `Enable` — nhưng PLCopen dành `Enable` cho khối theo mức, **tắt là xoá ngõ ra**, đúng nghĩa **ngược** với chân này (tắt là **giữ** van). Người quen PLCopen sẽ đọc thành chính lỗi Bẫy 7 → đổi tên **`Permit`** ở Ch.27, L.8, design note 0006; Phụ lục N thêm quy ước tên chân | ⚠ |
+| 560 | Chân `Reset` của khối nối `M_ClearFaults` thay vì sườn nút Reset — theo đường xoá của 25.5c | ⭐ |
+
+### D — CP20: "đã sửa" mà chưa sửa hết
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 561 | ⚠⚠ Đợt 58 đánh dấu CP20 ở Phụ lục N là *"sách từng sai, đã sửa"* — nhưng mẫu *"gọi `T(IN := FALSE)` rồi gọi lại"* **còn ở sáu chỗ**: Ch.26, Ch.48, L.6, L.10, Phụ lục A2 (CODESYS, Siemens) → sửa hết, và thêm phép kiểm CP20 vào bộ kiểm | ⚠⚠ |
+| 562 | ⚠⚠ Bản CODESYS / Siemens / Rockwell ở A2 gọi bộ định thời **bên trong** nhánh `CASE` và chỉ xoá nó ở nhánh thành công — nhánh quá giờ **không** xoá. Khối không được gọi thì đứng yên với `Q` = TRUE → lần sau vào bước 40 là **báo lỗi ngay** → gọi ngoài `CASE`, `IN` lấy từ bước | ⚠⚠ |
+| 563 | ⚠ L.10 sao–tam giác: lệnh dừng chỉ được xét ở bước 30 — đang chạy sao hoặc khoảng chết thì **dừng không ăn** vài giây → đưa phép dừng lên trước `CASE` | ⚠ |
+
+### E — Tổ chức chương trình
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 564 | ➕➕ Ch.30 mục mới **30.5b** — viết khối của mình theo **hợp đồng của hãng**: `Execute`/`Done` và `Enable`/`Valid`, khi nào chọn cái nào, **năm quy tắc** kèm biểu đồ thời gian, khối `FB_BoardTransfer` (8 chân) viết đúng cả năm, cách gọi ở bước 60 của trạm 1. Phụ lục L mục **L.8b** — đúng cùng khối để chép | ➕➕ |
+| 565 | ⭐ Mô phỏng khối trước khi đưa vào sách tìm ra **hai lỗi của chính bản nháp**: xin chạy chuyền ở đúng vòng đã báo `Done`; lệnh nhận ngay vòng sau lệnh trước **thừa hưởng thời gian đã đếm** → sửa; ghi lại ngay trong mục 30.5b như một bài học | ⭐ |
+| 566 | ➕ Ch.11 mục 11.6: `VAR_EXTERNAL`, và quy tắc **khối chức năng không đọc biến toàn cục** (PLCopen CP6) kèm bảng so sánh | ➕ |
+| 567 | ⚠ Ba khối viết khai báo biến **ngoài** `VAR … END_VAR` (Ch.27 ×2, Ch.30) — không biên dịch được → `VAR_GLOBAL`; thêm phép kiểm vào bộ kiểm | ⚠ |
+| 568 | ⚠ Khung chương trình ở Ch.14 (`PRG_Main`, `PRG_Mode`, `PRG_Outputs`, không có tầng cơ cấu, không có bước gom lỗi) lệch với Ch.27 và Ch.57 → viết lại theo đúng khung Ch.57 | ⚠ |
+| 569 | Hai con trỏ theo số chương cũ sót từ đợt 58 (A2 và Phụ lục C trỏ *"Chương 21"* cho việc chuyển bước) → Ch.17, 26 và Ch.23, 26 | ⚠ |
+
+### F — Bộ kiểm thứ sáu, mở rộng
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 570 | Hai phép kiểm mới: CP20 (một thể hiện gọi ở hai chỗ trong một khối) và khai báo ngoài `VAR` | ➕ |
+| 571 | ⚠ Lần thử đầu bằng lỗi cài: phép CP20 **bỏ sót** khi đoạn trích không khai báo thể hiện → mở rộng: tên nào được gọi với tham số có tên mà không phải hàm chuẩn hay hàm của sách thì coi là thể hiện. Thử lại: **13/13** lỗi cài bị bắt, bản sạch 0 lỗi | ⚠ |
+
+### Kết quả đợt 59
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **30** |
+| ✔ Xác nhận | 5 |
+| ⚠⚠ Lỗi nặng | 4 — #549, #550, #561, #562 |
+| ⭐ Đã sửa, cải tiến | 4 |
+| ⚠ Lỗi, lưu ý | 13 |
+| ➕➕ / ➕ Bổ sung | 2 / 2 |
+| Tệp mới | design note 0007 · Ch.25 mục 25.5c · Ch.30 mục 30.5b · Phụ lục L mục L.8b |
+
+> ⭐⭐ **Bài học 1 — "đúng từng dòng" không phải "đúng".**
+>
+> Máy trạng thái của Ch.25 đúng từng dòng. Khung trạm của L.6 đúng từng dòng. Phép gom của L.11 đúng
+> từng dòng. ⚡ Ghép ba cái lại: máy không bao giờ ra khỏi `Alarm`. Lỗi không nằm trong dòng nào — nó
+> nằm trong **câu hỏi mà không dòng nào trả lời**: *ai xoá cờ này?* ⭐ Cách bắt loại lỗi này là **mô
+> phỏng cả đường đi**, ở **mọi thứ tự gọi** — không phải đọc lại từng đoạn.
+
+> ⭐ **Bài học 2 — tên chân là một lời hứa.**
+>
+> Đặt tên chân `Enable` là hứa với người đọc một hành vi mà cả ngành đã quen. Khối xy-lanh làm ngược
+> lời hứa đó — và nó làm ngược **đúng chỗ an toàn nhất** (giữ kẹp khi báo lỗi). ⚡ Tên sai không làm
+> khối chạy sai; nó làm **người sửa khối** sửa sai.
+
+> ⚠ **Bài học 3 — "đã sửa" phải được máy xác nhận, không phải người.**
+>
+> Đợt 58 ghi CP20 là *"đã sửa"* sau khi sửa **một** chỗ. Còn sáu chỗ. ⭐ Từ đợt này, mỗi quy tắc đánh
+> dấu ⭐ ở Phụ lục N phải có một phép kiểm máy đứng sau — hoặc một câu nói rõ vì sao không kiểm được.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

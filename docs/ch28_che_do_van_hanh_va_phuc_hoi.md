@@ -229,8 +229,8 @@ Mỗi bước về gốc phải có **thời gian tối đa**. Quá thời gian 
 
 ```iecst
 IF HomingStep = 1 AND T_StepTimeout.Q THEN
-    FaultCode  := 'HOME-01: kẹp không hạ được trong 3 giây';
-    M_AnyFault := TRUE;
+    FaultCode         := 'HOME-01: kẹp không hạ được trong 3 giây';
+    M_Alm_HomeTimeout := TRUE;       // cờ của trình tự về gốc — gom vào M_AnyFault (Ch.25 mục 25.5c)
 END_IF;
 ```
 

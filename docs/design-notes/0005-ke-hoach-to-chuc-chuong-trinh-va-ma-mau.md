@@ -171,3 +171,13 @@ nhất.
 | Lỗi tìm ra khi soát theo PLCopen | `RETURN` trong khung trình tự (L.6, Ch.26, Ch.29) · khung L.6 xoá bước khi chỉ tạm dừng · vòng `REPEAT` đọc phần tử chưa gán (Ch.20) · *"số nguyên thì `=` an toàn"* (Ch.19) · 3 bẫy chưa dạy (CP4, L12, L13) |
 | Lỗi bộ kiểm thứ sáu tìm ra | 6 khối không đóng · ⭐⭐ **hai khối `FB_Cylinder2Pos` khác nhau** — kéo theo hai lỗi hành vi thật khi ghép Ch.25 với Ch.27 → design note 0006 |
 | Ngoài phạm vi, phát hiện dọc đường | ⭐ Cụm con trỏ theo **số chương cũ** còn sót sau đợt 13: 51 chỗ / 13 tệp (công thức → Ch.32, báo động → Ch.43, đánh giá rủi ro → Ch.6…) · mục lục thanh bên HTML lộ nguyên `**` · 7 dòng Mục lục có `**` không đóng · Mục lục ghi *"hiện tại 18/58"* |
+
+### Đợt 59 — xong 2026-09-26
+
+| Hạng mục | Kết quả |
+|---|---|
+| Mô hình `Execute`/`Enable` cho khối tự viết | ✅ Ch.30 mục 30.5b + Phụ lục L mục L.8b — năm quy tắc đối chiếu hai tài liệu hãng; khối mẫu mô phỏng đạt |
+| Phạm vi biến | ✅ Ch.11 mục 11.6 — `VAR_EXTERNAL` và quy tắc *khối không đọc biến toàn cục* (CP6). ⚠ Khác kế hoạch: đặt ở Ch.11 chứ không ở Ch.14 — Ch.11 đã có mục phạm vi biến |
+| Khung POU / khung chương trình chính | ✅ Ch.14 mục 14.7 thống nhất với Ch.27, Ch.57 |
+| ⭐⭐ Ngoài kế hoạch, lớn nhất | Đường đi của lỗi giữa các tầng — khoá chết Reset — design note 0007; Ch.25 mục 25.5c; sửa đồng bộ 20 tệp |
+| Bộ kiểm thứ sáu | + CP20 và khai báo ngoài `VAR`; thử bằng 13 lỗi cài |

@@ -347,13 +347,13 @@ Các tín hiệu analog của lát cắt 3, và **lý do chọn chuẩn** cho t�
 ```iecst
 // Áp khí: điều kiện an toàn — mất tín hiệu phải CẤM CHẠY
 IF M_AirPressSensorFault THEN
-    M_CanStart := FALSE;
-    M_AnyFault := TRUE;           // dừng, không đoán
+    M_CanStart           := FALSE;
+    M_Alm_AirPressSensor := TRUE; // dừng, không đoán — cờ chốt, gom vào M_AnyFault (Ch.25 mục 25.5c)
 END_IF;
 
 // Cường độ UV: suy giảm dần — mức "cảnh báo, vẫn chạy" (Chương 48, mục 48.6)
 IF M_UvSensorFault THEN
-    M_AnyFault := TRUE;           // mất phép đo chất lượng → không được chạy tiếp
+    M_Alm_UvSensor := TRUE;       // mất phép đo chất lượng → không được chạy tiếp
 ELSIF UvIntensity < RecipeUvMinWarn THEN
     M_UvLowWarn := TRUE;          // còn đo được, chỉ là đang yếu → cảnh báo
 END_IF;

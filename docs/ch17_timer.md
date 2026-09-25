@@ -232,7 +232,7 @@ END_IF;
 T_Step20(IN := (Stn1_Step = 20), PT := T#3S);
 IF T_Step20.Q THEN
     Stn1_FaultStep := 20;
-    M_AnyFault     := TRUE;      // "S1.20 quá thời gian — chờ DI_Clamp1Up"
+    Stn1_Fault     := TRUE;      // "S1.20 quá thời gian — chờ DI_Clamp1Up" · cờ của trạm (Ch.25 mục 25.5c)
 END_IF;
 ```
 

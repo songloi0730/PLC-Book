@@ -130,9 +130,9 @@ IF M_EStopActive THEN
     M_Stn1_ClampReq := FALSE;
     M_Stn1_StopReq  := FALSE;
 
-    // 2. Ghi nhận MỘT LẦN để truy vết (Chương 44)
-    IF NOT M_EStopLogged THEN
-        M_EStopLogged := TRUE;
+    // 2. Chốt cờ lỗi và ghi nhận MỘT LẦN để truy vết (Chương 44) — gom vào M_AnyFault (Chương 25)
+    IF NOT M_Alm_EStop THEN
+        M_Alm_EStop := TRUE;
         RaiseAlarm(ALM_ESTOP);
     END_IF;
 
@@ -140,9 +140,9 @@ IF M_EStopActive THEN
     M_Homed := FALSE;
 END_IF;
 
-// ── Phục hồi: KHÔNG tự động. Phải có thao tác CÓ CHỦ Ý của người vận hành ──
-IF NOT M_EStopActive AND M_ResetPB_Rise THEN
-    M_EStopLogged := FALSE;          // M_Homed vẫn FALSE → buộc về gốc lại
+// ── Phục hồi: KHÔNG tự động. Thao tác CÓ CHỦ Ý — nhấn Reset → tầng máy vào Resetting → lệnh xoá ──
+IF NOT M_EStopActive AND M_ClearFaults THEN
+    M_Alm_EStop := FALSE;            // M_Homed vẫn FALSE → buộc về gốc lại
 END_IF;
 ```
 
@@ -266,6 +266,12 @@ VAR
     Stn1_StepLimit : TIME;
 END_VAR
 
+// ── 0. Xoá cờ lỗi của trạm khi tầng máy ra lệnh — đặt NGOÀI cửa vào, vì lúc máy đang
+//       Resetting thì trình tự không chạy (Chương 25 mục 25.5c) ──
+IF M_ClearFaults THEN
+    Stn1_Fault := FALSE;
+END_IF;
+
 // ── 1. MỘT cửa vào: tạm dừng, hoặc tầng máy chưa cho phép → GIỮ NGUYÊN bước và ngõ ra ──
 //    ⚠ Huỷ chu trình KHÔNG làm ở đây. Nó là một chuyển trạng thái riêng ở tầng máy
 //      (Hold → Idle, Chương 25), và bước được xoá ở đó — không phải mỗi lần cờ này tắt.
@@ -273,12 +279,8 @@ IF M_Paused OR NOT M_CycleEnable THEN
     ;                                    // ⭐ CỐ Ý không làm gì (L.4, Chương 25)
 ELSE
 
-    // ── 2. Một timer dùng chung, tự đặt lại mỗi khi bước đổi (Chương 26) ──
-    IF Stn1_Step <> Stn1_StepPrev THEN
-        T_StepTimeout(IN := FALSE);
-        Stn1_StepPrev := Stn1_Step;
-    END_IF;
-
+    // ── 2. Một timer dùng chung: bước vừa đổi thì IN = FALSE đúng một vòng → tự xoá.
+    //       Gọi ĐÚNG MỘT lần mỗi vòng quét (Chương 26 · Chương 17 Bẫy 5 · PLCopen CP20) ──
     CASE Stn1_Step OF
         0:   Stn1_StepLimit := T#0S;         // 0 = chờ vô hạn, CÓ CHỦ Ý
        10:   Stn1_StepLimit := T#3S;
@@ -286,12 +288,13 @@ ELSE
        30:   Stn1_StepLimit := T#60S;
     END_CASE;
 
-    T_StepTimeout(IN := (Stn1_StepLimit > T#0S), PT := Stn1_StepLimit);
+    T_StepTimeout(IN := (Stn1_StepLimit > T#0S) AND (Stn1_Step = Stn1_StepPrev),
+                  PT := Stn1_StepLimit);
+    Stn1_StepPrev := Stn1_Step;
 
     IF T_StepTimeout.Q THEN
         Stn1_FaultStep := Stn1_Step;         // ⭐ GHI LẠI bước bị kẹt — không chỉ "lỗi trạm 1"
-        Stn1_Fault     := TRUE;
-        M_AnyFault     := TRUE;
+        Stn1_Fault     := TRUE;              // cờ của TRẠM — không ghi thẳng M_AnyFault (Chương 25 mục 25.5c)
     END_IF;
 
     // ── 3. Thân trình tự — chuyển bước bằng PHẢN HỒI THẬT ──
@@ -416,8 +419,8 @@ lý do của từng quyết định thiết kế nằm ở đó; ở đây là b
 FUNCTION_BLOCK FB_Cylinder2Pos
 VAR_INPUT
     Req       : BOOL;            // TRUE = yêu cầu tới vị trí LÀM VIỆC — giữ mức, không phải xung
-    Enable    : BOOL;            // tầng máy cho phép ĐỔI vị trí (Chương 25)
-    Reset     : BOOL;            // xoá lỗi đã chốt — nối sườn lên nút Reset
+    Permit    : BOOL;            // tầng máy cho phép ĐỔI vị trí — ⚠ không phải Enable kiểu PLCopen
+    Reset     : BOOL;            // xoá lỗi đã chốt — nối lệnh xoá M_ClearFaults (Chương 25)
     SensWork  : BOOL;            // cảm biến báo đã tới vị trí làm việc
     SensHome  : BOOL;            // cảm biến báo đã về vị trí gốc
     Limit     : TIME := T#3S;    // thời gian tối đa cho một hành trình
@@ -436,7 +439,7 @@ VAR
 END_VAR
 
 // ── 1. Lệnh ra van: CHỈ đổi khi được phép. Mất phép → GIỮ nguyên, không "về lò xo" (Ch.27 Bẫy 7)
-IF Enable THEN
+IF Permit THEN
     Valve := Req;
 END_IF;
 
@@ -476,8 +479,8 @@ END_FUNCTION_BLOCK
    M_Stn1_ClampReq    │                        │   DO_Clamp1Vlv
  ────┤ ├──────────────┤ Req              Valve ├────────( )───
    M_MotionEnable     │                        │   M_Clamp1Done
- ────┤ ├──────────────┤ Enable            Done ├────────( )───
-   M_ResetPB_Rise     │                        │   M_Clamp1Fault
+ ────┤ ├──────────────┤ Permit            Done ├────────( )───
+   M_ClearFaults      │                        │   M_Clamp1Fault
  ────┤ ├──────────────┤ Reset            Fault ├────────( )───
    DI_Clamp1Up        │                        │
  ────┤ ├──────────────┤ SensWork     FaultCode ├
@@ -504,6 +507,80 @@ END_FUNCTION_BLOCK
 > ⚠ Đừng quên tư thế **giữa chừng**: cả hai cảm biến cùng **bằng 0** là bình thường khi đang di
 > chuyển — và cũng là trạng thái sau khi **mất khí**. ⭐ Vì vậy **không được suy tư thế từ cảm biến
 > đối diện** (Chương 28).
+
+---
+
+## L.8b ⭐ Khối kích bằng sườn — khung `Execute` / `Done` tự viết
+
+⭐ Khung cho **mọi việc có điểm kết thúc** mà bạn muốn đóng gói thành khối: chuyển một board, chạy một
+chu trình con, đọc một thanh ghi. Viết theo đúng năm quy tắc chung của PLCopen để người gọi dùng nó
+**y như khối của hãng** — lý do và bảng quy tắc ở Chương 30 mục 30.5b; ở đây là bản để chép.
+
+```iecst
+FUNCTION_BLOCK FB_BoardTransfer
+VAR_INPUT
+    Execute   : BOOL;            // ⭐ SƯỜN LÊN = bắt đầu · tham số được CHỐT tại sườn này
+    Arrived   : BOOL;            // "đã tới nơi" — board tới chặn, hoặc đã rời trạm, tuỳ chỗ gọi
+    TimeOut   : TIME := T#10S;   // thời gian tối đa cho một lần chuyển
+END_VAR
+VAR_OUTPUT
+    Busy      : BOOL;            // ⭐ Busy · Done · Error LOẠI TRỪ nhau
+    Done      : BOOL;
+    Error     : BOOL;
+    ErrorID   : INT;             // 0 = không lỗi · 1 = quá thời gian
+    ConvReq   : BOOL;            // xin tầng máy chạy chuyền — chuyền là tài nguyên chung (Chương 27)
+END_VAR
+VAR
+    ExecEdge  : R_TRIG;
+    T_Out     : TON;
+    LimitCopy : TIME;            // bản CHỐT của TimeOut
+END_VAR
+VAR_TEMP
+    Start     : BOOL;            // vòng này vừa NHẬN một lệnh mới
+    NewResult : BOOL;            // kết quả vừa có trong vòng này
+END_VAR
+
+ExecEdge(CLK := Execute);
+
+// ── 1. Sườn lên khi đang rỗi → nhận lệnh, CHỐT tham số. Sườn lên khi đang bận → bỏ qua ──
+Start := ExecEdge.Q AND NOT Busy;
+IF Start THEN
+    Busy      := TRUE;
+    Done      := FALSE;
+    Error     := FALSE;
+    ErrorID   := 0;
+    LimitCopy := TimeOut;
+END_IF;
+
+// ── 2. Đang bận: chờ tới nơi, giám sát thời gian. T_Out gọi đúng MỘT lần, về 0 ở vòng nhận lệnh ──
+T_Out(IN := Busy AND NOT Start, PT := LimitCopy);
+IF Busy AND Arrived THEN
+    Busy      := FALSE;
+    Done      := TRUE;
+    NewResult := TRUE;
+ELSIF Busy AND T_Out.Q THEN
+    Busy      := FALSE;
+    Error     := TRUE;
+    ErrorID   := 1;
+    NewResult := TRUE;
+END_IF;
+ConvReq := Busy;                 // ngõ ra suy ra SAU khi trạng thái đã cập nhật
+
+// ── 3. Execute đã tắt và việc đã xong → xoá kết quả. Kết quả VỪA có thì vẫn hiện
+//       ít nhất MỘT vòng, kể cả khi Execute đã tắt từ giữa chừng ──
+IF NOT Execute AND NOT Busy AND NOT NewResult THEN
+    Done    := FALSE;
+    Error   := FALSE;
+    ErrorID := 0;
+END_IF;
+END_FUNCTION_BLOCK
+```
+
+> ⭐ **Đổi thân, giữ khung.** Muốn làm việc khác thì thay phần 2 — điều kiện tới nơi và ngõ ra xin
+> tài nguyên — bằng việc của bạn. ⚠ Giữ nguyên phần 1 và phần 3: chúng là **hợp đồng** với bên gọi.
+>
+> ⚠ Gọi khối **mỗi vòng quét, ngoài `CASE`**, với `Execute` lấy từ bước (Chương 30 mục 30.5b). Gọi
+> bên trong một nhánh `CASE` thì rời bước là khối **đứng yên** — quy tắc 2 bị phá.
 
 ---
 
@@ -545,7 +622,7 @@ MoveZ(Axis     := AX_Z, Execute := TrigMove.Q,
       Error          => M_ZMoveError);
 
 StopZ (Axis := AX_Z, Execute := (AxZ_Step = 90));
-ResetZ(Axis := AX_Z, Execute := M_ResetPB_Rise);
+ResetZ(Axis := AX_Z, Execute := M_ClearFaults);    // sườn lên của lệnh xoá (Chương 25 mục 25.5c)
 
 // ── 3. Máy trạng thái của trục ──
 CASE AxZ_Step OF
@@ -570,10 +647,12 @@ CASE AxZ_Step OF
           AxZ_Step := 90;
       END_IF;
 
- 90:  M_Homed    := FALSE;                // toạ độ không còn tin được
-      M_AnyFault := TRUE;
-      IF M_ResetPB_Rise THEN  AxZ_Step := 0;  END_IF;
+ 90:  M_Homed := FALSE;                   // toạ độ không còn tin được
+      IF M_ClearFaults THEN  AxZ_Step := 0;  END_IF;    // tầng máy ra lệnh xoá
 END_CASE;
+
+// ⭐ Cờ lỗi của trục CHÍNH LÀ bước 90 — không cần cờ chốt riêng; gom vào M_AnyFault (Chương 25)
+M_Alm_AxisZ := (AxZ_Step = 90);
 ```
 
 > ⭐⭐ **Bốn điều hay sai nhất với servo:**
@@ -613,26 +692,30 @@ VAR
     SD_Step : INT;
 END_VAR
 
+// ⭐ Timer của từng bước gọi NGOÀI CASE, mỗi cái đúng MỘT lần: IN lấy thẳng từ bước, nên
+//    rời bước là timer tự xoá — không cần gọi lần hai với IN := FALSE (Chương 17, Bẫy 5)
+T_Star(IN := (SD_Step = 10), PT := T_StarTime);      // chạy kiểu sao
+T_Dead(IN := (SD_Step = 20), PT := T#80MS);          // ⚠⚠ KHOẢNG CHẾT
+
+// ⭐ Lệnh dừng có hiệu lực ở MỌI bước — không chỉ khi đã sang tam giác
+IF NOT M_MotorStart OR NOT M_AllPermissive THEN
+    SD_Step := 0;
+END_IF;
+
 CASE SD_Step OF
   0:  IF M_MotorStart AND M_AllPermissive THEN
           SD_Step := 10;
       END_IF;
 
- 10:  T_Star(IN := TRUE, PT := T_StarTime);          // chạy kiểu sao
-      IF T_Star.Q THEN
-          T_Star(IN := FALSE);
+ 10:  IF T_Star.Q THEN
           SD_Step := 20;                             // sang khoảng chết
       END_IF;
 
- 20:  T_Dead(IN := TRUE, PT := T#80MS);              // ⚠⚠ KHOẢNG CHẾT
-      IF T_Dead.Q THEN
-          T_Dead(IN := FALSE);
+ 20:  IF T_Dead.Q THEN
           SD_Step := 30;
       END_IF;
 
- 30:  IF NOT M_MotorStart OR NOT M_AllPermissive THEN
-          SD_Step := 0;
-      END_IF;
+ 30:  ;                                              // chạy tam giác — dừng xử lý ở trên
 END_CASE;
 
 // ⭐ Ngõ ra SUY RA TỪ BƯỚC, và đặt SAU khối CASE — để đổi bước là ngõ ra đổi NGAY
@@ -673,7 +756,10 @@ M_KM_Delta := (SD_Step  = 30);
 ## L.11 Báo động có xác nhận, và "báo động đầu tiên"
 
 ```iecst
-// ── Một báo động: phát hiện · CHỐT · xác nhận ──
+// ── Một báo động: XOÁ (khi được lệnh VÀ nguyên nhân đã hết) · rồi mới PHÁT HIỆN · CHỐT ──
+IF M_ClearFaults AND DI_AirOK THEN          // lệnh xoá đến từ tầng máy — Chương 25 mục 25.5c
+    M_Alm_AirLow := FALSE;
+END_IF;
 IF NOT DI_AirOK AND NOT M_Alm_AirLow THEN
     M_Alm_AirLow := TRUE;                    // chốt lại, không tự mất
     RaiseAlarm(ALM_AIR_LOW);
@@ -685,14 +771,11 @@ IF NOT M_AnyAlarmActive AND M_NewAlarm THEN
     FirstAlarmTime := CurrentTime;
 END_IF;
 
-// ── Xác nhận: chỉ xoá được khi NGUYÊN NHÂN ĐÃ HẾT ──
-IF M_AckPB_Rise AND M_Alm_AirLow AND DI_AirOK THEN
-    M_Alm_AirLow := FALSE;
-END_IF;
-
-// ── Gom ──
-M_AnyAlarmActive := M_Alm_AirLow OR M_Alm_Clamp1Timeout OR M_Alm_VisionNoAnswer;
-M_AnyFault       := M_AnyAlarmActive OR Stn1_Fault OR Stn2_Fault;
+// ── GOM — đúng MỘT chỗ gán M_AnyFault (Chương 25 mục 25.5c) ──
+M_AnyAlarmActive := M_Alm_EStop OR M_Alm_AirLow OR M_Alm_VisionNoAnswer OR M_Alm_AxisZ;
+M_AnyFault       := M_AnyAlarmActive
+                    OR Stop1.Fault OR Clamp1.Fault OR Stop2.Fault OR Clamp2.Fault
+                    OR Stn1_Fault OR Stn2_Fault;
 
 IF NOT M_AnyAlarmActive THEN
     FirstAlarmCode := ALM_NONE;              // hết sạch mới xoá
@@ -702,8 +785,12 @@ END_IF;
 > ⭐⭐ **`FirstAlarmCode` là thứ giúp người bảo trì nhiều nhất.** Một sự cố thường kéo theo năm báo
 > động; ⚠ cái xuất hiện **đầu tiên** mới là nguyên nhân, bốn cái sau là hậu quả (Chương 44).
 >
-> ⚠ **Không cho xác nhận khi nguyên nhân còn đó.** Nếu không, người vận hành sẽ bấm Ack cho im rồi
+> ⚠ **Không cho xoá khi nguyên nhân còn đó.** Nếu không, người vận hành sẽ bấm Reset cho im rồi
 > quên mất — và hệ báo động biến thành tiếng ồn.
+>
+> ⭐ **Mỗi nguồn một cờ, gom ở một chỗ.** Không nguồn nào ghi thẳng `M_AnyFault` — nó chỉ được **gán**
+> ở dòng gom trên. Hai nơi cùng ghi một cờ thì phép gán chạy sau **xoá mất** lỗi của phép chạy trước
+> (Chương 25 mục 25.5c).
 >
 > ⚡ Một dòng báo động đủ dùng phải nói **bước nào · đang chờ gì · nên kiểm tra gì**, không phải
 > *"Lỗi trạm 1"* (Chương 26, Chương 44).

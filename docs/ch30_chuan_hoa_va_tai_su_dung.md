@@ -313,10 +313,12 @@ type, UDT)* thay vì để rời rạc:
 
 ```iecst
 // ✗ Rời rạc — bốn biến không có gì nối chúng lại
-M_Stn1_Step      : INT;
-M_Stn1_Fault     : BOOL;
-M_Stn1_FaultStep : INT;
-M_Stn1_Ready     : BOOL;
+VAR_GLOBAL
+    M_Stn1_Step      : INT;
+    M_Stn1_Fault     : BOOL;
+    M_Stn1_FaultStep : INT;
+    M_Stn1_Ready     : BOOL;
+END_VAR
 
 // ✓ Gói lại — một kiểu, dùng cho mọi trạm
 TYPE ST_Station :
@@ -638,6 +640,167 @@ lý do:
 
 ---
 
+## 30.5b ⭐⭐ Viết khối của mình theo cùng "hợp đồng" với khối của hãng
+
+Bạn sẽ gặp khối chuyển động (Chương 37) và khối truyền thông (Chương 38) ở vai **người dùng**: kích
+`Execute`, chờ `Done`, xem `Error`. Mục này là phía **người viết**. ⭐ Khối bạn tự viết nên theo đúng
+hợp đồng đó — vì người dùng khối của bạn, kể cả bạn sau sáu tháng, đã quen hợp đồng đó từ khối của hãng.
+
+### Hai hợp đồng — và một loại khối không thuộc hợp đồng nào
+
+PLCopen chia khối có hành vi kéo dài thành **hai loại**, mỗi loại một cặp chân:
+
+| Loại | Cặp chân | Chạy khi nào | Ví dụ |
+|---|---|---|---|
+| ⭐ **Kích bằng sườn** | `Execute` ↔ `Done` (kèm `Busy`, `Error`, `ErrorID`) | **Một việc**: từ sườn lên của `Execute` tới khi xong hoặc lỗi | Chuyển một board sang trạm sau (ngay dưới) · một lệnh di chuyển (Chương 37) · đọc một thanh ghi qua mạng (Chương 38) |
+| ⭐ **Điều khiển theo mức** | `Enable` ↔ `Valid` | **Liên tục, chừng nào** `Enable` còn bật; `Enable` tắt thì khối **ngừng và xoá ngõ ra** | Cấp nguồn cho một trục (Chương 37) · đọc trạng thái thiết bị theo chu kỳ |
+| Khối thiết bị, lệnh theo mức | `Req` + `Permit` ↔ `Done` + `Fault` | **Luôn chạy**, gọi mỗi vòng, bám theo lệnh | `FB_Cylinder2Pos` (Chương 27 mục 27.3) |
+
+⭐ **Chọn loại nào:**
+
+- Việc **có điểm kết thúc** — chuyển xong một board, đi tới một vị trí — thì kích bằng sườn.
+- Hoạt động **kéo dài, không có điểm kết thúc** — giữ nguồn, đọc liên tục — thì điều khiển theo mức.
+- ⚡ Và một lý do kỹ thuật tài liệu PLCopen nêu thẳng: **phát hiện sườn cần hai vòng quét**. Khối phải
+  nhận một giá trị mới **ở mỗi vòng** thì không thể dùng mô hình sườn — phải dùng mô hình mức.
+- Khối điều khiển **một thiết bị** bám theo lệnh — như xy-lanh — không cần khớp hai hợp đồng trên; nó
+  là loại thứ ba, và ⚠ **đừng mượn tên chân của hai loại kia** cho nó.
+
+> ⚠⚠ **Dùng tên chân của hợp đồng thì phải theo đúng nghĩa của hợp đồng.** `Enable` là tên dành cho
+> mô hình mức — tắt là **xoá ngõ ra**. Chân cho phép của khối xy-lanh mà đặt tên `Enable`, người quen
+> PLCopen sẽ hiểu *"tắt Enable là tắt van"* — đúng lỗi ở Chương 27 Bẫy 7. Vì vậy sách đặt tên nó là
+> `Permit`.
+
+### ⭐⭐ Năm quy tắc của hợp đồng `Execute` / `Done`
+
+Tài liệu thư viện khối chuyển động của **hai hãng khác nhau**, cùng mô tả *"quy tắc chung"* theo
+PLCopen, khớp nhau ở bốn điểm đầu — và ⚠ **lệch nhau ở điểm thứ năm**:
+
+| # | Quy tắc | Vi phạm thì người gọi gặp gì |
+|:-:|---|---|
+| 1 | Tham số được **chốt ở sườn lên** của `Execute`; đổi tham số giữa chừng **không** ảnh hưởng việc đang chạy | Đổi giới hạn thời gian giữa chừng và khối *tự* đổi hành vi |
+| 2 | `Busy` bật **ngay ở sườn lên** và giữ tới khi xong hoặc lỗi; trong lúc `Busy`, khối phải được **gọi mỗi vòng** | Khối không được gọi thì **đứng yên** — không xong, không lỗi (Chương 14 mục 14.3) |
+| 3 | `Busy`, `Done`, `Error` **loại trừ nhau** — mỗi lúc nhiều nhất một cái | Thấy vừa `Done` vừa `Error`, không biết tin cái nào |
+| 4 | ⭐ `Done`/`Error` **xoá ở sườn xuống** của `Execute`; nếu `Execute` tắt **giữa chừng**, kết quả vẫn **hiện ít nhất một vòng quét** lúc xong | Người gọi dùng `Execute` dạng xung **không bao giờ thấy** `Done` |
+| 5 | ⚠ Kích lại khi **đang `Busy`** | ⚠ **Hãng xử lý khác nhau**: một tài liệu ghi là lệnh mới bị **bỏ qua**, tài liệu kia ghi là lệnh cũ **mất phản hồi**. ⭐ Khối của bạn nên **bỏ qua**; còn người gọi thì **đừng làm** — chờ `Busy` tắt |
+
+```text
+  Execute giữ mức tới khi xong          Execute chỉ là một xung
+  Execute ▁▁████████████▁▁▁▁            Execute ▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁
+  Busy    ▁▁██████▁▁▁▁▁▁▁▁▁▁            Busy    ▁▁██████▁▁▁▁▁▁▁▁
+  Done    ▁▁▁▁▁▁▁▁██████▁▁▁▁            Done    ▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁   ← đúng MỘT vòng quét
+```
+
+### Một khối viết theo đúng năm quy tắc
+
+Bài toán: đưa board từ trạm 1 sang trạm 2 — bước 60 ở Chương 26. Xin chuyền chạy, chờ tới nơi, và
+không được chờ mãi.
+
+```iecst
+FUNCTION_BLOCK FB_BoardTransfer
+VAR_INPUT
+    Execute   : BOOL;            // ⭐ SƯỜN LÊN = bắt đầu · tham số được CHỐT tại sườn này
+    Arrived   : BOOL;            // "đã tới nơi" — board tới chặn, hoặc đã rời trạm, tuỳ chỗ gọi
+    TimeOut   : TIME := T#10S;   // thời gian tối đa cho một lần chuyển
+END_VAR
+VAR_OUTPUT
+    Busy      : BOOL;            // ⭐ Busy · Done · Error LOẠI TRỪ nhau
+    Done      : BOOL;
+    Error     : BOOL;
+    ErrorID   : INT;             // 0 = không lỗi · 1 = quá thời gian
+    ConvReq   : BOOL;            // xin tầng máy chạy chuyền — chuyền là tài nguyên chung (Chương 27)
+END_VAR
+VAR
+    ExecEdge  : R_TRIG;
+    T_Out     : TON;
+    LimitCopy : TIME;            // bản CHỐT của TimeOut
+END_VAR
+VAR_TEMP
+    Start     : BOOL;            // vòng này vừa NHẬN một lệnh mới
+    NewResult : BOOL;            // kết quả vừa có trong vòng này
+END_VAR
+
+ExecEdge(CLK := Execute);
+
+// ── 1. Sườn lên khi đang rỗi → nhận lệnh, CHỐT tham số. Sườn lên khi đang bận → bỏ qua ──
+Start := ExecEdge.Q AND NOT Busy;
+IF Start THEN
+    Busy      := TRUE;
+    Done      := FALSE;
+    Error     := FALSE;
+    ErrorID   := 0;
+    LimitCopy := TimeOut;
+END_IF;
+
+// ── 2. Đang bận: chờ tới nơi, giám sát thời gian. T_Out gọi đúng MỘT lần, về 0 ở vòng nhận lệnh ──
+T_Out(IN := Busy AND NOT Start, PT := LimitCopy);
+IF Busy AND Arrived THEN
+    Busy      := FALSE;
+    Done      := TRUE;
+    NewResult := TRUE;
+ELSIF Busy AND T_Out.Q THEN
+    Busy      := FALSE;
+    Error     := TRUE;
+    ErrorID   := 1;
+    NewResult := TRUE;
+END_IF;
+ConvReq := Busy;                 // ngõ ra suy ra SAU khi trạng thái đã cập nhật
+
+// ── 3. Execute đã tắt và việc đã xong → xoá kết quả. Kết quả VỪA có thì vẫn hiện
+//       ít nhất MỘT vòng, kể cả khi Execute đã tắt từ giữa chừng ──
+IF NOT Execute AND NOT Busy AND NOT NewResult THEN
+    Done    := FALSE;
+    Error   := FALSE;
+    ErrorID := 0;
+END_IF;
+END_FUNCTION_BLOCK
+```
+
+| Quy tắc | Dòng nào lo |
+|---|---|
+| 1 — chốt tham số | `LimitCopy := TimeOut;` chỉ chạy ở vòng **nhận lệnh** |
+| 2 — `Busy` ngay ở sườn lên | Phần 1; và khối được gọi **mỗi vòng** bởi bên gọi, ngoài `CASE` |
+| 3 — loại trừ nhau | Mỗi nhánh bật một cờ thì **tắt** hai cờ kia |
+| 4 — kết quả hiện ít nhất một vòng | `NewResult` là biến `VAR_TEMP` — tính lại **mỗi lần gọi**, nên nó chỉ đúng trong chính vòng có kết quả |
+| 5 — kích lại khi bận | `Start := ExecEdge.Q AND NOT Busy` — sườn lên lúc bận bị bỏ qua |
+
+> ⚡ **Hai chi tiết mô phỏng tìm ra khi soạn khối này.** Bản nháp đầu đặt `ConvReq := Busy` **trước**
+> phép kiểm tới nơi — nên ở đúng vòng board tới nơi, khối vừa báo `Done` vừa **còn xin chạy chuyền**.
+> Và nếu đồng hồ không được đưa về 0 ở vòng nhận lệnh (`AND NOT Start`), một lệnh nhận **ngay vòng
+> sau** khi lệnh trước vừa xong sẽ **thừa hưởng thời gian đã đếm** — rồi báo quá giờ sớm. ⭐ Cả hai
+> đều không lộ ra khi đọc mã; chúng lộ ra khi chạy thử từng vòng quét (Chương 50).
+
+### Bên gọi dùng nó thế nào
+
+```iecst
+VAR
+    Xfer1 : FB_BoardTransfer;
+END_VAR
+
+// Gọi MỖI vòng quét, ngoài CASE — Execute lấy thẳng từ bước: vào bước là sườn lên, rời bước là sườn xuống
+Xfer1(Execute := (Stn1_Step = 60),
+      Arrived := NOT DI_BoardStn1,          // ở bước 60, "tới nơi" nghĩa là board đã RỜI trạm 1
+      TimeOut := T#10S);
+M_Stn1_ConvReq := Xfer1.ConvReq;            // đúng MỘT chỗ ghi yêu cầu chuyền của trạm 1
+
+CASE Stn1_Step OF
+    …
+    60: // Hạ chặn, chuyển board sang — khối lo phần "chờ và giám sát"
+        M_Stn1_StopReq := FALSE;
+        IF Xfer1.Done THEN
+            Stn1_BoardDone := FALSE;
+            Stn1_Step      := 0;
+        ELSIF Xfer1.Error THEN
+            Stn1_Fault := TRUE;             // khối BÁO — trạm chốt cờ của nó (Chương 25 mục 25.5c)
+        END_IF;
+END_CASE;
+```
+
+> ⭐ So với bước 60 viết thẳng ở Chương 26: yêu cầu chuyền nay có **một** chỗ ghi thay vì hai, và giới
+> hạn thời gian nằm **trong** khối — đặt giới hạn của bước 60 trong bộ đếm dùng chung về `T#0S` để
+> khỏi giám sát hai lần. ⚡ Khối này đứng sẵn trong **Phụ lục L mục L.8b** để chép.
+
+---
+
 ## 30.6 Quản lý phiên bản chương trình PLC
 
 ### Cái gì so sánh được, cái gì không
@@ -840,6 +1003,16 @@ một lớp: analog và chuyển động.
 - **Hugh Jack** — *Automating Manufacturing Systems with PLCs*, §32.5 *Documentation*: ⭐ tài liệu
   phải **phát triển cùng dự án**, để tới cuối thì chi tiết đã quên nên vừa lâu hơn vừa thiếu; và cách
   dùng **biểu mẫu để sẵn**, đặt nơi mọi người truy cập và cập nhật được khi máy thay đổi.
+
+- **PLCopen** — *Creating PLCopen compliant Function Block libraries* (tờ tóm tắt, bản 1.0 phát hành
+  5/2017): hai loại khối — **kích bằng sườn** (`Execute` ↔ `Done`) và **điều khiển theo mức**
+  (`Enable` ↔ `Valid`); ⭐ phát hiện sườn cần **hai vòng quét** nên khối phải nhận giá trị mới mỗi vòng
+  thì dùng mô hình mức — nền cho mục 30.5b. Bản đặc tả đầy đủ chưa có trong bộ tài liệu.
+- Tài liệu thư viện khối chuyển động của **hai hãng khác nhau**, mục *quy tắc chung cho khối* theo
+  PLCopen (đối chiếu 2026-09-26): tham số chốt ở sườn lên; `Busy`/`Done`/`Error` loại trừ nhau; kết
+  quả xoá ở sườn xuống và vẫn hiện ít nhất một vòng nếu `Execute` tắt giữa chừng; `Enable` tắt thì
+  khối ngừng và xoá ngõ ra. ⚠ Hai tài liệu **lệch nhau** ở hành vi kích lại khi đang `Busy` — bảng
+  năm quy tắc ở mục 30.5b ghi rõ chỗ lệch.
 
 > ⚡ Quy ước đặt tên ở mục 30.2 là **quy ước của cuốn sách này**, không phải chuẩn ngành. Dự án của bạn
 > có thể dùng quy ước khác — điều bắt buộc là **có một quy ước, viết ra thành văn, và dùng nhất quán**.

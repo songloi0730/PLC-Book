@@ -190,7 +190,7 @@ END_IF;
 // Board vào vùng chuyển giao nhưng không tới nơi trong thời gian dự kiến
 T_TransferIn(IN := M_TransferInActive, PT := T#5S);
 IF T_TransferIn.Q THEN
-    M_AnyFault := TRUE;
+    M_Alm_TransferIn := TRUE;        // cờ chốt — gom vào M_AnyFault (Ch.25 mục 25.5c)
     M_FaultCode := 410;              // "board kẹt ở vùng chuyển giao vào"
     DO_SmemaInRdy := FALSE;        // ⭐ ngừng nhận thêm
 END_IF;
@@ -445,7 +445,7 @@ END_CASE;
 // ⚠ Timeout cho mọi bước có chờ (Chương 26)
 T_Infeed(IN := (InfeedStep > 0), PT := T#10S);
 IF T_Infeed.Q THEN
-    M_AnyFault := TRUE;  M_FaultCode := 410;
+    M_Alm_TransferIn := TRUE;  M_FaultCode := 410;
     DO_SmemaInRdy := FALSE;
 END_IF;
 ```

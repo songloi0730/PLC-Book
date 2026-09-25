@@ -340,29 +340,35 @@ tồn tại**, tên là **PLCopen XML** *(TC6 XML)* — và câu chuyện của 
 ```text
    Tác vụ chu kỳ (ví dụ 10 ms)
       │
-      ├── PRG_Main ─────────────── gọi các phần theo thứ tự
-      │     │
-      │     ├── PRG_Safety     (LD)  ── đọc trạng thái mạch an toàn, điều kiện cho phép
-      │     ├── PRG_Mode       (ST)  ── máy trạng thái: chế độ máy (Ch.25)
-      │     ├── PRG_Stn1Seq    (ST)  ── trình tự trạm 1 bằng CASE (Ch.26)
-      │     ├── PRG_Stn2Seq    (ST)  ── trình tự trạm 2
-      │     ├── PRG_Outputs    (LD)  ── ⭐ điều khiển ngõ ra cuối cùng, có liên động
-      │     └── PRG_Stats      (ST)  ── đếm, tính chu kỳ, hiệu suất (Ch.19)
-      │
-      └── các thể hiện FB dùng chung:
-            Stop1, Clamp1, Stop2, Clamp2  : FB_Cylinder2Pos
+      └── Main ─────────────────── gọi các phần theo ĐÚNG thứ tự này, mỗi vòng quét
+            │
+            ├── Prg_IoRead        (ST)  ── lọc rung, bắt cạnh (Ch.16, 17)
+            ├── Prg_Safety        (LD)  ── đọc trạng thái mạch an toàn, điều kiện cho phép
+            ├── Prg_Mechanisms    (ST)  ── gọi bốn thể hiện FB_Cylinder2Pos:
+            │                                Stop1, Clamp1, Stop2, Clamp2
+            ├── Prg_Alarm         (ST)  ── GOM LỖI: đúng một chỗ gán M_AnyFault (Ch.25)
+            ├── Prg_Machine       (ST)  ── máy trạng thái: chế độ máy (Ch.25)
+            ├── Prg_Stn1Dispense  (ST)  ── trình tự trạm 1 bằng CASE (Ch.26)
+            ├── Prg_Stn2Cure      (ST)  ── trình tự trạm 2
+            ├── Prg_Stats         (ST)  ── đếm, tính chu kỳ, hiệu suất (Ch.19)
+            └── Prg_OutputMap     (LD)  ── ⭐ ghi ngõ ra — đúng một chỗ, cuối cùng
 ```
 
 Bốn điều rút ra từ bố cục này:
 
-- **Ngôn ngữ chọn theo từng phần**, đúng bảng phân chia ở Chương 20 mục 20.6. `PRG_Safety` và
-  `PRG_Outputs` là LD vì đó là chỗ người bảo trì nhìn đầu tiên.
-- **Thứ tự gọi có ý nghĩa.** An toàn và chế độ chạy trước, trình tự chạy giữa, ngõ ra chạy **cuối
-  cùng** — để mọi quyết định đã xong trước khi ghi ra thế giới thật (Chương 10).
-- **Ngõ ra được ghi ở đúng một chỗ**: `PRG_Outputs`. Trình tự chỉ đặt **yêu cầu** (`M_Stn1_ClampReq`),
+- **Ngôn ngữ chọn theo từng phần**, đúng bảng phân chia ở Chương 20 mục 20.6. `Prg_Safety` và
+  `Prg_OutputMap` là LD vì đó là chỗ người bảo trì nhìn đầu tiên.
+- **Thứ tự gọi có ý nghĩa.** Đọc vào → an toàn → cơ cấu → gom lỗi → máy → trình tự → ghi ra: mỗi phần
+  dùng kết quả **của vòng quét này** do phần đứng trước tính, và ngõ ra được ghi **cuối cùng** — khi
+  mọi quyết định đã xong (Chương 10, Chương 27 mục 27.6).
+- **Ngõ ra được ghi ở đúng một chỗ**: `Prg_OutputMap`. Trình tự chỉ đặt **yêu cầu** (`M_Stn1_ClampReq`),
   không chạm trực tiếp vào `DO_`. Đây là cách tránh lỗi ghi trùng một cách có hệ thống, chứ không
   dựa vào việc nhớ (Chương 15 Bẫy 1, Chương 20 Bẫy 2).
-- **Bốn xy-lanh dùng chung một FB, bốn thể hiện riêng** — đúng quy tắc ở mục 14.3.
+- **Bốn xy-lanh dùng chung một FB, bốn thể hiện riêng**, gọi ở đúng một chỗ là `Prg_Mechanisms` —
+  đúng quy tắc ở mục 14.3.
+
+Chương 57 thêm các phần của những lát cắt sau — chống va chạm, bắt tay dây chuyền, công thức, truyền
+thông, màn hình — vào **cùng khung này**, không đổi nguyên tắc thứ tự.
 
 Bố cục này là thứ bạn sẽ xây dần qua các chương còn lại của Phần III và Phần IV.
 
@@ -414,7 +420,7 @@ không sợ hỏng phần khác.
 
 ### 🔍 BẪY 4 — Chia POU theo bước trình tự
 
-Viết `PRG_Step10`, `PRG_Step20`, `PRG_Step30`…
+Viết `Prg_Step10`, `Prg_Step20`, `Prg_Step30`…
 
 **Hiện tượng:** logic của cùng một xy-lanh nằm rải ở sáu khối; sửa hành vi của nó phải mở sáu chỗ.
 **Cách sửa:** chia theo **cơ cấu**, không theo bước. Trình tự chỉ ra lệnh; cơ cấu tự lo phần của nó
@@ -475,7 +481,7 @@ có bộ nhớ (mục 14.3).
 7. ⭐ Chuẩn IEC 61131-3 làm cho cái gì khả chuyển và cái gì **không** khả chuyển? Nêu ít nhất ba thứ
    mỗi bên.
 8. Vì sao chương trình thật gần như luôn gắn chặt với một hãng, dù hãng đó tuân theo chuẩn?
-9. Trong bố cục ở mục 14.7, vì sao `PRG_Outputs` chạy **cuối cùng** và vì sao nó là **nơi duy nhất**
+9. Trong bố cục ở mục 14.7, vì sao `Prg_OutputMap` chạy **cuối cùng** và vì sao nó là **nơi duy nhất**
    ghi vào các tag `DO_`?
 10. ⭐ Vì sao chia POU theo **cơ cấu** tốt hơn chia theo **bước trình tự**? Nêu hậu quả cụ thể của
     cách chia sai.

@@ -72,7 +72,7 @@ dùng tới** (quy tắc vẫn đúng) · ➕ **chưa chương nào bàn — quy
 | CP3 | ⭐ Mọi biến được **gán trước khi đọc** — ở mọi chu kỳ: khởi động nguội, khởi động nóng, vòng quét đầu | Phụ lục M mục M.4 · Ch.20 (sửa ví dụ vòng lặp) | ⭐ |
 | CP4 | Vùng nhớ địa chỉ trực tiếp không được chồng lấn | Phụ lục B mục B.10 | ⭐ |
 | CP5 | Thiết kế ứng dụng **trước khi** viết | Ch.23, 27 | ✔ |
-| CP6 | Tránh biến ngoài (`VAR_EXTERNAL`) trong hàm và khối | Ch.30 mục 30.5 — *"không phụ thuộc biến toàn cục"* | ✔ |
+| CP6 | Tránh biến ngoài (`VAR_EXTERNAL`) trong hàm và khối | Ch.11 mục 11.6 — *"khối không đọc biến toàn cục, mọi thứ qua chân"* · Ch.30 mục 30.5 | ✔ |
 | CP7 | Thông tin lỗi trả về phải được kiểm và xử lý | Ch.37 — ngõ ra `Error` của khối chuyển động | ✔ |
 | CP8 | Không dùng `=` / `<>` với **số thực** | Ch.19 mục 19.3 | ✔ |
 | CP28 | ⭐ Không dùng `=` / `<>` để dò ngưỡng **thời gian hay đại lượng đo — kể cả ở dạng số nguyên** | Ch.19 mục 19.3 | ⭐ |
@@ -230,6 +230,7 @@ trong dự án thật.
 | L11 | Dòng dài tối đa? | Phần mã ≤ 80; xem N.5 |
 | L3 · L6 · L9 · CP9 | Giới hạn độ phức tạp? | Sách không đặt con số. ⭐ Gợi ý dùng được ngay: **một nấc thang không vượt quá chiều rộng một màn hình**; một POU đọc hết trong **một lần cuộn**; quá thì tách |
 | CP23 | Một POU tối đa bao nhiêu chân? | ⭐ Khoảng **10**, như PLCopen gợi ý. Khối xy-lanh ở Chương 27 có **11** (6 vào, 5 ra) — nhỉnh hơn gợi ý, chấp nhận vì mỗi chân trả lời một câu người bảo trì hỏi thật; ⚠ quá ~12 thì tách khối |
+| — | ⭐ Tên chân của khối tự viết? | Khối thuộc một trong hai hợp đồng của PLCopen thì dùng **đúng tên và đúng nghĩa** của hợp đồng đó: `Execute`/`Done`/`Busy`/`Error`/`ErrorID` (kích bằng sườn), `Enable`/`Valid` (theo mức — tắt là xoá ngõ ra). ⚠ **Không mượn** các tên đó cho nghĩa khác: chân cho phép của khối xy-lanh tên là `Permit`, không phải `Enable` (Chương 30 mục 30.5b) |
 | CP24 | Biến khai báo mà không dùng? | Xoá. Trình biên dịch nhiều hệ có cảnh báo cho chuyện này — **bật nó lên** |
 | L5 | Tiếp điểm sau cuộn dây trong một nấc? | ⭐ **Không** — cuộn dây luôn ở cuối nấc |
 

@@ -329,7 +329,8 @@ lỗi thành một cơ chế **giấu lỗi**.
 
 ### Cách hiện thực — một bộ đếm dùng chung
 
-Không cần một timer cho mỗi bước. Một timer dùng chung, tự đặt lại mỗi khi bước đổi:
+Không cần một timer cho mỗi bước. Một timer dùng chung, tự đặt lại mỗi khi bước đổi — và **gọi đúng
+một lần** mỗi vòng quét (Chương 17, Bẫy 5):
 
 ```iecst
 VAR
@@ -338,10 +339,10 @@ VAR
     Stn1_StepLimit : TIME;
 END_VAR
 
-// ── Đặt lại timer mỗi khi bước thay đổi ──
-IF Stn1_Step <> Stn1_StepPrev THEN
-    T_StepTimeout(IN := FALSE);               // xoá timer
-    Stn1_StepPrev := Stn1_Step;
+// ── Xoá cờ lỗi của trạm khi tầng máy ra lệnh — đặt NGOÀI cửa vào của trình tự,
+//    vì lúc máy đang Resetting thì trình tự không chạy (Chương 25 mục 25.5c) ──
+IF M_ClearFaults THEN
+    Stn1_Fault := FALSE;
 END_IF;
 
 // ── Thời gian cho phép của từng bước ──
@@ -355,13 +356,14 @@ CASE Stn1_Step OF
    60:   Stn1_StepLimit := T#10S;             // chuyển board đi
 END_CASE;
 
-// ── Chạy timer và báo lỗi ──
-T_StepTimeout(IN := (Stn1_StepLimit > T#0S), PT := Stn1_StepLimit);
+// ── Chạy timer: bước vừa đổi thì IN = FALSE đúng MỘT vòng → timer tự xoá về 0 ──
+T_StepTimeout(IN := (Stn1_StepLimit > T#0S) AND (Stn1_Step = Stn1_StepPrev),
+              PT := Stn1_StepLimit);
+Stn1_StepPrev := Stn1_Step;
 
 IF T_StepTimeout.Q THEN
     Stn1_FaultStep := Stn1_Step;              // GHI LẠI bước bị kẹt
-    Stn1_Fault     := TRUE;
-    M_AnyFault     := TRUE;
+    Stn1_Fault     := TRUE;                   // cờ của TRẠM — gom vào M_AnyFault (Ch.25 mục 25.5c)
 END_IF;
 ```
 

@@ -216,12 +216,10 @@ IF T_Heartbeat.Q THEN
     Hb_ToB := NOT Hb_ToB;
 END_IF;
 
-// Bên B: giám sát bit đó có đổi không
-IF Hb_FromA <> Hb_FromA_Prev THEN
-    T_HbTimeout(IN := FALSE);         // có nhịp → đặt lại đồng hồ
-    Hb_FromA_Prev := Hb_FromA;
-END_IF;
-T_HbTimeout(IN := TRUE, PT := T#2S);
+// Bên B: giám sát bit đó có đổi không — bit vừa đổi thì IN = FALSE đúng một vòng → đồng hồ
+// đặt lại. Gọi T_HbTimeout ĐÚNG MỘT lần mỗi vòng quét (Chương 17, Bẫy 5)
+T_HbTimeout(IN := (Hb_FromA = Hb_FromA_Prev), PT := T#2S);
+Hb_FromA_Prev := Hb_FromA;
 
 IF T_HbTimeout.Q THEN
     M_PartnerLost := TRUE;            // bên A đã im quá lâu

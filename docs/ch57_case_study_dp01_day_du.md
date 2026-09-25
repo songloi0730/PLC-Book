@@ -215,13 +215,13 @@ PROGRAM Main          // tác vụ chu kỳ, chạy liên tục — Ch.10, Ch.27
   Prg_Safety();        //  2  chế độ vận hành, M_AllPermissive      Ch.25, 28, 47
   Prg_Mechanisms();    //  3  Stop1/Clamp1/Stop2/Clamp2, gantry     Ch.27, 30, 37
   Prg_AntiCollision(); //  4  tầng chống va chạm                    Ch.27 mục 27.3b
-  Prg_Machine();       //  5  tầng máy: tài nguyên chung, pipeline  Ch.26, 27 mục 27.5
-  Prg_Stn1Dispense();  //  6  trình tự trạm 1                       Ch.21, 26 · khung L.6
-  Prg_Stn2Cure();      //  7  trình tự trạm 2                       Ch.21, 26 · khung L.6
-  Prg_Handshake();     //  8  bắt tay máy trước / máy sau           Ch.41
-  Prg_Recipe();        //  9  nạp tham số của công thức đang chọn   Ch.29
-  Prg_Comm();          // 10  mã 2D, nhiệt RS-485, báo cáo lên trên Ch.38, 42, 45
-  Prg_Alarm();         // 11  báo động và chẩn đoán                 Ch.44, 51 · L.11
+  Prg_Alarm();         //  5  báo động + GOM LỖI (một chỗ gán)      Ch.25 mục 25.5c, 44 · L.11
+  Prg_Machine();       //  6  tầng máy: tài nguyên chung, pipeline  Ch.26, 27 mục 27.5
+  Prg_Stn1Dispense();  //  7  trình tự trạm 1                       Ch.21, 26 · khung L.6
+  Prg_Stn2Cure();      //  8  trình tự trạm 2                       Ch.21, 26 · khung L.6
+  Prg_Handshake();     //  9  bắt tay máy trước / máy sau           Ch.41
+  Prg_Recipe();        // 10  nạp tham số của công thức đang chọn   Ch.29
+  Prg_Comm();          // 11  mã 2D, nhiệt RS-485, báo cáo lên trên Ch.38, 42, 45
   Prg_Stats();         // 12  chu kỳ, sản lượng, bộ đếm bảo trì     Ch.53, 55
   Prg_OutputMap();     // 13  GOM ngõ ra — đúng một chỗ ghi mỗi tag Ch.22, 27 Bẫy 2
   Prg_Hmi();           // 14  dữ liệu cho màn hình và đèn tháp      Ch.5, 44
@@ -244,7 +244,7 @@ DO_LampRed   := M_AnyFault;                       // Ch.5, 25 — mẫu đèn th
 | Điều | Nội dung |
 |---|---|
 | ⚠⚠ **Không có `IF` nào bao quanh các lệnh gọi** | ⭐ Mọi khối chạy **mỗi vòng quét**. Bọc một lệnh gọi trong `IF` là đóng băng mọi timer bên trong nó, và ⚠ **ngõ ra thì giữ nguyên giá trị cũ** — Ch.17 Bẫy 3, Ch.15 mục 15.4b |
-| ⭐⭐ **Thứ tự KHÔNG tuỳ ý** | Cơ cấu → máy → trạm → ghi ngõ ra (Ch.27 mục 27.6). ⭐ Gọi tầng cơ cấu **trước** để `Done` và `Fault` mà trình tự đọc là **của vòng quét này**, không phải vòng trước |
+| ⭐⭐ **Thứ tự KHÔNG tuỳ ý** | Cơ cấu → **gom lỗi** → máy → trạm → ghi ngõ ra (Ch.27 mục 27.6). ⭐ Gọi tầng cơ cấu **trước** để `Done` và `Fault` mà trình tự đọc là **của vòng quét này**, không phải vòng trước. ⭐ Gom lỗi đứng ngay trước tầng máy để máy vào `Alarm` trong **cùng** vòng quét lỗi được chốt (Ch.25 mục 25.5c) |
 | ⭐ **Ghi ngõ ra gom vào một khối cuối** | ⚠ Đây là cách rẻ nhất để bảo đảm *"đúng một chỗ ghi cho mỗi tag"* — dấu hiệu số một của chương trình lành mạnh khi người khác đọc lại (Ch.22 mục 22.2) |
 
 > ⚠⚠ **Thứ tự GỌI khác thứ tự VIẾT.** Bảng ở mục 57.7 ngay dưới đây là thứ tự **viết** — an toàn viết

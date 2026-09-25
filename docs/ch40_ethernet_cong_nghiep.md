@@ -303,7 +303,7 @@ Mạng hỏng là một trạng thái phải xử lý, giống mất truyền th
 ```iecst
 // ⭐ Mất một cụm I/O phân tán → mọi ngõ vào của cụm đó VÔ NGHĨA
 IF NOT M_RemoteIo1Ok THEN
-    M_AnyFault := TRUE;
+    M_Alm_RemoteIo1 := TRUE;        // cờ chốt — gom vào M_AnyFault (Ch.25 mục 25.5c)
     M_FaultCode := 501;             // mã riêng — nói rõ SAI Ở ĐÂU
     // ⚠ KHÔNG dùng giá trị ngõ vào của cụm này cho bất kỳ quyết định nào
 END_IF;

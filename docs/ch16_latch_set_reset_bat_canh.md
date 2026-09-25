@@ -105,30 +105,35 @@ Quy tắc thực dụng, đúng trong hầu hết trường hợp:
 |---|---|---|
 | `M_Running` — máy đang chạy | **Tự giữ** | Điều kiện dừng phải nối tiếp, không được lọt |
 | `M_ConvEnable` — cho phép chuyền chạy | **Cuộn dây thường** | Phụ thuộc điều kiện hiện tại, không cần nhớ |
-| `M_AnyFault` — đã có lỗi | **SET/RESET** | Lỗi phải **dính** cho tới khi người vận hành xác nhận, dù nguyên nhân đã hết |
+| `M_Alm_AirLow` — đã từng mất khí | **SET/RESET** | Lỗi phải **dính** cho tới khi người vận hành xác nhận, dù nguyên nhân đã hết |
 | `M_Board1IsNG` — board ở trạm 1 bị đánh dấu lỗi | **SET/RESET** | Đánh dấu một lần, giữ tới khi board rời trạm |
 
-Trường hợp `M_AnyFault` cho thấy rõ vì sao SET/RESET tồn tại. Giả sử mất khí trong 200 ms rồi có lại.
+Trường hợp `M_Alm_AirLow` cho thấy rõ vì sao SET/RESET tồn tại. Giả sử mất khí trong 200 ms rồi có lại.
 Nếu dùng cuộn dây thường, cờ lỗi lên rồi tắt ngay — người vận hành quay lại chỉ thấy máy đứng im mà
 không có lỗi nào. Với SET/RESET, lỗi **dính**, và chỉ mất khi có người nhấn Reset:
 
 ```iecst
-// SET: bất kỳ nguyên nhân nào cũng đặt cờ lỗi
-IF M_AirFault OR M_Stn1Timeout OR M_Stn2Timeout THEN
-    M_AnyFault := TRUE;
+// SET: mất khí — dù chỉ 200 ms — cũng phải để lại dấu vết
+IF NOT DI_AirOK THEN
+    M_Alm_AirLow := TRUE;
 END_IF;
 
 // RESET: chỉ người vận hành gỡ được, VÀ chỉ khi nguyên nhân đã hết
-IF DI_ResetPB AND NOT M_AirFault
-              AND NOT M_Stn1Timeout
-              AND NOT M_Stn2Timeout THEN
-    M_AnyFault := FALSE;
+IF DI_ResetPB AND DI_AirOK THEN
+    M_Alm_AirLow := FALSE;
 END_IF;
 ```
 
-Dòng `AND NOT …` ở nhánh RESET là chỗ người mới hay bỏ. Không có nó, người vận hành nhấn Reset khi
+Vế `AND DI_AirOK` ở nhánh RESET là chỗ người mới hay bỏ. Không có nó, người vận hành nhấn Reset khi
 vẫn còn mất khí thì cờ lỗi tắt trong một vòng quét rồi lên lại — máy nháy đèn lỗi liên tục và không
 ai hiểu chuyện gì.
+
+> ⭐ **Một cờ cho một nguồn lỗi.** Máy thật có hàng chục nguồn lỗi. ⚠ Đừng dồn chúng vào **một** cờ
+> chung rồi liệt kê lại mọi nguyên nhân ở nhánh RESET: thêm một nguồn mới là phải sửa **hai** chỗ, và
+> quên chỗ thứ hai thì Reset xoá một lỗi còn nguyên nhân. ⭐ Mỗi nguồn giữ **cờ chốt của riêng nó**
+> như `M_Alm_AirLow` ở trên; cờ tổng `M_AnyFault` là **phép OR** của chúng, gán ở đúng một chỗ. Khi
+> máy đã có máy trạng thái, lệnh xoá cũng không đi thẳng từ nút nữa mà đi qua trạng thái `Resetting`
+> — Chương 25 mục 25.5c.
 
 ### ⚠ Vì sao lạm dụng SET/RESET làm máy "không biết mình đang ở đâu"
 
@@ -183,7 +188,7 @@ Cách khai báo khác nhau theo hệ (mục 16.7), nhưng nguyên tắc chọn t
 | Mã hàng đang chạy | ✅ Giữ | Vẫn là mã đó sau khi có điện lại |
 | `M_Running` — máy đang chạy | ❌ **Không giữ** | ⚠ Giữ nó thì máy **tự chạy lại** khi có điện |
 | `Stn1_Step` — bước hiện tại | ❌ **Không giữ** | Sau mất điện, cơ cấu có thể đã ở tư thế khác; chạy tiếp từ bước cũ là nguy hiểm |
-| `M_AnyFault` — có lỗi | ⚠ Tuỳ | Xem ghi chú bên dưới |
+| Cờ lỗi đã chốt (`M_Alm_…`) | ⚠ Tuỳ | Xem ghi chú bên dưới |
 
 > ⚠⚠ **NGUY HIỂM — hai bit không bao giờ được giữ**
 > `M_Running` và biến bước của trình tự. Giữ `M_Running` nghĩa là **máy tự khởi động lại khi có điện
@@ -195,7 +200,7 @@ Cách khai báo khác nhau theo hệ (mục 16.7), nhưng nguyên tắc chọn t
 > đã tụt về do hết khí. Bước 40 ra lệnh cho cơ cấu tiếp theo chạy, tin rằng board đang được kẹp. Nó
 > không được kẹp.
 
-Với `M_AnyFault`: giữ thì sau khi có điện lại máy vẫn báo lỗi cũ — người vận hành phải Reset có chủ
+Với cờ lỗi đã chốt: giữ thì sau khi có điện lại máy vẫn báo lỗi cũ — người vận hành phải Reset có chủ
 ý, và đó thường là điều tốt. Nhưng nếu giữ, phải bảo đảm nguyên nhân được đánh giá lại chứ không chỉ
 hiển thị cờ cũ. Đơn giản nhất: **không giữ cờ lỗi, nhưng luôn vào trạng thái yêu cầu về gốc** sau khi
 có điện lại — cách này không phụ thuộc bộ nhớ giữ được, nên ít sai hơn.

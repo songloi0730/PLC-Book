@@ -360,8 +360,8 @@ IF M_VisionOk THEN
     END_IF;
 ELSIF M_VisionNoResult OR M_VisionTimeout THEN
     // ⚠⚠ KHÔNG BIẾT — không phải OK, không phải NG
-    M_PartUnknown := TRUE;
-    M_AnyFault := TRUE;
+    M_PartUnknown        := TRUE;
+    M_Alm_VisionNoAnswer := TRUE;      // cờ chốt — gom vào M_AnyFault (Ch.25 mục 25.5c)
     M_FaultCode := 430;                // "vision không cho kết quả"
     // sản phẩm này cần người xử lý
 END_IF;

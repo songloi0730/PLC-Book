@@ -411,7 +411,7 @@ M_TempCommFault := CommErrCount >= 3;
 // ⚠⚠ Mất kết nối → KHÔNG dùng giá trị cũ cho quyết định
 IF M_TempCommFault THEN
     M_TempValid := FALSE;
-    M_AnyFault  := TRUE;                  // theo phân tích ở Chương 48
+    M_Alm_TempComm := TRUE;               // cờ chốt — gom vào M_AnyFault (Ch.25 mục 25.5c); vì sao dừng: Ch.48
 END_IF;
 
 M_CanStart := ... AND M_TempValid AND NOT M_TempCommFault;

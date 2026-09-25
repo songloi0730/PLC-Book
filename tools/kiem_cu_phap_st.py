@@ -21,6 +21,9 @@ Kiểm:
      hoặc đọc chân không có trong giao diện.
   8. RETURN / EXIT / CONTINUE (PLCopen CP14, L10): chỉ được có khi chính dòng đó,
      hoặc khối đó, đánh dấu là ví dụ SAI / cảnh báo (✗, SAI, CP14, L10).
+  9. (đợt 59) CP20 — một thể hiện khối được gọi ở HAI chỗ trở lên trong cùng một khối
+     mã. Mẫu "gọi T(IN := FALSE) để xoá rồi gọi lại" từng có ở sáu chỗ trong sách.
+ 10. (đợt 59) Khai báo `tên : KIỂU;` nằm NGOÀI `VAR … END_VAR` — không biên dịch được.
 
 Không kiểm (giới hạn biết trước): kiểu dữ liệu của biểu thức; biến chưa khai báo;
 khối chuyển động MC_* (đặc tả PLCopen Part 1 không có trong bộ tài liệu cục bộ).
@@ -225,6 +228,57 @@ def kiem_chan(ma, tu_dien, gd):
     return loi
 
 
+HAM_CHUAN = {
+    "ABS", "SQRT", "LN", "LOG", "EXP", "EXPT", "SIN", "COS", "TAN", "ASIN", "ACOS", "ATAN",
+    "ADD", "SUB", "MUL", "DIV", "MOD", "MOVE", "SHL", "SHR", "ROL", "ROR", "SEL", "MAX", "MIN",
+    "LIMIT", "MUX", "GT", "GE", "EQ", "LE", "LT", "NE", "LEN", "LEFT", "RIGHT", "MID", "CONCAT",
+    "INSERT", "DELETE", "REPLACE", "FIND", "TRUNC", "SIZEOF", "ADR",
+}
+
+
+def kiem_goi_doi(ma_goc, s, tu_dien, gd, ham_sach):
+    """Mục 9 — CP20: mỗi thể hiện chỉ một chỗ gọi trong một khối (trừ ví dụ SAI).
+
+    Thể hiện = tên có trong bảng khai báo với kiểu là khối, HOẶC tên được gọi với tham số có tên
+    (`X(IN := …)`) mà không phải hàm chuẩn / hàm của sách — để bắt cả đoạn trích không khai báo.
+    """
+    if re.search(r"^\s*//.*(✗|\bSAI\b)", ma_goc, re.M):
+        return []
+    loi = []
+    ung_vien = {t for t, k in tu_dien.items() if k in CHUAN or (k in gd and gd[k] is not None)}
+    for m in re.finditer(r"(?<![\w.])([A-Za-z_]\w*)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)", s):
+        ten = m.group(1)
+        if (re.search(r"\b\w+\s*(:=|=>)", m.group(2)) and ten.upper() not in HAM_CHUAN
+                and ten not in ham_sach and "_TO_" not in ten.upper()):
+            ung_vien.add(ten)
+    for ten in sorted(ung_vien):
+        cho = [m.start() for m in re.finditer(r"(?<![\w.])%s\s*\(" % re.escape(ten), s)]
+        if len(cho) > 1:
+            dong = s[:cho[1]].count("\n") + 1
+            loi.append((dong, "%s được gọi ở %d chỗ trong một khối — mỗi thể hiện gọi đúng MỘT "
+                        "lần mỗi vòng quét (PLCopen CP20)" % (ten, len(cho))))
+    return loi
+
+
+KHAI_BAO = re.compile(r"^\s*[A-Za-z_]\w*(\s*,\s*[A-Za-z_]\w*)*\s*:\s*"
+                      r"(ARRAY\b.*|[A-Za-z_]\w*(\s*\(.*\))?)\s*(:=.*)?;\s*$")
+
+
+def kiem_khai_bao(s):
+    """Mục 10 — khai báo biến phải nằm trong VAR…END_VAR (hoặc STRUCT / TYPE)."""
+    loi, sau = [], 0
+    for i, d in enumerate(s.split("\n"), 1):
+        tu = d.strip().upper().split()
+        dau = tu[0].rstrip(";") if tu else ""
+        if VAR_MO.match(dau) or dau in ("STRUCT", "TYPE"):
+            sau += 1
+        elif dau in ("END_VAR", "END_STRUCT", "END_TYPE"):
+            sau = max(0, sau - 1)
+        elif not sau and KHAI_BAO.match(d):
+            loi.append((i, "khai báo '%s' nằm NGOÀI VAR … END_VAR" % d.strip()[:40]))
+    return loi
+
+
 def kiem_thoat(ma_goc, s):
     """Mục 8: RETURN / EXIT / CONTINUE."""
     loi = []
@@ -248,6 +302,11 @@ def main():
         s = io.open(p, encoding="utf-8").read()
         for m in re.finditer(r"^```iecst\n(.*?)^```", s, flags=re.S | re.M):
             khoi.append((ten, s[:m.start()].count("\n") + 2, m.group(1)))
+
+    # Hàm do sách tự định nghĩa — gọi nhiều lần là bình thường, không phải thể hiện khối
+    ham_sach = set()
+    for _, _, ma in khoi:
+        ham_sach |= set(re.findall(r"\bFUNCTION\s+(\w+)", bo_chu_thich(ma)))
 
     # Mục 7a — cùng tên thì phải là CÙNG một khối: cùng giao diện, và cùng cả phần thân
     noi_dn = {}
@@ -287,6 +346,7 @@ def main():
         tu_dien = dict(chung)
         tu_dien.update(the_hien_tep[ten])
         loi += kiem_chan(s, tu_dien, gd)
+        loi += kiem_goi_doi(ma, s, tu_dien, gd, ham_sach) + kiem_khai_bao(s)
         for dong, noi_dung in loi:
             loi_tong.append((ten, d0 + dong - 1, noi_dung))
 
