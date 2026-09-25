@@ -127,6 +127,7 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 | **Khối có bộ nhớ riêng** | ⭐ **FB + Instance DB** | ⚠ Dòng cũ: không có khái niệm này | Tuỳ dòng | ⭐ **Thể hiện FB** | ⭐ **Add-On Instruction (AOI)** |
 | **Khối không bộ nhớ** | FC | Chương trình con | | FUNCTION | Routine thường |
 | **Điểm vào chương trình** | OB1 (và OB khác) | Quét từ đầu chương trình chính | | ⭐ Task gọi PROGRAM | ⭐ **Task → Program → Routine** |
+| ⭐ **Hướng đối tượng** *(phương thức, interface, kế thừa)* | ❌ trong TIA Portal — có ở **SIMATIC AX**, nhập vào TIA thì không dùng trực tiếp được | ⚠ Không thấy ở dòng FX5 | Dòng nền CODESYS: theo CODESYS · dòng nhỏ: không thấy | ✅ Có | ❌ Không có trong bảng tuân thủ |
 
 > ⭐⭐ **Đây là chỗ khác biệt lớn nhất giữa năm hệ, và là chỗ hay gây hiểu nhầm nhất.**
 >
@@ -141,7 +142,7 @@ Khi bốn hệ kia làm khác nhau, ⭐ **cột CODESYS cho biết chuẩn IEC 6
 > → ⭐ **bạn phải tự quản lý bằng cách truyền địa chỉ hoặc dùng độ lệch** — và ⚠ **quên điều đó là một
 > lỗi rất khó tìm**.
 >
-> Xem Chương 30 và Phụ lục B.9.
+> Xem Chương 30 và Phụ lục B.9. Hàng *hướng đối tượng* — căn cứ và cách dùng ở Chương 30 mục 30.5c.
 
 ---
 

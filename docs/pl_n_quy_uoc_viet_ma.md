@@ -88,8 +88,8 @@ dùng tới** (quy tắc vẫn đúng) · ➕ **chưa chương nào bàn — quy
 | CP18 | Hạn chế biến toàn cục | Ch.30 mục 30.5 | ✔ |
 | L7 | Đóng đúng các nhánh song song trong SFC | Ch.26 mục 26.5 | ✔ |
 | E1 | Không cấp phát bộ nhớ động | Sách không dùng | ◯ |
-| E2 | Không tính toán trên con trỏ | Sách không dùng; áp cho `REFERENCE` ở Ch.30 | ◯ |
-| E3 | Không dùng `<` `>` `<=` `>=` trên con trỏ hay tham chiếu | Như trên | ◯ |
+| E2 | Không tính toán trên con trỏ | Ch.30 mục 30.5c — bẫy 4 của hướng đối tượng | ✔ |
+| E3 | Không dùng `<` `>` `<=` `>=` trên con trỏ hay tham chiếu | Ch.30 mục 30.5c — chỉ so `<> 0` để biết đã gắn chưa | ✔ |
 
 > ⭐⭐ **Các dòng ⭐ là những chỗ sách TỪNG SAI hoặc THIẾU, và đều sửa trong cùng một đợt rà.** Soát mã
 > mẫu theo đúng bộ quy tắc này tìm ra: khung trình tự dùng `RETURN` ở Phụ lục L và Ch.26 (CP14); một

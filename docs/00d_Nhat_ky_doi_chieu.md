@@ -3238,6 +3238,70 @@ khối xy-lanh nối vào đâu?"* — mở ra một lỗi kiến trúc lớn h�
 
 ---
 
+## Đợt 60 — 2026-09-26 · Hướng đối tượng, và một bản chuẩn mới mà sách chưa biết
+
+⭐ Đợt thứ ba của kế hoạch 5 đợt: mục hướng đối tượng trong Ch.30. ⚠ Việc đối chiếu nguồn cho mục đó
+lòi ra một chuyện lớn hơn: **IEC 61131-3 đã có bản 4 từ tháng 5/2025**, và sách chưa từng nêu mình
+đang nói về bản nào.
+
+### A — Nguồn cho hướng đối tượng
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 572 | Tờ PLCopen về hướng đối tượng: bản 3 của chuẩn cho phép OOP; cách cổ điển **không bị thay thế** mà cùng tồn tại; nêu các câu hỏi thiết kế — phương thức hay truy cập biến trực tiếp, interface, *kết hợp hay kế thừa* | ✔ |
+| 573 | Trợ giúp CODESYS: biến khai trong phương thức là biến tạm, **khởi tạo lại mỗi lần gọi**; phương thức **không** đọc được `VAR_TEMP` của khối | ✔ |
+| 574 | Trợ giúp CODESYS: biến kiểu interface **luôn là tham chiếu**, bằng 0 tới lần gắn đầu; một khối chỉ kế thừa **một** khối nhưng thực hiện được **nhiều** interface; khối con không khai lại biến trùng tên khối cha | ✔ |
+| 575 | Trợ giúp CODESYS: với `REFERENCE TO`, `:=` **chép giá trị**, `REF=` mới gắn tham chiếu; **không** khai được mảng các tham chiếu | ✔ |
+| 576 | Trợ giúp CODESYS: sửa chương trình đang chạy có tham chiếu interface → hệ định địa chỉ lại, tốn thêm thời gian, có thể rung thời gian quét | ✔ |
+| 577 | Tài liệu TIA Portal V20: hướng đối tượng thuộc **SIMATIC AX**; nhập vào TIA Portal thì lớp thành FB, phương thức thành FC, và **không dùng trực tiếp được** | ✔ |
+| 578 | Tài liệu tuân thủ IEC 61131-3 bản 3 của Logix (1756-PM018I, 3/2022) liệt kê từng tính năng hỗ trợ — **không có** mục cho lớp, phương thức, interface. ⭐ Sách viết đúng mức đó, không viết *"Rockwell không bao giờ hỗ trợ"* | ✔ |
+| 579 | ⚠ Mitsubishi FX5 và Inovance H5U/Easy: **không thấy** `METHOD`/`INTERFACE` trong tài liệu có trong bộ nguồn — bằng chứng yếu (vắng mặt trong một tài liệu), nên sách ghi *"không thấy — tra tài liệu dòng của bạn"* | ⚠ |
+| 580 | ⚠ **Chưa kiểm được:** gọi thể hiện của khối con thì thân khối cha có tự chạy không. Trợ giúp chính thức không nói; diễn đàn cộng đồng nói phải gọi `SUPER^()`. ⭐ Sách **không dựa** vào hành vi đó: ví dụ chính dùng interface, không dùng thân khối kế thừa | ⚠ |
+| 581 | Dạng văn bản `METHOD … END_METHOD`, `CLASS … END_CLASS` theo chuẩn bản 3 — đối chiếu một tài liệu hướng dẫn IEC 61131-3 độc lập với CODESYS | ✔ |
+
+### B — ⚠⚠ IEC 61131-3 bản 4 (2025)
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 582 | ⚠⚠ Sách **chưa từng nêu phiên bản** của chuẩn, và viết *"chuẩn định nghĩa năm ngôn ngữ"*. Trang của IEC: **IEC 61131-3:2025, bản 4.0, phát hành 22/05/2025**; bộ ngôn ngữ chỉ còn ST, LD, FBD và các phần tử SFC. Một bài so văn bản hai bản xác nhận: **chương IL bị bỏ** (đã không khuyến khích từ 2013), nhưng hãng vẫn có thể giữ IL. → Ch.14 thêm bảng các bản; Ch.21 viết lại cho đúng bản; Ch.13 và Mục lục sửa theo | ⚠⚠ |
+| 583 | ➕ Những thay đổi khác của bản 4 chạm tới sách: thuộc tính (`PROPERTY_GET` / `PROPERTY_SET`) → dùng ở 30.5c · mutex, semaphore → ghi chú ở Ch.27 mục 27.6 · bỏ hằng bát phân — ⭐ **sách không dùng** (kiểu đánh số ngõ vào bát phân ở Ch.11 là chuyện của địa chỉ thiết bị, khác hẳn) · bỏ `TRUNC` không kiểu, hàm BCD bị đánh dấu không khuyến khích, chuỗi UTF-8 và `LEN_MAX` → **để đợt 61** (cách thực hiện lệnh) | ➕ |
+| 584 | ⚠ Bảng *chọn ngôn ngữ* ở Ch.14 trỏ *"xem mục 21"* — mơ hồ, đúng là Chương 21 | ⚠ |
+
+### C — Mục 30.5c
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 585 | ➕➕ Ch.30 mục mới **30.5c**: năm công cụ và câu hỏi mỗi cái trả lời · ⭐ **cùng một bài toán ba cách** — *mọi trạm đã hết board chưa* (lấy thẳng từ bảng chốt Ch.27) · khuyến nghị theo cỡ máy và đội bảo trì · ⭐⭐ **năm cái bẫy chỉ có trên PLC**, mỗi bẫy có nguồn · bảng hãng hỗ trợ có căn cứ từng dòng | ➕➕ |
+| 586 | ⭐ Ví dụ chính dùng **phương thức** thay cho thuộc tính: dấu `()` báo cho người đọc *"có mã chạy ở đây"*, thuộc tính thì trông y hệt một biến; và cú pháp phương thức giống nhau hơn giữa các hệ | ⭐ |
+| 587 | Phụ lục N: quy tắc E2, E3 từ *"sách không dùng"* thành ✔ — nay có chỗ áp. Phụ lục A1 mục A1.4: thêm hàng *hướng đối tượng* cho năm hệ | ✔ |
+| 588 | Bộ kiểm ST: hiểu `PROPERTY_GET`/`PROPERTY_SET`, và phương thức là thành viên gọi được qua dấu chấm. Thử bằng lỗi cài: gọi sai tên phương thức và thiếu `END_PROPERTY` — **bắt cả hai** | ➕ |
+| 589 | ⚠ Lỗi của tôi khi sửa bộ kiểm: một ký tự `\b` trong biểu thức chính quy bị ghi thành **ký tự xoá lùi** qua lớp chuyển tiếp của shell — bộ kiểm vẫn chạy nhưng phép tìm phương thức hỏng im lặng. Phát hiện khi đọc lại byte của dòng đó | ⚠ |
+
+### Kết quả đợt 60
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **18** |
+| ✔ Xác nhận | 9 |
+| ⚠⚠ / ⚠ | 1 / 4 |
+| ⭐ | 1 |
+| ➕➕ / ➕ | 1 / 2 |
+| Mục mới | Ch.30 mục 30.5c · bảng các bản của chuẩn ở Ch.14 mục 14.1 |
+
+> ⭐⭐ **Bài học 1 — một cuốn sách về chuẩn phải nói nó đang dùng bản nào.**
+>
+> Sách viết *"chuẩn định nghĩa năm ngôn ngữ"* — đúng suốt mười hai năm, rồi sai từ tháng 5/2025. ⚡ Câu
+> không ghi bản thì **không bao giờ kiểm được là đã cũ hay chưa**. Từ nay, mọi câu viện dẫn một chuẩn
+> có nhiều bản phải nói rõ bản — hoặc nói rõ là đúng với mọi bản.
+
+> ⭐ **Bài học 2 — viết đúng mức bằng chứng.**
+>
+> Ba mức ở cùng một bảng: *"trợ giúp chính thức nói X"* · *"tài liệu tuân thủ của hãng không có mục
+> cho X"* · *"không thấy X trong tài liệu có trong tay"*. Ba câu khác nhau, và gộp cả ba thành *"hãng Y
+> không hỗ trợ X"* là nói quá bằng chứng. ⭐ Chỗ nào chưa kiểm được (#580), sách **né** thay vì đoán.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

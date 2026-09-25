@@ -507,6 +507,11 @@ Khi nào tách là chính đáng:
 Nếu tách, quy tắc bắt buộc: **dữ liệu đi qua ranh giới tác vụ phải qua một vùng đệm rõ ràng**, không
 đọc chéo biến trực tiếp.
 
+> ⭐ **Bản 4 của IEC 61131-3 (2025) đưa công cụ chuẩn cho việc này vào chuẩn:** **mutex** — khối
+> `MUTEX` với các phương thức khoá, mở, thử khoá — và **semaphore** (`SEMA`), kèm dạng hàm tương ứng.
+> ⚠ Hệ bạn đang dùng có thể chưa theo bản 4 (Chương 14 mục 14.1); vùng đệm rõ ràng ở trên vẫn là
+> cách chạy được trên **mọi** hệ.
+
 ### ⭐⭐ Chính tài liệu hãng cũng khuyên hạn chế số tác vụ
 
 ⭐ Lời khuyên *"mặc định là một tác vụ"* ở trên nghe như quan điểm cá nhân. ⚡ Nó không phải: tài
@@ -739,6 +744,8 @@ chưa trả lời: khi máy dừng giữa chừng ở một tư thế bất kỳ
 
 ### Nguồn tham khảo chương 27
 
+- **Stefan Henneken** — *IEC 61131-3: Comparison of Edition 3 and Edition 4* (6/2025): bản 4 thêm chương
+  *đồng bộ thực thi song song* — khối `MUTEX`, `SEMA` và dạng hàm — nền cho ghi chú ở mục 27.6.
 - IEC 61131-3 — *Programmable controllers, Part 3: Programming languages*: khối chức năng, thể hiện,
   đơn vị tổ chức chương trình, và mô hình tác vụ. *(tiêu chuẩn có bản quyền; chương này chỉ diễn giải
   ở mức khái niệm)*

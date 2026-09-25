@@ -9,8 +9,20 @@
 Trước khi có chuẩn, mỗi hãng PLC là một thế giới riêng: ngôn ngữ riêng, tên lệnh riêng, cách tổ chức
 chương trình riêng. Chuyển hãng nghĩa là học lại từ đầu.
 
-**IEC 61131-3** ra đời để chấm dứt chuyện đó. Nó định nghĩa năm ngôn ngữ, một cách tổ chức chương
-trình, và một bộ kiểu dữ liệu chung. Ngày nay gần như mọi hãng đều tuyên bố tuân theo nó.
+**IEC 61131-3** ra đời để chấm dứt chuyện đó. Nó định nghĩa một bộ ngôn ngữ lập trình, một cách tổ
+chức chương trình, và một bộ kiểu dữ liệu chung. Ngày nay gần như mọi hãng đều tuyên bố tuân theo nó.
+
+> ⭐ **Chuẩn có nhiều bản — và câu *"theo IEC 61131-3"* chưa trả lời bản nào.**
+>
+> | Bản | Năm | Điều đáng nhớ với người lập trình |
+> |---|---|---|
+> | 2 | 2003 | Năm ngôn ngữ: LD, FBD, ST, SFC, IL |
+> | 3 | 2013 | ⭐ Đưa **hướng đối tượng** vào chuẩn — phương thức, interface, kế thừa (Chương 30 mục 30.5c); ⚠ IL bị đánh dấu **không khuyến khích** |
+> | ⭐ 4 | 5/2025 | ⚠ **Bỏ hẳn IL** — chuẩn còn LD, FBD, ST và các phần tử SFC; thêm chuỗi UTF-8, **thuộc tính** (`PROPERTY`), công cụ đồng bộ giữa các tác vụ (mutex, semaphore) |
+>
+> ⚠ Chuẩn bỏ IL **không** có nghĩa là hãng bỏ: mỗi hãng tự quyết định có giữ IL trong công cụ hay
+> không, và máy cũ viết bằng IL còn chạy nhiều năm nữa — Chương 21 dạy đủ để **đọc** nó. ⭐ Khi một
+> hệ tuyên bố tuân theo chuẩn, hỏi thêm **theo bản nào** (mục 14.6b).
 
 Nhưng có một điều phải nói thẳng ngay từ đầu, vì hiểu nhầm nó sẽ dẫn tới những kỳ vọng sai:
 
@@ -26,8 +38,8 @@ Nhưng lấy tệp chương trình từ hệ này nạp sang hệ khác thì **k
 
 ## 14.2 Năm ngôn ngữ — và vì sao cần tới năm
 
-Chuẩn định nghĩa năm ngôn ngữ. Không phải vì thừa, mà vì **năm nhóm bài toán khác nhau**, và ép tất
-cả vào một ngôn ngữ thì luôn có nhóm bị thiệt.
+Bản 2013 của chuẩn định nghĩa năm ngôn ngữ; bản 2025 giữ bốn và bỏ IL (mục 14.1). Không phải vì
+thừa, mà vì **những nhóm bài toán khác nhau**, và ép tất cả vào một ngôn ngữ thì luôn có nhóm bị thiệt.
 
 | Ngôn ngữ | Dạng | Sinh ra cho | Chương |
 |---|---|---|---|
@@ -35,7 +47,7 @@ cả vào một ngôn ngữ thì luôn có nhóm bị thiệt.
 | **FBD** — *Function Block Diagram* | Đồ hoạ, các khối nối bằng đường tín hiệu | Luồng tín hiệu, xử lý analog, chuỗi khối chức năng | 21 |
 | **ST** — *Structured Text* | Văn bản, giống Pascal | Tính toán, thuật toán, mảng, máy trạng thái | 20 |
 | **SFC** — *Sequential Function Chart* | Đồ hoạ, bước và chuyển tiếp | **Trình tự** có thứ tự trước sau | 21, 26 |
-| **IL** — *Instruction List* | Văn bản, giống hợp ngữ | ⚠ Di sản — chỉ để **đọc** chương trình cũ | 21 |
+| **IL** — *Instruction List* | Văn bản, giống hợp ngữ | ⚠ Di sản — **đã bị bỏ khỏi chuẩn ở bản 2025**; chỉ để **đọc** chương trình cũ | 21 |
 
 ### Chọn ngôn ngữ theo bài toán
 
@@ -45,7 +57,7 @@ cả vào một ngôn ngữ thì luôn có nhóm bị thiệt.
 | "Nếu tín hiệu vượt ngưỡng thì lọc rồi đưa qua bộ điều khiển" | **FBD** | Luồng tín hiệu đi từ trái sang phải, thấy được đường đi |
 | "Tính hiệu suất, quy đổi thang đo, xử lý mảng" | **ST** | Ladder làm việc này rất tệ |
 | "Bước 10 chờ board, bước 20 nâng kẹp, bước 30…" | **SFC** hoặc **ST (`CASE`)** | Trình tự là cấu trúc, không phải logic tổ hợp |
-| "Đọc chương trình máy 1998 để sửa" | **IL** | Không có lựa chọn — xem mục 21 |
+| "Đọc chương trình máy 1998 để sửa" | **IL** | Không có lựa chọn — xem Chương 21 |
 
 > ⚠ **Nhắc lại quy tắc quan trọng nhất về chọn ngôn ngữ** (Chương 20, mục 20.6):
 > **chọn theo người sẽ SỬA chương trình, không theo người viết nó.** Bảng trên nói cái gì *hợp*; câu
@@ -504,8 +516,15 @@ bằng ngôn ngữ chiếm ưu thế ở tầng máy và cũng là ngôn ngữ c
 
 ### Nguồn tham khảo chương 14
 
-- IEC 61131-3 — *Programmable controllers, Part 3: Programming languages*: định nghĩa năm ngôn ngữ,
-  ba loại POU, mô hình tác vụ, và bộ kiểu dữ liệu chuẩn. *(tiêu chuẩn có bản quyền)*
+- **IEC** — trang giới thiệu *IEC 61131-3:2025* trên cửa hàng của IEC (đối chiếu 2026-09-26): bản 4.0
+  phát hành 22/05/2025; bộ ngôn ngữ gồm ST, LD, FBD và các phần tử SFC; thay đổi kỹ thuật lớn gồm chuỗi
+  UTF-8, và phụ lục B liệt kê các tính năng thêm, bỏ hoặc không khuyến khích so với bản 2013.
+- **Stefan Henneken** — *IEC 61131-3: Comparison of Edition 3 and Edition 4* (6/2025), so trực tiếp văn
+  bản hai bản: chương IL bị bỏ ở bản 4 nhưng hãng vẫn có thể giữ IL trong công cụ; thêm thuộc tính
+  (`PROPERTY_GET` / `PROPERTY_SET`), mutex và semaphore, `ASSERT`; bỏ hằng bát phân và `TRUNC` không
+  kiểu; hàm BCD bị đánh dấu không khuyến khích.
+- IEC 61131-3 — *Programmable controllers, Part 3: Programming languages*: định nghĩa các ngôn ngữ
+  (năm ở bản 2013, bốn ở bản 2025), ba loại POU, mô hình tác vụ, và bộ kiểu dữ liệu chuẩn. *(tiêu chuẩn có bản quyền)*
 - IEC 61131-1 — *Programmable controllers, Part 1: General information*: mô hình phần mềm tổng thể.
 - Tài liệu lập trình của từng hệ trong Phụ lục A — dùng cho bảng đối chiếu ở mục 14.8: tên gọi POU,
   cách khai báo tác vụ, cơ chế bộ nhớ thể hiện, và tên gói SFC của từng hãng.

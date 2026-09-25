@@ -181,3 +181,14 @@ nhất.
 | Khung POU / khung chương trình chính | ✅ Ch.14 mục 14.7 thống nhất với Ch.27, Ch.57 |
 | ⭐⭐ Ngoài kế hoạch, lớn nhất | Đường đi của lỗi giữa các tầng — khoá chết Reset — design note 0007; Ch.25 mục 25.5c; sửa đồng bộ 20 tệp |
 | Bộ kiểm thứ sáu | + CP20 và khai báo ngoài `VAR`; thử bằng 13 lỗi cài |
+
+### Đợt 60 — xong 2026-09-26
+
+| Hạng mục | Kết quả |
+|---|---|
+| Hướng đối tượng trong Ch.30 | ✅ Mục 30.5c — năm công cụ, cùng bài toán ba cách, năm cái bẫy riêng trên PLC, bảng hãng có căn cứ |
+| Đối chiếu cú pháp CODESYS (đọc trang, không tải tệp) | ✅ Method, Property, Interface, Implementation of an Interface, Extension of a Function Block, REFERENCE TO, THIS, SUPER, FB_Init |
+| E2/E3 | ✅ Áp ở bẫy 4 của 30.5c |
+| Trỏ từ Ch.14 | ✅ Bảng các bản của chuẩn ở mục 14.1 trỏ sang 30.5c |
+| ⚠ Ngoài kế hoạch | ⚠⚠ IEC 61131-3 bản 4 (5/2025) bỏ IL — sửa Ch.13, 14, 21, Mục lục; các thay đổi về lệnh để đợt 61 |
+| ⚠ Chưa kiểm được | Thân khối cha có tự chạy khi gọi khối con không — sách né, không đoán |

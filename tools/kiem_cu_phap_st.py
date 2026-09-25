@@ -46,8 +46,10 @@ MO = {"IF": "END_IF", "CASE": "END_CASE", "FOR": "END_FOR", "WHILE": "END_WHILE"
       "REPEAT": "END_REPEAT", "FUNCTION_BLOCK": "END_FUNCTION_BLOCK",
       "FUNCTION": "END_FUNCTION", "PROGRAM": "END_PROGRAM", "TYPE": "END_TYPE",
       "STRUCT": "END_STRUCT", "METHOD": "END_METHOD", "PROPERTY": "END_PROPERTY",
-      "INTERFACE": "END_INTERFACE", "ACTION": "END_ACTION", "VAR": "END_VAR"}
+      "INTERFACE": "END_INTERFACE", "ACTION": "END_ACTION", "VAR": "END_VAR",
+      "PROPERTY_GET": "END_PROPERTY", "PROPERTY_SET": "END_PROPERTY"}   # bản 4 (2025)
 DONG = {v: k for k, v in MO.items()}
+DONG["END_PROPERTY"] = "PROPERTY"
 VAR_MO = re.compile(r"^VAR(_INPUT|_OUTPUT|_IN_OUT|_GLOBAL|_EXTERNAL|_TEMP|_STAT|_INST)?$")
 CAN = {"IF": "THEN", "ELSIF": "THEN", "WHILE": "DO", "FOR": "DO", "CASE": "OF"}
 
@@ -103,7 +105,7 @@ def kiem_khung(s, co_luoc):
             ngan.append(("VAR" if VAR_MO.match(T) else T, dong))
         elif T in DONG:
             mo = DONG[T]
-            if ngan and ngan[-1][0] == mo:
+            if ngan and MO.get(ngan[-1][0]) == T:        # PROPERTY / PROPERTY_GET / _SET cùng đóng
                 ngan.pop()
             else:
                 loi.append((dong, "%s nhưng khối đang mở là %s" % (
@@ -175,6 +177,10 @@ def giao_dien(ma):
             for d in re.finditer(r"^\s*([A-Za-z_][\w\s,]*?)\s*:", v.group(2), re.M):
                 for ten in d.group(1).split(","):
                     dich.add(ten.strip())
+        # Phương thức và thuộc tính cũng là thành viên đọc/gọi được qua dấu chấm: `Stn2.IsEmpty()`
+        for t in re.finditer(r"\b(?:METHOD|PROPERTY(?:_GET|_SET)?)\s+(?:(?:PUBLIC|PRIVATE|PROTECTED|INTERNAL"
+                             r"|ABSTRACT|FINAL|OVERRIDE)\s+)*(\w+)", m.group(2)):
+            ra_.add(t.group(1))
         ra[m.group(1)] = (frozenset(vao), frozenset(ra_), frozenset(vr))
     return ra
 

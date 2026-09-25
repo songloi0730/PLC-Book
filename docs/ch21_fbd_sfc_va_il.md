@@ -305,8 +305,9 @@ Vài lệnh hay gặp, đủ để bạn dò được logic:
 
 ### ⚠ IL đã bị rút khỏi chuẩn
 
-Bản mới của IEC 61131-3 **không còn IL** như một ngôn ngữ được duy trì — nó được xếp vào diện lỗi
-thời. Hệ quả thực tế:
+Bản 3 của IEC 61131-3 (2013) đánh dấu IL là **không khuyến khích**; ⚠ bản 4 (5/2025) **bỏ hẳn** chương
+IL khỏi chuẩn — chuẩn giờ chỉ còn LD, FBD, ST và các phần tử SFC. ⭐ Nhưng chuẩn bỏ không có nghĩa là
+hãng bỏ: mỗi hãng tự quyết định có giữ IL trong công cụ hay không. Hệ quả thực tế:
 
 - **Đừng viết code mới bằng IL.** Không có lý do kỹ thuật nào để làm vậy hôm nay.
 - **Vẫn phải đọc được nó**, vì máy cũ không biến mất theo tiêu chuẩn.
@@ -520,6 +521,8 @@ có tài liệu, và phải sửa nó mà không làm hỏng thứ đang chạy.
 
 ### Nguồn tham khảo chương 21
 
+- IEC 61131-3:2025 (bản 4) — IL không còn trong chuẩn; đối chiếu qua trang giới thiệu của IEC và bài so
+  sánh bản 3 – bản 4 của Stefan Henneken (chi tiết ở nguồn của Chương 14).
 - IEC 61131-3 — *Programmable controllers, Part 3: Programming languages*: định nghĩa FBD, SFC (bước,
   chuyển tiếp, hành động, bổ ngữ hành động, các kiểu nhánh) và IL. *(tiêu chuẩn có bản quyền)*
 - Tài liệu về **GRAFCET** — phương pháp mô tả trình tự mà SFC bắt nguồn từ đó, có tiêu chuẩn riêng.

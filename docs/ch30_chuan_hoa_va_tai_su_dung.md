@@ -801,6 +801,156 @@ END_CASE;
 
 ---
 
+## 30.5c ⭐⭐ Hướng đối tượng — thêm một cách tổ chức, không thay cách cũ
+
+Bản 3 của IEC 61131-3 (2013) đưa lập trình **hướng đối tượng** *(object-oriented programming, OOP)*
+vào chuẩn; bản 4 (2025) thêm **thuộc tính** (Chương 14 mục 14.1). ⭐ Chính PLCopen nói rõ: cách lập
+trình cổ điển **không bị thay thế** — hai cách cùng tồn tại, và mỗi cách dùng ở chỗ nó hợp nhất.
+
+> ⚠⚠ **Đọc bảng hãng ở cuối mục TRƯỚC khi đọc cú pháp.** Hướng đối tượng chạy được trên CODESYS và
+> các nền dựng trên nó. Trong TIA Portal, trên Rockwell Logix và trên dòng FX5 của Mitsubishi thì
+> **không** — mục này vô ích với bạn nếu máy của bạn chạy trên các hệ đó. Cú pháp dưới đây theo
+> CODESYS, viết liền thành văn bản để đọc được trên giấy.
+
+### Năm công cụ — mỗi cái trả lời một câu hỏi
+
+| Công cụ | Là gì | ⭐ Trả lời câu hỏi |
+|---|---|---|
+| `METHOD` | Một đoạn mã **thuộc về** một khối, gọi được từ ngoài: `Stn2.IsEmpty()` | *"Hỏi khối này một câu, hoặc ra một lệnh, mà không cần biết bên trong nó"* |
+| `PROPERTY` | Một giá trị đọc/ghi được như biến, nhưng đi qua mã kiểm soát | *"Cho đọc giá trị này, nhưng qua một cửa có kiểm tra"* |
+| ⭐ `INTERFACE` + `IMPLEMENTS` | Một **danh sách phương thức** mà nhiều loại khối cam kết cùng có | ⭐ *"Đối xử với nhiều loại khối khác nhau theo cùng một cách"* |
+| `EXTENDS` | Khối mới **kế thừa** mọi biến và phương thức của khối cũ | *"Khối này là một phiên bản đặc biệt của khối kia"* |
+| `REFERENCE TO` | Một **tên khác** trỏ tới một biến có sẵn | *"Làm việc trên biến ở chỗ khác mà không chép nó"* |
+
+### Cùng một bài toán, ba cách
+
+Bài toán — lấy thẳng từ Chương 27: tầng máy phải biết **mọi trạm đã hết board chưa** trước khi coi là
+xả xong (Chương 27 mục 27.5, bảng chốt dòng 10: *"không chỉ trạm đầu"*).
+
+```iecst
+// ── A · Cách của sách: mỗi trạm công bố biến toàn cục, tầng máy đọc từng cái ──
+M_AllEmpty := Stn1_Ready AND NOT Stn1_Busy
+              AND Stn2_Ready AND NOT Stn2_Busy;
+
+// ── B · Trạm là khối có phương thức: tầng máy HỎI, không đọc biến bên trong ──
+M_AllEmpty := Station1.IsEmpty() AND Station2.IsEmpty();
+
+// ── C · Interface: mọi trạm cam kết cùng một câu trả lời, tầng máy hỏi trong một vòng lặp ──
+M_AllEmpty := TRUE;
+FOR i := 1 TO 2 DO
+    M_AllEmpty := M_AllEmpty AND aStation[i].IsEmpty();
+END_FOR;
+```
+
+Cách C cần hai phần khai báo: interface, và mỗi trạm cam kết thực hiện nó.
+
+```iecst
+INTERFACE I_Station
+    METHOD IsReady : BOOL        // sẵn sàng nhận board mới
+    END_METHOD
+    METHOD IsEmpty : BOOL        // không còn board nào trong trạm
+    END_METHOD
+    METHOD HasFault : BOOL
+    END_METHOD
+END_INTERFACE
+
+FUNCTION_BLOCK FB_Stn2Cure IMPLEMENTS I_Station
+    // … khai báo và trình tự của trạm 2 — như Chương 26, nhưng nằm trong khối …
+
+    METHOD IsReady : BOOL
+        IsReady := (Stn2_Step = 0);
+    END_METHOD
+
+    METHOD IsEmpty : BOOL
+        IsEmpty := (Stn2_Step = 0) AND NOT DI_BoardStn2;
+    END_METHOD
+
+    METHOD HasFault : BOOL
+        HasFault := Stn2_Fault;
+    END_METHOD
+END_FUNCTION_BLOCK
+
+// ── Tầng máy ──
+VAR
+    Station1 : FB_Stn1Dispense;          // khối trạm 1 cũng IMPLEMENTS I_Station
+    Station2 : FB_Stn2Cure;
+    aStation : ARRAY[1..2] OF I_Station; // ⭐ biến kiểu interface là THAM CHIẾU tới một thể hiện
+    i        : INT;
+END_VAR
+
+aStation[1] := Station1;                 // gắn — trước lần gắn đầu tiên, biến chứa 0
+aStation[2] := Station2;
+```
+
+| Cách | ⭐ Ưu | ⚠ Nhược |
+|---|---|---|
+| A — biến toàn cục công bố | Chạy trên **mọi hệ**; người bảo trì đọc được bằng ladder | Tầng máy phải **liệt kê từng trạm** — thêm trạm 3 mà quên sửa dòng này thì *"xả xong"* sai; và ⚠ thật ra chỉ có một chỗ ghi mỗi biến là nhờ kỷ luật, không nhờ ngôn ngữ |
+| B — phương thức | Tầng máy **không thấy** bên trong trạm — đổi cách trạm tính *"trống"* không ảnh hưởng ai | Vẫn liệt kê từng trạm; chỉ chạy trên hệ có OOP |
+| ⭐ C — interface | ⭐ Thêm trạm 3 = thêm **một dòng gắn** và sửa giới hạn vòng lặp; mọi trạm **buộc** phải trả lời đủ ba câu — thiếu một phương thức là **không biên dịch được** | Khó đọc nhất với người chỉ quen ladder; chỉ chạy trên hệ có OOP; ⚠ thêm một loại lỗi mới — tham chiếu chưa gắn |
+
+⭐ **Khuyến nghị:** máy cỡ DP-01, đội bảo trì đọc ladder, hoặc máy có thể phải chuyển nền → **cách A**,
+đúng như sách đang dùng. Máy có **nhiều trạm hoặc nhiều loại cơ cấu cùng vai trò**, chạy trên **một
+nền có OOP suốt đời**, và đội có nền tảng phần mềm → **cách C** trả công xứng đáng. Cách B đứng giữa:
+dùng khi muốn đóng gói mà chưa cần đa hình.
+
+### ⚠⚠ Năm cái bẫy chỉ có khi dùng hướng đối tượng TRÊN PLC
+
+Người đến từ C# hay Java mang theo thói quen đúng ở đó và **sai ở đây**, vì PLC chạy theo vòng quét.
+
+| # | Bẫy | ⭐ Cách đúng |
+|:-:|---|---|
+| 1 | ⚠⚠ **Khai bộ định thời trong phương thức.** Biến khai trong phương thức là biến **tạm** — tài liệu CODESYS ghi rõ chúng được **khởi tạo lại mỗi lần gọi**. Bộ định thời ở đó về 0 ở mỗi lần gọi: **không bao giờ** tới giờ | Mọi thứ cần **nhớ qua các vòng quét** — bộ định thời, bộ đếm, cờ, bước — khai ở **khối**, không ở phương thức |
+| 2 | ⚠ **Đặt logic chạy theo thời gian vào phương thức.** Phương thức chỉ chạy **khi được gọi** — không ai gọi thì nó đứng yên, y như khối không được gọi (mục 30.5b, quy tắc 2) | Logic chạy theo vòng quét nằm ở **thân khối**, và thân khối vẫn được gọi **mỗi vòng**. ⭐ Phương thức chỉ để **hỏi** và **ra lệnh** |
+| 3 | ⚠⚠ **Gọi phương thức qua một biến interface chưa gắn.** Biến kiểu interface là **tham chiếu**, và bằng 0 tới lần gắn đầu tiên | Gắn **một lần** lúc khởi động; và ở chỗ nào không chắc, kiểm `aStation[i] <> 0` **trước** khi gọi |
+| 4 | ⚠ **Dùng `:=` với tham chiếu để "trỏ sang chỗ khác".** Với `REFERENCE TO`, `:=` **chép giá trị** vào chỗ tham chiếu đang trỏ — muốn trỏ sang chỗ khác phải dùng `REF=`. Và không khai được **mảng các tham chiếu** | Đọc kỹ từng phép gán có tham chiếu; ⭐ và như PLCopen yêu cầu: **không** tính toán trên con trỏ, **không** so lớn–nhỏ trên con trỏ hay tham chiếu (quy tắc E2, E3, Phụ lục N) |
+| 5 | ⚠ **Kế thừa theo kiểu "có liên quan".** Máy bơm **dùng** một động cơ, nhưng máy bơm **không phải là** một động cơ — cho `FB_Pump EXTENDS FB_Motor` là trộn hai quan hệ | Hỏi *"khối con **có phải là** khối cha không?"* — không phải thì **chứa** một thể hiện của nó thay vì kế thừa. ⭐ PLCopen đặt đúng câu hỏi này cho người viết thư viện: *kết hợp hay kế thừa?* |
+
+> ⚡ **Thêm hai điều về kế thừa trên CODESYS:** một khối chỉ kế thừa được **một** khối (nhưng thực hiện
+> được **nhiều** interface); và khối con **không được** khai lại biến trùng tên với khối cha. Khi sửa
+> chương trình đang chạy mà có tham chiếu interface, hệ phải định địa chỉ lại các tham chiếu đó — tài
+> liệu hãng cảnh báo việc này tốn thêm thời gian và có thể gây **rung thời gian quét**.
+
+### Thuộc tính — và vì sao sách dùng phương thức thay cho nó
+
+Bản 4 của chuẩn định nghĩa thuộc tính bằng hai phương thức đặc biệt, `PROPERTY_GET` và `PROPERTY_SET`.
+Đọc và ghi thuộc tính **viết như biến**, nhưng thật ra là **gọi mã**:
+
+```iecst
+FUNCTION_BLOCK FB_Foo
+    VAR PRIVATE
+        _nFoo : INT;             // biến thật, giấu bên trong
+    END_VAR
+    PROPERTY_GET PUBLIC nFoo : INT
+        nFoo := _nFoo;
+    END_PROPERTY
+    PROPERTY_SET PUBLIC nFoo : INT
+        _nFoo := nFoo;           // chỗ đặt phép kiểm giới hạn, nếu cần
+    END_PROPERTY
+END_FUNCTION_BLOCK
+```
+
+⚠ CODESYS có thuộc tính từ trước bản 4, với cách khai riêng — mỗi thuộc tính có hai phương thức truy
+cập `Get` và `Set`. ⭐ Sách dùng **phương thức trả về giá trị** (`IsEmpty()`) thay cho thuộc tính ở ví dụ
+chính, vì hai lý do: dấu `()` nói với người đọc *"đây là lời gọi, có mã chạy"* — thuộc tính thì trông
+**y hệt** một biến; và cú pháp phương thức giống nhau hơn giữa các hệ.
+
+### Hệ nào có — đối chiếu ngày 2026-09-26
+
+| Hệ | Hướng đối tượng | Căn cứ |
+|---|---|---|
+| ⭐ **CODESYS** và các nền dựng trên nó | ✅ `METHOD`, `PROPERTY`, `INTERFACE`, `EXTENDS`, `IMPLEMENTS`, `THIS^`, `SUPER^`, `REFERENCE TO`, và phương thức khởi tạo riêng `FB_init` | Trợ giúp trực tuyến CODESYS |
+| **Siemens** — TIA Portal (LAD / FBD / SCL) | ❌ Trong TIA Portal thì không. Hướng đối tượng nằm ở **SIMATIC AX** — môi trường viết ST riêng; thư viện AX nhập vào TIA Portal thì lớp thành FB, phương thức thành FC, và ⚠ **không dùng trực tiếp được** trong chương trình TIA | Tài liệu TIA Portal V20, mục về lập trình hướng đối tượng trong thư viện SIMATIC AX |
+| **Rockwell** — Logix | ❌ Tài liệu tuân thủ IEC 61131-3 bản 3 của Logix liệt kê từng tính năng được hỗ trợ — **không có** mục nào cho lớp, phương thức hay interface. Tái dùng bằng lệnh tự định nghĩa (mục 30.5) | Tài liệu tuân thủ IEC 61131-3 của Logix, bản 3/2022 |
+| **Mitsubishi** — dòng FX5 | ⚠ Không thấy `METHOD` / `INTERFACE` / `EXTENDS` trong tài liệu lệnh và khối của dòng FX5 có trong bộ nguồn — tra tài liệu lập trình của dòng bạn dùng | Tài liệu lệnh FX5 |
+| **Inovance** | Dòng dựng trên CODESYS: theo nền CODESYS — ⚠ kiểm phiên bản. Dòng nhỏ (họ H5U / Easy): không thấy trong tài liệu lập trình | Tài liệu H5U / Easy |
+
+> ⭐⭐ **Câu chốt của mục này:** hướng đối tượng là **một cách tổ chức thêm**, không phải bậc thang
+> trên của lập trình PLC. Một chương trình cổ điển tổ chức tốt theo ba tầng (Chương 27) dễ bảo trì hơn
+> một chương trình hướng đối tượng mà người sửa lúc hai giờ sáng không đọc nổi. ⚡ Chọn nó khi nó làm
+> cho **người sửa** đỡ việc — đúng tiêu chí ở mục 30.1.
+
+---
+
 ## 30.6 Quản lý phiên bản chương trình PLC
 
 ### Cái gì so sánh được, cái gì không
@@ -1013,6 +1163,24 @@ một lớp: analog và chuyển động.
   quả xoá ở sườn xuống và vẫn hiện ít nhất một vòng nếu `Execute` tắt giữa chừng; `Enable` tắt thì
   khối ngừng và xoá ngõ ra. ⚠ Hai tài liệu **lệch nhau** ở hành vi kích lại khi đang `Busy` — bảng
   năm quy tắc ở mục 30.5b ghi rõ chỗ lệch.
+
+- **PLCopen** — *Guidelines for Object Orientation* (tờ giới thiệu 1 trang): bản 3 của IEC 61131-3 cho
+  phép lập trình hướng đối tượng; cách cổ điển **không bị thay thế** mà cùng tồn tại; các câu hỏi thiết
+  kế — chỉ dùng phương thức hay cả truy cập biến trực tiếp, interface, *kết hợp hay kế thừa* — nền cho
+  mục 30.5c. Bản hướng dẫn đầy đủ chưa có trong bộ tài liệu.
+- **CODESYS** — trợ giúp trực tuyến (đối chiếu 2026-09-26), các mục *Method*, *Property*, *Interface*,
+  *Implementation of an Interface*, *Extension of a Function Block*, *REFERENCE TO*, *THIS*, *SUPER*,
+  *FB_Init*: biến trong phương thức **khởi tạo lại mỗi lần gọi**; phương thức không đọc được `VAR_TEMP`
+  của khối; biến kiểu interface là tham chiếu và bằng 0 tới lần gắn đầu; `:=` với tham chiếu chép giá
+  trị, `REF=` mới gắn; không có mảng tham chiếu; không đa kế thừa nhưng nhiều interface; sửa chương
+  trình đang chạy có tham chiếu interface thì tốn thêm thời gian — nền cho bảng năm cái bẫy.
+- **Siemens** — tài liệu TIA Portal V20, mục *Object-oriented programming in SIMATIC AX libraries*:
+  hướng đối tượng thuộc SIMATIC AX; nhập vào TIA Portal thì lớp thành FB, phương thức thành FC và không
+  dùng trực tiếp được.
+- **Rockwell Automation** — *Logix 5000 Controllers IEC 61131-3 Compliance* (1756-PM018I, 3/2022):
+  bảng tuân thủ theo từng tính năng — không có mục cho lớp, phương thức hay interface.
+- **Stefan Henneken** — *IEC 61131-3: Comparison of Edition 3 and Edition 4* (6/2025): cú pháp thuộc
+  tính của bản 4, ví dụ `FB_Foo` ở mục 30.5c lấy theo bài này.
 
 > ⚡ Quy ước đặt tên ở mục 30.2 là **quy ước của cuốn sách này**, không phải chuẩn ngành. Dự án của bạn
 > có thể dùng quy ước khác — điều bắt buộc là **có một quy ước, viết ra thành văn, và dùng nhất quán**.

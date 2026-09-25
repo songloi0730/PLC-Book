@@ -486,7 +486,7 @@ cảm biến, đảo một chân chung — rồi tự tìm ra. Đây là bài t�
 
 ### Chương tiếp theo
 
-Chương 14 — **Năm ngôn ngữ của IEC 61131-3**. Bạn đã có phần cứng và biết chọn nó. Từ đây sách chuyển
+Chương 14 — **Các ngôn ngữ của IEC 61131-3**. Bạn đã có phần cứng và biết chọn nó. Từ đây sách chuyển
 sang lập trình: chuẩn cho những ngôn ngữ nào, mỗi ngôn ngữ hợp với việc gì, và vì sao ladder vẫn
 chiếm ưu thế ở tầng máy.
 
