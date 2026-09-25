@@ -3036,6 +3036,110 @@ không phù hợp thực tế không?"*
 
 ---
 
+## Đợt 58 — 2026-09-26 · Soát mã mẫu theo PLCopen, và bộ kiểm cú pháp ST
+
+⭐ Chủ dự án yêu cầu kế hoạch hoàn thiện tập trung vào **tổ chức chương trình, cấu trúc mã lệnh, cách
+thực hiện lệnh, mã ví dụ**, được phép tìm và tải tài liệu. Kế hoạch 5 đợt ở design note 0005 đã được
+duyệt; đây là đợt nền.
+
+### A — Nguồn
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 510 | ⚠ Bốn tệp PLCopen đã được duyệt tải — ⚠ **chỉ bộ Coding Guidelines v1.0 là bản đầy đủ** (127 trang). Ba tệp còn lại hoá ra là tờ giới thiệu 1–4 trang. Bản đầy đủ của ba tài liệu đó **chưa tải** — cần chủ dự án duyệt riêng từng tệp | ⚠ |
+| 511 | Bảng tổng hợp cuối Coding Guidelines ghi mã **L22**, thân tài liệu gọi cùng quy tắc là **L12** — lỗi in của chính tài liệu. Sách dùng L12 và ghi rõ ở Phụ lục N mục N.2 | ✔ |
+
+### B — Lỗi trong mã mẫu, tìm ra khi soát theo danh mục PLCopen
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 512 | CP14 — `RETURN` trong khung trình tự: Phụ lục L (L.4, L.6), Ch.26 mục 26.3, và hàm `KiemTraCongThuc` ở Ch.29 → viết lại bằng **một cửa vào** `IF … THEN ; ELSE … END_IF` và chuỗi `ELSIF` | ⭐ |
+| 513 | ⭐⭐ Khung L.6 còn một lỗi **ngữ nghĩa** nặng hơn lỗi quy tắc: nó xoá `Stn1_Step := 0` **mỗi khi** `M_CycleEnable` tắt — trái Ch.25 *"tạm dừng nhưng GIỮ nguyên vị trí"*. Cửa vào mới chỉ **giữ**, không xoá; huỷ chu trình là một chuyển trạng thái riêng ở tầng máy | ⭐⭐ |
+| 514 | CP3 — vòng `REPEAT` ở Ch.20 đọc `LastArea` trước khi gán ở vòng đầu, và lệch một chỉ số. ⚠ **Lỗi thừa hưởng từ nguồn** (Hanssen mục 11.8.4). Sửa, kèm chú thích và bảng B18: trần vòng lặp đặt trong `UNTIL` so với `EXIT` trong thân (L10) | ⭐ |
+| 515 | CP28 — Ch.19 viết *"với số nguyên thì `=` hoàn toàn an toàn"*: sai với **đại lượng đo được** ở dạng số nguyên (vị trí ×100, `T_Dwell.ET`). Thêm tiểu mục và bảng rời rạc / đếm / đo | ⭐ |
+| 516 | Ba bẫy chưa từng được dạy: CP4 chồng lấn địa chỉ (Phụ lục B mục B.10) · L12 sửa biến đếm của `FOR` · L13 dùng biến đếm sau vòng lặp (Ch.20 mục 20.5) | ➕ |
+| 517 | Phụ lục B mục B.10 trỏ *"(Chương 24, 56)"* cho địa chỉ tuyệt đối — Ch.24 là đại số Boolean → Ch.8 mục 8.4, Ch.11 mục 11.3, Ch.56 | ⚠ |
+| 518 | ⚠ **Lỗi của tôi:** tự đánh ✔ cho bảy dòng Phụ lục N (CP4, CP7, CP9, L2, L8, L12, L13) **trước khi kiểm**. Tự soát lại bằng tìm kiếm: bốn dòng không có chương nào dạy → sửa dấu thành ➕ hoặc bổ sung nội dung rồi mới đánh ⭐ | ⚠ |
+
+### C — Phụ lục N
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 519 | ➕➕ **Phụ lục N — Quy ước viết mã**: 64 quy tắc đối chiếu kèm dấu ✔ ⭐ ⚠ ◯ ➕ · chỗ lệch có chủ ý kèm lý do (tiền tố **vai trò** `DI_` thay tiền tố **kiểu**; nhánh `IF … THEN ; ELSE` cố ý) · câu trả lời của sách cho mọi quy tắc *"hãy tự định nghĩa…"* · quy ước đoạn trích và ví dụ hoàn chỉnh | ➕➕ |
+| 520 | Đo trước khi trả lời L11 (độ dài dòng): 2.489 dòng ST, chỉ **3** dòng vượt 80 ký tự ở phần mã, 65 dòng vượt do chú thích | ✔ |
+| 521 | ⚠ Phụ lục N và bảng quy ước của Ch.57 đều khai tiền tố `Rcp_` cho tham số công thức — ⚠ **không chương nào dùng**. Mã thật dùng `ActiveRecipe.<tham số>`, kiểu `ST_Recipe` → sửa cả hai theo mã thật (đúng luôn CP1: truy cập cấu trúc bằng tên) | ⚠ |
+
+### D — Bộ kiểm thứ sáu: `tools/kiem_cu_phap_st.py`
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 522 | ➕➕ Tám nhóm phép kiểm: đóng/mở khối · ngoặc · `THEN`/`DO`/`OF` · `=` thay `:=` · thiếu `;` · tên chân khối chuẩn · ⭐ khối cùng tên phải giống hệt cả giao diện lẫn thân · `RETURN`/`EXIT`/`CONTINUE` ngoài ví dụ SAI. Nối vào `gop_sach.sh` | ➕➕ |
+| 523 | ⭐ **Thử bằng 11 lỗi cài cố ý** vào bản sao `docs/` — bắt đủ 11; bản sạch 0 lỗi | ✔ |
+| 524 | Lần chạy đầu: 12 khối *"không đóng"*. Sáu khối là đoạn trích có `...` — đúng quy ước → bộ kiểm công nhận **dấu lược**. Sáu khối **thật sự** thiếu phần đóng (Ch.27 ×2, Ch.28 ×2, Ch.43, Ch.50) → sửa | ⭐ |
+| 525 | ⚠ Lỗi của chính bộ kiểm: coi dấu chấm trong `45.0` là truy cập thành viên → bốn báo nhầm *"IF thiếu THEN"* ở Ch.19, Ch.48 → tách số thực thành một token | ⚠ |
+| 526 | ⭐⭐ **Hai khối khác nhau cùng mang tên `FB_Cylinder2Pos`** — Ch.27 và Phụ lục L mục L.8, khác cả chân vào lẫn chân ra. Người đọc chép khối ở Phụ lục L rồi đọc Ch.57 gọi `Stop1.Valve` thì không biên dịch được | ⭐⭐ |
+
+### E — Hai lỗi hành vi chỉ lộ ra khi GHÉP chương
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 527 | ⭐⭐ Bản Ch.27 chốt `Fault` mà **không có đường xoá** (chú thích ghi *"cần Reset"* nhưng khối không có chân Reset). Ch.25 chỉ cho Reset khi `NOT M_AnyFault` → máy **kẹt ở `Alarm`** tới khi tắt nguồn | ⭐⭐ |
+| 528 | ⭐⭐ Bản Ch.27 AND `Enable` thẳng vào van; Ch.25 cắt `M_MotionEnable` khi vào `Alarm` → van một cuộn tắt = **kẹp nhả** → trái chức năng an toàn **SF6** của DP-01. Mô phỏng từng vòng quét tái hiện được: khí có lại thì board rơi | ⭐⭐ |
+| 529 | Bản L.8 gọi `T_Move` **hai lần** trong một vòng quét để đếm lại — vi phạm CP20, đúng lỗi Ch.17 Bẫy 5 dạy tránh | ⭐ |
+| 530 | ➕➕ Khối hợp nhất: **giữ** lệnh van khi mất phép · lỗi chỉ **báo**, không tác động van · `Done` so với **yêu cầu** · `Reset` xoá **trước** các phép kiểm · gọi bộ định thời đúng một lần. Mô phỏng 8 kịch bản đạt. Đặt giống hệt ở Ch.27 và L.8; ⭐ Bẫy 7 mới so sánh ba cách đặt cổng cho phép; design note 0006 | ➕➕ |
+| 531 | Thể hiện được đặt tên **ba kiểu** — `Stop1` (Ch.26, 27, 57), `Cyl_Stop1` (Ch.14), `FB_Cyl_Clamp1` (Phụ lục L, dùng tiền tố **kiểu** cho **thể hiện**) → thống nhất `Stop1`; Phụ lục N mục N.6 thêm quy tắc | ⚠ |
+| 532 | Bảng chốt 27.8 đánh số lộn thứ tự (…9, 11, 12, 10) → sửa, thêm dòng 13 | ⚠ |
+
+### F — Ngoài phạm vi, phát hiện dọc đường
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 533 | ⭐⭐ **Cụm con trỏ theo số chương CŨ còn sót sau đợt 13**: công thức → Ch.32 (đúng 29) · báo động → Ch.43 (đúng 44) · đánh giá rủi ro → Ch.6 (đúng 47) · khí nén → Ch.5 (đúng 6) · kiểu dữ liệu → Ch.14 (đúng 11, 19) · vòng quét → Ch.7 (đúng 10) · trình tự → Ch.21 (đúng 26) — **51 chỗ trong 13 tệp**, nặng nhất Ch.57 với 17 chỗ | ⚠⚠ |
+| 534 | ⭐ Vì sao bộ kiểm chủ nhà không bắt được: *"công thức"* ở Ch.32 là **công thức toán**, *"báo động"* có mặt ở Ch.43 — điều kiện *"chương đích không hề nhắc từ này"* không bao giờ kích hoạt. Chỉ quét theo **bảng cũ → mới** của đợt 13 mới ra | ⭐ |
+| 535 | Không phải mọi *"Ch.21 cho trình tự"* đều sai: Ch.21 có bản SFC của trạm 1 — **sáu chỗ giữ nguyên** sau khi xét từng chỗ | ✔ |
+| 536 | Mục lục thanh bên của bản HTML lộ nguyên `**` — bộ sinh mục lục dùng tiêu đề markdown thô → dùng tiêu đề đã render | ⚠ |
+| 537 | Bảy dòng Mục lục có `**` không đóng trong chữ liên kết (Ch.41, 42, A1, A2, I, L, M) — lộ ra bản phát hành | ⚠ |
+| 538 | ⚠⚠ Mục lục của **bản phát hành** ghi *"Hiện tại 18/58 — đợt 4 đang làm"* (thực tế 58/58), và trỏ người đọc tới `docs/case_study_may_mau.md` — tệp nội bộ → sửa, trỏ Phụ lục J | ⚠⚠ |
+| 539 | `00c_Tai_lieu_tham_khao.md` (tài liệu làm việc, không ghép vào sách) dùng nguyên số chương cũ ở bảng tiêu chuẩn — nguồn gốc khả dĩ của các lần chép số cũ → cập nhật | ⚠ |
+| 540 | `PROJECT_STATUS.md` đứng yên từ 2026-08-31 (*"18/58"*); `CLAUDE.md` mô tả ba bộ kiểm trong khi có năm → cập nhật cả hai, thêm bất biến **B19** (mã mẫu theo Phụ lục N) | ⚠ |
+| 541 | ⚠ Loại lỗi thứ ba chỉ lộ **sau khi render**: mẫu `**… *(UDT)*, …**` — đậm lồng nghiêng, theo sau là dấu phẩy — bị trình chuyển markdown hiểu sai, in nguyên `**` ở dòng Ch.11 của Mục lục. ⭐ Thêm `tools/kiem_html.py` kiểm **bản HTML đã render**, chạy trong `gop_sach.sh` trước khi chép sang kho phát hành — bắt đúng chỗ này ở bản cũ, 0 chỗ ở bản mới | ⚠ |
+
+### Kết quả đợt 58
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **32** |
+| ✔ Xác nhận | 4 |
+| ⭐⭐ / ⚠⚠ Lỗi nặng | 6 — #513, #526, #527, #528, #533, #538 |
+| ⭐ Lỗi đã sửa | 6 |
+| ⚠ Lỗi nhỏ, lưu ý — gồm lỗi của tôi (#518) và của bộ kiểm (#525) | 12 |
+| ➕➕ / ➕ Bổ sung | 3 / 1 |
+| Tệp mới | Phụ lục N · `tools/kiem_cu_phap_st.py` · `tools/kiem_html.py` · design note 0006 |
+
+> ⭐⭐ **Bài học 1 — mỗi chương đúng một mình, ghép lại thì sai.**
+>
+> Ch.25 viết *"Reset đòi hỏi `NOT M_AnyFault`"* — đúng. Ch.27 viết một khối chốt lỗi — đúng một mình.
+> Ghép lại: máy không bao giờ ra khỏi `Alarm`. Ch.25 cắt `M_MotionEnable` khi báo lỗi — đúng. Ch.27
+> AND `Enable` vào van — trông đúng. Ghép lại: kẹp nhả đúng lúc máy đang báo có sự cố. ⚡ Năm mươi bảy
+> đợt rà **theo chương** không thấy, vì không đợt nào đọc **giao diện giữa hai chương**. ⭐ Thứ ép hai
+> chương phải khớp nhau là một bộ kiểm **so tên khối xuyên sách** — và nó tìm ra chuyện này ngay lần
+> chạy đầu tiên.
+
+> ⭐ **Bài học 2 — danh mục bên ngoài tìm ra thứ mà rà lại bao nhiêu lần cũng không thấy.**
+>
+> `RETURN` trong khung trình tự, vòng lặp đọc phần tử chưa gán, *"số nguyên thì `=` an toàn"* — cả ba
+> đã qua hơn năm mươi đợt rà. Một lượt soát theo **64 quy tắc viết ra** của PLCopen tìm ra cả ba. ⚡
+> Rà lại bằng chính con mắt đã viết ra nó thì chỉ thấy lại đúng những gì mình đã nghĩ lúc viết.
+
+> ⚠ **Bài học 3 — sửa một cụm lỗi mà không có công cụ quét thì sẽ còn sót.**
+>
+> Đợt 13 đã lập bảng số chương cũ → mới và sửa bảy phụ lục, nhưng không có gì **chạy lại** bảng đó.
+> Bốn mươi lăm đợt sau, 51 chỗ vẫn còn — dồn nhiều nhất ở Ch.57, chương ráp toàn bộ sách. ⭐ Lần này
+> quét bằng chính bảng của đợt 13. ⚡ Nếu cụm này còn tái phát, bảng cũ → mới nên thành một phép kiểm
+> cố định trong `kiem_chu_nha.py`.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

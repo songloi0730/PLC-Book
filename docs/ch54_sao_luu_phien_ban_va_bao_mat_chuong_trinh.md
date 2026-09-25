@@ -63,7 +63,7 @@ của nó rất đắt.
 | 2 | ⭐ **Cấu hình phần cứng** *(hardware configuration)* — khe cắm, module, địa chỉ, tham số module; ⭐ biểu mẫu **Phụ lục C.10** | CPU mới không nhận I/O |
 | 3 | ⭐ **Tham số biến tần / servo driver** — ⚠⚠ **kể cả tham số CHỨC NĂNG AN TOÀN của drive** | ⚠ **Động cơ chạy sai hoặc không chạy**; chỉnh lại tay mất hàng ngày (Chương 36–37). ⚠⚠ Và nếu thiếu tham số an toàn: máy **chạy bình thường** nhưng chức năng an toàn **không còn như đã nghiệm thu**, ⭐ **không báo động nào nói điều đó** (Chương 37 mục 37.6b) |
 | 4 | ⭐ **Dự án HMI / SCADA** | Có máy chạy nhưng ⚠ **không ai điều khiển được** (Chương 44) |
-| 5 | **Công thức và tham số sản phẩm** | Mất toàn bộ dữ liệu sản phẩm (Chương 32) |
+| 5 | **Công thức và tham số sản phẩm** | Mất toàn bộ dữ liệu sản phẩm (Chương 29) |
 | 6 | ⚠⚠ **Chương trình và cấu hình thiết bị an toàn** | Không khôi phục được chức năng an toàn; ⚠ **và phải kiểm định lại** (Chương 48) |
 | 7 | **Cấu hình mạng** — địa chỉ IP, tên trạm, tệp mô tả thiết bị | Thiết bị không nhận nhau (Chương 40) |
 | 8 | ⭐⭐ **Chương trình và ĐIỂM DẠY của bộ điều khiển ngoài** — robot, tay gắp thông minh | ⚠⚠ **Điểm dạy là dữ liệu nhưng có vai trò như code**: mất nó thì phải dạy lại từng điểm trên máy thật, và ⚠ không có cách nào kiểm rằng đã dạy đúng như cũ (Chương 46 mục 46.5) |
@@ -290,7 +290,7 @@ DP01_PLC_v2.4_2026-08-15_them-tre-200ms-tram1.zip
 | 3 — ⭐ **Tham số biến tần chuyền** | ⚠ Kèm cả **bản sao trong bảng điều khiển rời** (Chương 36) |
 | 3b — Tham số servo trục Z | Chương 37 |
 | 4 — Dự án HMI | Chương 44 |
-| 5 — Công thức sản phẩm | Đường chạy keo, thời gian sấy UV theo loại board (Chương 32) |
+| 5 — Công thức sản phẩm | Đường chạy keo, thời gian sấy UV theo loại board (Chương 29) |
 | 6 — ⚠⚠ **Cấu hình rơ-le an toàn + mã kiểm tra** | Kèm hồ sơ kiểm định (Chương 47) |
 | 7 — Cấu hình mạng | Địa chỉ scanner, bộ điều khiển nhiệt RS-485, biến tần (Chương 38, 40) |
 

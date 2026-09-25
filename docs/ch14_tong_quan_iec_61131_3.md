@@ -164,10 +164,10 @@ hiện**:
 
 ```iecst
 VAR
-    Cyl_Stop1  : FB_Cylinder2Pos;
-    Cyl_Clamp1 : FB_Cylinder2Pos;
-    Cyl_Stop2  : FB_Cylinder2Pos;
-    Cyl_Clamp2 : FB_Cylinder2Pos;
+    Stop1  : FB_Cylinder2Pos;      // tên thể hiện = tên cơ cấu trên máy
+    Clamp1 : FB_Cylinder2Pos;
+    Stop2  : FB_Cylinder2Pos;
+    Clamp2 : FB_Cylinder2Pos;
 END_VAR
 ```
 
@@ -350,7 +350,7 @@ tồn tại**, tên là **PLCopen XML** *(TC6 XML)* — và câu chuyện của 
       │     └── PRG_Stats      (ST)  ── đếm, tính chu kỳ, hiệu suất (Ch.19)
       │
       └── các thể hiện FB dùng chung:
-            Cyl_Stop1, Cyl_Clamp1, Cyl_Stop2, Cyl_Clamp2  : FB_Cylinder2Pos
+            Stop1, Clamp1, Stop2, Clamp2  : FB_Cylinder2Pos
 ```
 
 Bốn điều rút ra từ bố cục này:

@@ -35,8 +35,8 @@ Chỗ nào các hãng làm khác nhau thì ghi rõ đã đối chiếu những h
 | Giáo trình đo lường công nghiệp (CC BY, 3311 tr) | Vật lý/điện nền tảng, tài liệu đo lường, đo rời rạc & liên tục, chương PLC riêng, 4–20 mA, mạng số & Modbus, van điều khiển, PID, an toàn quá trình, an ninh mạng OT, **chiến lược chẩn đoán sự cố** | Phần I, V, VI, VII |
 | Giáo trình PLC đại học (GNU FDL, 860 tr) | Phần cứng, cảm biến, cơ cấu chấp hành, Boolean & Karnaugh, **thiết kế logic có cấu trúc / lưu đồ / trạng thái**, 5 ngôn ngữ IEC, analog, truyền thông, fail-safe, kỹ nghệ phần mềm PLC, chọn PLC. Bài tập **có lời giải** | Phần II, III, **IV** |
 | Bộ giáo trình mạch điện (5 tập, ~2350 tr) | DC, AC, bán dẫn, số, tra cứu | Ch.3 |
-| Tài liệu ngôn ngữ IEC của một hãng lớn (9 quyển) | LD / ST / FBD / SFC tách bạch, **tài liệu riêng về mức độ tuân thủ IEC 61131-3**, task–program–routine, tag & UDT, mã lỗi | Ch.8–19, Ch.39, Phụ lục A/B |
-| Hướng dẫn an toàn máy của nhà sản xuất thiết bị an toàn (2 quyển, 298 tr) | Sáu bước tới máy an toàn, giới thiệu PL/SIL, chọn thiết bị bảo vệ quang điện, đối chiếu khung Bắc Mỹ | Ch.36 |
+| Tài liệu ngôn ngữ IEC của một hãng lớn (9 quyển) | LD / ST / FBD / SFC tách bạch, **tài liệu riêng về mức độ tuân thủ IEC 61131-3**, task–program–routine, tag & UDT, mã lỗi | Ch.10–11, 14–21, 27, 51, Phụ lục A/B |
+| Hướng dẫn an toàn máy của nhà sản xuất thiết bị an toàn (2 quyển, 298 tr) | Sáu bước tới máy an toàn, giới thiệu PL/SIL, chọn thiết bị bảo vệ quang điện, đối chiếu khung Bắc Mỹ | Ch.47, 48 |
 
 > ⚠ Tài liệu hãng và hướng dẫn của nhà sản xuất **không phải bản gốc tiêu chuẩn**. ISO 13849-1,
 > IEC 62061, IEC 61131-3, IEC 62443 đều có bản quyền và phải mua từ tổ chức phát hành.
@@ -47,14 +47,14 @@ Chỗ nào các hãng làm khác nhau thì ghi rõ đã đối chiếu những h
 
 | Tiêu chuẩn | Nội dung | Chương dùng |
 |---|---|---|
-| IEC 61131-3 | Ngôn ngữ lập trình PLC (LD, ST, FBD, SFC, IL) | Ch.11–19, Phụ lục A/B |
-| IEC 61131-2 | Yêu cầu thiết bị & thử nghiệm (đặc tính ngõ vào/ra) | Ch.7 |
-| ISO 13849-1/-2 | An toàn máy — bộ phận liên quan an toàn của hệ điều khiển (PL, Category) | Ch.36 |
-| IEC 62061 | An toàn máy — hệ điều khiển điện/điện tử lập trình (SIL) | Ch.36 |
-| IEC 60204-1 | Trang bị điện của máy (dừng khẩn cấp, màu nút, nối đất) | Ch.36, 38 |
-| ISO 12100 | Nguyên tắc chung thiết kế — đánh giá & giảm thiểu rủi ro | Ch.36 |
-| IEC 62443 | An ninh mạng hệ thống tự động hoá công nghiệp | Ch.35 |
-| IEC 61784 / 61158 | Bus trường & mạng công nghiệp | Ch.33 |
+| IEC 61131-3 | Ngôn ngữ lập trình PLC (LD, ST, FBD, SFC, IL) | Ch.11, 14–21, Phụ lục A/B/N |
+| IEC 61131-2 | Yêu cầu thiết bị & thử nghiệm (đặc tính ngõ vào/ra) | Ch.4, 5, 8, 9 |
+| ISO 13849-1/-2 | An toàn máy — bộ phận liên quan an toàn của hệ điều khiển (PL, Category) | Ch.47 |
+| IEC 62061 | An toàn máy — hệ điều khiển điện/điện tử lập trình (SIL) | Ch.47 |
+| IEC 60204-1 | Trang bị điện của máy (dừng khẩn cấp, màu nút, nối đất) | Ch.3, 5, 47, 49 |
+| ISO 12100 | Nguyên tắc chung thiết kế — đánh giá & giảm thiểu rủi ro | Ch.23, 47 |
+| IEC 62443 | An ninh mạng hệ thống tự động hoá công nghiệp | Ch.45 |
+| IEC 61784 / 61158 | Bus trường & mạng công nghiệp | Ch.39, 40 |
 
 ---
 
@@ -97,7 +97,7 @@ Chỗ nào các hãng làm khác nhau thì ghi rõ đã đối chiếu những h
 
 ---
 
-## §4 — Nguồn học trực tuyến & cộng đồng (nguyên liệu cho Ch.43)
+## §4 — Nguồn học trực tuyến & cộng đồng (nguyên liệu cho Ch.58)
 
 | Loại | Ghi chú |
 |---|---|
@@ -110,7 +110,7 @@ Chỗ nào các hãng làm khác nhau thì ghi rõ đã đối chiếu những h
 | Tổ chức nghề nghiệp | Hội tự động hoá quốc tế có chi hội theo vùng, sinh hoạt định kỳ — giá trị chính là **mạng lưới quan hệ** để có việc đầu tiên, không chỉ là chứng chỉ |
 | Trường nghề / cao đẳng kỹ thuật địa phương | Được nhắc tới nhiều nhất như đường vào nghề rẻ và hiệu quả, đặc biệt chương trình cơ điện tử |
 
-> 💡 **Ghi chú viết Ch.43:** cách trình bày nên là **bảng "mục tiêu học → loại nguồn phù hợp"**,
+> 💡 **Ghi chú viết Ch.58:** cách trình bày nên là **bảng "mục tiêu học → loại nguồn phù hợp"**,
 > không phải danh sách link. Link sẽ chết; tiêu chí chọn nguồn thì không.
 
 ---

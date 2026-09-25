@@ -14,7 +14,7 @@
 > ⚠ Mục 56.7 nêu vấn đề này để bạn **biết mà hỏi đúng người**. Chương này:
 >
 > - **không thay thế** tư vấn pháp lý — quy định khác nhau giữa các nước, các ngành và các loại máy;
-> - **không thay thế** đánh giá rủi ro do **người có thẩm quyền** thực hiện (Chương 6, ISO 12100);
+> - **không thay thế** đánh giá rủi ro do **người có thẩm quyền** thực hiện (Chương 47 mục 47.2, ISO 12100);
 > - **không thay thế** việc kiểm định chức năng an toàn (Chương 48).
 >
 > ⚠⚠ Trước một dự án nâng cấp có chạm phần an toàn: **hỏi bộ phận pháp chế và một chuyên gia an toàn
@@ -127,7 +127,7 @@ Nghe tầm thường, nhưng đây là công cụ mạnh nhất và rẻ nhất 
 | Cách | Nội dung |
 |---|---|
 | 1 | ⭐ **Bắt đầu từ ngõ ra, đi ngược** — chọn một cơ cấu, tìm điều kiện làm nó chạy |
-| 2 | ⭐⭐ **Tìm bộ đếm bước / thanh ghi trạng thái** — đây là xương sống trình tự (Chương 21) |
+| 2 | ⭐⭐ **Tìm bộ đếm bước / thanh ghi trạng thái** — đây là xương sống trình tự (Chương 25, 26) |
 | 3 | Đối chiếu với ⭐ **quan sát máy chạy thật** — xem thứ tự động tác |
 | 4 | ⭐ **Hỏi người vận hành**: máy làm gì, khi nào dừng, họ phải can thiệp lúc nào |
 | 5 | Ghi chú lại **ngay trong lúc đọc**, dựng dần bảng tương ứng bit ↔ ý nghĩa |
@@ -172,7 +172,7 @@ Nghe tầm thường, nhưng đây là công cụ mạnh nhất và rẻ nhất 
 |---|---|
 | ⚠ **Thời gian quét khác** | ⭐ Logic phụ thuộc thời gian quét sẽ **chạy khác** (Chương 10) |
 | Cách xử lý bộ định thời khi bị ngắt giữa chừng | Hành vi khác nhau giữa các dòng |
-| ⭐ **Kiểu dữ liệu và tràn số** | Chương 14 — một phép tính chạy đúng 15 năm có thể tràn trên nền mới |
+| ⭐ **Kiểu dữ liệu và tràn số** | Chương 11, 19 — một phép tính chạy đúng 15 năm có thể tràn trên nền mới |
 | Thứ tự quét khối / ngắt | Chương 19 |
 | Vùng nhớ giữ được qua mất điện | ⭐ Chương 11 — ⚠ **bộ đếm bảo trì, số lô, tổng sản lượng** |
 | Cách làm tròn số thực | Chương 14 |
@@ -308,7 +308,7 @@ chế tạo, hay của hôm nay?**
 
 | Bước | Khi nào |
 |---|---|
-| ⭐ **Đánh giá rủi ro cho máy SAU nâng cấp** | ⭐ **Trước khi báo giá** — Chương 6 |
+| ⭐ **Đánh giá rủi ro cho máy SAU nâng cấp** | ⭐ **Trước khi báo giá** — Chương 47 mục 47.2 |
 | ⚠ Hỏi pháp chế về ranh giới "thay đổi lớn" | Trước khi ký |
 | ⭐ Ghi rõ trong hợp đồng: ai chịu trách nhiệm phần an toàn | ⚠ **Mập mờ ở đây là rủi ro lớn nhất của dự án** |
 | Lập hồ sơ những gì đã kiểm tra và đã báo | Suốt dự án |
@@ -336,7 +336,7 @@ cỗ máy ai đó sẽ retrofit trong mười năm nữa.**
 | Bảng I/O khớp số dây và tên tag | Chương 23, 49 mục 49.6 |
 | ⭐ Quy trình sao lưu bảy hạng mục | Chương 54 |
 | Nhật ký thay đổi có ghi **lý do** | Chương 53 mục 53.3 |
-| Trình tự có cấu trúc rõ, bộ đếm bước tường minh | Chương 21 — ⭐ **người sau đọc được** |
+| Trình tự có cấu trúc rõ, bộ đếm bước tường minh | Chương 26 — ⭐ **người sau đọc được** |
 | ⭐ Không để "đấu tạm" không nhãn | Chương 53 mục 53.4 |
 | Hồ sơ an toàn đầy đủ, có mã kiểm tra | Chương 48, 54 |
 

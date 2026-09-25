@@ -372,6 +372,7 @@ cho con người, và con người nhìn được board có bất thường khô
 // ✗ SAI
 IF NOT DI_Clamp1Up THEN
     // coi như kẹp đã hạ  → SAI khi kẹp đang ở giữa chừng
+END_IF;
 ```
 
 Xy-lanh mất khí giữa hành trình làm **cả hai cảm biến cùng báo 0**. Code trên hiểu nhầm thành "đã hạ"
@@ -381,6 +382,7 @@ và cho bước tiếp theo chạy.
 // ✓ ĐÚNG — kiểm tra cảm biến ĐÍCH đang bật
 IF DI_Clamp1Dn THEN
     // kẹp thật sự đã hạ
+END_IF;
 ```
 
 Và nếu cần phát hiện tư thế giữa chừng để báo lỗi:

@@ -92,7 +92,36 @@ về sai, và nó sai một cách **không tái hiện được** — chạy đ�
 IF ABS(ActualLength - 12.5) < 0.01 THEN ...
 ```
 
-> **Quy tắc: không bao giờ dùng `=` hoặc `<>` với số thực.** Với số nguyên thì `=` hoàn toàn an toàn.
+> **Quy tắc: không bao giờ dùng `=` hoặc `<>` với số thực.**
+
+### ⚠⚠ Và với số nguyên thì `=` an toàn — nhưng CHỈ với đại lượng rời rạc
+
+Số nguyên **biểu diễn chính xác**, nên `=` giữa hai số nguyên luôn cho kết quả đúng về mặt số học.
+⚠ Nhưng đó không phải vấn đề duy nhất. Với **đại lượng đo được hoặc thời gian đã trôi**, còn một cái
+bẫy khác, và đổi sang số nguyên **không** cứu được:
+
+```iecst
+// ✗ SAI — kể cả khi vị trí là số nguyên
+IF ZPositionX100 = 1250 THEN ...           // trục đi từ 1248 sang 1253 trong MỘT vòng quét → bỏ lỡ
+IF T_Dwell.ET = T#10S THEN ...             // ET nhảy theo bước bằng vòng quét → gần như không bao giờ đúng
+
+// ✓ ĐÚNG — dò NGƯỠNG bằng >= hoặc <=
+IF ZPositionX100 >= 1250 THEN ...
+IF T_Dwell.Q THEN ...                      // ⭐ với bộ định thời: dùng Q, đừng so ET
+```
+
+⭐ Lý do là **vòng quét** (Chương 10): chương trình chỉ nhìn giá trị **một lần mỗi vòng**. Giữa hai lần
+nhìn, một đại lượng đo được có thể **nhảy qua** giá trị đích mà không bao giờ dừng đúng ở đó.
+
+| Loại giá trị | Ví dụ | `=` dùng được không |
+|---|---|---|
+| ⭐ **Rời rạc** — số bước, mã, trạng thái | `Stn1_Step = 20` · `Recipe.Id = 3` | ✅ **Được** — giá trị không có gì ở giữa |
+| **Đếm sự kiện, mỗi lần tăng 1** | `C_Board.CV = 50` | ✅ Được, nhưng ⭐ `>=` vẫn bền hơn nếu có lúc đếm nhiều cạnh trong một vòng |
+| ⚠⚠ **Đo được hoặc thời gian** — vị trí, khoảng cách, nhiệt độ, `ET` | `ZPositionX100` · `T_Dwell.ET` | ❌ **Không** — kể cả ở dạng số nguyên |
+
+> ⭐ Bộ quy tắc viết mã của PLCopen tách hẳn hai chuyện này thành hai quy tắc, cả hai mức ưu tiên
+> **cao**: một quy tắc cấm `=`/`<>` với **số thực**, một quy tắc cấm `=`/`<>` khi **dò ngưỡng thời gian
+> hoặc đại lượng vật lý, kể cả ở dạng số nguyên** (Phụ lục N, CP8 và CP28).
 
 ### So sánh trong dải — và vì sao nên có trễ
 
@@ -294,8 +323,11 @@ lệnh mặc định của mỗi hệ khác nhau. Với một chiều dài đo�
 > ⚡ **LƯU Ý — quy tắc thực dụng cho tính toán có phần lẻ**
 > Nhân lên rồi làm việc với **số nguyên đơn vị nhỏ**, thay vì dùng số thực. Đo chiều dài bằng
 > **phần mười mi-li-mét** (`125` thay vì `12.5`) thì mọi phép tính là số nguyên, không có sai số dấu
-> chấm động, so sánh bằng dùng được, và chỉ quy đổi khi hiển thị. Cách này phổ biến trong máy công
-> nghiệp vì nó loại hẳn cả một nhóm lỗi.
+> chấm động, và chỉ quy đổi khi hiển thị. Cách này phổ biến trong máy công nghiệp vì nó loại hẳn cả
+> một nhóm lỗi.
+>
+> ⚠ **Nhưng nó KHÔNG làm cho `=` an toàn với giá trị đo được** — chiều dài đo được vẫn có thể nhảy
+> qua giá trị đích giữa hai vòng quét. Dò ngưỡng vẫn phải dùng `>=` hoặc `<=` (mục 19.3).
 >
 > Khi chọn cách này, **ghi đơn vị vào tên biến**: `LengthTenthMm`, không phải `Length`. Đơn vị ngầm
 > hiểu là nguồn gốc của lỗi quy đổi.

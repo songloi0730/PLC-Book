@@ -239,59 +239,61 @@ Trình tự trạm 1, viết bằng biến số bước:
 ```iecst
 // ── Trình tự trạm 1 — chỉ chạy khi tầng máy cho phép (Chương 27) ──
 IF NOT M_CycleEnable THEN
-    RETURN;                                   // giữ nguyên bước, không tiến
+    ;                                         // ⭐ CỐ Ý: giữ nguyên bước, không tiến
+ELSE
+
+    CASE Stn1_Step OF
+
+      0:  // Chờ board tới
+          Stn1_Ready := TRUE;                     // giao diện công bố
+          Stn1_Busy  := FALSE;
+          IF DI_BoardStn1 OR M_DryRun THEN
+              Stn1_Ready := FALSE;
+              Stn1_Busy  := TRUE;
+              Stn1_Step  := 10;
+          END_IF;
+
+     10:  // Nâng chặn
+          M_Stn1_StopReq := TRUE;                 // yêu cầu, khối cơ cấu thực hiện
+          IF Stop1.Done THEN
+              Stn1_Step := 20;
+          END_IF;
+
+     20:  // Nâng kẹp
+          M_Stn1_ClampReq := TRUE;
+          IF Clamp1.Done THEN
+              Stn1_Step := 30;
+          END_IF;
+
+     30:  // Xử lý board  (nội dung xử lý ở lát cắt sau)
+          IF M_Stn1_ProcessDone THEN
+              Stn1_Step := 40;
+          END_IF;
+
+     40:  // Hạ kẹp
+          M_Stn1_ClampReq := FALSE;
+          IF Clamp1.Done THEN
+              Stn1_Step := 50;
+          END_IF;
+
+     50:  // Chờ trạm 2 sẵn sàng  ← điểm đồng bộ giữa hai trạm
+          Stn1_BoardDone := TRUE;
+          IF Stn2_Ready THEN
+              Stn1_Step := 60;
+          END_IF;
+
+     60:  // Hạ chặn, chuyển board sang
+          M_Stn1_StopReq  := FALSE;
+          M_Stn1_ConvReq  := TRUE;                // yêu cầu chuyền chạy
+          IF NOT DI_BoardStn1 THEN
+              M_Stn1_ConvReq  := FALSE;
+              Stn1_BoardDone  := FALSE;
+              Stn1_Step       := 0;               // quay lại chờ board mới
+          END_IF;
+
+    END_CASE;
+
 END_IF;
-
-CASE Stn1_Step OF
-
-  0:  // Chờ board tới
-      Stn1_Ready := TRUE;                     // giao diện công bố
-      Stn1_Busy  := FALSE;
-      IF DI_BoardStn1 OR M_DryRun THEN
-          Stn1_Ready := FALSE;
-          Stn1_Busy  := TRUE;
-          Stn1_Step  := 10;
-      END_IF;
-
- 10:  // Nâng chặn
-      M_Stn1_StopReq := TRUE;                 // yêu cầu, khối cơ cấu thực hiện
-      IF Stop1.Done THEN
-          Stn1_Step := 20;
-      END_IF;
-
- 20:  // Nâng kẹp
-      M_Stn1_ClampReq := TRUE;
-      IF Clamp1.Done THEN
-          Stn1_Step := 30;
-      END_IF;
-
- 30:  // Xử lý board  (nội dung xử lý ở lát cắt sau)
-      IF M_Stn1_ProcessDone THEN
-          Stn1_Step := 40;
-      END_IF;
-
- 40:  // Hạ kẹp
-      M_Stn1_ClampReq := FALSE;
-      IF Clamp1.Done THEN
-          Stn1_Step := 50;
-      END_IF;
-
- 50:  // Chờ trạm 2 sẵn sàng  ← điểm đồng bộ giữa hai trạm
-      Stn1_BoardDone := TRUE;
-      IF Stn2_Ready THEN
-          Stn1_Step := 60;
-      END_IF;
-
- 60:  // Hạ chặn, chuyển board sang
-      M_Stn1_StopReq  := FALSE;
-      M_Stn1_ConvReq  := TRUE;                // yêu cầu chuyền chạy
-      IF NOT DI_BoardStn1 THEN
-          M_Stn1_ConvReq  := FALSE;
-          Stn1_BoardDone  := FALSE;
-          Stn1_Step       := 0;               // quay lại chờ board mới
-      END_IF;
-
-END_CASE;
 ```
 
 Ba điểm thiết kế trong đoạn trên, mỗi cái đều nối tới một chương khác:
@@ -530,16 +532,18 @@ Luôn có một biến `Stn1_FaultStep` giữ lại bước lúc xảy ra lỗi,
 
 ```iecst
 IF NOT M_CycleEnable THEN
-    RETURN;
-END_IF;
+    ;          // cố ý: giữ nguyên bước
+ELSE
+    …
 ```
 
-Thiếu ba dòng đó thì trình tự **vẫn chạy khi máy đang `Alarm` hoặc `Hold`** — vì máy trạng thái ở tầng
+Thiếu nhánh đó thì trình tự **vẫn chạy khi máy đang `Alarm` hoặc `Hold`** — vì máy trạng thái ở tầng
 trên không tự chặn được tầng dưới. Đây là ứng dụng của quy tắc Q1 ở Chương 27: tầng trên *cho phép*,
 tầng dưới *phải kiểm tra sự cho phép đó*.
 
-Chú ý `RETURN` **giữ nguyên bước**, không đặt về 0. Nhờ vậy khi được phép chạy lại, trình tự tiếp tục
-đúng chỗ — đó là điều làm `Hold` khác `Stop` (Chương 25).
+Chú ý nhánh đó **giữ nguyên bước**, không đặt về 0. Nhờ vậy khi được phép chạy lại, trình tự tiếp
+tục đúng chỗ — đó là điều làm `Hold` khác `Stop` (Chương 25). ⭐ Và nó viết bằng một nhánh `IF`, không
+bằng `RETURN`, để POU chỉ có một điểm thoát (Phụ lục N, quy tắc CP14).
 
 ### 🔍 BẪY 6 — Nhánh song song không hợp nhất đúng
 
@@ -564,7 +568,7 @@ lần nhánh kia chậm bất thường.
 | 7 | ⭐ Đã hỏi *"có cảm biến nào cho biết bước này xong chưa?"* cho **từng** bước? | Có, và ghi lại câu trả lời |
 | 8 | ⚠ Bước nào **không** có phản hồi thật đã được **ghi vào đặc tả**? | Có — không để im lặng |
 | 7 | Có biến giữ **bước bị kẹt** lúc lỗi? | Có, chỉ xoá khi Reset |
-| 8 | Trình tự có kiểm **tầng máy cho phép** trước khi tiến bước? | Có, và `RETURN` giữ nguyên bước |
+| 8 | Trình tự có kiểm **tầng máy cho phép** trước khi tiến bước? | Có — bằng một nhánh `IF` giữ nguyên bước, không bằng `RETURN` |
 | 9 | Điểm hợp nhất nhánh song song dùng **AND**? | Có |
 | 10 | Đã vẽ **đồ thị chờ** và kiểm không có vòng kín? | Có |
 
@@ -581,7 +585,8 @@ lần nhánh kia chậm bất thường.
 5. Mô tả tình huống **bế tắc** ở mục 26.6 và chỉ ra **định nghĩa giao diện sai** đã gây ra nó.
 6. Bạn có một bước chờ vô hạn hợp lệ và một bước bị kẹt thật. **Làm sao phân biệt** hai tình huống này
    từ bên ngoài?
-7. Vì sao `RETURN` khi máy không cho phép lại **giữ nguyên bước** thay vì đặt về 0?
+7. Vì sao nhánh chặn khi máy không cho phép lại **giữ nguyên bước** thay vì đặt về 0? Và vì sao nó
+   được viết bằng một nhánh `IF` chứ không bằng `RETURN`?
 8. Điểm hợp nhất nhánh song song dùng `OR` thay vì `AND`. Vì sao lỗi này **khó phát hiện khi thử nghiệm**?
 9. ⭐ Nêu phương pháp thiết kế **thứ hai** ngoài lưu đồ → bit bước. ⚠⚠ Điều kiện áp dụng duy nhất của
     nó là gì, và vì sao dùng sai điều kiện là quay lại sai lầm ở Chương 17?

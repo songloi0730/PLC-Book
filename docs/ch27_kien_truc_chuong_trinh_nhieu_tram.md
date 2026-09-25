@@ -162,42 +162,72 @@ hành vi. Vậy viết một khối:
 ```iecst
 FUNCTION_BLOCK FB_Cylinder2Pos
 VAR_INPUT
-    Extend      : BOOL;      // yêu cầu đi ra (giữ mức, không phải xung)
-    AtExtend    : BOOL;      // cảm biến báo đã ra
-    AtRetract   : BOOL;      // cảm biến báo đã về
-    TimeoutMs   : TIME;      // thời gian tối đa cho một hành trình
-    Enable      : BOOL;      // tầng máy cho phép chuyển động
+    Req       : BOOL;            // TRUE = yêu cầu tới vị trí LÀM VIỆC — giữ mức, không phải xung
+    Enable    : BOOL;            // tầng máy cho phép ĐỔI vị trí (Chương 25)
+    Reset     : BOOL;            // xoá lỗi đã chốt — nối sườn lên nút Reset
+    SensWork  : BOOL;            // cảm biến báo đã tới vị trí làm việc
+    SensHome  : BOOL;            // cảm biến báo đã về vị trí gốc
+    Limit     : TIME := T#3S;    // thời gian tối đa cho một hành trình
 END_VAR
 VAR_OUTPUT
-    Valve       : BOOL;      // lệnh ra van  ← chỉ khối này ghi ngõ ra
-    Done        : BOOL;      // đã tới đích
-    Fault       : BOOL;      // quá thời gian, hoặc tư thế không hợp lệ
-    Unknown     : BOOL;      // đang ở giữa chừng — cả hai cảm biến đều tắt
+    Valve     : BOOL;            // lệnh ra van  ← chỉ khối này quyết định
+    Done      : BOOL;            // đã tới ĐÚNG vị trí đang được yêu cầu
+    Unknown   : BOOL;            // giữa chừng: cả hai cảm biến cùng tắt
+    Fault     : BOOL;            // đã chốt: quá thời gian, hoặc hai cảm biến cùng báo
+    FaultCode : INT;             // 0 = không lỗi · 1 = quá thời gian · 2 = hai cảm biến cùng báo
 END_VAR
 VAR
-    T_Move      : TON;
+    T_Move    : TON;
+    ValvePrev : BOOL;
+    AtTarget  : BOOL;            // xy-lanh đang ở đúng chỗ mà VAN đang đẩy nó tới
 END_VAR
 
-// ── Tư thế không xác định: cả hai cảm biến cùng tắt (Chương 28, Bẫy 1)
-Unknown := NOT AtExtend AND NOT AtRetract;
-
-// ── Tư thế vô lý: cả hai cảm biến cùng bật → chắc chắn hỏng cảm biến
-IF AtExtend AND AtRetract THEN
-    Fault := TRUE;                        // không bao giờ tự xoá — cần Reset
+// ── 1. Lệnh ra van: CHỈ đổi khi được phép. Mất phép → GIỮ nguyên, không "về lò xo" (Ch.27 Bẫy 7)
+IF Enable THEN
+    Valve := Req;
 END_IF;
 
-// ── Lệnh ra van: chỉ khi tầng máy cho phép
-Valve := Extend AND Enable AND NOT Fault;
+// ── 2. Tới đích chưa — kiểm cảm biến ĐÍCH, không suy từ cảm biến kia (Chương 28, Bẫy 1)
+AtTarget := (Valve AND SensWork) OR (NOT Valve AND SensHome);
+Done     := (Req = Valve) AND AtTarget;     // chưa được phép đổi thì CHƯA xong
+Unknown  := NOT SensWork AND NOT SensHome;
 
-// ── Đã tới đích chưa — kiểm cảm biến ĐÍCH, không suy từ cảm biến kia
-Done := (Extend AND AtExtend) OR (NOT Extend AND AtRetract);
+// ── 3. Xoá lỗi TRƯỚC khi kiểm lại: nguyên nhân còn thì lỗi chốt lại ngay trong vòng này
+IF Reset THEN
+    Fault     := FALSE;
+    FaultCode := 0;
+END_IF;
 
-// ── Timeout: đang được lệnh mà chưa tới đích
-T_Move(IN := Enable AND NOT Done, PT := TimeoutMs);
+// ── 4. Quá thời gian: đếm lại từ đầu mỗi khi lệnh van đổi — gọi T_Move đúng MỘT lần
+T_Move(IN := NOT AtTarget AND (Valve = ValvePrev), PT := Limit);
+ValvePrev := Valve;
 IF T_Move.Q THEN
-    Fault := TRUE;
+    Fault     := TRUE;
+    FaultCode := 1;                         // ⭐ chỉ BÁO — phản ứng là việc của tầng máy
 END_IF;
+
+// ── 5. Hai cảm biến cùng báo: vô lý về vật lý → chắc chắn hỏng
+IF SensWork AND SensHome THEN
+    Fault     := TRUE;
+    FaultCode := 2;
+END_IF;
+END_FUNCTION_BLOCK
 ```
+
+⭐⭐ **Bốn quyết định trong khối này không hiển nhiên** — và mỗi cái, nếu làm ngược lại, là một lỗi có
+thật:
+
+| Quyết định | ⚠ Làm ngược lại thì sao |
+|---|---|
+| ⭐⭐ **Mất cho phép thì GIỮ lệnh van**, không cắt van | Van 5/2 lò xo về: **cắt điện cũng là một lệnh chuyển động** — về vị trí lò xo. Máy vào `Alarm`, cắt van kẹp → kẹp nhả, board rơi, ⚠⚠ trái ngược chức năng an toàn SF6 của DP-01 (Phụ lục J). Với van một cuộn, *"không cho chuyển động"* nghĩa là **không đổi lệnh**, không phải **tắt lệnh** |
+| ⭐ **Lỗi không tự tác động lên van** | Khối tự nhả van khi có lỗi thì ⚠ **một cảm biến hỏng cũng làm cơ cấu chuyển động**. Khối **báo**; tầng máy **quyết định** phản ứng (Chương 28) |
+| ⭐ **`Done` so với YÊU CẦU**, không chỉ với van | Lúc đang bị giữ, van và yêu cầu khác nhau. `Done` chỉ so với van sẽ báo *"đã xong"* cho vị trí **cũ** — ⚠ trạm đi bước tiếp trong khi kẹp **chưa** kẹp |
+| **Xoá lỗi đứng TRƯỚC các phép kiểm** | Đặt sau thì nguyên nhân còn mà lỗi vẫn biến mất một vòng quét — tầng máy đọc sau sẽ thấy một vòng *"hết lỗi"* giả. Đặt trước thì Reset chỉ có tác dụng khi nguyên nhân **đã hết**, đúng nguyên tắc ở Chương 25 |
+
+> ⚡ **Và `T_Move` được gọi đúng một lần mỗi vòng quét.** Muốn đếm lại từ đầu khi lệnh van đổi, đừng
+> gọi `T_Move(IN := FALSE)` rồi gọi lại lần hai — hãy đưa điều kiện *"lệnh vừa đổi"* vào **chính** chân
+> `IN`: `(Valve = ValvePrev)` bằng `FALSE` đúng một vòng quét, đủ để bộ định thời xoá về 0. Gọi một
+> thể hiện hai lần trong một vòng là lỗi ở Chương 17, Bẫy 5 (PLCopen CP20, Phụ lục N).
 
 Rồi tạo bốn thể hiện:
 
@@ -210,11 +240,12 @@ VAR
 END_VAR
 
 // Gọi mỗi vòng quét — tầng cơ cấu chạy TRƯỚC tầng trạm
-Clamp1(Extend    := M_Stn1_ClampReq,
-       AtExtend  := DI_Clamp1Up,
-       AtRetract := DI_Clamp1Dn,
-       TimeoutMs := T#3S,
-       Enable    := M_MotionEnable);
+Clamp1(Req      := M_Stn1_ClampReq,
+       Enable   := M_MotionEnable,
+       Reset    := M_ResetPB_Rise,       // sườn lên nút Reset — Phụ lục L mục L.7
+       SensWork := DI_Clamp1Up,
+       SensHome := DI_Clamp1Dn,
+       Limit    := T#3S);
 DO_Clamp1Vlv := Clamp1.Valve;             // ← đúng MỘT dòng ghi vào ngõ ra này
 ```
 
@@ -226,11 +257,12 @@ Bốn thứ bạn được ngay khi viết như vậy, mà cách viết rải r�
 3. **Phát hiện cảm biến hỏng** — cả hai cùng bật là tình huống vật lý bất khả, nên chắc chắn là hỏng.
    Rất ít người viết kiểm tra này khi code rải rác.
 4. **Một cửa duy nhất để thêm liên động.** Cần chặn chuyển động khi mất khí? Thêm vào `Enable`, một
-   chỗ, áp cho cả bốn.
+   chỗ, áp cho cả bốn. ⚠ Và *"chặn"* ở đây là **không đổi vị trí** — bảng ngay trên.
 
 > 💡 **MẸO — tín hiệu vào của khối cơ cấu nên là mức, không phải xung**
-> `Extend` giữ mức 1 suốt thời gian muốn xy-lanh ở vị trí ra. Nếu dùng xung, khối phải tự nhớ trạng
-> thái, và bạn vừa tạo thêm một chỗ để mất đồng bộ. Mức thì tự đồng bộ: mất lệnh là về vị trí lò xo.
+> `Req` giữ mức 1 suốt thời gian muốn xy-lanh ở vị trí làm việc. Nếu dùng xung, khối phải tự nhớ trạng
+> thái, và bạn vừa tạo thêm một chỗ để mất đồng bộ. Mức thì tự đồng bộ: mất **lệnh** là về vị trí lò xo.
+> ⚠ Đừng nhầm với mất **cho phép** — cái đó **giữ nguyên** (Bẫy 7).
 
 ---
 
@@ -347,6 +379,7 @@ Hai trạm của DP-01 chạy song song trên hai board khác nhau. Chúng cần
 // ✗ SAI — trạm 1 đọc biến nội bộ của trạm 2
 IF Stn2_Step = 0 AND NOT DI_BoardStn2 THEN
     // nhả board sang
+END_IF;
 ```
 
 Vì sao sai, kể cả khi nó chạy:
@@ -607,6 +640,34 @@ tầng máy cần biết số bước, nghĩa là **trách nhiệm đã đặt s
 tác vụ và dữ liệu đọc chéo lẫn nhau, gộp lại rất tốn công. Mặc định một tác vụ; chỉ tách khi có **yêu
 cầu định lượng về thời gian** viết ra được thành con số.
 
+### 🔍 BẪY 7 — Cổng cho phép viết bằng phép AND vào van
+
+```iecst
+// ✗ SAI với van 5/2 lò xo về — trông đúng, và chạy đúng cho tới lần Alarm đầu tiên
+Valve := Req AND Enable AND NOT Fault;
+```
+
+⚠⚠ Dòng này nói *"không được phép thì tắt van"*. Nhưng với van một cuộn, **tắt van là ra lệnh cho
+xy-lanh chạy về vị trí lò xo**. Máy vào `Alarm` (Chương 25 cắt `M_MotionEnable`) → mọi van tắt → kẹp
+nhả, chặn hạ — đúng lúc máy đang báo có sự cố. ⭐ Và thêm `NOT Fault` thì **một cảm biến hỏng** cũng
+đủ làm cơ cấu chuyển động.
+
+Có ba cách đặt cổng cho phép vào khối cơ cấu:
+
+| Cách | Viết thế nào | ⭐ Ưu | ⚠ Nhược |
+|---|---|---|---|
+| A — AND vào van | `Valve := Req AND Enable` | Ngắn; *"mất phép là tắt"* dễ nói | ⚠⚠ Mất phép **gây ra** chuyển động — về lò xo. Trái SF6 của DP-01 |
+| ⭐ B — **Giữ lệnh khi mất phép** | `IF Enable THEN Valve := Req; END_IF;` | ⭐ Mất phép = **không có chuyển động MỚI**; vị trí hiện tại được giữ. Đúng nghĩa *"dừng"* của `Hold` và `Alarm` (Chương 25) | Khối có nhớ; `Done` phải so với **yêu cầu** để không báo xong nhầm (bảng ở mục 27.3) |
+| C — Không có cổng trong khối | `Valve := Req;` — liên động đặt ở tầng trạm | Khối đơn giản nhất | ⚠ Liên động rải ở mọi chỗ ra yêu cầu — mất đúng cái lợi thứ 4 của khối |
+
+⭐ **Sách chọn B.** ⚡ Muốn đưa cơ cấu về một vị trí **xác định** khi có sự cố thì đó là **một quyết
+định phục hồi** (Chương 28) hoặc **một chức năng an toàn** (Chương 47, 48) — nó phải được **viết ra có
+chủ ý**, không phải xảy ra như tác dụng phụ của việc mất một bit cho phép.
+
+> ⚠ **Với van HAI cuộn thì sao?** Van hai cuộn tự giữ vị trí khi mất điện (Chương 6), nên cách A
+> không làm xy-lanh chạy. Nhưng khối vẫn nên theo cách B: ⭐ cùng một khối, cùng một nghĩa của
+> `Enable`, cho **mọi** loại van — người đọc chương trình không phải nhớ loại van nào đang lắp.
+
 ---
 
 ## 27.8 Bảng chốt — kiểm tra kiến trúc
@@ -624,9 +685,10 @@ Dùng bảng này khi rà soát chương trình của mình hoặc của ngườ
 | 7 | Tài nguyên dùng chung có **đúng một chủ** không? | Có, ở tầng máy |
 | 8 | Thứ tự gọi có đúng **cơ cấu → máy → trạm → ghi ngõ ra** không? | Có |
 | 9 | Có bao nhiêu tác vụ? Mỗi tác vụ thêm có **lý do định lượng** không? | Một, trừ khi có con số biện minh |
+| 10 | Điều kiện "hết việc" có kiểm **mọi trạm** không? | Có — không chỉ trạm đầu |
 | 11 | ⭐ Cách chia có **soi gương ranh giới vật lý** của máy không? | Có — người đứng trước máy suy ra được |
 | 12 | ⚠ Hai việc chạy **cùng lúc** có bị gộp vào một khối không? | Không |
-| 10 | Điều kiện "hết việc" có kiểm **mọi trạm** không? | Có — không chỉ trạm đầu |
+| 13 | ⚠⚠ Mất `Enable` thì van **giữ nguyên** hay **tắt**? | Giữ nguyên — tắt van một cuộn là ra lệnh chuyển động (Bẫy 7) |
 
 ---
 
@@ -647,6 +709,9 @@ Dùng bảng này khi rà soát chương trình của mình hoặc của ngườ
     đó gây khó cho người bảo trì, dù bản thân code có thể chạy đúng.
 11. ⭐ Vì sao Chương 23 (từ yêu cầu tới đặc tả) phải đứng **trước** chương này? Chuyện gì xảy ra khi
     chia kiến trúc lúc mới hiểu một nửa quy trình?
+12. ⚠⚠ `Valve := Req AND Enable` trông đúng. Vì sao nó sai với van 5/2 lò xo về, và hậu quả trên
+    DP-01 khi máy vào `Alarm` lúc board đang bị kẹp là gì? Khối `FB_Cylinder2Pos` tránh nó bằng cách nào,
+    và vì sao khi đó `Done` phải so với **yêu cầu** chứ không chỉ với van?
 
 Câu 2 và câu 5 là hai câu phân loại. Câu 2 kiểm tra bạn phân biệt được *chạy đúng* với *thiết kế đúng*;
 câu 5 kiểm tra bạn hiểu nút cổ chai — thứ quyết định mọi quyết định cải tiến năng suất về sau.

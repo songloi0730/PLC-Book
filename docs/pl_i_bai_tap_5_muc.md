@@ -92,7 +92,7 @@
 | **3.6** | ⭐ **Báo động first-out.** Năm nguyên nhân đều làm máy dừng. Hiển thị ⭐ **nguyên nhân xảy ra TRƯỚC TIÊN**, không phải cả năm. | ⭐⭐ First-out — thứ phân biệt báo động hữu ích với tràn báo động (Ch.44) | ✅ |
 | **3.7** | **Timeout từng bước.** Thêm timeout riêng cho mỗi bước của bài 3.4, mỗi timeout có **mã lỗi riêng**. | Chẩn đoán được từ báo động | ✅ |
 | **3.8** | ⭐⭐ **Chuyển Manual ↔ Auto không giật.** Máy đang chạy Auto, chuyển sang Manual rồi quay lại. ⚠ **Cơ cấu không được nhảy vị trí**, trình tự phải biết mình đang ở đâu. | ⭐⭐ Bài khó nhất mức 3 — và là vấn đề thật trên mọi máy | — |
-| **3.9** | **Bỏ bước theo công thức.** Trình tự 6 bước; công thức quyết định bước 3 và 5 **có chạy hay không**. | ⭐ Tham số là **dữ liệu**, không phải mã (Ch.32) | — |
+| **3.9** | **Bỏ bước theo công thức.** Trình tự 6 bước; công thức quyết định bước 3 và 5 **có chạy hay không**. | ⭐ Tham số là **dữ liệu**, không phải mã (Ch.29) | — |
 | **3.10** | ⭐ **Hai trạm, một chỗ trống.** Hai trạm nối tiếp, không có đệm. Trạm 1 chỉ được nhả sản phẩm khi trạm 2 rỗng. ⚠ **Không được dùng chờ bận**. | ⭐⭐ Pipeline và đồng bộ giữa trạm (Ch.26) | — |
 
 > ⭐⭐ **Bài 3.8 là bài mà rất nhiều máy thật làm sai.** Chuyển chế độ mà cơ cấu nhảy vị trí là nguồn
@@ -112,7 +112,7 @@
 | **4.4** | **PID nhiệt độ.** Điều khiển nhiệt độ một bể gia nhiệt. Chỉnh tham số để không vượt quá 2 °C. | PID cơ bản (Ch.35) | ✅ |
 | **4.5** | **Vùng chết.** Thêm vùng chết ±0,5 °C vào bài 4.4. Quan sát: số lần đóng cắt cơ cấu **giảm bao nhiêu**? | ⭐ Đánh đổi giữa độ chính xác và tuổi thọ thiết bị | ✅ |
 | **4.6** | ⭐ **Giới hạn tốc độ thay đổi.** Giá trị đặt tốc độ chuyền không được nhảy đột ngột — giới hạn 10 %/giây. | ⭐ Ramp — bảo vệ cơ khí | ✅ |
-| **4.7** | ⚠ **Ép kiểu và tràn số.** Tính tổng lưu lượng: cộng giá trị đọc mỗi 100 ms trong 24 giờ. ⚠ **Chọn kiểu dữ liệu sao cho không tràn**, và chứng minh bằng phép tính. | ⚠⚠ Tràn số — lỗi âm thầm nhất (Ch.14) | ✅ |
+| **4.7** | ⚠ **Ép kiểu và tràn số.** Tính tổng lưu lượng: cộng giá trị đọc mỗi 100 ms trong 24 giờ. ⚠ **Chọn kiểu dữ liệu sao cho không tràn**, và chứng minh bằng phép tính. | ⚠⚠ Tràn số — lỗi âm thầm nhất (Ch.11, 19) | ✅ |
 | **4.8** | **Tích phân lưu lượng.** Từ tín hiệu lưu lượng tức thời, tính tổng thể tích đã chảy qua. | Tích phân rời rạc theo vòng quét | — |
 | **4.9** | ⭐ **Dải báo động nhiều mức.** Một giá trị analog có 4 ngưỡng: thấp-thấp, thấp, cao, cao-cao. Mỗi ngưỡng có ⭐ **mức ưu tiên và hành động khác nhau**. | ⭐ Phân cấp báo động (Ch.44) | — |
 

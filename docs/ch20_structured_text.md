@@ -278,6 +278,31 @@ Ba quy tắc thực dụng:
 - **Tập lớn thì chia nhỏ qua nhiều vòng quét**: mỗi vòng quét xử lý một phần, nhớ vị trí đang tới,
   vòng sau làm tiếp. Dài dòng hơn nhưng giữ thời gian quét ổn định.
 
+⭐ **Và hai quy tắc về chính biến đếm — cả hai là bẫy thật, không phải chuyện phong cách:**
+
+```iecst
+// ✗ SAI 1 — sửa biến đếm bên trong vòng
+FOR i := 0 TO 9 DO
+    IF Skip[i] THEN
+        i := i + 1;                  // ⚠ "nhảy cóc" bằng tay
+    END_IF;
+END_FOR;
+
+// ✗ SAI 2 — dùng biến đếm SAU khi vòng đã kết thúc
+FOR i := 0 TO 9 DO
+    Total := Total + Data[i];
+END_FOR;
+LastIndex := i;                      // ⚠ 9 hay 10? Tuỳ hãng
+```
+
+| Sai | Chuẩn nói gì | ⭐ Làm thế nào cho đúng |
+|---|---|---|
+| **1** | Biến đếm, giá trị đầu và giá trị cuối **không được bị thay đổi** bởi các câu lệnh bên trong vòng | Cần bỏ qua phần tử → dùng `IF NOT Skip[i] THEN … END_IF;` bao lấy phần xử lý, **đừng đụng vào `i`** |
+| **2** | ⚠ **Giá trị của biến đếm sau khi vòng kết thúc do hãng quyết định** | Cần biết đã tới đâu → **gán vào một biến riêng bên trong vòng**; biến đếm chỉ dùng **bên trong** |
+
+> ⭐ Sai 2 đặc biệt khó chịu vì nó **chạy đúng** trên hệ bạn đang dùng, rồi sai khi chương trình được
+> chuyển sang hệ khác. ⚡ Bộ quy tắc viết mã của PLCopen ghi cả hai (L12, L13 — Phụ lục N).
+
 ### ⚡ "Thế dùng truy cập trực tiếp thì sao?"
 
 Người đã đọc Chương 10 sẽ nghĩ ngay tới lối thoát này: dùng **truy cập trực tiếp** (mục 10.4) để đọc
@@ -329,12 +354,29 @@ Chuẩn có **ba** vòng lặp. `REPEAT` ít gặp hơn nhưng có hai đặc đ
 ```iecst
 k := 1;
 REPEAT
-    Area[k] := Pi * Radius[k] * Radius[k];
+    LastArea := Pi * Radius[k] * Radius[k];
+    Area[k]  := LastArea;
     k := k + 1;
-    IF k >= 200 THEN EXIT; END_IF;      // ⭐ bảo hiểm: trần cứng, độc lập với dữ liệu
-UNTIL Area[k] > 1000
+UNTIL LastArea > 1000 OR k > 199        // ⭐ trần cứng nằm NGAY TRONG điều kiện, độc lập dữ liệu
 END_REPEAT;
 ```
+
+> ⚠⚠ **Mẫu này đã được sửa, và lỗi cũ đáng để nhìn kỹ.** Bản trước viết `Area[k] := …; k := k + 1;`
+> rồi `UNTIL Area[k] > 1000` — ⚠ tức là **kiểm phần tử CHƯA được tính** ở lượt này, vì `k` vừa tăng.
+> Vòng lặp dừng theo một giá trị cũ còn sót trong mảng. ⭐ Cấu trúc đó lấy theo một ví dụ trong sách
+> tham khảo, và **mang theo cả lỗi của nó** — không ai thấy vì nó *trông* đúng.
+>
+> ⭐ Cách tránh cả lớp lỗi này: **kiểm đúng giá trị VỪA tính**, bằng một biến riêng (`LastArea`), thay
+> vì đọc lại mảng bằng một chỉ số đã đổi. Đây chính là quy tắc CP3 của PLCopen: *mọi biến phải được
+> gán trước khi đọc* (Phụ lục N).
+
+| Đặt trần số vòng ở đâu | Ưu | Nhược |
+|---|---|---|
+| `IF k >= 200 THEN EXIT; END_IF;` trong thân | Nhìn thấy riêng từng dòng | ⚠ Vòng lặp có **hai** lối ra; PLCopen khuyên tránh `EXIT` (quy tắc L10) |
+| ⭐ `UNTIL … OR k > 199` | ⭐ **Một** lối ra; đọc điều kiện là biết hết lúc nào vòng dừng | Điều kiện dài hơn một chút |
+
+⭐ Dùng cách thứ hai. `EXIT` vẫn là lệnh chuẩn và bạn sẽ gặp nó trong chương trình của người khác —
+nên phải biết nó làm gì:
 
 > ⚠ **`EXIT` chỉ thoát MỘT tầng.** Đặt `EXIT` trong vòng lặp trong cùng thì **các vòng lặp bao ngoài
 > vẫn chạy tiếp**. Muốn thoát nhiều tầng phải có cơ chế riêng — hoặc, tốt hơn, ⭐ **đừng lồng vòng lặp

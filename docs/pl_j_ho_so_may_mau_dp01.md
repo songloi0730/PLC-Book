@@ -265,7 +265,7 @@ cùng một máy chạy nhiều mã hàng trong một ca.
 | Ngưỡng cường độ UV tối thiểu | mW/cm² | 20 – 180 | S2.40 |
 | Tốc độ chuyền | % | 20 – 100 | mọi bước chuyền |
 
-> ⚠⚠ **Kiểm tra hợp lệ là bắt buộc (Ch.32).** Nếu công thức tải từ MES có nhiệt độ đặt 600 °C do lỗi
+> ⚠⚠ **Kiểm tra hợp lệ là bắt buộc (Ch.29 mục 29.4).** Nếu công thức tải từ MES có nhiệt độ đặt 600 °C do lỗi
 > nhập liệu, máy phải **từ chối và báo lỗi**, không được nhận.
 >
 > ⭐ Cột "dải hợp lệ" chính là hàng rào đó — và nó thuộc về **chương trình PLC**, không phải thuộc về

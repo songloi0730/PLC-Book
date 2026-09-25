@@ -7,7 +7,7 @@
 
 1. `PROJECT_STATUS.md` — trạng thái, chương nào xong/đang viết, việc kế tiếp
 2. `CLAUDE.md` (file này) — quy ước viết, bất biến
-3. `docs/00_Muc_luc.md` — khung mục lục đầy đủ (58 chương / 11 phụ lục) + trạng thái từng chương
+3. `docs/00_Muc_luc.md` — khung mục lục đầy đủ (58 chương / 14 phụ lục, 15 dòng A1–N) + trạng thái từng chương
 4. `docs/case_study_may_mau.md` — hồ sơ máy mẫu **DP-01** dùng xuyên suốt từ Ch.8, kèm quy tắc bóc lớp
 5. `docs/design-notes/0001-*.md` — vì sao sách chọn hướng trung lập hãng, các phương án đã loại
 6. `docs/design-notes/0002-*.md` — ⭐ **5 quyết định đã chốt** (máy mẫu, bộ hãng, quy mô, song ngữ);
@@ -74,6 +74,7 @@ Bản thảo **không nhắc tên bất kỳ sách/dự án nào khác** của t
 | **B13** | ⭐ **Hình phải tự vẽ, và chỉ vẽ khi hình nói được điều chữ không nói được — mới, session 5.** Mọi hình là **SVG tự vẽ** trong `assets/chNN/`, nhãn tiếng Việt, theo bộ token thị giác ở mục "Quy ước hình" bên dưới. ⚠ **Tuyệt đối không tải hình từ tài liệu hãng, sách thương mại, hay web** — vi phạm bản quyền và phá vỡ tính nhất quán. Tiêu chí quyết định có vẽ hay không: *đường đi của dòng điện, quan hệ thời gian, cấu trúc không gian, và máy trạng thái* thì vẽ; *danh sách, so sánh, phân loại* thì dùng bảng. |
 | **B14** | ⭐ **Bảng tổng hợp cho nội dung quan trọng — mới, session 5.** Mỗi khái niệm trọng tâm phải có **một bảng chốt lại** để người đọc tra sau này mà không phải đọc lại cả chương (ví dụ: bảng 4 tổ hợp NO/NC, bảng 4 tổ hợp PNP/NPN). Bảng đặt **sau** phần giải thích, không thay cho giải thích (B4). |
 | **B18** | ⭐⭐ **Nhắc tới nhiều thứ khác nhau thì phải SO SÁNH ĐƯỢC — mới, session 13 (yêu cầu của chủ dự án).** Cấm viết *"có nhiều cách" / "tuỳ nơi" / "không cách nào đúng tuyệt đối"* rồi bỏ qua. Mỗi chỗ như vậy phải có đủ **bốn thứ**: (1) **liệt kê đích danh** các cách đó; (2) ⭐ **một ví dụ thật, ngắn, CÙNG MỘT bài toán** cho từng cách để đặt cạnh nhau so được; (3) **bảng ưu / nhược**; (4) ⭐ **khuyến nghị dùng cái nào trong hoàn cảnh nào** — dừng ở *"tuỳ bạn"* là chưa viết xong. ⚠ Nếu chỗ khác trong sách đã so sánh rồi thì **dẫn chiếu tới đúng mục**, đừng nhắc lại và cũng đừng bỏ trống. Lý do: nói "có nhiều cách" rồi thôi là **đẩy việc nghiên cứu sang người đọc** — đúng thứ cuốn sách sinh ra để gánh hộ. Ví dụ mẫu: Ch.30 mục 30.2 (bốn quy ước đặt tên), Ch.40 mục 40.3 (ba họ giao thức), Ch.41 mục 41.7b (vào trước ra trước / vào sau ra trước). |
+| **B19** | ⭐⭐ **Mã mẫu theo quy ước ĐÃ VIẾT RA — mới, đợt 58.** Quy ước nằm ở **Phụ lục N** (đối chiếu PLCopen Coding Guidelines v1.0). Mọi khối ` ```iecst ` phải qua `tools/kiem_cu_phap_st.py`. ⭐ **Đoạn trích** đánh dấu phần lược bằng `…` — khối không có dấu lược thì phải **đóng đủ** mọi `IF`/`CASE`/`FOR`/POU. ⭐⭐ Một khối tự viết xuất hiện ở **hai nơi** (chương dạy + Phụ lục L) phải **giống hệt từng chữ** — bộ kiểm so cả giao diện lẫn thân; sửa một nơi là sửa cả hai. ⚠ Ví dụ SAI đánh dấu `// ✗` ở dòng đầu khối. Không `RETURN`/`EXIT`/`CONTINUE` ngoài ví dụ SAI (CP14, L10). Tên thể hiện **không** mang tiền tố kiểu (`Clamp1`, không phải `FB_Clamp1`). Lý do: đợt 58 tìm ra hai khối `FB_Cylinder2Pos` khác nhau ở hai nơi — mỗi nơi đúng một mình, ghép lại thì máy kẹt ở `Alarm` và thả kẹp khi báo lỗi (design note 0006). |
 
 ---
 
@@ -204,7 +205,7 @@ bash tools/gop_sach.sh --khong-chep    # chỉ ghép để xem, không chép san
 ```
 
 Script tự làm: chạy bộ kiểm (⚠ **có LỖI thì dừng, không ghép**) → cập nhật số phiên bản trong
-`output/cover.md` và `output/cover.html` → ghép bìa + mục lục + 58 chương + 13 phụ lục → sinh mục lục
+`output/cover.md` và `output/cover.html` → ghép bìa + mục lục + 58 chương + 15 phụ lục (A1–N) → sinh mục lục
 HTML có id neo → bọc bảng cho cuộn ngang → dọn bản cũ → chép sang repo phát hành.
 
 ### Quy ước số phiên bản
@@ -244,29 +245,39 @@ remote thường đi trước.
 
 ## Quy trình đánh giá — chạy máy trước, mắt sau
 
-Bản thảo có **ba bộ kiểm tự động** ứng với ba loại lỗi khác nhau. Chạy cả ba trước khi coi một
-chương là xong, và trước khi kết luận bất cứ điều gì bằng cảm nhận:
+Bản thảo có **sáu bộ kiểm tự động** ứng với sáu loại lỗi khác nhau — cả sáu chạy trong
+`tools/gop_sach.sh`, ⚠ có LỖI thì **không ghép**. Chạy chúng trước khi coi một chương là xong, và
+trước khi kết luận bất cứ điều gì bằng cảm nhận:
 
 ```bash
 python tools/kiem_tra_chuong.py        # TỪNG chương có đúng khung không (B1–B14)
 python tools/kiem_nhat_quan.py         # các chương có KHỚP NHAU không (trôi dạt)
+python tools/kiem_tro_muc.py           # con trỏ "mục N.M" / "Phụ lục X.N" trỏ tới chỗ CÓ THẬT không
+python tools/kiem_danh_so.py           # dãy số mục / hình / bẫy có thủng hoặc trùng không
+python tools/kiem_chu_nha.py           # "Chương N" có trỏ đúng chương CHỦ NHÀ của chủ đề không
+python tools/kiem_cu_phap_st.py        # mã ST: đóng/mở khối, ngoặc, ':=', tên chân, khối cùng tên
+python tools/kiem_html.py <bản.html>    # SAU khi ghép: bản HTML đã render không còn '**' lọt ra
 npx markdownlint-cli2 "docs/**/*.md"   # cấu trúc markdown, liên kết, bảng
 python tools/ban_do_nguon.py           # ĐỘ PHỦ: nguồn nào chưa chương nào dẫn
 ```
 
-⭐⭐ **Ba bộ kiểm bắt ba loại lỗi tách biệt — không cái nào thay được cái nào:**
+⭐⭐ **Mỗi bộ kiểm bắt một loại lỗi tách biệt — không cái nào thay được cái nào:**
 
 | Bộ kiểm | Bắt loại lỗi | Ví dụ đã bắt được thật |
 |---|---|---|
 | `kiem_tra_chuong.py` | ⭐ Một chương **thiếu khung** | Ch.2, 13 thiếu *Bẫy thường gặp*; Ch.56 thiếu dòng miễn trừ |
 | `kiem_nhat_quan.py` | ⭐⭐ Các chương **lệch nhau** | 40 dẫn chiếu tới `Phụ lục J §7.x` không tồn tại; `DO_SmemaInReady` ×12 lệch bảng I/O |
+| `kiem_tro_muc.py` | Con trỏ tới **mục không tồn tại** | Đợt 51 — hơn 1.800 con trỏ, mỗi lần ghép đều kiểm lại |
+| `kiem_danh_so.py` | Dãy số **thủng hoặc trùng** | Đợt 54 — số bẫy, số hình trong một chương |
+| `kiem_chu_nha.py` | Con trỏ hợp lệ nhưng **sang nhầm chương** | Đợt 56 — cụm bốn chỗ dẫn *"Chương 24"* cho việc ghi chú thích (chủ nhà là Ch.30) |
+| ⭐⭐ `kiem_cu_phap_st.py` | Mã ST **sai cú pháp**, gọi **chân không có thật**, **hai khối cùng tên khác nhau** | Đợt 58 — hai khối `FB_Cylinder2Pos` khác giao diện ở Ch.27 và Phụ lục L; 6 khối `IF`/`CASE` không đóng |
 | ⭐ **Đối chiếu nguồn** (skill) | ⚠⚠ Câu **đúng khung, nghe thuyết phục, SAI SỰ THẬT** | Độ phân giải timer Mitsubishi; ISO 6431 đã thu hồi |
 | ⭐⭐ `ban_do_nguon.py` | ⚠⚠ **Nguồn có trong tay mà CHƯA AI MỞ** | Hugh Jack 860 trang — nguồn mạnh nhất cho nhóm chương thiết kế — chưa chương nào dẫn |
 
 ⚠⚠ **Loại thứ ba là loại nguy hiểm nhất và KHÔNG máy nào bắt được.** Nó chỉ lộ ra khi so với tài
 liệu gốc — xem mục *Đối chiếu nguồn* bên dưới.
 
-⭐⭐ **Ba bộ đầu kiểm bản thảo VỚI CHÍNH NÓ. Bộ thứ tư kiểm bản thảo VỚI BỘ NGUỒN** — nó trả lời câu
+⭐⭐ **Sáu bộ kiểm soát bản thảo VỚI CHÍNH NÓ. Bản đồ nguồn kiểm bản thảo VỚI BỘ NGUỒN** — nó trả lời câu
 hỏi mà không bộ nào khác hỏi được: ⚠ *"tài liệu nào đang có trong tay mà chưa chương nào dẫn?"*
 
 ```bash

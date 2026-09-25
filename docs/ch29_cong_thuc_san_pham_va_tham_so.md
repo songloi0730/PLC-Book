@@ -180,20 +180,18 @@ END_VAR
     LyDo := 0;
     KiemTraCongThuc := FALSE;
 
+    // ⭐ Một chuỗi ELSIF: dừng ở lỗi ĐẦU TIÊN, và hàm chỉ có MỘT điểm thoát (Phụ lục N, CP14)
     IF r.Id < 1 OR r.Id > 20 THEN
-        LyDo := 1; RETURN;                       // mã công thức ngoài dải
+        LyDo := 1;                               // mã công thức ngoài dải
+    ELSIF r.CureTimeMs < 3000 OR r.CureTimeMs > 30000 THEN
+        LyDo := 2;                               // thời gian sấy ngoài dải
+    ELSIF r.DispenseLenTenthMm < 50 OR r.DispenseLenTenthMm > 2000 THEN
+        LyDo := 3;                               // chiều dài đoạn keo ngoài dải
+    ELSIF r.ConvSpeedPct < 10 OR r.ConvSpeedPct > 100 THEN
+        LyDo := 4;                               // tốc độ chuyền ngoài dải
+    ELSE
+        KiemTraCongThuc := TRUE;                 // ⭐ chỉ tới đây khi MỌI kiểm tra đều đạt
     END_IF;
-    IF r.CureTimeMs < 3000 OR r.CureTimeMs > 30000 THEN
-        LyDo := 2; RETURN;                       // thời gian sấy ngoài dải
-    END_IF;
-    IF r.DispenseLenTenthMm < 50 OR r.DispenseLenTenthMm > 2000 THEN
-        LyDo := 3; RETURN;                       // chiều dài đoạn keo ngoài dải
-    END_IF;
-    IF r.ConvSpeedPct < 10 OR r.ConvSpeedPct > 100 THEN
-        LyDo := 4; RETURN;
-    END_IF;
-
-    KiemTraCongThuc := TRUE;
 END_FUNCTION
 ```
 

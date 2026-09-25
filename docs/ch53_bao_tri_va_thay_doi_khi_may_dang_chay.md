@@ -198,7 +198,7 @@ Hai thứ khác nhau, và lẫn lộn chúng là nguồn của rất nhiều gi�
 | ⭐ **Chương trình PLC hiện hành** | Kèm số phiên bản và ngày (Chương 54) |
 | Sơ đồ điện đã sửa theo thực tế | ⚠ Kể cả những sợi dây "đấu tạm" |
 | Bảng I/O hiện hành | Chương 23 |
-| Danh sách tham số / công thức đang dùng | Chương 32 |
+| Danh sách tham số / công thức đang dùng | Chương 29 |
 | ⭐ **Nhật ký thay đổi** | Ngày · người · nội dung · **lý do** |
 | Cấu hình mạng và địa chỉ | Chương 40 |
 | Cấu hình thiết bị an toàn | ⚠ Kèm hồ sơ kiểm định (Chương 48) |

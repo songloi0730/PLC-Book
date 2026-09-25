@@ -40,29 +40,35 @@ for line in lines:
     seen[base] = n + 1
     toc_items.append(('h1' if level == 1 else 'h2', text, anchor))
 
-# Sinh HTML mục lục
+# Inject id vào body HTML
+with open(body_raw_path, encoding='utf-8') as f:
+    body = f.read()
+
+idx = [0]
+rendered = []  # nội dung tiêu đề ĐÃ render, cùng thứ tự với toc_items
+def inject(m):
+    tag = m.group(1)
+    inner = m.group(2)
+    level, text, anchor = toc_items[idx[0]]
+    idx[0] += 1
+    rendered.append(inner)
+    return f'<{tag} id="{anchor}">{inner}</{tag}>'
+
+body2 = re.sub(r'<(h1|h2)>(.*?)</\1>', inject, body, flags=re.DOTALL)
+
+# Sinh HTML mục lục — dùng tiêu đề ĐÃ render từ body, không dùng chữ markdown thô.
+# Chữ thô làm lộ nguyên ký hiệu ra mục lục: "khi nào **không** nên dùng", "*(POU)*", "&".
+khop = len(rendered) == len(toc_items)
 toc_html = '<nav id="toc"><h2>Mục lục</h2><ul>\n'
-for level, text, anchor in toc_items:
+for i, (level, text, anchor) in enumerate(toc_items):
+    if khop:
+        text = re.sub(r'</?a\b[^>]*>', '', rendered[i]).strip()
     indent = '' if level == 'h1' else ' style="padding-left:16px;font-size:13px"'
     toc_html += f'  <li{indent}><a href="#{anchor}">{text}</a></li>\n'
 toc_html += '</ul></nav>\n'
 
 with open(toc_out_path, 'w', encoding='utf-8') as f:
     f.write(toc_html)
-
-# Inject id vào body HTML
-with open(body_raw_path, encoding='utf-8') as f:
-    body = f.read()
-
-idx = [0]
-def inject(m):
-    tag = m.group(1)
-    inner = m.group(2)
-    level, text, anchor = toc_items[idx[0]]
-    idx[0] += 1
-    return f'<{tag} id="{anchor}">{inner}</{tag}>'
-
-body2 = re.sub(r'<(h1|h2)>(.*?)</\1>', inject, body, flags=re.DOTALL)
 
 with open(body_ids_out_path, 'w', encoding='utf-8') as f:
     f.write(body2)

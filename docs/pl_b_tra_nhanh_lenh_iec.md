@@ -211,8 +211,8 @@ FOR i := 0 TO 9 BY 1 DO  ...  END_FOR;
 WHILE điều_kiện DO       ...  END_WHILE;
 REPEAT  ...  UNTIL điều_kiện  END_REPEAT;
 
-EXIT;      // thoát vòng lặp
-RETURN;    // thoát khối
+EXIT;      // thoát vòng lặp — ⚠ PLCopen L10: nên tránh; đặt trần ngay trong điều kiện vòng lặp
+RETURN;    // thoát khối     — ⚠ PLCopen CP14: nên tránh; mỗi POU chỉ một điểm thoát (Phụ lục N)
 ```
 
 > ⚠⚠ **`WHILE` và `REPEAT` nguy hiểm trên PLC.** Nếu điều kiện thoát không bao giờ đạt, ⭐ **vòng quét
@@ -281,7 +281,23 @@ IF TimerKep.Q THEN ... END_IF;
 > ⭐⭐ **Nên dùng TÊN, không dùng địa chỉ trực tiếp.** `DI_BoardStn1` đọc được; `%I0.3` thì không.
 >
 > ⚠ Chương trình đầy địa chỉ trực tiếp là chương trình mà ⭐ **người sau bạn không đọc được** — và khi
-> đổi module hoặc đổi khe cắm, mọi địa chỉ dịch đi (Chương 24, 56).
+> đổi module hoặc đổi khe cắm, mọi địa chỉ dịch đi (Chương 8 mục 8.4, Chương 11 mục 11.3, Chương 56).
+
+> ⚠⚠ **Và một bẫy riêng của địa chỉ trực tiếp: hai biến CHỒNG LÊN NHAU.** Một giá trị rộng hơn một ô
+> địa chỉ thì chiếm luôn **các ô tiếp theo**:
+>
+> ```iecst
+> Level       : REAL AT %MW450;       // REAL 32 bit chiếm HAI ô: 450 và 451
+> Temperature : INT  AT %MW451;       // ⚠ ghi vào đây là ghi đè NỬA SAU của Level
+> ```
+>
+> ⭐ Chương trình kiểu này **chạy đúng gần như mọi lúc**, vì luồng dữ liệu thường ghi rồi đọc mỗi biến
+> ở một đoạn riêng. ⚠⚠ Nó chỉ sai khi một điều kiện hiếm khiến một biến **không được ghi** — lúc đó
+> chương trình đọc nhầm dữ liệu của biến kia, và không lần chạy thử nào tái hiện được.
+>
+> ⚡ **Mỗi giá trị chiếm bao nhiêu ô phụ thuộc hệ đánh chỉ số bộ nhớ theo byte hay theo word** — kiểm
+> tài liệu của hệ bạn trước khi tính. ⭐ Cách chắc nhất vẫn là: **dùng tên, để phần mềm tự xếp chỗ**
+> (Phụ lục N, quy tắc CP4).
 
 ---
 

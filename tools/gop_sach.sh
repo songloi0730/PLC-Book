@@ -52,6 +52,7 @@ python tools/kiem_nhat_quan.py  > "$TMP/k2.txt" 2>&1 || { cat "$TMP/k2.txt"; ech
 python tools/kiem_tro_muc.py   > "$TMP/k3.txt" 2>&1 || { cat "$TMP/k3.txt"; echo "!! kiem_tro_muc.py bao LOI — con tro toi so muc khong ton tai"; exit 1; }
 python tools/kiem_danh_so.py  > "$TMP/k4.txt" 2>&1 || { cat "$TMP/k4.txt"; echo "!! kiem_danh_so.py bao LOI — day so muc/hinh/bay bi thung hoac trung"; exit 1; }
 python tools/kiem_chu_nha.py  > "$TMP/k5.txt" 2>&1 || { cat "$TMP/k5.txt"; echo "!! kiem_chu_nha.py: co trich dan tro nham chuong — sua hoac ghi vao bo_qua"; exit 1; }
+python tools/kiem_cu_phap_st.py > "$TMP/k6.txt" 2>&1 || { cat "$TMP/k6.txt"; echo "!! kiem_cu_phap_st.py bao LOI — khoi ST sai cu phap, sai chan khoi, hoac hai khoi cung ten khac nhau"; exit 1; }
 tail -2 "$TMP/k1.txt"; tail -2 "$TMP/k2.txt"
 
 # 1. Cap nhat so phien ban trong bia
@@ -67,7 +68,7 @@ sed -i -E "s/v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]{6}/${VERSION}/g" output/cover.md out
     [ -z "$f" ] && { echo "!! THIEU chuong ${n}" >&2; exit 1; }
     echo "<!-- SECTION: $(basename "$f" .md) -->"; echo "---"; cat "$f"; echo ""
   done
-  for pl in a1 a2 b c d e f g h i j k l m; do
+  for pl in a1 a2 b c d e f g h i j k l m n; do
     f=$(ls docs/pl_${pl}_*.md 2>/dev/null | head -1)
     [ -z "$f" ] && { echo "!! THIEU phu luc ${pl}" >&2; exit 1; }
     echo "<!-- SECTION: $(basename "$f" .md) -->"; echo "---"; cat "$f"; echo ""
@@ -97,6 +98,9 @@ cat "$TMP/body_final.html" >> "$OUT_HTML"
 echo '</div>' >> "$OUT_HTML"
 cat tools/merge_assets/book_foot.html >> "$OUT_HTML"
 echo "-- Da ghi .html: $(wc -l < "$OUT_HTML") dong"
+
+# 6b. Kiem ban HTML DA RENDER: con dau ** = markdown khong chuyen duoc thanh the (dot 58)
+python tools/kiem_html.py "$OUT_HTML" || { echo "!! kiem_html.py: ban HTML con dau nhan markdown — sua nguon roi ghep lai"; exit 1; }
 
 # 7. Don ban cu TRONG output — chi file mang dung ten sach nay
 find output -maxdepth 1 -name "${TITLE} v*.md"   ! -name "${TITLE} ${VERSION}.md"   -delete

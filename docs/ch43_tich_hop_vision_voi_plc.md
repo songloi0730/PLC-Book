@@ -148,6 +148,7 @@ CASE Step OF
         IF M_VisionResultReady THEN
             Step := 60;
         END_IF;
+END_CASE;
 ```
 
 > ⭐ **Bước 40 — chờ hết rung — là bước hay bị bỏ và gây kết quả không ổn định.**

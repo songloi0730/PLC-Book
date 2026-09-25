@@ -96,7 +96,7 @@ Khuyến nghị **NAMUR** gán ý nghĩa chẩn đoán cụ thể cho từng d�
 >
 > | Cách xử lý | Kết quả |
 > |---|---|
-> | ⚠ Ngưỡng lỗi đặt ở **4,0 mA** | ⭐ **Báo động giả** khi đo dưới dải; người vận hành học cách bỏ qua báo động (Ch.43) |
+> | ⚠ Ngưỡng lỗi đặt ở **4,0 mA** | ⭐ **Báo động giả** khi đo dưới dải; người vận hành học cách bỏ qua báo động (Ch.44 mục 44.3) |
 > | ⭐ Ngưỡng lỗi đặt ở **3,6 mA**, vùng 3,8–4,0 coi là **đo dưới dải** | Phân biệt được **"cảm biến hỏng"** với **"giá trị thấp"** |
 >
 > ⭐ Đây là ví dụ điển hình cho luận điểm ở mục tiếp theo: **chuẩn cho bạn khả năng phân biệt, chương

@@ -354,8 +354,8 @@ END_CASE;
 | 7 | ⚠⚠ **PID: chỉnh lại từ đầu**, không chép tham số | A2.7 |
 | 8 | ⚠⚠ **Chuyển động: thiết kế lại**, không dịch | A2.7 |
 | 9 | ⚠⚠ **Bộ đếm tốc độ cao: thiết kế lại** | A2.3 |
-| 10 | ⚠ Thời gian quét khác → logic phụ thuộc vòng quét chạy khác | Ch.7, 56 |
-| 11 | ⚠ Kiểu dữ liệu và điểm tràn số | Ch.14, Phụ lục K.6 |
+| 10 | ⚠ Thời gian quét khác → logic phụ thuộc vòng quét chạy khác | Ch.10, 56 |
+| 11 | ⚠ Kiểu dữ liệu và điểm tràn số | Ch.11, 19, Phụ lục K.6 |
 | 12 | ⚠⚠ **Phần an toàn: KHÔNG chuyển — thiết kế và kiểm định lại** | Ch.47, 48, 56 |
 
 > ⚠⚠ **Mục 12 là ranh giới cứng.** Chức năng an toàn được đánh giá và nghiệm thu như một tổng thể

@@ -231,7 +231,7 @@ chắc rằng thay đổi mới không phá cái cũ.
 
 | Thay đổi | Vì sao nguy hiểm hơn vẻ ngoài |
 |---|---|
-| ⚠⚠ **Đổi phiên bản firmware hoặc phần mềm lập trình** | ⭐ Bạn **không đổi một dòng nào**, nhưng nền bên dưới đã đổi: hành vi biên, thời gian quét, cách xử lý tràn số (Chương 19) |
+| ⚠⚠ **Đổi phiên bản firmware hoặc phần mềm lập trình** | ⭐ Bạn **không đổi một dòng nào**, nhưng nền bên dưới đã đổi: hành vi biên, thời gian quét, cách xử lý tràn số (Chương 10, 19) |
 | ⚠ **Thêm một khối vào tác vụ đang chạy** | Thời gian quét dài ra — ảnh hưởng **mọi phép đo thời gian** trong chương trình (Chương 10) |
 | ⚠ **Đổi một khối trong thư viện dùng chung** | Chạm vào **mọi cơ cấu** đang dùng khối đó, không chỉ cơ cấu bạn đang nghĩ tới (mục 30.5) |
 | ⚠⚠ **Đổi một hằng số dùng nhiều nơi** | Tra chéo trước khi đổi. ⭐ *"Chỉ một con số"* là câu mở đầu quen thuộc của một sự cố |
@@ -300,6 +300,7 @@ Bốn biện pháp ở mục 50.3 tồn tại vì **kỷ luật cá nhân là kh
 // ✗✗ SAI NGHIÊM TRỌNG
 IF M_SimMode THEN
     X_EStopOK := TRUE;        // "cho tiện thử"
+END_IF;
 ```
 
 Không bao giờ. Tín hiệu an toàn đọc thẳng từ phần cứng, không đi qua lớp mô phỏng, không có ngoại lệ.

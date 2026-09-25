@@ -162,16 +162,16 @@ kết thúc — vì một giai đoạn không đẻ ra tài liệu thì không c
 
 ```text
 Chương trình chính
- ├── Xử lý an toàn & chế độ vận hành         ← Ch.25, 47
+ ├── Xử lý an toàn & chế độ vận hành         ← Ch.25, 28, 47
  ├── Điều khiển băng tải & bắt tay chuyền    ← Ch.36, 41
  ├── Trạm 1 — tra keo      (máy trạng thái)  ← Ch.21, 26, 27
  ├── Trạm 2 — sấy UV       (máy trạng thái)  ← Ch.21, 27
  ├── Điều phối giữa hai trạm                 ← Ch.26
- ├── Công thức & tham số sản phẩm            ← Ch.32
+ ├── Công thức & tham số sản phẩm            ← Ch.29
  ├── Analog; giám sát nhiệt qua RS-485       ← Ch.31, 35
  ├── Chuyển động gantry                      ← Ch.37
  ├── Truyền thông: mã 2D, nhiệt, lên trên    ← Ch.38, 42, 45
- ├── Báo động & chẩn đoán                    ← Ch.43, 51
+ ├── Báo động & chẩn đoán                    ← Ch.44, 51
  └── Thống kê: chu kỳ, bộ đếm bảo trì        ← Ch.53, 55
 ```
 
@@ -182,7 +182,7 @@ Chương trình chính
 | ⭐⭐ **Mỗi trạm là một máy trạng thái độc lập** | Chạy song song trên các board khác nhau; ⭐ **và tách được để kiểm thử riêng** (Ch.26, 27) |
 | ⭐ **Điều phối giữa hai trạm là một khối riêng** | ⚠ Không có đệm → hai trạm phải bắt tay; để logic này lẫn vào trạm là nguồn của bế tắc (Ch.26) |
 | ⭐ **Động tác lặp lại đóng thành khối hàm** | Kẹp/nhả, chờ có phản hồi kèm hết giờ — dùng lại ở cả hai trạm (Ch.30) |
-| ⭐⭐ **Mọi tham số sản phẩm nằm trong công thức, không nằm trong logic** | ⭐ Đổi sản phẩm **không phải sửa chương trình** (Ch.32) |
+| ⭐⭐ **Mọi tham số sản phẩm nằm trong công thức, không nằm trong logic** | ⭐ Đổi sản phẩm **không phải sửa chương trình** (Ch.29) |
 
 > ⭐⭐ **Quyết định thứ tư là thứ phân biệt một máy dùng được lâu với một máy phải gọi kỹ sư mỗi lần
 > đổi hàng.** Mọi con số đặc thù sản phẩm — đường chạy keo, áp keo, thời gian sấy, nhiệt độ — phải là
@@ -195,8 +195,8 @@ Chương trình chính
 | Ngõ vào số | `DI_<chỗ><cái gì>` | 23 |
 | Ngõ ra số | `DO_<chỗ><cái gì>` | 23 |
 | Analog | `AI_/AO_<đại lượng>` | 31 |
-| Bit trạng thái | `Stn1_<trạng thái>` | 21 |
-| Tham số công thức | `Rcp_<tham số>` | 32 |
+| Bit trạng thái | `Stn1_<trạng thái>` | 26 |
+| Tham số công thức | ⭐ **Không** tiền tố riêng — là thành phần của cấu trúc: `ActiveRecipe.<tham số>`, kiểu `ST_Recipe` | 29 |
 
 > ⭐ Quy ước phải **khớp với số dây trong tủ** (Ch.49 mục 49.6) và **khớp với nhãn trên HMI** (Ch.44).
 > Ba nơi, một tên — đó là thứ giúp người sửa máy đi từ triệu chứng tới sợi dây trong ba bước.
@@ -211,20 +211,20 @@ tên thật của DP-01. Cả cuốn sách hội tụ về khoảng ba mươi d�
 ```iecst
 PROGRAM Main          // tác vụ chu kỳ, chạy liên tục — Ch.10, Ch.27 mục 27.6
 
-  Prg_IoRead();        //  1  lọc rung, bắt cạnh, ánh xạ tag        Ch.4, 23
-  Prg_Safety();        //  2  chế độ vận hành, M_AllPermissive      Ch.25, 47
+  Prg_IoRead();        //  1  lọc rung, bắt cạnh, ánh xạ tag        Ch.4, 16, 17, 23
+  Prg_Safety();        //  2  chế độ vận hành, M_AllPermissive      Ch.25, 28, 47
   Prg_Mechanisms();    //  3  Stop1/Clamp1/Stop2/Clamp2, gantry     Ch.27, 30, 37
   Prg_AntiCollision(); //  4  tầng chống va chạm                    Ch.27 mục 27.3b
   Prg_Machine();       //  5  tầng máy: tài nguyên chung, pipeline  Ch.26, 27 mục 27.5
   Prg_Stn1Dispense();  //  6  trình tự trạm 1                       Ch.21, 26 · khung L.6
   Prg_Stn2Cure();      //  7  trình tự trạm 2                       Ch.21, 26 · khung L.6
   Prg_Handshake();     //  8  bắt tay máy trước / máy sau           Ch.41
-  Prg_Recipe();        //  9  nạp tham số của công thức đang chọn   Ch.32
+  Prg_Recipe();        //  9  nạp tham số của công thức đang chọn   Ch.29
   Prg_Comm();          // 10  mã 2D, nhiệt RS-485, báo cáo lên trên Ch.38, 42, 45
-  Prg_Alarm();         // 11  báo động và chẩn đoán                 Ch.43, 51
+  Prg_Alarm();         // 11  báo động và chẩn đoán                 Ch.44, 51 · L.11
   Prg_Stats();         // 12  chu kỳ, sản lượng, bộ đếm bảo trì     Ch.53, 55
   Prg_OutputMap();     // 13  GOM ngõ ra — đúng một chỗ ghi mỗi tag Ch.22, 27 Bẫy 2
-  Prg_Hmi();           // 14  dữ liệu cho màn hình và đèn tháp      Ch.43, 44
+  Prg_Hmi();           // 14  dữ liệu cho màn hình và đèn tháp      Ch.5, 44
 
 END_PROGRAM
 ```
@@ -236,7 +236,7 @@ Và `Prg_OutputMap` — khối ngắn nhất, nhưng là khối giữ cho chươ
 DO_Stop1Vlv  := Stop1.Valve;                      // Ch.27 — FB_Cylinder2Pos
 DO_Clamp1Vlv := Clamp1.Valve;
 DO_UvLamp    := Stn2_UvReq AND M_AllPermissive AND DI_ShutterClosed;
-DO_LampRed   := M_AnyFault;                       // Ch.43 — mẫu đèn tháp L.13
+DO_LampRed   := M_AnyFault;                       // Ch.5, 25 — mẫu đèn tháp L.13
 ```
 
 ### ⭐ Ba điều trong khung này đáng nói hơn cả danh sách
@@ -316,13 +316,13 @@ một bản chạy được.
 
 | Tình huống | Máy phải làm gì |
 |---|---|
-| ⚠ Mất khí nén giữa chu trình | Dừng an toàn, báo rõ, ⚠ **không thả kẹp bất ngờ** (Ch.5) |
-| Board kẹt giữa hai trạm | Báo động chỉ đúng chỗ, hướng dẫn gỡ (Ch.43) |
+| ⚠ Mất khí nén giữa chu trình | Dừng an toàn, báo rõ, ⚠ **không thả kẹp bất ngờ** (Ch.6) |
+| Board kẹt giữa hai trạm | Báo động chỉ đúng chỗ, hướng dẫn gỡ (Ch.44 mục 44.3) |
 | Mất mạng với đầu đọc mã | ⭐ Báo, và quyết định trước: dừng hay chạy tiếp không mã? (Ch.40, 42) |
 | Nhấn dừng khẩn giữa lúc gantry đang chạy | ⚠⚠ **Dừng theo đúng loại đã thiết kế** (Ch.47) |
 | ⭐ Mất điện giữa chu trình, rồi cấp lại | ⚠⚠ **KHÔNG được tự khởi động lại** (Ch.47) |
 | Cửa buồng UV mở giữa lúc sấy | ⚠ Đèn tắt tức thì, báo động (Ch.47) |
-| Công thức sai / thiếu tham số | Từ chối chạy, báo rõ thiếu gì (Ch.32) |
+| Công thức sai / thiếu tham số | Từ chối chạy, báo rõ thiếu gì (Ch.29 mục 29.4) |
 | ⭐ Hệ thống trên không phản hồi | ⚠ **Máy vẫn chạy được** — Ch.45 |
 
 > ⭐⭐ **Hàng cuối là nguyên tắc quan trọng: máy không được phụ thuộc vào thứ nằm ngoài nó để chạy
@@ -414,7 +414,7 @@ tổ chức công việc.
 ### 🔍 BẪY 2 — Đánh giá rủi ro làm ở cuối
 
 **Hiện tượng:** ⚠⚠ hoặc sửa thiết kế, hoặc **hạ chuẩn an toàn cho vừa thiết kế**.
-**Cách sửa:** đánh giá rủi ro quyết định bố trí máy — nó phải đi trước (mục 57.3, Ch.6).
+**Cách sửa:** đánh giá rủi ro quyết định bố trí máy — nó phải đi trước (mục 57.3, Ch.23, Ch.47 mục 47.2).
 
 ### 🔍 BẪY 3 — Đấu tủ trước khi có bảng I/O
 
@@ -429,7 +429,7 @@ tổ chức công việc.
 ### 🔍 BẪY 5 — Tham số sản phẩm nằm trong logic
 
 **Hiện tượng:** đổi board mới phải **sửa chương trình** → phải gọi kỹ sư, phải kiểm thử lại.
-**Cách sửa:** mọi con số đặc thù sản phẩm là **công thức** (mục 57.6, Ch.32).
+**Cách sửa:** mọi con số đặc thù sản phẩm là **công thức** (mục 57.6, Ch.29).
 
 ### 🔍 BẪY 6 — Bỏ mức kiểm thử tình huống xấu
 

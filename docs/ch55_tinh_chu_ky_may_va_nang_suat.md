@@ -153,10 +153,10 @@ Trạm 2 (sấy UV) của DP-01:
 | ⭐ **Thời gian mỗi bước** | Ghi giá trị đồng hồ khi vào bước, trừ khi ra bước |
 | ⭐ **Chu kỳ máy thật** | Khoảng thời gian giữa hai lần sản phẩm ra |
 | ⭐⭐ **Thời gian CHỜ của từng trạm** | ⭐ **Số quan trọng nhất** — xem bên dưới |
-| Thời gian dừng máy và lý do | Ghi kèm mã báo động (Chương 43) |
+| Thời gian dừng máy và lý do | Ghi kèm mã báo động (Chương 44) |
 
 ```text
-// Đo thời gian một bước — mẫu giả lệnh, xem Chương 21 về trình tự
+// Đo thời gian một bước — mẫu giả lệnh, xem Chương 26 về trình tự
 KHI vào bước:      MocBatDau[buoc] := DongHoHeThong
 KHI ra khỏi bước:  ThoiGianBuoc[buoc] := DongHoHeThong - MocBatDau[buoc]
                    NẾU ThoiGianBuoc[buoc] > KyLuc[buoc] THÌ
@@ -241,7 +241,7 @@ Chu kỳ tính được không phải sản lượng thật. Giữa các chu k�
 > Một máy có chu kỳ 12 giây mà dừng 30 phút mỗi ca vì kẹt board thì việc rút chu kỳ xuống 11 giây
 > (tăng 9 %) kém giá trị hơn nhiều so với việc **hết kẹt board**.
 >
-> ⭐ Đây là lý do Chương 43 (báo động có ích) và mục 55.7 (OEE) quan trọng ngang mục 55.3.
+> ⭐ Đây là lý do Chương 44 (báo động có ích) và mục 55.7 (OEE) quan trọng ngang mục 55.3.
 
 ---
 
@@ -572,7 +572,7 @@ Chu kỳ  =  trạm chậm nhất (12 s tệ nhất)  ... đã sát 12,0 s mục
 | Thời gian từng bước — ⭐ **gần nhất · trung bình · lớn nhất** | Thấy giá trị lớn nhất ăn sản lượng |
 | ⭐⭐ **Phần trăm thời gian chờ của mỗi trạm** | ⭐ Xác nhận nút cổ chai bằng dữ liệu |
 | Chu kỳ máy thật, đếm theo giờ | So với 12,0 s thiết kế |
-| Thời gian dừng + mã báo động | Chương 43 — tính khả dụng |
+| Thời gian dừng + mã báo động | Chương 44 — tính khả dụng |
 | Số board đạt / lỗi | Tính chất lượng |
 | ⭐ **Xu hướng thời gian bước theo tuần** | ⭐ Chương 53 mục 53.5 — **thấy cơ cấu đang mòn** |
 
@@ -726,7 +726,7 @@ lớn công việc thực tế là **sửa máy đã có** — thường là má
 - ISO 22400 (bộ) — *Key performance indicators for manufacturing operations management*: ⭐ **định
   nghĩa chuẩn hoá cho các chỉ số năng suất**, gồm cả nhóm chỉ số mà OEE thuộc về. Dùng nó khi cần
   con số **so sánh được giữa các nhà máy**.
-- Phép đo thời gian bước và bộ đếm — Chương 11 (vùng nhớ giữ được), Chương 21 (trình tự), Chương 43
+- Phép đo thời gian bước và bộ đếm — Chương 11 (vùng nhớ giữ được), Chương 26 (trình tự), Chương 44
   (báo động), Chương 53 mục 53.5 (bảo trì).
 - ⭐⭐ **SEMI E10** — *Specification for Definition and Measurement of Equipment Reliability,
   Availability, and Maintainability*: **mục 5** định nghĩa ⭐ **sáu trạng thái thiết bị** và các khối

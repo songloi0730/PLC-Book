@@ -183,8 +183,8 @@ IF M_PausePB_Rise THEN
     M_Paused := NOT M_Paused;           // một nút bật/tắt
 END_IF;
 
-// Trong mỗi trình tự, đặt NGAY ĐẦU (xem khung ở L.6):
-//     IF M_Paused THEN RETURN; END_IF;
+// Trong mỗi trình tự, chặn NGAY ĐẦU bằng một nhánh IF — KHÔNG dùng RETURN (khung L.6):
+//     IF M_Paused OR NOT M_CycleEnable THEN ;  ELSE  …thân trình tự…  END_IF;
 
 // ⚠⚠ Nhưng ngõ ra đang GIỮ thì vẫn phải giữ — tạm dừng không được nhả kẹp:
 IF M_Paused THEN
@@ -266,55 +266,76 @@ VAR
     Stn1_StepLimit : TIME;
 END_VAR
 
-// ── 1. Hai cửa vào: tạm dừng đóng băng, huỷ chu trình thì về bước chờ ──
-IF M_Paused THEN
-    RETURN;                              // giữ nguyên bước, giữ nguyên ngõ ra (L.4)
+// ── 1. MỘT cửa vào: tạm dừng, hoặc tầng máy chưa cho phép → GIỮ NGUYÊN bước và ngõ ra ──
+//    ⚠ Huỷ chu trình KHÔNG làm ở đây. Nó là một chuyển trạng thái riêng ở tầng máy
+//      (Hold → Idle, Chương 25), và bước được xoá ở đó — không phải mỗi lần cờ này tắt.
+IF M_Paused OR NOT M_CycleEnable THEN
+    ;                                    // ⭐ CỐ Ý không làm gì (L.4, Chương 25)
+ELSE
+
+    // ── 2. Một timer dùng chung, tự đặt lại mỗi khi bước đổi (Chương 26) ──
+    IF Stn1_Step <> Stn1_StepPrev THEN
+        T_StepTimeout(IN := FALSE);
+        Stn1_StepPrev := Stn1_Step;
+    END_IF;
+
+    CASE Stn1_Step OF
+        0:   Stn1_StepLimit := T#0S;         // 0 = chờ vô hạn, CÓ CHỦ Ý
+       10:   Stn1_StepLimit := T#3S;
+       20:   Stn1_StepLimit := T#3S;
+       30:   Stn1_StepLimit := T#60S;
+    END_CASE;
+
+    T_StepTimeout(IN := (Stn1_StepLimit > T#0S), PT := Stn1_StepLimit);
+
+    IF T_StepTimeout.Q THEN
+        Stn1_FaultStep := Stn1_Step;         // ⭐ GHI LẠI bước bị kẹt — không chỉ "lỗi trạm 1"
+        Stn1_Fault     := TRUE;
+        M_AnyFault     := TRUE;
+    END_IF;
+
+    // ── 3. Thân trình tự — chuyển bước bằng PHẢN HỒI THẬT ──
+    CASE Stn1_Step OF
+      0:  Stn1_Ready := TRUE;
+          Stn1_Busy  := FALSE;
+          IF DI_BoardStn1 THEN
+              Stn1_Ready := FALSE;
+              Stn1_Busy  := TRUE;
+              Stn1_Step  := 10;
+          END_IF;
+
+     10:  M_Stn1_StopReq := TRUE;
+          IF DI_Stop1Up THEN   Stn1_Step := 20;  END_IF;    // ⭐ cảm biến, không phải timer
+
+     20:  M_Stn1_ClampReq := TRUE;
+          IF DI_Clamp1Up THEN  Stn1_Step := 30;  END_IF;
+      // …
+    END_CASE;
+
 END_IF;
-
-IF NOT M_CycleEnable THEN
-    Stn1_Step := 0;
-    RETURN;
-END_IF;
-
-// ── 2. Một timer dùng chung, tự đặt lại mỗi khi bước đổi (Chương 26) ──
-IF Stn1_Step <> Stn1_StepPrev THEN
-    T_StepTimeout(IN := FALSE);
-    Stn1_StepPrev := Stn1_Step;
-END_IF;
-
-CASE Stn1_Step OF
-    0:   Stn1_StepLimit := T#0S;         // 0 = chờ vô hạn, CÓ CHỦ Ý
-   10:   Stn1_StepLimit := T#3S;
-   20:   Stn1_StepLimit := T#3S;
-   30:   Stn1_StepLimit := T#60S;
-END_CASE;
-
-T_StepTimeout(IN := (Stn1_StepLimit > T#0S), PT := Stn1_StepLimit);
-
-IF T_StepTimeout.Q THEN
-    Stn1_FaultStep := Stn1_Step;         // ⭐ GHI LẠI bước bị kẹt — không chỉ "lỗi trạm 1"
-    Stn1_Fault     := TRUE;
-    M_AnyFault     := TRUE;
-END_IF;
-
-// ── 3. Thân trình tự — chuyển bước bằng PHẢN HỒI THẬT ──
-CASE Stn1_Step OF
-  0:  Stn1_Ready := TRUE;
-      Stn1_Busy  := FALSE;
-      IF DI_BoardStn1 THEN
-          Stn1_Ready := FALSE;
-          Stn1_Busy  := TRUE;
-          Stn1_Step  := 10;
-      END_IF;
-
- 10:  M_Stn1_StopReq := TRUE;
-      IF DI_Stop1Up THEN   Stn1_Step := 20;  END_IF;    // ⭐ cảm biến, không phải timer
-
- 20:  M_Stn1_ClampReq := TRUE;
-      IF DI_Clamp1Up THEN  Stn1_Step := 30;  END_IF;
-  // …
-END_CASE;
 ```
+
+> ⚠⚠ **Cửa vào chỉ GIỮ, không bao giờ XOÁ bước.** Bản trước của khung này đặt `Stn1_Step := 0` mỗi
+> khi `M_CycleEnable` tắt — ⚠ trái với chính định nghĩa của cờ đó ở Chương 25 (*"dừng nhưng GIỮ
+> nguyên vị trí"*). Theo máy trạng thái Chương 25, cờ tắt mỗi lần vào `Hold`; nên bản cũ khiến
+> **mỗi lần Hold, trình tự quay về "chờ board" trong khi kẹp còn đang hạ** — và `Start` không thể
+> *"chạy tiếp từ bước đang nhớ"* được nữa.
+>
+> ⭐ Huỷ chu trình là **một quyết định của tầng máy**, đi qua một chuyển trạng thái có tên
+> (`Hold → Idle`), không phải hệ quả phụ của việc một cờ tắt.
+
+> ⭐ **Không có `RETURN` nào trong khung này — có chủ ý.** Bộ quy tắc viết mã của PLCopen (quy tắc
+> CP14, mức ưu tiên **cao**, áp cho mọi ngôn ngữ) yêu cầu **mỗi POU chỉ có một điểm thoát**, với lý
+> do rất thực dụng: khi gỡ lỗi, bạn thêm một dòng ngay trước điểm kết thúc và **chắc chắn nó chạy
+> trong mọi trường hợp**. Với `RETURN` rải ở đầu, dòng đó bị bỏ qua đúng những lần bạn cần nó nhất.
+> ⚡ Nhánh rỗng `;` có chú thích là cách chính tài liệu PLCopen dùng để nói *"ở đây cố ý không làm
+> gì"* — Phụ lục N.
+
+> ⚠ **Một hệ quả phải biết: khi đang giữ, bộ định thời báo lỗi bước KHÔNG chạy** — nó nằm trong nhánh
+> không được thực thi nên bị đóng băng (Chương 17, Bẫy 3). Ở đây đó là **điều mong muốn**: một bước
+> đang tạm dừng không phải bước bị kẹt. ⚡ Nếu cơ cấu của bạn cần thời gian khởi động lại sau một lần
+> dừng lâu, hãy **đặt lại bộ định thời khi thoát khỏi trạng thái giữ** — đừng để nó báo lỗi ngay sau
+> khi chạy tiếp.
 
 > ⭐⭐ **Hai quy tắc của khung này quan trọng hơn bản thân đoạn code:**
 >
@@ -388,47 +409,57 @@ M_BoardArrived := R_Board.Q;
 ## L.8 Cơ cấu hai vị trí — khối dùng lại cho mọi xy-lanh
 
 ⭐ **Viết một lần, dùng cho mọi xy-lanh trên máy.** Đây là tầng **cơ cấu** ở Chương 27, và là ví dụ
-điển hình của việc chuẩn hoá ở Chương 30.
+điển hình của việc chuẩn hoá ở Chương 30. ⭐ Đây là **đúng cùng một khối** với Chương 27 mục 27.3 —
+lý do của từng quyết định thiết kế nằm ở đó; ở đây là bản để chép.
 
 ```iecst
 FUNCTION_BLOCK FB_Cylinder2Pos
 VAR_INPUT
-    Req       : BOOL;        // TRUE = yêu cầu đi tới vị trí LÀM VIỆC
-    SensWork  : BOOL;        // cảm biến báo đã tới vị trí làm việc
-    SensHome  : BOOL;        // cảm biến báo đã về vị trí gốc
-    Limit     : TIME := T#3S;
+    Req       : BOOL;            // TRUE = yêu cầu tới vị trí LÀM VIỆC — giữ mức, không phải xung
+    Enable    : BOOL;            // tầng máy cho phép ĐỔI vị trí (Chương 25)
+    Reset     : BOOL;            // xoá lỗi đã chốt — nối sườn lên nút Reset
+    SensWork  : BOOL;            // cảm biến báo đã tới vị trí làm việc
+    SensHome  : BOOL;            // cảm biến báo đã về vị trí gốc
+    Limit     : TIME := T#3S;    // thời gian tối đa cho một hành trình
 END_VAR
 VAR_OUTPUT
-    SolOut    : BOOL;        // ra van
-    Done      : BOOL;        // đã tới đúng vị trí đang yêu cầu
-    Fault     : BOOL;        // quá thời gian, hoặc cảm biến vô lý
-    FaultCode : INT;         // 1 = quá thời gian · 2 = hai cảm biến cùng báo
+    Valve     : BOOL;            // lệnh ra van  ← chỉ khối này quyết định
+    Done      : BOOL;            // đã tới ĐÚNG vị trí đang được yêu cầu
+    Unknown   : BOOL;            // giữa chừng: cả hai cảm biến cùng tắt
+    Fault     : BOOL;            // đã chốt: quá thời gian, hoặc hai cảm biến cùng báo
+    FaultCode : INT;             // 0 = không lỗi · 1 = quá thời gian · 2 = hai cảm biến cùng báo
 END_VAR
 VAR
     T_Move    : TON;
-    ReqPrev   : BOOL;
+    ValvePrev : BOOL;
+    AtTarget  : BOOL;            // xy-lanh đang ở đúng chỗ mà VAN đang đẩy nó tới
 END_VAR
 
-SolOut := Req;
+// ── 1. Lệnh ra van: CHỈ đổi khi được phép. Mất phép → GIỮ nguyên, không "về lò xo" (Ch.27 Bẫy 7)
+IF Enable THEN
+    Valve := Req;
+END_IF;
 
-// Đã tới đúng vị trí ĐANG YÊU CẦU chưa
-Done := (Req AND SensWork) OR (NOT Req AND SensHome);
+// ── 2. Tới đích chưa — kiểm cảm biến ĐÍCH, không suy từ cảm biến kia (Chương 28, Bẫy 1)
+AtTarget := (Valve AND SensWork) OR (NOT Valve AND SensHome);
+Done     := (Req = Valve) AND AtTarget;     // chưa được phép đổi thì CHƯA xong
+Unknown  := NOT SensWork AND NOT SensHome;
 
-// Đổi yêu cầu thì đếm lại từ đầu
-IF Req <> ReqPrev THEN
-    ReqPrev   := Req;
+// ── 3. Xoá lỗi TRƯỚC khi kiểm lại: nguyên nhân còn thì lỗi chốt lại ngay trong vòng này
+IF Reset THEN
     Fault     := FALSE;
     FaultCode := 0;
-    T_Move(IN := FALSE);
 END_IF;
 
-T_Move(IN := NOT Done, PT := Limit);
+// ── 4. Quá thời gian: đếm lại từ đầu mỗi khi lệnh van đổi — gọi T_Move đúng MỘT lần
+T_Move(IN := NOT AtTarget AND (Valve = ValvePrev), PT := Limit);
+ValvePrev := Valve;
 IF T_Move.Q THEN
     Fault     := TRUE;
-    FaultCode := 1;                      // ⭐ chỉ BÁO, không tự xử lý
+    FaultCode := 1;                         // ⭐ chỉ BÁO — phản ứng là việc của tầng máy
 END_IF;
 
-// ⚠⚠ Cả hai cảm biến cùng báo = hỏng cảm biến hoặc sai đấu dây
+// ── 5. Hai cảm biến cùng báo: vô lý về vật lý → chắc chắn hỏng
 IF SensWork AND SensHome THEN
     Fault     := TRUE;
     FaultCode := 2;
@@ -439,24 +470,32 @@ END_FUNCTION_BLOCK
 ⭐ **Gọi khối này từ ladder** trông như sau — mỗi xy-lanh một hộp, mỗi hộp một tên:
 
 ```text
+                                 Clamp1
                       ┌────────────────────────┐
-                      │     FB_Cyl_Clamp1      │
+                      │    FB_Cylinder2Pos     │
    M_Stn1_ClampReq    │                        │   DO_Clamp1Vlv
- ────┤ ├──────────────┤ Req             SolOut ├────────( )───
-   DI_Clamp1Up        │                        │   M_Clamp1Done
- ────┤ ├──────────────┤ SensWork          Done ├────────( )───
-   DI_Clamp1Dn        │                        │   M_Clamp1Fault
- ────┤ ├──────────────┤ SensHome         Fault ├────────( )───
+ ────┤ ├──────────────┤ Req              Valve ├────────( )───
+   M_MotionEnable     │                        │   M_Clamp1Done
+ ────┤ ├──────────────┤ Enable            Done ├────────( )───
+   M_ResetPB_Rise     │                        │   M_Clamp1Fault
+ ────┤ ├──────────────┤ Reset            Fault ├────────( )───
+   DI_Clamp1Up        │                        │
+ ────┤ ├──────────────┤ SensWork     FaultCode ├
+   DI_Clamp1Dn        │                        │
+ ────┤ ├──────────────┤ SensHome       Unknown ├
         T#3S ─────────┤ Limit                  │
                       └────────────────────────┘
 ```
 
 > ⭐ **Đây là hình dạng quen thuộc nhất với thợ bảo trì:** một hộp có tên, chân trái là lệnh vào,
 > chân phải là phản hồi ra. ⚡ Không cần biết bên trong hộp viết bằng gì — và thực tế **bên trong
-> nên viết bằng ST**, vì nó có timer, so sánh và mã lỗi (mục L.19).
+> nên viết bằng ST**, vì nó có timer, so sánh và mã lỗi (mục L.19). Chân `FaultCode` và `Unknown`
+> không cần nối — đọc bằng tên khi cần: `Clamp1.FaultCode`.
 >
-> ⭐⭐ **Một hộp một tên** — `FB_Cyl_Clamp1`, `FB_Cyl_Clamp2`… ⚠ Hai xy-lanh dùng chung một tên hộp
-> là lỗi cùng loại với dùng chung `R_TRIG` ở L.7.
+> ⭐⭐ **Một hộp một tên** — `Stop1`, `Clamp1`, `Stop2`, `Clamp2`: tên **thể hiện** ghi trên hộp, tên
+> **kiểu** `FB_Cylinder2Pos` ghi trong hộp. ⚠ Đừng đặt tiền tố `FB_` cho thể hiện — tiền tố đó dành
+> cho **kiểu** (Phụ lục N, N10). Hai xy-lanh dùng chung một tên hộp là lỗi cùng loại với dùng chung
+> `R_TRIG` ở L.7.
 
 > ⭐⭐ **Phép kiểm "cả hai cảm biến cùng báo" là thứ đáng giá nhất trong khối này.** Về mặt vật lý nó
 > **không thể xảy ra** — nên khi nó xảy ra thì chắc chắn có hỏng hóc. ⚡ Đây là cách rẻ nhất để

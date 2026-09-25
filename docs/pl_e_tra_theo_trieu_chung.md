@@ -66,7 +66,7 @@ Trả lời bốn câu này thường thu hẹp được nửa danh sách nghi p
 | 4 | Năng lượng phụ trợ đủ | `DI_AirOK` — khí nén |
 | 5 | Thiết bị phụ sẵn sàng | `DI_VfdReady`, `DI_IonizerOK` |
 | 6 | Chọn đúng chế độ | `DI_ModeAuto` |
-| 7 | Công thức đã tải và hợp lệ | Ch.32 |
+| 7 | Công thức đã tải và hợp lệ | Ch.29 |
 
 > ⭐⭐ **Nếu máy không nói được điều kiện nào đang thiếu, đó là một lỗi thiết kế cần sửa** — không
 > phải một tình huống bình thường phải chịu đựng.

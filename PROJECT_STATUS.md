@@ -1,7 +1,42 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-08-31 (session 8)
-**Giai đoạn:** 🟨 **đang viết — đợt 1–3 xong, đợt 4 đang làm (18/58 chương, 10 hình).**
+**Cập nhật:** 2026-09-26 (đợt 58)
+**Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 14 phụ lục (15 dòng A1–N).** Đang hoàn thiện
+theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 59–62 còn lại).
+
+---
+
+## ⭐ Trạng thái hiện tại — đọc mục này trước
+
+> Các mục *"Session 1…8"* bên dưới là **lịch sử** giai đoạn viết (tới 2026-08-31), giữ nguyên để tra
+> lý do của các quyết định. Trạng thái thật nằm ở mục này.
+
+| Hạng mục | Hiện trạng |
+|---|---|
+| Bản thảo | ✅ 58 chương · 14 phụ lục (A tách A1/A2 → 15 dòng, tới Phụ lục N) |
+| Ghép & phát hành | `bash tools/gop_sach.sh` → `output/*.md` + `.html` → chép sang kho phát hành `../CSharp Automation Machine/CSharp-Automation-Machine/book` · ⚠ kho đó còn **sách khác — chỉ stage tệp của sách này, không xoá gì khác** |
+| Phiên bản | `v1.0.0.YYMMDD` theo ngày ghép · ⚠ **chỉ đổi `1.0.0` khi chủ dự án bảo** |
+| Bộ kiểm (trong `gop_sach.sh`, có LỖI là dừng ghép) | 6 bộ: `kiem_tra_chuong` · `kiem_nhat_quan` · `kiem_tro_muc` · `kiem_danh_so` · `kiem_chu_nha` · ⭐ `kiem_cu_phap_st` (đợt 58 — đã thử bằng 11 lỗi cài) + markdownlint · sau khi render: `kiem_html` |
+| Nhật ký đối chiếu | `docs/00d_Nhat_ky_doi_chieu.md` — mỗi đợt một mục, khẳng định đánh số liên tục |
+| ⚠⚠ Chặn phát hành chính thức | Ch.3, 6, 47, 48, 56 + Phụ lục D cần **người có thẩm quyền về an toàn** duyệt · 🔍 Ch.35, 40 chờ xác minh kỹ thuật |
+
+### TODO — theo thứ tự
+
+1. **Đợt 59 — tổ chức chương trình:** mô hình `Execute`/`Done` và `Enable`/`Valid` cho khối tự viết
+   (khối xy-lanh là ví dụ điều khiển theo mức; cần thêm một ví dụ theo sườn) · phạm vi biến
+   `VAR_GLOBAL`/`VAR_EXTERNAL` · khung POU chuẩn · ⚠ **thống nhất khung chương trình chính**: Ch.14
+   vẽ `PRG_Main`/`PRG_Safety`/`PRG_Mode`…, Ch.57 dùng `Prg_IoRead`…`Prg_OutputMap`, Ch.27 có danh sách
+   thứ tự gọi riêng — ba cách mô tả một thứ · ⚠ `M_AnyFault` phải **tính lại mỗi vòng** từ các nguồn lỗi
+   (design note 0006, việc còn lại).
+2. **Đợt 60 — hướng đối tượng** trong Ch.30 (METHOD, PROPERTY, INTERFACE, EXTENDS, IMPLEMENTS,
+   REFERENCE, FB_init) + bảng hãng hỗ trợ; đối chiếu cú pháp với tài liệu trực tuyến của CODESYS.
+3. **Đợt 61 — cách thực hiện lệnh:** bảng hành vi thực thi trong Phụ lục B · bẫy `R_TRIG` vòng quét
+   đầu · hàm chuỗi + ví dụ tách mã lô ở Ch.42 · dịch bit, `MUX`, `MIN`/`MAX`.
+4. **Đợt 62 — mã mẫu:** ≥ 1 ví dụ hoàn chỉnh mỗi chương 14–30 · SFC nên/không nên · quy ước *"đoạn
+   trích"* ở Ch.1 · ⭐ thêm vào `kiem_cu_phap_st` phép kiểm **biến chưa khai báo** trong ví dụ hoàn chỉnh.
+5. ⚠ Bản đầy đủ của 3 tài liệu PLCopen (OOP ~2,3 MB · thư viện khối ~12,6 MB · SFC ~1,1 MB) —
+   **chỉ tải khi chủ dự án đồng ý từng tệp**. Hiện chỉ có tờ giới thiệu.
+6. ⚠⚠ Tìm chuyên gia an toàn duyệt các chương ở dòng "chặn phát hành".
 
 ---
 
@@ -202,7 +237,7 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
 
 ---
 
-## Việc kế tiếp ngay
+## Việc kế tiếp giai đoạn viết (lịch sử — TODO hiện hành ở đầu tệp)
 
 1. ~~Phản hồi giọng văn đợt 1~~ ✅ xong session 5, đã áp vào B11–B14.
 2. ~~Viết đợt 2~~ ✅ xong session 6.
@@ -221,11 +256,11 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
 7. ~~**Bổ sung tên hãng vào 8 mục cũ**~~ ✅ xong session 10.
 8. **Đợt 5** — analog & truyền thông (Ch.31–46).
 9. **Đợt 6** — ráp lại (Ch.49, 53–58) + 11 phụ lục. Phụ lục A1/A2 viết sau cùng.
-3. **Chốt 5 câu hỏi còn lại của máy mẫu** (`docs/case_study_may_mau.md` §7) — chưa chặn, nhưng
+10. **Chốt 5 câu hỏi còn lại của máy mẫu** (`docs/case_study_may_mau.md` §7) — chưa chặn, nhưng
    Ch.55 và Ch.57 sẽ cần.
-3. ~~Bổ sung tài liệu nguồn Siemens & Mitsubishi~~ ✅ xong session 2–3. Thư viện nguồn coi như **đủ để viết**:
+11. ~~Bổ sung tài liệu nguồn Siemens & Mitsubishi~~ ✅ xong session 2–3. Thư viện nguồn coi như **đủ để viết**:
    40 file PDF / ~12.500 trang, phủ cả 5 hệ của Phụ lục A + đặc tả chuẩn mở + an toàn + điện nền tảng.
-4. Khi viết Phần I–II: quét mục lục sách Rabiee (file không có bookmark) để đối chiếu — không chặn đợt 1.
+12. Khi viết Phần I–II: quét mục lục sách Rabiee (file không có bookmark) để đối chiếu — không chặn đợt 1.
 
 ---
 
@@ -247,8 +282,8 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
 ## Chưa quyết
 
 - **Giấy phép phát hành** (CC BY-NC-SA hay đóng).
-- **Định dạng xuất bản** (.md → .docx/.pdf/HTML) — chưa dựng pipeline, chưa có `tools/`.
-- **Repo git** — chưa khởi tạo.
+- ~~Định dạng xuất bản~~ ✅ `.md` + `.html` một tệp tự đủ (ảnh nhúng), qua `tools/gop_sach.sh`.
+- ~~Repo git~~ ✅ repo cục bộ nhánh `master`; bản ghép đẩy lên kho phát hành.
 - Nền mô phỏng cụ thể cho bài tập Phụ lục I — nghiêng về CODESYS vì miễn phí và là cột neo trung lập,
   nhưng chưa chốt.
 - Ai là chuyên gia an toàn sẽ rà soát Ch.47–48.
@@ -257,18 +292,25 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
 
 ## Cấu trúc thư mục hiện tại
 
-```
+```text
 PLC_Programming_Book/
-  CLAUDE.md                       — quy ước viết, 12 bất biến, bộ hãng Phụ lục A
+  CLAUDE.md                       — quy ước viết, bất biến B1–B18, quy trình đánh giá
   PROJECT_STATUS.md               — file này
   docs/
-    00_Muc_luc.md                 — ⭐ khung sách 58 chương + 11 phụ lục
-    00c_Tai_lieu_tham_khao.md     — mẫu ghi nguồn + nguyên liệu Phụ lục G/H
-    case_study_may_mau.md         — hồ sơ máy mẫu DP-01 + quy tắc bóc lớp
-    design-notes/
-      0001-cau-truc-sach-va-cac-phuong-an.md   — 3 phương án cấu trúc, chọn A+C
-      0002-chot-huong-va-mo-rong-khung.md      — ⭐ 5 quyết định đã chốt
-      0003-doi-chieu-nguon-ngoai-va-bo-sung-khung.md — đối chiếu khung với nguồn ngoài + 8 bổ sung
+    00_Muc_luc.md                 — mục lục + trạng thái từng chương (ghép vào sách)
+    00c_Tai_lieu_tham_khao.md     — tài liệu làm việc: mẫu ghi nguồn (KHÔNG ghép vào sách)
+    00d_Nhat_ky_doi_chieu.md      — nhật ký đối chiếu, mỗi đợt một mục
+    00e_Ban_do_nguon.md           — bản đồ nguồn ↔ chương
+    case_study_may_mau.md         — hồ sơ máy mẫu DP-01 (bản làm việc; bản phát hành là Phụ lục J)
+    ch01_… ch58_…                 — 58 chương
+    pl_a1_… pl_n_…                — 15 phụ lục
+    design-notes/0001 … 0006      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh)
+  tools/
+    gop_sach.sh                   — chạy 6 bộ kiểm → ghép → HTML → chép sang kho phát hành
+    kiem_*.py                     — 6 bộ kiểm (xem bảng ở đầu tệp)
+    sinh_hinh*.py                 — sinh hình SVG theo chương
+    tra_nguon.py · lap_chi_muc_nguon.py — tra bộ tài liệu nguồn
+  output/                         — bản ghép mới nhất (.md, .html) + bìa
 ```
 
 Tài liệu nguồn nằm ngoài repo, ở `../PLC/reference/` (xem `00_INDEX.md` ở đó).
