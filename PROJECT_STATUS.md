@@ -1,8 +1,8 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-09-26 (đợt 60)
+**Cập nhật:** 2026-09-27 (đợt 61)
 **Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 14 phụ lục (15 dòng A1–N).** Đang hoàn thiện
-theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61–62 còn lại).
+theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61 ✅ · 62 còn lại).
 
 ---
 
@@ -24,9 +24,7 @@ theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 5
 
 1. ~~**Đợt 59 — tổ chức chương trình**~~ ✅ — hợp đồng `Execute`/`Enable` (Ch.30 mục 30.5b, L.8b) · phạm vi biến (Ch.11 mục 11.6) · khung chương trình chính thống nhất (Ch.14, 27, 57) · ⭐⭐ **đường đi của lỗi** sửa khoá chết Reset (design note 0007, Ch.25 mục 25.5c).
 2. ~~**Đợt 60 — hướng đối tượng**~~ ✅ — Ch.30 mục 30.5c; ⚠⚠ phát hiện IEC 61131-3 **bản 4 (5/2025)** bỏ IL → sửa Ch.13, 14, 21.
-3. **Đợt 61 — cách thực hiện lệnh:** bảng hành vi thực thi trong Phụ lục B · bẫy `R_TRIG` vòng quét
-   đầu · hàm chuỗi + ví dụ tách mã lô ở Ch.42 · dịch bit, `MUX`, `MIN`/`MAX`.
-   ⭐ Kèm các thay đổi của **bản 4 (2025)** chạm tới lệnh: `TRUNC` không kiểu bị bỏ (dùng dạng có kiểu), hàm BCD bị đánh dấu không khuyến khích (Ch.19 đang dạy BCD), chuỗi UTF-8 `USTRING` với `LEN_MAX`, `LEN_CODE_UNIT`, `ASSERT`.
+3. ~~**Đợt 61 — cách thực hiện lệnh**~~ ✅ — Phụ lục B mục B.6b, B.9b; Ch.16 Bẫy 9 (`M_FirstScan`); Ch.42 hàm kiểm mã; ⚠⚠ hai lỗi của Ch.42 chỉ lộ từ board thứ hai.
 4. **Đợt 62 — mã mẫu:** ≥ 1 ví dụ hoàn chỉnh mỗi chương 14–30 · SFC nên/không nên · quy ước *"đoạn
    trích"* ở Ch.1 · ⭐ thêm vào `kiem_cu_phap_st` phép kiểm **biến chưa khai báo** trong ví dụ hoàn chỉnh ·
    ⚠ Ch.30 khuyên gói trạng thái trạm vào cấu trúc (`Stn1.Step`) nhưng gần như mọi mã mẫu dùng dạng rời

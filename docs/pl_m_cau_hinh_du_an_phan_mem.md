@@ -134,6 +134,7 @@ CPU cho biết đang ở trạng thái nào** — đây là thứ đầu tiên p
 | Xoá các cờ tạm không giữ được | ⚠⚠ **Tự động về gốc** — Chương 28 nói rõ vì sao |
 | Nạp tham số công thức đang chọn (Chương 29) | ⚠ Giả định cơ cấu đang ở vị trí nghỉ |
 | ⭐ Đặt cờ *"chưa về gốc"* = TRUE | Xoá lịch sử báo động |
+| ⭐ **Che sườn lên** của vòng này bằng cờ `M_FirstScan` (Chương 16 Bẫy 9) | ⚠⚠ **Tin một sườn lên** ở vòng này — nút kẹt hay cảm biến đang che cũng thành *"vừa nhấn"*, *"vừa tới"* |
 
 > ⭐⭐ **Nguyên tắc: sau khi có điện lại, máy phải ở trạng thái AN TOÀN và BIẾT RẰNG MÌNH KHÔNG BIẾT
 > GÌ** — chưa về gốc, chưa biết vị trí cơ cấu, chưa biết có sản phẩm trong máy hay không.

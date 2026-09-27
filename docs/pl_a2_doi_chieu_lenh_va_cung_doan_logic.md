@@ -75,7 +75,7 @@ Trước khi vào bảng, cần phân biệt ba loại quan hệ:
 
 > ⭐ **Điểm chung của cả năm hệ — nhắc lại vì nó quan trọng hơn mọi khác biệt cú pháp:**
 > ⚠⚠ **Bộ định thời KHÔNG dùng để chuyển bước trình tự** — chỉ để báo lỗi khi phản hồi không tới
-> (Chương 21).
+> (Chương 17, 26).
 
 ---
 
@@ -130,7 +130,7 @@ Trước khi vào bảng, cần phân biệt ba loại quan hệ:
 >
 > ⚠ **Dùng chung một bit nhớ cho hai chỗ bắt cạnh là lỗi kinh điển**, và nó tạo ra hành vi rất khó
 > hiểu: một chỗ "ăn mất" cạnh của chỗ kia. Trên hệ có thể hiện FB, mỗi `R_TRIG` phải là **một thể
-> hiện riêng** (Chương 11, Phụ lục B.9).
+> hiện riêng** (Chương 16, Phụ lục B.9).
 
 ---
 

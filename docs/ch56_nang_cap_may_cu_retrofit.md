@@ -173,9 +173,9 @@ Nghe tầm thường, nhưng đây là công cụ mạnh nhất và rẻ nhất 
 | ⚠ **Thời gian quét khác** | ⭐ Logic phụ thuộc thời gian quét sẽ **chạy khác** (Chương 10) |
 | Cách xử lý bộ định thời khi bị ngắt giữa chừng | Hành vi khác nhau giữa các dòng |
 | ⭐ **Kiểu dữ liệu và tràn số** | Chương 11, 19 — một phép tính chạy đúng 15 năm có thể tràn trên nền mới |
-| Thứ tự quét khối / ngắt | Chương 19 |
+| Thứ tự quét khối / ngắt | Chương 10, 27 |
 | Vùng nhớ giữ được qua mất điện | ⭐ Chương 11 — ⚠ **bộ đếm bảo trì, số lô, tổng sản lượng** |
-| Cách làm tròn số thực | Chương 14 |
+| Cách làm tròn số thực | Chương 19 |
 
 > ⚠⚠ **Hàng đầu là cái bẫy đặc trưng của retrofit.** PLC mới thường quét **nhanh hơn nhiều**. Một
 > đoạn logic dựa vào việc "mỗi vòng quét khoảng 20 ms" — có thể là một bộ đếm dùng làm bộ định thời

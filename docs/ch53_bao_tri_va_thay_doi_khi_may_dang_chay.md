@@ -227,7 +227,7 @@ Cách duy nhất hiệu quả là làm nó thành **một phần của việc s�
 > thất lạc, tệp trên máy tính bị thay, nhưng comment nằm trong chương trình thì **luôn đi cùng bản
 > đang chạy** — kể cả khi ai đó tải nó từ PLC về.
 >
-> Đây là lý do Chương 24 nhấn mạnh comment giải thích **vì sao**, không phải **cái gì**.
+> Đây là lý do Chương 30 mục 30.4 nhấn mạnh comment giải thích **vì sao**, không phải **cái gì**.
 
 ---
 
@@ -406,7 +406,7 @@ nửa đêm.
 
 **Hiện tượng:** sáu tháng sau, người khác thấy dòng trễ 200 ms, **không biết vì sao có**, và xoá nó
 đi khi "dọn dẹp".
-**Cách sửa:** ⭐ lý do là trường **quan trọng nhất** trong nhật ký thay đổi (mục 53.3, Chương 24).
+**Cách sửa:** ⭐ lý do là trường **quan trọng nhất** trong nhật ký thay đổi (mục 53.3, Chương 30 Bẫy 7).
 
 ---
 

@@ -362,7 +362,7 @@ lệ** *(exception code)*. ⭐ Đọc được mã đó rút ngắn việc gỡ 
 > trả mã 03, và thông báo trên HMI chỉ ghi "lỗi Modbus". ⭐ **Chia thành nhiều lệnh đọc.**
 >
 > ⭐⭐ **Hệ quả thiết kế:** việc bảo vệ máy khỏi giá trị công thức vô lý là việc của **chương trình
-> PLC**, không phải của giao thức (Chương 32, Phụ lục C.5).
+> PLC**, không phải của giao thức (Chương 29 mục 29.4, Phụ lục C.5).
 
 *(Đối chiếu: MODBUS Application Protocol Specification V1.1b3 — mục MODBUS Exception Codes và các
 mục mô tả mã hàm 0x01–0x10.)*

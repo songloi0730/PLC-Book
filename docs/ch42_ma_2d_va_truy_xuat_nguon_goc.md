@@ -155,6 +155,11 @@ Ba yếu tố quyết định đầu đọc cố định hoạt động tốt ha
 ```
 
 ```iecst
+// TrigReadCode được gọi TRƯỚC đoạn này, ngoài CASE: TrigReadCode(CLK := (Stn1_Step = 20)) — mục 42.7
+IF TrigReadCode.Q THEN                       // ⭐ lệnh đọc MỚI → xoá kết quả của board TRƯỚC
+    M_CodeValid := FALSE;
+END_IF;
+
 // ⭐ Kích đọc bằng cạnh lên, có timeout (Chương 38, mục 38.8)
 ReadCode(Execute := TrigReadCode.Q,
          Timeout := T#2S,
@@ -179,6 +184,70 @@ END_IF;
 > ⭐ **Luôn kiểm định dạng mã, đừng tin chuỗi nhận được.**
 > Đầu đọc có thể đọc nhầm một mã khác trong tầm nhìn — nhãn vận chuyển, mã của đồ gá, mã của board
 > bên cạnh. Kiểm độ dài, tiền tố, và ký tự hợp lệ **trước khi** dùng nó.
+
+### ⭐ Kiểm định dạng và tách mã lô — hàm chuỗi làm việc thật
+
+Định dạng mã do **khách hàng** quy định trong đặc tả (Chương 23). Giả sử đặc tả ghi: `DP1-L2409A-000457`
+— tiền tố 3 ký tự, gạch nối, **mã lô** 6 ký tự bắt đầu bằng `L`, gạch nối, số thứ tự 6 chữ số, tổng
+17 ký tự. ⚠ Định dạng này là **ví dụ**; định dạng thật lấy từ đặc tả của bạn.
+
+```iecst
+FUNCTION KiemTraMaHopLe : BOOL
+VAR_INPUT
+    Ma : STRING(40);
+END_VAR
+VAR
+    i  : INT;
+    OK : BOOL;
+END_VAR
+
+// Vị trí đếm TỪ 1:  D P 1 - L 2 4 0 9 A  -  0  0  0  4  5  7
+//                   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+OK := (LEN(Ma) = 17)
+      AND (LEFT(Ma, 3) = 'DP1')
+      AND (MID(Ma, 1, 4) = '-')              // MID(chuỗi, SỐ KÝ TỰ, VỊ TRÍ)
+      AND (MID(Ma, 1, 5) = 'L')
+      AND (MID(Ma, 1, 11) = '-');
+IF OK THEN
+    FOR i := 12 TO 17 DO                     // sáu ký tự cuối phải là chữ số
+        IF FIND('0123456789', MID(Ma, 1, i)) = 0 THEN
+            OK := FALSE;                     // FIND trả 0 = không thấy trong tập chữ số
+        END_IF;
+    END_FOR;
+END_IF;
+KiemTraMaHopLe := OK;
+END_FUNCTION
+```
+
+Rồi tách mã lô để ghi vào bản ghi truy xuất:
+
+```iecst
+LotCode := MID(CurrentBoardCode, 6, 5);     // 6 ký tự, bắt đầu ở vị trí 5 → 'L2409A'
+```
+
+⭐ Hàm như thế này phải đi kèm **bảng ca thử** — cả ca đúng lẫn ca sai — và chạy lại mỗi khi sửa
+(Chương 50). Tám ca dưới đây đã chạy qua đúng hàm trên:
+
+| Chuỗi nhận được | Kết quả | Vì sao |
+|---|:-:|---|
+| `DP1-L2409A-000457` | ✔ | Đúng định dạng |
+| `DP1-L2409A-00045` | ✘ | Thiếu một chữ số — độ dài 16 |
+| `DP1-L2409A-00045X` | ✘ | Ký tự lạ ở phần số |
+| `XX1-L2409A-000457` | ✘ | Sai tiền tố |
+| `DP1-K2409A-000457` | ✘ | Mã lô không bắt đầu bằng `L` |
+| `DP1_L2409A-000457` | ✘ | Sai dấu phân cách |
+| ⭐ `SHIP-2409-000123-AB` | ✘ | **Nhãn vận chuyển** trong tầm nhìn đầu đọc — đúng tình huống ở trên |
+| *(chuỗi rỗng)* | ✘ | Đầu đọc trả về rỗng |
+
+> ⚠⚠ **Ba chi tiết quyết định hàm này đúng hay sai** — bảng đầy đủ ở Phụ lục B mục B.6b:
+>
+> - **Vị trí đếm từ 1**, không từ 0.
+> - ⚠ `MID(chuỗi, SỐ KÝ TỰ, VỊ TRÍ)` — **số ký tự đứng trước vị trí**. Đảo hai tham số vẫn biên dịch
+>   được, và cho ra một chuỗi **trông hợp lý** — `MID(Ma, 5, 1)` trả `'DP1-L'`. ⭐ Chính một giáo trình
+>   quốc tế cũng in ví dụ lệch một vị trí; hãy thử mọi hàm chuỗi với một chuỗi mà **mỗi ký tự khác
+>   nhau** trước khi tin nó.
+> - `FIND` trả **0** khi không thấy — nên `FIND('0123456789', c) = 0` là phép thử *"c có phải chữ số
+>   không"* ngắn nhất, không cần so sánh lớn nhỏ trên chuỗi.
 
 > ⭐ **Đếm số lần không đọc được và theo dõi xu hướng.**
 > Tỉ lệ không đọc tăng dần là cảnh báo sớm: ống kính bẩn, đèn yếu, hoặc chất lượng mã của lô mới kém
@@ -317,14 +386,27 @@ Khi đầu đọc không đọc được mã (không phải mất MES), thườn
 ### Luồng đầy đủ ở trạm 1
 
 ```iecst
+// ⭐ Mọi khối gọi MỖI vòng quét, NGOÀI CASE — sườn lên sinh từ chính bước (Chương 30 mục 30.5b)
+TrigReadCode(CLK := (Stn1_Step = 20));      // vào bước 20 → đúng MỘT sườn → một lần đọc
+TrigAskMes(CLK := (Stn1_Step = 30));
+// … khối đọc và kiểm mã của mục 42.4 chạy tại đây …
+AskMes(Execute := TrigAskMes.Q,
+       BoardCode := CurrentBoardCode,
+       StationId := 1,
+       Timeout := T#3S,
+       Done => M_MesReplied,
+       Error => M_MesError,
+       Allowed => M_MesAllowed,
+       RecipeId => MesRecipeId,
+       Reason => MesRejectReason);
+
 CASE Stn1_Step OF
     10: // Board tới trạm 1
         IF DI_BoardStn1 THEN
             Stn1_Step := 20;
         END_IF;
 
-    20: // ⭐ Đọc mã 2D
-        TrigReadCode(CLK := TRUE);
+    20: // ⭐ Đọc mã 2D — lệnh đọc phát ra ở sườn TrigReadCode, ngoài CASE
         IF M_CodeValid THEN
             Stn1_Step := 30;
         ELSIF M_CodeError THEN
@@ -340,17 +422,7 @@ CASE Stn1_Step OF
             Stn1_Step := 90;                     // đưa ra, đánh dấu NG
         END_IF;
 
-    30: // ⭐ HỎI MES trước khi làm
-        AskMes(Execute := TrigAskMes.Q,
-               BoardCode := CurrentBoardCode,
-               StationId := 1,
-               Timeout := T#3S,
-               Done => M_MesReplied,
-               Error => M_MesError,
-               Allowed => M_MesAllowed,
-               RecipeId => MesRecipeId,
-               Reason => MesRejectReason);
-
+    30: // ⭐ HỎI MES trước khi làm — khối AskMes gọi ngoài CASE, ở trên
         IF M_MesReplied AND M_MesAllowed THEN
             RequestedRecipeId := MesRecipeId;
             Stn1_Step := 35;                     // nạp công thức
@@ -377,6 +449,19 @@ ELSE
     Stn1_Step := 0;
 END_CASE;
 ```
+
+> ⚠⚠ **Bản trước của đoạn này có hai lỗi — và cả hai chỉ lộ ra từ board THỨ HAI.**
+>
+> 1. Nó gọi `TrigReadCode(CLK := TRUE)` **bên trong** nhánh bước 20. `R_TRIG` chỉ báo sườn khi `CLK`
+>    đổi từ FALSE sang TRUE **giữa hai lần gọi**; gọi mãi với TRUE thì bộ nhớ của nó nằm ở TRUE, và từ
+>    board thứ hai trở đi đầu đọc **không bao giờ được kích** (Phụ lục B mục B.9b).
+> 2. ⚠⚠ Cờ `M_CodeValid` **không bao giờ được xoá** giữa hai board. Board thứ hai vào bước 20, thấy
+>    cờ còn TRUE từ board trước, và đi tiếp với **mã của board trước** — ghi sai lịch sử của **hai**
+>    sản phẩm cùng lúc, đúng loại sai sót mà cả chương này sinh ra để chống.
+>
+> ⭐ Cách sửa: lấy `CLK` từ chính bước và gọi **ngoài** `CASE`; và **xoá kết quả cũ đúng lúc phát lệnh
+> đọc mới** (mục 42.4). ⚡ Bài học chung: một đoạn mã trình tự phải được thử với **ít nhất hai chu
+> trình liên tiếp** — chu trình đầu tiên luôn chạy trên những giá trị khởi tạo sạch sẽ.
 
 > ⭐ **Bước 30 là bước quan trọng nhất, và nó nằm TRƯỚC bước gia công.**
 > Nhiều hệ đặt việc hỏi MES song song với gia công cho nhanh — và mất luôn khả năng chống nhảy cóc.

@@ -264,7 +264,7 @@ END_IF;
 | `REAL` (32 bit) | **1e-6** |
 | `LREAL` (64 bit) | Chỉnh theo nhu cầu, ⭐ **nhỏ nhất khoảng 1e-15** |
 
-> ⭐ Đây là cùng một ý với việc **không so sánh bằng hai số thực** (Chương 14): với số thực, ⭐ **mọi
+> ⭐ Đây là cùng một ý với việc **không so sánh bằng hai số thực** (mục 19.3): với số thực, ⭐ **mọi
 > phép so sánh đều phải có dung sai** — kể cả phép so sánh với 0.
 
 #### ⭐ Ba nguyên nhân thật sự làm mẫu số bằng 0
@@ -392,6 +392,10 @@ dạng nhị phân:
 > ⭐ **Vì sao BCD vẫn còn tồn tại dù phí bit:** ⚡ vì nó **đổi thẳng ra chữ số hiển thị** mà không
 > cần phép chia. Đèn bảy đoạn và công tắc xoay số là mạch điện, không phải máy tính — với chúng,
 > mỗi chữ số một nhóm bốn bit là cách rẻ nhất.
+>
+> ⚠ **Bản 4 của IEC 61131-3 (2025) đánh dấu các hàm đổi BCD là *không khuyến khích*.** Hệ theo bản 3
+> vẫn có đủ, và dữ liệu BCD từ thiết bị cũ vẫn còn đó — nếu hệ của bạn bỏ các hàm này, phép đổi tự
+> viết chỉ là chia và lấy dư cho 16 theo từng nhóm bốn bit (Chương 14 mục 14.1).
 
 ### ⭐ Mã Gray — và vì sao nó tồn tại
 
@@ -558,6 +562,10 @@ Rất gọn. Và cũng rất dễ thành thứ không ai đọc nổi.
 >
 > Một số hệ có kiểm tra dải tự động; **đừng dựa vào đó** — nó không có ở mọi hệ, và có hệ chỉ bật khi
 > biên dịch ở chế độ gỡ lỗi.
+
+> ⭐ **Chuỗi ký tự cũng là dữ liệu phải xử lý** — tách, ghép, tìm. ⚠ Vị trí trong chuỗi đếm **từ 1**, và
+> thứ tự tham số của `MID` là chỗ sai nhiều nhất. Bảng hàm chuỗi ở Phụ lục B mục B.6b; ví dụ thật —
+> kiểm định dạng và tách một mã sản phẩm — ở Chương 42 mục 42.4.
 
 ---
 

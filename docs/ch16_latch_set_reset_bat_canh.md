@@ -527,6 +527,46 @@ một lần nhấn.
 **Cách sửa:** lọc rung trước, bắt cạnh sau — cho tín hiệu qua `TON` ngắn rồi mới đưa vào `R_TRIG`
 (Chương 17, mục 17.4). Thứ tự này quan trọng: lọc **trước**, bắt cạnh **sau**.
 
+### 🔍 BẪY 9 — Sườn giả ở vòng quét đầu tiên
+
+Bắt cạnh so với **giá trị của vòng quét trước**. ⚠ Ở vòng quét **đầu tiên** sau khi cấp điện, "vòng
+trước" chưa từng có: bộ nhớ đang giữ **giá trị khởi tạo** — với cách viết tay ở mục 16.5 là
+`M_BoardPrev` = FALSE. Tín hiệu **đã bằng 1 từ trước khi bật máy** thì phép so sánh thấy một sườn 0→1
+**không có thật**.
+
+| Lúc cấp điện | Hậu quả |
+|---|---|
+| Board còn nằm ở trạm từ lần mất điện trước, che cảm biến | Bộ đếm board **tăng 1** mỗi lần bật máy |
+| ⚠⚠ Nút Reset kẹt, hoặc dây đấu nhầm luôn có điện | Máy "thấy" một lần nhấn Reset — và từ `Uninitialized` **tự đi về gốc** (Chương 25) mà không ai ra lệnh: đúng điều Phụ lục M mục M.4 cấm |
+
+⭐ Khối chuẩn `R_TRIG` cũng thế — tài liệu một hãng mô tả `Q` lên một chu kỳ *"ngay khi `CLK` = TRUE"*.
+⚠ Còn `F_TRIG`, theo các thử nghiệm được ghi lại, **không** báo sườn xuống giả khi tín hiệu đã bằng 0
+từ đầu: hai khối **không đối xứng**. Kiểm trên hệ của bạn.
+
+**Cách sửa:** một cờ vòng quét đầu, và **che** — không bỏ gọi — sườn của vòng đó:
+
+```iecst
+VAR
+    M_FirstScan : BOOL := TRUE;   // biến KHÔNG giữ — về TRUE ở mỗi lần khởi động (Phụ lục M mục M.4)
+    R_Reset     : R_TRIG;
+END_VAR
+
+R_Reset(CLK := DI_ResetPB);                          // VẪN gọi ở vòng đầu — để bộ nhớ lấy giá trị thật
+M_ResetPB_Rise := R_Reset.Q AND NOT M_FirstScan;     // …nhưng không tin sườn của vòng đầu
+
+// … toàn bộ phần còn lại của chương trình …
+
+M_FirstScan := FALSE;                                // ⭐ dòng CUỐI của chương trình chính
+```
+
+> ⚠ **Đừng "sửa" bằng cách không gọi `R_TRIG` ở vòng đầu.** Khối không được gọi thì bộ nhớ của nó vẫn
+> là giá trị khởi tạo — sườn giả chỉ **dời sang vòng thứ hai**, lúc cờ đã tắt và không còn gì che.
+>
+> ⚠ Và cờ vòng đầu **không đủ** cho tín hiệu đã qua lọc rung (Bẫy 8): bộ lọc giữ đầu ra ở 0 trong
+> suốt thời gian lọc, nên sườn giả tới **muộn hơn** vòng đầu đúng bằng thời gian đó. Với bộ đếm sản
+> phẩm, đếm ở chỗ sản phẩm **rời máy đã xong** (Phụ lục L mục L.14), không đếm ở sườn của cảm biến đầu
+> vào.
+
 ---
 
 ## 16.9 Bảng chốt

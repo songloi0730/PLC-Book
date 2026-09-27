@@ -40,7 +40,7 @@
 | `STRING` | Chuỗi ký tự | ⚠ Kiểm độ dài tối đa của hãng |
 
 > ⚠⚠ **`INT` tràn sau 32 767 — với một máy làm 300 sản phẩm/giờ, đó là khoảng 4,5 ngày.**
-> ⭐ Dùng `DINT` cho mọi bộ đếm tích luỹ. Xem Chương 14.
+> ⭐ Dùng `DINT` cho mọi bộ đếm tích luỹ. Xem Chương 11, 19.
 
 ---
 
@@ -76,17 +76,23 @@ Từ **cao xuống thấp**:
 | `NOT` | Đảo | Tiếp điểm thường đóng | 15 |
 | `XOR` | Hoặc loại trừ | | 15 |
 | `:=` | Gán | Cuộn dây | 15 |
-| `S` | Đặt (giữ 1) | Cuộn dây Set | 15 |
-| `R` | Xoá (giữ 0) | Cuộn dây Reset | 15 |
+| `S` | Đặt (giữ 1) | Cuộn dây Set | 16 |
+| `R` | Xoá (giữ 0) | Cuộn dây Reset | 16 |
 | `R_TRIG` | ⭐ Bắt **cạnh lên** | Tiếp điểm P | 16 |
 | `F_TRIG` | ⭐ Bắt **cạnh xuống** | Tiếp điểm N | 16 |
-| `SR` | Flip-flop ưu tiên Set | | 15 |
-| `RS` | Flip-flop ưu tiên Reset | | 15 |
+| `SR` | Flip-flop ưu tiên Set | | 16 |
+| `RS` | Flip-flop ưu tiên Reset | | 16 |
+| `SHL` · `SHR` | Dịch trái · phải N bit, chỗ trống **điền 0** | | 19 |
+| `ROL` · `ROR` | Xoay trái · phải N bit — bit rơi ra đầu này **quay lại** đầu kia | | 19 |
 
 > ⭐⭐ **`SR` và `RS` khác nhau ở chỗ: khi CẢ HAI đầu vào cùng lên, cái nào thắng.**
 >
 > ⚠ Với mạch liên quan an toàn, câu hỏi "cái nào thắng" **không được để mặc định** — nó phải là một
-> quyết định có lý do (Chương 15, 22).
+> quyết định có lý do (Chương 16, 22).
+>
+> ⚠ Dịch bit làm việc trên **chuỗi bit** (`BYTE`, `WORD`, `DWORD`), không trên số có dấu. Dịch trái
+> một bit **không** an toàn để "nhân 2" một số có thể âm — dùng phép nhân. Ứng dụng thật của dịch
+> bit là **thanh ghi dịch** theo dõi sản phẩm dọc chuyền (Chương 19 mục 19.6).
 
 ---
 
@@ -114,7 +120,7 @@ TON:  IN ▔▔▔▔▔▔▁▁▁      TOF:  IN ▔▔▔▔▁▁▁▁▁  
 > ⚠⚠ **Bộ định thời KHÔNG dùng để chuyển bước trình tự.**
 >
 > ⭐ Chuyển bước bằng **tín hiệu phản hồi thật**; bộ định thời chỉ để **báo lỗi khi phản hồi không
-> tới**. Một bộ định thời không biết khi cơ cấu không tới nơi (Chương 21).
+> tới**. Một bộ định thời không biết khi cơ cấu không tới nơi (Chương 17, 26).
 
 ---
 
@@ -128,6 +134,10 @@ TON:  IN ▔▔▔▔▔▔▁▁▁      TOF:  IN ▔▔▔▔▁▁▁▁▁  
 
 > ⭐ **`CU` đếm theo CẠNH LÊN**, không theo mức. Nếu tín hiệu vào giữ ở 1, bộ đếm **không** đếm liên
 > tục.
+>
+> ⚠ **Tên chân không giống nhau ở mọi hệ.** Chuẩn đặt chân xoá của `CTU` là `R`; thư viện chuẩn của
+> CODESYS đặt là `RESET`, và kiểu của `PV`, `CV` là `WORD`. Gọi theo tên chân thì phải theo đúng tên
+> của hệ đang dùng.
 >
 > ⚠ Với xung tần số cao — nhanh hơn khoảng **1 / (2 × thời gian quét)** — phải dùng **bộ đếm tốc độ
 > cao** của phần cứng; bộ đếm phần mềm sẽ ⚠ **bỏ sót xung một cách âm thầm** (Chương 18, Phụ lục K.5).
@@ -144,7 +154,7 @@ TON:  IN ▔▔▔▔▔▔▁▁▁      TOF:  IN ▔▔▔▔▁▁▁▁▁  
 | `NE` · `<>` | Khác |
 | `LT` `LE` `GT` `GE` | Nhỏ hơn · nhỏ hơn bằng · lớn hơn · lớn hơn bằng |
 
-> ⚠ **Không so sánh bằng hai số `REAL`.** Dùng `ABS(a - b) < dung_sai` (Chương 14).
+> ⚠ **Không so sánh bằng hai số `REAL`.** Dùng `ABS(a - b) < dung_sai` (Chương 19 mục 19.3).
 
 ### Toán học
 
@@ -163,13 +173,49 @@ TON:  IN ▔▔▔▔▔▔▁▁▁      TOF:  IN ▔▔▔▔▁▁▁▁▁  
 | Lệnh | Nghĩa | Ví dụ |
 |---|---|---|
 | `SEL` | Chọn theo BOOL | `SEL(G, IN0, IN1)` — G=0 lấy IN0 |
-| `MAX` · `MIN` | Lớn nhất · nhỏ nhất | |
+| `MAX` · `MIN` | Lớn nhất · nhỏ nhất | `MAX(ApLucA, ApLucB)` — số đầu vào tuỳ ý |
 | ⭐ `LIMIT` | **Kẹp vào khoảng** | `LIMIT(MN, IN, MX)` |
-| `MUX` | Chọn theo số | `MUX(K, IN0, IN1, …)` |
+| `MUX` | Chọn theo số | `MUX(K, IN0, IN1, …)` — ⭐ `K` đếm **từ 0**; ⚠ `K` ngoài khoảng thì hành vi **tuỳ hệ** — kẹp `K` bằng `LIMIT` trước khi gọi |
 
 > ⭐ **`LIMIT` rất hữu ích cho giá trị analog và tham số công thức** — nhưng ⚠ **kẹp về biên KHÔNG
 > phải cách xử lý công thức sai**. Công thức ngoài dải phải bị **từ chối và báo lỗi**, không phải âm
-> thầm kẹp về giới hạn (Chương 32).
+> thầm kẹp về giới hạn (Chương 29 mục 29.4).
+
+### ⭐ Hàm chuỗi — vị trí đếm từ 1
+
+| Hàm | Làm gì | Ví dụ → kết quả |
+|---|---|---|
+| `LEN(STR)` | Số ký tự | `LEN('SUSI')` → `4` |
+| `LEFT(STR, L)` | `L` ký tự **đầu** | `LEFT('SUSI', 3)` → `'SUS'` |
+| `RIGHT(STR, L)` | `L` ký tự **cuối** | `RIGHT('SUSI', 3)` → `'USI'` |
+| ⭐ `MID(STR, L, P)` | `L` ký tự, **bắt đầu ở vị trí `P`** | `MID('SUSI', 2, 2)` → `'US'` |
+| `CONCAT(STR1, STR2, …)` | Nối | `CONCAT('SU', 'SI')` → `'SUSI'` |
+| `INSERT(STR1, STR2, P)` | Chèn `STR2` vào **sau** vị trí `P` | `INSERT('SUSI', 'XY', 2)` → `'SUXYSI'` |
+| `DELETE(STR, L, P)` | Xoá `L` ký tự từ vị trí `P` | `DELETE('SUXYSI', 2, 3)` → `'SUSI'` |
+| `REPLACE(STR1, STR2, L, P)` | Thay `L` ký tự từ vị trí `P` bằng `STR2` | `REPLACE('SUXYSI', 'K', 2, 2)` → `'SKYSI'` |
+| ⭐ `FIND(STR1, STR2)` | Vị trí **đầu tiên** của `STR2` trong `STR1`; ⚠ **không thấy thì trả 0** | `FIND('abcdef', 'de')` → `4` |
+
+> ⚠⚠ **Thứ tự tham số là chỗ sai nhiều nhất — kể cả trong sách giáo khoa.** Một giáo trình quốc tế
+> dùng trong sách này in ví dụ `MID` chọn **lệch một vị trí** so với chính quy ước nó mô tả. ⭐ Cách tự
+> vệ rẻ nhất: thử hàm với một chuỗi **mỗi ký tự khác nhau** (`'ABCDEF'`) trước khi dùng — nhìn kết quả
+> là biết ngay tham số nào là độ dài, tham số nào là vị trí.
+>
+> ⚠ **Vị trí đếm từ 1, không từ 0.** Tài liệu CODESYS ghi rằng `P = 0` được coi như vị trí 1 — và tự
+> ghi luôn là `DELETE`, `REPLACE` **xử lý `P = 0` chưa đúng**. Đừng bao giờ truyền 0.
+>
+> ⚠ **Độ dài có giới hạn.** `STRING` không khai độ dài thì mặc định **80** ký tự ở CODESYS, và các hàm
+> chuỗi của thư viện chuẩn trả về tối đa 255 ký tự — phần thừa **bị cắt im lặng**.
+>
+> ⚠ **Không phải hệ nào cũng đủ bộ.** Bảng tuân thủ IEC 61131-3 của Logix liệt kê `LEN`, `MID`,
+> `CONCAT`, `INSERT`, `DELETE`, `FIND` — không có `LEFT`, `RIGHT`, `REPLACE`; `LEFT(S, 3)` viết thành
+> `MID(S, 3, 1)`.
+>
+> ⚠⚠ **Chữ tiếng Việt có dấu không nằm được trong `STRING`.** Một ký tự `CHAR` chỉ có 256 giá trị, và
+> các chữ như `ệ`, `ở` nằm ngoài khoảng đó. Cần chuỗi hai byte `WSTRING`, hoặc chuỗi UTF-8 `USTRING`
+> mà bản 4 của chuẩn (2025) mới thêm — ⚠ khi đó số **byte** không còn bằng số **ký tự**, và bản 4
+> thêm `LEN_CODE_UNIT` để đếm byte, `LEN_MAX` để biết độ dài đã khai.
+>
+> ⭐ Ví dụ thật: kiểm định dạng mã 2D và tách mã lô — Chương 42 mục 42.4.
 
 ---
 
@@ -184,7 +230,12 @@ TON:  IN ▔▔▔▔▔▔▁▁▁      TOF:  IN ▔▔▔▔▁▁▁▁▁  
 | `TIME_TO_DINT(x)` | Thời gian → mili giây |
 
 > ⭐ **Quy tắc thực dụng:** ép sang `REAL` **trước** khi tính, ép về số nguyên **sau** khi tính xong.
-> Nó tránh cả **tràn số** lẫn **mất phần thập phân do chia số nguyên** (Chương 14, Phụ lục K.6).
+> Nó tránh cả **tràn số** lẫn **mất phần thập phân do chia số nguyên** (Chương 11, 19, Phụ lục K.6).
+
+> ⚠ **Bản 4 của IEC 61131-3 (2025) dọn lại nhóm này.** `TRUNC(x)` không ghi kiểu **bị bỏ** — dùng dạng
+> có kiểu như `TRUNC_DINT(x)`; các hàm đổi **BCD** bị đánh dấu **không khuyến khích**; và có thêm phép
+> đổi giữa chuỗi với mảng byte. ⭐ Hệ theo bản 3 vẫn giữ nguyên các hàm cũ — kiểm hệ của bạn theo bản
+> nào (Chương 14 mục 14.1).
 
 ---
 
@@ -244,18 +295,40 @@ RETURN;    // thoát khối     — ⚠ PLCopen CP14: nên tránh; mỗi POU ch�
 
 ```text
 VAR
-    TimerKep  : TON;        // ← khai báo thể hiện
+    T_Clamp1  : TON;        // ← khai báo thể hiện
     Stn1      : FB_Station; // ← mỗi trạm một thể hiện riêng
 END_VAR
 
-TimerKep(IN := DangKep, PT := T#2s);
-IF TimerKep.Q THEN ... END_IF;
+T_Clamp1(IN := M_Stn1_ClampReq, PT := T#2S);
+IF T_Clamp1.Q THEN ... END_IF;
 ```
 
 > ⭐⭐ **Điểm dễ nhầm nhất: hai chỗ dùng CÙNG một thể hiện `TON` sẽ ghi đè lẫn nhau.**
 >
 > Mỗi chỗ cần một bộ định thời riêng phải có **thể hiện riêng**. Đây là lý do khối hàm phải khai báo
-> thể hiện, còn hàm thì không (Chương 30).
+> thể hiện, còn hàm thì không (Chương 14 mục 14.3).
+
+---
+
+## B.9b ⭐⭐ Hành vi thực thi — khối chạy thế nào ở vòng đầu, và khi KHÔNG được gọi
+
+Ba câu hỏi mà bảng lệnh không trả lời, nhưng quyết định chương trình có chạy đúng không:
+
+| Khối | ⭐ Cập nhật khi nào | Lần gọi đầu sau khởi động | ⚠ Khi **không** được gọi |
+|---|---|---|---|
+| `TON` · `TOF` · `TP` | **Chỉ trong lần gọi** — `ET`, `Q` tính lại ở mỗi lần gọi | `ET` = 0, `Q` = FALSE; `IN` đã TRUE thì bắt đầu đếm từ lần này | ⚠⚠ **Đứng yên** — `ET` không tăng, `Q` giữ giá trị cũ. Khác hẳn lệnh `OUT` bộ định thời của hệ kiểu thiết bị: điều kiện tắt là **về 0** (Phụ lục A2 mục A2.8) |
+| `R_TRIG` | So `CLK` với giá trị **ở lần gọi trước** | ⚠⚠ `CLK` đã TRUE thì báo **một sườn lên giả** (Chương 16 Bẫy 9) | Không thấy những gì xảy ra lúc không gọi; lần gọi sau so với một giá trị **có thể đã rất cũ** |
+| `F_TRIG` | Như trên | ⭐ `CLK` đã FALSE thì **không** báo sườn — ⚠ **không đối xứng** với `R_TRIG` | Như trên |
+| `CTU` · `CTD` · `CTUD` | Đếm theo **sườn** của `CU` / `CD` | ⚠ Sườn được nhận như `R_TRIG` — đầu vào đã TRUE ở lần đầu thì có thể đếm một lần; kiểm trên hệ | Không đếm những sườn xảy ra lúc không gọi |
+| `SR` · `RS` | Mỗi lần gọi | `Q1` = FALSE, trừ khi khai giữ được | Giữ nguyên |
+| Khối `Execute` / `Done` (chuyển động, truyền thông, khối tự viết) | Tham số chốt ở **sườn lên** của `Execute` | Như `R_TRIG`: `Execute` đã TRUE ở lần đầu thì **có thể** phát một lệnh — kiểm trên hệ | ⚠⚠ **Đứng yên** giữa chừng — không xong, không lỗi. Phải gọi **mỗi vòng** trong lúc `Busy` (Chương 30 mục 30.5b) |
+| Hàm (`LIMIT`, `MID`, `MAX`…) | Không có bộ nhớ — kết quả chỉ phụ thuộc đầu vào của chính lần gọi | — | — không có gì để giữ |
+| Biến trong **phương thức** | Khởi tạo lại **mỗi lần gọi** | — | — (Chương 30 mục 30.5c) |
+
+> ⭐⭐ **Một quy tắc gói cả bảng: gọi mọi thể hiện khối ĐÚNG MỘT LẦN mỗi vòng quét, NGOÀI mọi nhánh
+> điều kiện, với đầu vào lấy từ trạng thái.** Muốn bộ định thời chạy ở bước 20 thì viết
+> `T_Step20(IN := (Stn1_Step = 20), …)` ngoài `CASE` — rời bước là tự xoá, không bao giờ đứng yên với
+> giá trị cũ, và không bao giờ phải gọi lần hai để xoá (PLCopen CP20, Phụ lục N).
 
 ---
 

@@ -225,6 +225,7 @@ PROGRAM Main          // tác vụ chu kỳ, chạy liên tục — Ch.10, Ch.27
   Prg_Stats();         // 12  chu kỳ, sản lượng, bộ đếm bảo trì     Ch.53, 55
   Prg_OutputMap();     // 13  GOM ngõ ra — đúng một chỗ ghi mỗi tag Ch.22, 27 Bẫy 2
   Prg_Hmi();           // 14  dữ liệu cho màn hình và đèn tháp      Ch.5, 44
+  M_FirstScan := FALSE; // 15 ⭐ dòng CUỐI — hết vòng quét đầu       Ch.16 Bẫy 9, Phụ lục M.4
 
 END_PROGRAM
 ```

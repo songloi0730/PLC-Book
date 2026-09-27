@@ -81,7 +81,7 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 >
 > Cột "Hết giờ" chỉ để **báo lỗi**. Nếu hai cột này giống nhau — chuyển bước bằng chính bộ định thời
 > — thì máy **không biết khi cơ cấu không tới nơi**, và nó sẽ chạy tiếp như thể mọi thứ ổn
-> (Chương 21).
+> (Chương 17, 26).
 
 > ⚠ **Trước khi coi là xong:**
 >
@@ -120,7 +120,7 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 ## C.5 Bảng công thức sản phẩm
 
 ⭐ **Dùng để:** tách tham số sản phẩm khỏi logic, để đổi hàng không phải sửa chương trình
-(Chương 32).
+(Chương 29).
 
 | Tham số | Đơn vị | Kiểu | ⭐ Dải hợp lệ | Giá trị mặc định | Dùng ở bước | Ai được sửa |
 |---|---|---|---|---|---|---|
@@ -404,7 +404,7 @@ Chương 54).
 
 | Giai đoạn dự án | Biểu mẫu | Chương |
 |---|---|---|
-| Đặc tả | C.3 · C.4 · C.5 | 23, 25, 32 |
+| Đặc tả | C.3 · C.4 · C.5 | 23, 25, 29 |
 | Bảng I/O | ⭐ **C.1** | 23 |
 | ⭐ **Chọn và cấu hình phần cứng** | ⭐ **C.10** | 8, 13 |
 | ⭐ **Đặt hàng & nhận hàng** | ⭐ **C.11** | 13, 49 |

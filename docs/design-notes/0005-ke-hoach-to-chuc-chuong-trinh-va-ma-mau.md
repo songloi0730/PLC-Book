@@ -192,3 +192,14 @@ nhất.
 | Trỏ từ Ch.14 | ✅ Bảng các bản của chuẩn ở mục 14.1 trỏ sang 30.5c |
 | ⚠ Ngoài kế hoạch | ⚠⚠ IEC 61131-3 bản 4 (5/2025) bỏ IL — sửa Ch.13, 14, 21, Mục lục; các thay đổi về lệnh để đợt 61 |
 | ⚠ Chưa kiểm được | Thân khối cha có tự chạy khi gọi khối con không — sách né, không đoán |
+
+### Đợt 61 — xong 2026-09-27
+
+| Hạng mục | Kết quả |
+|---|---|
+| Hành vi thực thi từng khối chuẩn | ✅ Phụ lục B mục B.9b — cập nhật khi nào, lần gọi đầu, khi không được gọi |
+| Bẫy `R_TRIG` ở vòng quét đầu | ✅ Ch.16 Bẫy 9 + cờ `M_FirstScan` ở L.7, Ch.57, M.4 |
+| Hàm chuỗi + ví dụ Ch.42 | ✅ Phụ lục B mục B.6b; Ch.42 mục 42.4 hàm `KiemTraMaHopLe` với tám ca thử |
+| Dịch bit, `MUX`, `MIN`/`MAX` | ✅ Phụ lục B B.3, B.6 (thanh ghi dịch đã có ở Ch.19 mục 19.6) |
+| Thay đổi của bản 4 | ✅ `TRUNC`, BCD, `USTRING`, `LEN_MAX`, `LEN_CODE_UNIT` |
+| ⚠⚠ Ngoài kế hoạch | Hai lỗi của Ch.42 chỉ lộ ra từ board thứ hai; cụm con trỏ số chương cũ tái phát lần ba → phép kiểm cố định |

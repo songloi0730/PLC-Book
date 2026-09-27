@@ -3302,6 +3302,75 @@ lòi ra một chuyện lớn hơn: **IEC 61131-3 đã có bản 4 từ tháng 5/
 
 ---
 
+## Đợt 61 — 2026-09-27 · Cách thực hiện lệnh: hàm chuỗi, vòng quét đầu, khi khối không được gọi
+
+⭐ Đợt thứ tư của kế hoạch 5 đợt. Trọng tâm là những thứ bảng lệnh không nói: lệnh chạy thế nào ở
+vòng quét **đầu tiên**, và khi **không được gọi**. ⚠ Chính hai câu hỏi đó tìm ra hai lỗi nặng trong
+chương truy xuất nguồn gốc — cả hai chỉ lộ ra từ **sản phẩm thứ hai**.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 590 | Thư viện chuẩn CODESYS (bản 3.5.22): chữ ký và ví dụ của `LEN`, `LEFT`, `RIGHT`, `MID(STR, LEN, POS)`, `CONCAT`, `INSERT` (chèn **sau** vị trí), `DELETE`, `REPLACE`, `FIND` (không thấy trả 0) | ✔ |
+| 591 | ⚠ Chính tài liệu CODESYS ghi `DELETE` và `REPLACE` **xử lý `POS = 0` chưa đúng** → sách viết: đừng bao giờ truyền 0 | ⚠ |
+| 592 | ⚠⚠ Giáo trình Hanssen (có trong bộ nguồn) in ví dụ `MID`, `DELETE`, `INSERT` **lệch một vị trí** so với chính quy ước tham số nó mô tả — mô phỏng xác nhận: `MID('GoLFC!', 2, 3)` là `'LF'`, không phải `'oL'`. Sách **không chép** ví dụ đó, và biến nó thành bài học *"thử hàm với chuỗi mỗi ký tự khác nhau"*. Cùng trang còn một lỗi in nhỏ: `SHR` mô tả là dịch *"sang trái"* | ⚠⚠ |
+| 593 | Trợ giúp CODESYS: `STRING` mặc định **80** ký tự; Latin-1 một byte mỗi ký tự; bật tuỳ chọn UTF-8 thì một ký tự tới 4 byte; hàm chuỗi của thư viện trả về tối đa 255 ký tự | ✔ |
+| 594 | Bảng tuân thủ IEC 61131-3 của Logix: có `LEN`, `MID`, `CONCAT`, `INSERT`, `DELETE`, `FIND` — **không** liệt kê `LEFT`, `RIGHT`, `REPLACE` | ✔ |
+| 595 | `CHAR` một byte, giá trị 0–255 → chữ tiếng Việt có dấu **không** nằm được trong `STRING`; cần `WSTRING`, hoặc `USTRING` của bản 4 | ✔ |
+| 596 | Thư viện chuẩn CODESYS đặt chân xoá của `CTU` là `RESET`, không phải `R` như chuẩn; `PV`, `CV` kiểu `WORD` | ✔ |
+| 597 | ⚠ `R_TRIG` ở lần gọi đầu: tài liệu một hãng mô tả `Q` lên *"ngay khi CLK = TRUE"*; các thử nghiệm được ghi lại cho thấy `F_TRIG` **không** báo sườn giả — không đối xứng. Chưa tìm được văn bản chuẩn ghi giá trị khởi tạo bộ nhớ sườn → sách viết kèm *"kiểm trên hệ của bạn"* | ⚠ |
+
+### B — ⚠⚠ Lỗi tìm ra khi hỏi "vòng đầu thì sao, không gọi thì sao"
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 598 | ⚠⚠ Ch.42: `TrigReadCode(CLK := TRUE)` gọi **bên trong** nhánh bước 20. `R_TRIG` gọi mãi với TRUE thì bộ nhớ nằm ở TRUE — **đầu đọc chỉ được kích một lần trong cả đời máy**; từ board thứ hai không bao giờ đọc nữa | ⚠⚠ |
+| 599 | ⚠⚠ Ch.42: cờ `M_CodeValid` **không bao giờ được xoá** giữa hai board — board thứ hai thấy cờ còn TRUE và đi tiếp với **mã của board trước**, ghi sai lịch sử của hai sản phẩm cùng lúc. Sửa: xoá kết quả cũ đúng lúc phát lệnh đọc mới | ⚠⚠ |
+| 600 | ⚠ Ch.42 gọi `KiemTraMaHopLe` mà **chưa từng định nghĩa**; khối `AskMes` (kiểu `Execute`) gọi bên trong nhánh `CASE` → chuyển ra ngoài `CASE` | ⚠ |
+| 601 | ⚠⚠ **Sườn giả ở vòng quét đầu**: nút Reset kẹt lúc cấp điện → `R_TRIG` báo một lần nhấn → máy từ `Uninitialized` **tự đi về gốc** — đúng điều Phụ lục M mục M.4 cấm. Không chương nào dạy, và sách **không có** cờ vòng quét đầu → Ch.16 Bẫy 9; cờ `M_FirstScan` ở L.7 và dòng cuối `Main` của Ch.57; thêm một dòng vào bảng M.4 | ⚠⚠ |
+| 602 | ⭐ Và cờ vòng đầu **không đủ** cho tín hiệu đã qua lọc rung — sườn giả tới muộn đúng bằng thời gian lọc. Sách ghi rõ giới hạn đó thay vì trình bày cờ như lời giải trọn vẹn | ⭐ |
+| 603 | ⚠ Phụ lục B: `S`, `R`, `SR`, `RS` trỏ Chương 15 (chủ nhà là Ch.16); năm con trỏ theo số chương cũ (14, 21, 32); ví dụ ở B.9 đặt tên `TimerKep` trái quy ước tiền tố `T_` của chính sách | ⚠ |
+| 604 | ⚠ Quét lại toàn sách **theo đoạn văn** (đợt 58 quét theo dòng nên sót): thêm 16 con trỏ số chương cũ ở Ch.19, 39, 53, 56 và Phụ lục A2, C, K — trong đó có hai chỗ *"Chương 24 cho chú thích"* mà đợt 56 bỏ sót vì dùng chữ *"comment"* | ⚠ |
+| 605 | ⚠ L.7 trỏ *"Chương 18"* cho quy tắc lọc rung trước bắt cạnh — chủ nhà là Ch.16 Bẫy 8 | ⚠ |
+
+### C — Bổ sung
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 606 | ➕➕ Phụ lục B mục mới **B.9b — hành vi thực thi**: mỗi khối chuẩn cập nhật khi nào, lần gọi đầu ra sao, và ⚠ **khi không được gọi** thì thế nào — gói lại thành một quy tắc: gọi mọi thể hiện **đúng một lần mỗi vòng, ngoài mọi nhánh, đầu vào lấy từ trạng thái** | ➕➕ |
+| 607 | ➕➕ Phụ lục B mục **B.6b — hàm chuỗi**: bảng chín hàm với ví dụ đã đối chiếu, và năm lưu ý — thứ tự tham số, vị trí từ 1, `POS = 0`, giới hạn độ dài, hệ thiếu hàm, chữ tiếng Việt. Kèm: dịch bit ở B.3, tên chân `CTU` ở B.5, `MUX` đếm từ 0 ở B.6, các thay đổi của bản 4 ở B.7 | ➕➕ |
+| 608 | ➕➕ Ch.42 mục 42.4: hàm `KiemTraMaHopLe` viết đủ bằng hàm chuỗi, tách mã lô bằng `MID`, và ⭐ **bảng tám ca thử** — đã chạy qua mô phỏng, gồm cả ca *đầu đọc đọc nhầm nhãn vận chuyển* | ➕➕ |
+| 609 | ➕ Ch.19: ghi chú bản 4 đánh dấu hàm BCD không khuyến khích; chỉ dẫn sang hàm chuỗi | ➕ |
+| 610 | ➕ `kiem_chu_nha.py` thêm phép kiểm **số chương cũ** cố định — 11 luật, cửa sổ hai dòng, bỏ qua khi dẫn kèm chương đúng. Thử bằng cách cài lại hai con trỏ cũ: lần đầu bắt 1/2 → bổ sung chủ đề *"nhật ký thay đổi"* → bắt 2/2 | ➕ |
+| 611 | Lời hứa ở bài học 3 đợt 58 (*"nếu cụm này còn tái phát, biến nó thành phép kiểm cố định"*) — **đã tái phát, đã làm** | ✔ |
+
+### Kết quả đợt 61
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **22** |
+| ✔ Xác nhận | 6 |
+| ⚠⚠ Lỗi nặng | 4 — #592, #598, #599, #601 |
+| ⚠ Lỗi, lưu ý | 6 |
+| ⭐ | 1 |
+| ➕➕ / ➕ | 3 / 2 |
+| Mục mới | Phụ lục B mục B.6b, B.9b · Ch.16 Bẫy 9 · Ch.42 hàm kiểm mã |
+
+> ⭐⭐ **Bài học 1 — lỗi của mã trình tự sống ở chu trình THỨ HAI.**
+>
+> Chu trình đầu tiên chạy trên giá trị khởi tạo sạch sẽ: bộ nhớ sườn bằng FALSE, cờ kết quả bằng
+> FALSE. ⚡ Hai lỗi của Ch.42 đều **vô hình** ở board đầu tiên. Mọi đoạn trình tự trong sách từ nay nên
+> được đọc với câu hỏi: *"lần thứ hai đi qua đây, cái gì còn sót lại từ lần thứ nhất?"*
+
+> ⭐ **Bài học 2 — một nguồn uy tín vẫn sai được ở chi tiết.**
+>
+> Giáo trình Hanssen là nguồn tốt, và sách dẫn nó nhiều lần. Ba ví dụ hàm chuỗi của nó vẫn lệch một vị
+> trí. ⚡ Đối chiếu nguồn không có nghĩa là tìm một nguồn rồi tin — với **hành vi cụ thể** như thứ tự
+> tham số, phải có hai nguồn **khớp nhau**, hoặc một phép thử chạy được.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

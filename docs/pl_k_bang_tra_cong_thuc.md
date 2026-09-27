@@ -26,7 +26,7 @@ KyThuat  =  ──────────────────────�
 |---|---|
 | ⭐ **Điều kiện áp dụng** | Quan hệ **tuyến tính** giữa tín hiệu và đại lượng đo |
 | ⚠ **Không áp dụng cho** | Cặp nhiệt điện và RTD ở dải rộng (quan hệ **không tuyến tính**) — dùng module chuyên dụng hoặc bảng tra (Ch.33) |
-| ⚠ Bẫy | **Tràn số và chia số nguyên** — xem K.6 và Chương 14 |
+| ⚠ Bẫy | **Tràn số và chia số nguyên** — xem K.6 và Chương 11, 19 |
 | Chương | 31 mục 31.4 |
 
 ### Ví dụ trên DP-01
@@ -272,7 +272,7 @@ Bộ nhớ chương trình  ≈  5 word × số thiết bị SỐ  +  25 word ×
 > ⚠⚠ **`INT` tràn ở 32 767 — con số này nhỏ hơn bạn tưởng.** Một bộ đếm sản lượng dùng `INT` tràn
 > sau **32 767 sản phẩm** — với DP-01 ở 300 board/giờ, đó là **khoảng 4,5 ngày**.
 >
-> ⭐ Dùng `DINT` cho mọi bộ đếm tích luỹ. Xem Chương 14.
+> ⭐ Dùng `DINT` cho mọi bộ đếm tích luỹ. Xem Chương 11, 19.
 
 ### ⚠ Thứ tự phép tính để tránh tràn
 

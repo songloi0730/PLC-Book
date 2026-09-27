@@ -365,10 +365,10 @@ VAR
 END_VAR
 
 R_Start(CLK := DI_StartPB);
-M_StartPB_Rise := R_Start.Q;             // TRUE đúng MỘT vòng quét
+M_StartPB_Rise := R_Start.Q AND NOT M_FirstScan;   // MỘT vòng quét — trừ vòng đầu (Chương 16 Bẫy 9)
 
 R_Reset(CLK := DI_ResetPB);
-M_ResetPB_Rise := R_Reset.Q;
+M_ResetPB_Rise := R_Reset.Q AND NOT M_FirstScan;
 
 // ── Chống rung TRƯỚC, bắt cạnh SAU — thứ tự này bắt buộc ──
 T_Debounce(IN := DI_BoardStn1, PT := T#20MS);
@@ -402,10 +402,15 @@ M_BoardArrived := R_Board.Q;
 > này rồi dán mà quên đổi tên hộp thì ⚠⚠ **hai tín hiệu dùng chung một timer** — Chương 14 mục 14.3.
 
 > ⚠⚠ **Đảo thứ tự là một lần nhấn ra nhiều xung.** Lọc rung phải đứng **trước** bắt cạnh
-> (Chương 18).
+> (Chương 16 Bẫy 8).
 >
 > ⚠ **Mỗi tín hiệu một thể hiện `R_TRIG` riêng.** Dùng chung một thể hiện cho hai tín hiệu thì
 > ⭐ **hai tín hiệu ghi đè bộ nhớ trạng thái của nhau** — lỗi cùng loại với Chương 14 mục 14.3.
+
+> ⚠⚠ **Sườn ở vòng quét đầu là sườn giả** khi tín hiệu đã bằng 1 từ trước lúc bật máy — nút kẹt,
+> board đang che cảm biến. Hai nút ở trên được che bằng `M_FirstScan` — cờ khai `BOOL := TRUE`, đặt về
+> FALSE ở dòng cuối chương trình chính (Chương 57). ⚠ Với `M_BoardArrived` thì cờ này **không đủ**,
+> vì bộ lọc rung làm sườn giả tới muộn — Chương 16 Bẫy 9.
 
 ---
 

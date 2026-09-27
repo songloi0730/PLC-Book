@@ -55,5 +55,26 @@
     ["pl_m_cau_hinh_du_an_phan_mem.md", "thời gian quét", 51],
     ["ch50_mo_phong_va_kiem_thu.md", "tràn số", 10],
     ["pl_n_quy_uoc_viet_ma.md", "đánh số dây", 44]
-  ]
+  ],
+  "so_chuong_cu": {
+    "_muc_dich": "Con trỏ theo SỐ CHƯƠNG CŨ — khung sách từng đánh số lại; cụm lỗi tái phát ở đợt 13, 58, 61. Mỗi luật: [số cũ bị dùng sai, chủ đề (regex), các chương đúng]. Dòng dẫn kèm một chương đúng thì không báo.",
+    "luat": [
+      [43, "báo động|chẩn đoán|đèn tháp|mã lỗi", [44, 51]],
+      [32, "công thức|recipe|tham số sản phẩm|mã hàng", [29]],
+      [24, "đọc.{0,20}chương trình|sửa chương trình|người khác|chú thích|comment|nhật ký thay đổi", [22, 30]],
+      [12, "giữ được|retain|mất điện", [11]],
+      [5, "khí nén|xy-lanh|xi lanh|mất khí|áp khí", [6]],
+      [21, "timeout|hết giờ|quá giờ|bộ định thời|chuyển bước|phản hồi thật", [17, 26]],
+      [7, "vòng quét|thời gian quét|IEC 61131-[12]", [8, 10]],
+      [19, "vòng quét|thời gian quét|thứ tự quét", [10]],
+      [14, "kiểu dữ liệu|tràn|số thực|REAL|so sánh bằng|ép kiểu|làm tròn", [11, 19]],
+      [11, "R_TRIG|F_TRIG|bắt cạnh", [16]],
+      [6, "rủi ro|ISO 12100", [47]]
+    ],
+    "_ghi_chu_bo_qua": "Đã xét bằng tay, KẾT LUẬN LÀ ĐÚNG. Dạng [tệp, số chương cũ, đoạn chữ phải có trong dòng].",
+    "bo_qua": [
+      ["ch29_cong_thuc_san_pham_va_tham_so.md", 19, "Chương 19, Bẫy 8"],
+      ["ch51_xu_ly_su_co.md", 32, "kiểm công thức scale (Chương 32)"]
+    ]
+  }
 }
