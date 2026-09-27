@@ -102,6 +102,8 @@ STRUCT
     CureTimeMs      : DINT;
     // ── Tham số chung ──
     ConvSpeedPct    : INT;
+    // … các chương sau thêm trường của lát cắt sau — nhiệt độ keo (Chương 39), đường
+    //   tra keo (Chương 43). Bản đầy đủ: Phụ lục J mục J.5
 END_STRUCT
 END_TYPE
 

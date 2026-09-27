@@ -325,6 +325,7 @@ PID_GlueTemp(...);
 ```iecst
 // ✓ ĐÚNG — gọi trong tác vụ chu kỳ cố định, hoặc theo một xung định kỳ
 IF TrigPidTick.Q THEN            // xung đều đặn, ví dụ 500 ms
+    // ⭐ CỐ Ý gọi trong nhánh: khối PID lấy Δt = CycleMs, nên PHẢI chạy đúng một lần mỗi nhịp
     PID_GlueTemp(..., CycleMs := 500);
 END_IF;
 ```

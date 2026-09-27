@@ -114,7 +114,7 @@ Không phải lúc nào cũng sai. Robot làm chủ hợp khi:
 | Tín hiệu | Chiều | Ghi chú |
 |---|---|---|
 | Số chương trình | PLC → Robot | Vài bit, hoặc một thanh ghi |
-| ⭐ **Bắt đầu** | PLC → Robot | Kích bằng **cạnh lên** (Chương 16) |
+| ⭐ **Bắt đầu** | PLC → Robot | Kích bằng **cạnh lên** (Chương 16) — ⭐ **giữ** tới khi robot báo *Đang chạy*: xung một vòng quét có thể ngắn hơn chu kỳ đọc ngõ vào của robot và bị **bỏ lỡ** (cùng lý do PLC bỏ lỡ xung ngắn hơn vòng quét — Chương 10) |
 | Cho phép chạy | PLC → Robot | ⚠ Mất tín hiệu này → robot dừng |
 | **Đang chạy** | Robot → PLC | |
 | ⭐ **Xong** | Robot → PLC | ⭐ Chuyển bước bằng **cái này**, không bằng timer (Chương 17) |
@@ -294,19 +294,19 @@ board từ khay** thay vì nhận từ máy trước:
 ```iecst
 // PLC làm chủ: robot là một bước trong trình tự
 CASE LoadStep OF
-    10: // Yêu cầu robot gắp board từ ô tiếp theo
-        RobotProgNo := PROG_PICK_FROM_TRAY;
+    10: // Chọn chương trình và ô tiếp theo
+        RobotProgNo    := PROG_PICK_FROM_TRAY;
         RobotSlotIndex := NextSlot;              // ⭐ tham số, không phải chương trình riêng
-        Step := 20;
+        LoadStep := 20;
 
-    20: // ⭐ Kích bằng cạnh lên (Chương 16)
-        TrigRobotStart(CLK := TRUE);
-        DO_RobotStart := TrigRobotStart.Q;
-        Step := 30;
+    20: // ⭐ "Bắt đầu" đang bật (dòng gán ngoài CASE) — chờ robot báo ĐÃ NHẬN lệnh
+        IF DI_RobotRunning THEN
+            LoadStep := 30;
+        END_IF;
 
     30: // ⭐ Chờ PHẢN HỒI THẬT, không chờ timer (Chương 17)
         IF DI_RobotDone THEN
-            Step := 40;
+            LoadStep := 40;
         ELSIF DI_RobotError THEN
             M_Alm_Robot := TRUE;               // cờ chốt — gom vào M_AnyFault (Ch.25)
             M_FaultCode := 460 + RobotErrorCode;  // ⭐ mã cụ thể
@@ -314,14 +314,18 @@ CASE LoadStep OF
 
     40: // ⭐ Chờ robot RA KHỎI VÙNG trước khi cho chuyền chạy
         IF DI_RobotAtSafePos THEN
-            M_ConvInRun := TRUE;
+            M_ConvInRun := TRUE;               // yêu cầu — tầng chuyền xoá khi board tới (Chương 27)
             NextSlot := NextSlot + 1;
-            Step := 0;
+            LoadStep := 0;
         END_IF;
 
 ELSE
     LoadStep := 0;                                // Chương 20
 END_CASE;
+
+// ⭐ Ngõ ra SUY TỪ BƯỚC, gán ở MỘT chỗ ngoài CASE: sườn lên khi vào bước 20, GIỮ tới khi robot báo
+//    đã nhận — không bao giờ kẹt ở TRUE, và không ngắn hơn chu kỳ đọc ngõ vào của robot
+DO_RobotStart := (LoadStep = 20);
 
 // ⚠ Timeout cho mọi bước chờ (Chương 26)
 T_Robot(IN := (LoadStep > 0), PT := T#20S);
@@ -332,6 +336,12 @@ END_IF;
 
 > ⭐ **Bước 40 là bước chống va chạm.** "Robot báo xong" không đủ — phải chờ nó **ra khỏi vùng**. Đây
 > là tín hiệu hay bị quên nhất khi ghép robot (mục 46.4).
+>
+> ⚠⚠ **Bản trước của đoạn này có ba lỗi**, bộ kiểm mã của sách bắt được cả ba (đợt 62): `CASE LoadStep`
+> nhưng các nhánh lại gán cho biến **`Step`** — trình tự **không bao giờ rời bước 10**; `R_TRIG` gọi
+> với **hằng** `CLK := TRUE` bên trong bước 20 — chỉ báo sườn **một lần trong đời máy**; và
+> `DO_RobotStart` gán trong nhánh — rời bước là **kẹt ở TRUE**. Cả ba cùng một gốc: **ngõ ra và khối
+> phải được gán/gọi ở MỘT chỗ, ngoài `CASE`, theo bước** (Phụ lục B mục B.9b).
 
 ---
 

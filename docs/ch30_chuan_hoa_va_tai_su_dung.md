@@ -145,7 +145,8 @@ Ví dụ từ DP-01:
 | `DI_BoardStn1` | ngõ vào số · board · trạm 1 | |
 | `DO_Clamp1Vlv` | ngõ ra số · van kẹp · trạm 1 | |
 | `M_Stn1_ClampReq` | biến nội · trạm 1 · yêu cầu kẹp | ⭐ yêu cầu, không phải lệnh ra van (Chương 27) |
-| `Stn2_Ready` | giao diện công bố của trạm 2 | không có tiền tố `M_` vì nó là giao diện, không phải biến nội |
+| `Stn2.Ready` | giao diện công bố của trạm 2 — một trường của `Stn2 : ST_Station` | không có tiền tố `M_` vì nó là giao diện, không phải biến nội (mục 30.3) |
+| `Stn1_Step` | bước của trình tự trạm 1 — **ruột** của trạm | ⭐ biến của chương trình trạm, không ai khác đọc; tiền tố `Stn1_` chỉ để đoạn trích đứng một mình vẫn biết của trạm nào (Phụ lục N mục N.7) |
 
 ### Năm quy tắc đặt tên
 
@@ -314,26 +315,27 @@ type, UDT)* thay vì để rời rạc:
 ```iecst
 // ✗ Rời rạc — bốn biến không có gì nối chúng lại
 VAR_GLOBAL
-    M_Stn1_Step      : INT;
+    M_Stn1_Ready     : BOOL;
+    M_Stn1_Busy      : BOOL;
     M_Stn1_Fault     : BOOL;
     M_Stn1_FaultStep : INT;
-    M_Stn1_Ready     : BOOL;
 END_VAR
 
-// ✓ Gói lại — một kiểu, dùng cho mọi trạm
-TYPE ST_Station :
+// ✓ Gói lại — một kiểu, dùng cho mọi trạm (Chương 11 mục 11.5)
+TYPE ST_Station :                      // giao diện CÔNG BỐ của một trạm — chỉ trạm đó ghi
 STRUCT
-    Step       : INT;
-    Fault      : BOOL;
-    FaultStep  : INT;
-    Ready      : BOOL;
-    Busy       : BOOL;
-    BoardDone  : BOOL;
+    Ready       : BOOL;                // sẵn sàng nhận board mới
+    Busy        : BOOL;                // đang xử lý
+    Fault       : BOOL;                // trạm có lỗi — cờ đã chốt (Chương 25 mục 25.5c)
+    FaultStep   : INT;                 // bước lúc lỗi, 0 nếu không lỗi
+    BoardDone   : BOOL;                // board đã xong, chờ chuyển đi
+    DoneCount   : DINT;                // ⭐ DINT, không phải INT — sẽ tràn
+    LastCycleMs : DINT;                // ⭐ đơn vị trong tên
 END_STRUCT
 END_TYPE
 
-VAR
-    Stn1 : ST_Station;
+VAR_GLOBAL
+    Stn1 : ST_Station;                 // ⭐ CHỈ trạm 1 ghi vào Stn1 — mọi nơi khác chỉ đọc
     Stn2 : ST_Station;
 END_VAR
 ```
@@ -344,6 +346,32 @@ Ba lợi ích, và lợi ích thứ ba là lớn nhất:
 2. Thêm một trường cho mọi trạm chỉ cần sửa **một chỗ**.
 3. ⭐ **Không thể quên** — khi bạn tạo `Stn3`, nó tự động có đủ mọi trường. Với biến rời rạc, bạn sẽ
    quên ít nhất một cái.
+
+#### ⭐⭐ Gói những gì — ba cách, và vì sao `Step` ở ngoài
+
+Câu hỏi thật không phải *"gói hay không"*, mà là **gói những gì**. Cùng bài toán — trạm 1 chờ trạm 2
+trống rồi nhả board — viết theo ba cách:
+
+```iecst
+// ✗ A · Gói TẤT CẢ, kể cả bước — Stn2.Step là biến toàn cục
+IF Stn1.BoardDone AND Stn2.Step = 0 THEN  M_Stn1_ReleaseBoard := TRUE;  END_IF;
+
+// B · Để rời tất cả
+IF Stn1_BoardDone AND Stn2_Ready THEN  M_Stn1_ReleaseBoard := TRUE;  END_IF;
+
+// C · Gói phần CÔNG BỐ, để bước là ruột — cách của sách
+IF Stn1.BoardDone AND Stn2.Ready THEN  M_Stn1_ReleaseBoard := TRUE;  END_IF;
+```
+
+| Cách | ⭐ Ưu | ⚠ Nhược |
+|---|---|---|
+| A — gói tất cả | Một biến chứa mọi thứ về trạm | ⚠⚠ Bước thành toàn cục: đọc `Stn2.Step` ở trạm 1 dễ như đọc `Stn2.Ready` — đúng lỗi *"nhìn vào ruột"* của Chương 27 mục 27.4, và **không có gì ngăn** |
+| B — để rời | Chạy trên mọi hệ, kể cả hệ chưa có kiểu cấu trúc | Mọi nhược của mục này: chép tay, quên trường, không truyền được cả cụm; và ⚠ không nhìn tên mà biết biến nào được phép đọc |
+| ⭐ C — gói phần công bố | ⭐ **Dấu chấm = hợp đồng**: thứ gì đọc được qua `Stn2.` là thứ trạm 2 hứa giữ nghĩa; bước nằm trong chương trình trạm nên người khác **không với tới** một cách vô tình | Hai kiểu tên cho hai loại biến — phải giải thích một lần, như ở đây |
+
+⭐ **Khuyến nghị: C** — cho DP-01 và cho mọi máy có từ hai trạm. Dùng **B** chỉ khi hệ của bạn không có
+kiểu cấu trúc. ⚠ Tránh **A**: nó trông gọn nhất, nhưng biến ranh giới giữa các trạm thành một lời hứa
+miệng.
 
 ---
 
@@ -787,10 +815,10 @@ CASE Stn1_Step OF
     60: // Hạ chặn, chuyển board sang — khối lo phần "chờ và giám sát"
         M_Stn1_StopReq := FALSE;
         IF Xfer1.Done THEN
-            Stn1_BoardDone := FALSE;
+            Stn1.BoardDone := FALSE;
             Stn1_Step      := 0;
         ELSIF Xfer1.Error THEN
-            Stn1_Fault := TRUE;             // khối BÁO — trạm chốt cờ của nó (Chương 25 mục 25.5c)
+            Stn1.Fault := TRUE;             // khối BÁO — trạm chốt cờ của nó (Chương 25 mục 25.5c)
         END_IF;
 END_CASE;
 ```
@@ -829,8 +857,8 @@ xả xong (Chương 27 mục 27.5, bảng chốt dòng 10: *"không chỉ trạm
 
 ```iecst
 // ── A · Cách của sách: mỗi trạm công bố biến toàn cục, tầng máy đọc từng cái ──
-M_AllEmpty := Stn1_Ready AND NOT Stn1_Busy
-              AND Stn2_Ready AND NOT Stn2_Busy;
+M_AllEmpty := Stn1.Ready AND NOT Stn1.Busy
+              AND Stn2.Ready AND NOT Stn2.Busy;
 
 // ── B · Trạm là khối có phương thức: tầng máy HỎI, không đọc biến bên trong ──
 M_AllEmpty := Station1.IsEmpty() AND Station2.IsEmpty();
@@ -855,14 +883,15 @@ INTERFACE I_Station
 END_INTERFACE
 
 FUNCTION_BLOCK FB_Stn2Cure IMPLEMENTS I_Station
-    // … khai báo và trình tự của trạm 2 — như Chương 26, nhưng nằm trong khối …
+    // … khai báo và trình tự của trạm 2 — như Chương 26, nhưng nằm trong khối;
+    //   cảm biến board vào qua chân BoardIn, không đọc thẳng DI_BoardStn2 (CP6, Chương 11) …
 
     METHOD IsReady : BOOL
         IsReady := (Stn2_Step = 0);
     END_METHOD
 
     METHOD IsEmpty : BOOL
-        IsEmpty := (Stn2_Step = 0) AND NOT DI_BoardStn2;
+        IsEmpty := (Stn2_Step = 0) AND NOT BoardIn;
     END_METHOD
 
     METHOD HasFault : BOOL

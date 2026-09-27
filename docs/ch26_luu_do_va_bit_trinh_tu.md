@@ -71,7 +71,7 @@ Lưu đồ cho trạm 1 của DP-01, dạng đơn giản nhất:
       │ Chờ trạm 2  │                 │
       │   sẵn sàng  │                 │
       └──────┬──────┘                 │
-             │ Stn2_Ready = 1         │
+             │ Stn2.Ready = 1         │
       ┌──────▼──────┐                 │
       │  Hạ chặn,   │                 │
       │ chuyển board│─────────────────┘
@@ -83,7 +83,7 @@ Hai thứ cần chú ý ngay trên lưu đồ này:
 - **Mỗi mũi tên có một điều kiện**, và điều kiện đó là **tín hiệu phản hồi thật** — `DI_Stop1Up`,
   `DI_Clamp1Up` — chứ không phải một khoảng thời gian. Đây là nguyên tắc từ Chương 17, và nó quyết
   định trình tự có đáng tin hay không.
-- **Bước "Chờ trạm 2 sẵn sàng"** đọc `Stn2_Ready` — giao diện công bố của trạm 2, không phải biến nội
+- **Bước "Chờ trạm 2 sẵn sàng"** đọc `Stn2.Ready` — giao diện công bố của trạm 2, không phải biến nội
   bộ của nó (Chương 27).
 
 ### Chuyển lưu đồ thành bit bước
@@ -245,11 +245,11 @@ ELSE
     CASE Stn1_Step OF
 
       0:  // Chờ board tới
-          Stn1_Ready := TRUE;                     // giao diện công bố
-          Stn1_Busy  := FALSE;
+          Stn1.Ready := TRUE;                     // giao diện công bố
+          Stn1.Busy  := FALSE;
           IF DI_BoardStn1 OR M_DryRun THEN
-              Stn1_Ready := FALSE;
-              Stn1_Busy  := TRUE;
+              Stn1.Ready := FALSE;
+              Stn1.Busy  := TRUE;
               Stn1_Step  := 10;
           END_IF;
 
@@ -277,8 +277,8 @@ ELSE
           END_IF;
 
      50:  // Chờ trạm 2 sẵn sàng  ← điểm đồng bộ giữa hai trạm
-          Stn1_BoardDone := TRUE;
-          IF Stn2_Ready THEN
+          Stn1.BoardDone := TRUE;
+          IF Stn2.Ready THEN
               Stn1_Step := 60;
           END_IF;
 
@@ -287,7 +287,7 @@ ELSE
           M_Stn1_ConvReq  := TRUE;                // yêu cầu chuyền chạy
           IF NOT DI_BoardStn1 THEN
               M_Stn1_ConvReq  := FALSE;
-              Stn1_BoardDone  := FALSE;
+              Stn1.BoardDone  := FALSE;
               Stn1_Step       := 0;               // quay lại chờ board mới
           END_IF;
 
@@ -342,7 +342,7 @@ END_VAR
 // ── Xoá cờ lỗi của trạm khi tầng máy ra lệnh — đặt NGOÀI cửa vào của trình tự,
 //    vì lúc máy đang Resetting thì trình tự không chạy (Chương 25 mục 25.5c) ──
 IF M_ClearFaults THEN
-    Stn1_Fault := FALSE;
+    Stn1.Fault := FALSE;
 END_IF;
 
 // ── Thời gian cho phép của từng bước ──
@@ -356,16 +356,23 @@ CASE Stn1_Step OF
    60:   Stn1_StepLimit := T#10S;             // chuyển board đi
 END_CASE;
 
-// ── Chạy timer: bước vừa đổi thì IN = FALSE đúng MỘT vòng → timer tự xoá về 0 ──
-T_StepTimeout(IN := (Stn1_StepLimit > T#0S) AND (Stn1_Step = Stn1_StepPrev),
+// ── Chạy timer: bước vừa đổi thì IN = FALSE đúng MỘT vòng → timer tự xoá về 0;
+//    trình tự đang bị giữ (M_CycleEnable tắt, Chương 25) thì IN = FALSE suốt → không báo giả ──
+T_StepTimeout(IN := M_CycleEnable
+                    AND (Stn1_StepLimit > T#0S) AND (Stn1_Step = Stn1_StepPrev),
               PT := Stn1_StepLimit);
 Stn1_StepPrev := Stn1_Step;
 
 IF T_StepTimeout.Q THEN
-    Stn1_FaultStep := Stn1_Step;              // GHI LẠI bước bị kẹt
-    Stn1_Fault     := TRUE;                   // cờ của TRẠM — gom vào M_AnyFault (Ch.25 mục 25.5c)
+    Stn1.FaultStep := Stn1_Step;              // GHI LẠI bước bị kẹt
+    Stn1.Fault     := TRUE;                   // cờ của TRẠM — gom vào M_AnyFault (Ch.25 mục 25.5c)
 END_IF;
 ```
+
+> ⚠ **`M_CycleEnable` trong `IN` là có chủ ý.** Máy đang giữ (Hold) thì bước không tiến — nhưng đó
+> không phải bước bị kẹt. Thiếu điều kiện này, giữ máy quá 3 giây ở bước 20 là báo lỗi giả. ⚠⚠ Còn
+> đặt bộ định thời vào **bên trong** nhánh bị giữ thì tệ hơn: lúc chạy tiếp nó tính luôn cả thời gian
+> đã giữ và báo lỗi **ngay khi vừa bấm Start** (Chương 17 mục 17.3, Phụ lục B mục B.9b).
 
 ### Hai bước cố ý **không** đặt giới hạn
 
@@ -440,14 +447,14 @@ END_IF;
 Ở máy nhiều trạm, dạng phổ biến nhất:
 
 ```text
-Trạm 1 ở bước 50:  "chờ trạm 2 sẵn sàng"   →  chờ  Stn2_Ready
+Trạm 1 ở bước 50:  "chờ trạm 2 sẵn sàng"   →  chờ  Stn2.Ready
 Trạm 2 ở bước 0:   "chờ board tới"          →  chờ  DI_BoardStn2
 ```
 
 Nghe có vẻ ổn — trạm 2 chờ board, trạm 1 sẽ gửi board sang. Nhưng nếu ai đó viết trạm 2 công bố
-`Stn2_Ready` **chỉ khi đã có board** (nhầm "sẵn sàng" thành "đang bận"), thì:
+`Stn2.Ready` **chỉ khi đã có board** (nhầm "sẵn sàng" thành "đang bận"), thì:
 
-- Trạm 1 chờ `Stn2_Ready` — không lên vì trạm 2 chưa có board.
+- Trạm 1 chờ `Stn2.Ready` — không lên vì trạm 2 chưa có board.
 - Trạm 2 chờ board — không tới vì trạm 1 đang chờ.
 
 **Cả hai đứng im vĩnh viễn**, và cả hai đều ở bước "chờ không giới hạn" nên không báo lỗi. Đây chính
@@ -455,7 +462,7 @@ là dạng nguy hiểm nhất: máy im lặng.
 
 ### Ba biện pháp, dùng cả ba
 
-**Một — định nghĩa giao diện cho đúng.** `Stn2_Ready` phải nghĩa là *"tôi trống và nhận được board
+**Một — định nghĩa giao diện cho đúng.** `Stn2.Ready` phải nghĩa là *"tôi trống và nhận được board
 mới"*, và phải **bằng TRUE khi trạm 2 rỗng**. Sai nghĩa ở đây là gốc của bế tắc trên.
 
 **Hai — giám sát "máy đứng chờ" ở tầng máy.** Đã nêu ở mục 26.4: nếu không sản phẩm nào ra trong một
@@ -498,7 +505,7 @@ sẽ tác động lên một cơ cấu chưa ở đúng vị trí.
 IF Clamp1.Done THEN
     Stn1_Step := 30;
 END_IF;
-// timeout xử lý riêng, đặt Stn1_Fault
+// timeout xử lý riêng, đặt Stn1.Fault
 ```
 
 ### 🔍 BẪY 3 — Đánh số bước liền nhau
@@ -525,7 +532,7 @@ biết khe trống nằm ở đâu.
 
 Trình tự báo lỗi rồi **đặt lại bước về 0**. Thông tin quan trọng nhất — kẹt ở bước nào — mất luôn.
 
-Luôn có một biến `Stn1_FaultStep` giữ lại bước lúc xảy ra lỗi, và biến đó **chỉ được xoá khi Reset**.
+Luôn có một biến `Stn1.FaultStep` giữ lại bước lúc xảy ra lỗi, và biến đó **chỉ được xoá khi Reset**.
 Đây là phiên bản thu nhỏ của "chụp ảnh trạng thái lúc sự cố" ở Chương 28.
 
 ### 🔍 BẪY 5 — Trình tự tự chạy khi máy không cho phép
@@ -603,7 +610,7 @@ rằng "chờ" và "kẹt" nhìn từ ngoài **giống hệt nhau**, nên phải
 ### Chương tiếp theo
 
 **Chương 27 — Kiến trúc chương trình cho máy nhiều trạm.** Trình tự một trạm đã xong. Nhưng DP-01 có
-hai trạm chạy song song, dùng chung một chuyền — và chương này đã nhắc tới `Stn2_Ready`, `M_CycleEnable`,
+hai trạm chạy song song, dùng chung một chuyền — và chương này đã nhắc tới `Stn2.Ready`, `M_CycleEnable`,
 `Clamp1.Done` mà chưa nói chúng từ đâu ra. Chương 27 xây phần đó.
 
 ---

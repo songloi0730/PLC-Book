@@ -402,13 +402,13 @@ IF DI_ResetPB AND DI_AirOK AND NOT T_Stn1Step.Q AND NOT T_Home.Q THEN
 END_IF;
 
 // ── B · Mỗi nguồn ghi thẳng cờ chung ──
-IF T_Stn1Step.Q THEN  Stn1_Fault := TRUE;  M_AnyFault := TRUE;  END_IF;   // trong trạm 1
+IF T_Stn1Step.Q THEN  Stn1.Fault := TRUE;  M_AnyFault := TRUE;  END_IF;   // trong trạm 1
 IF T_Home.Q     THEN  M_AnyFault := TRUE;                       END_IF;   // trong trình tự về gốc
 
 // ── C · Mỗi nguồn MỘT cờ của riêng nó, gom MỘT chỗ, xoá qua Resetting ──
-IF M_ClearFaults THEN  Stn1_Fault := FALSE;  END_IF;       // chủ cờ: xoá TRƯỚC…
-IF T_Stn1Step.Q  THEN  Stn1_Fault := TRUE;   END_IF;       // …phát hiện SAU
-M_AnyFault := M_Alm_AirLow OR Stn1_Fault OR M_Alm_HomeTimeout;    // đúng MỘT chỗ gán
+IF M_ClearFaults THEN  Stn1.Fault := FALSE;  END_IF;       // chủ cờ: xoá TRƯỚC…
+IF T_Stn1Step.Q  THEN  Stn1.Fault := TRUE;   END_IF;       // …phát hiện SAU
+M_AnyFault := M_Alm_AirLow OR Stn1.Fault OR M_Alm_HomeTimeout;    // đúng MỘT chỗ gán
 ```
 
 | Cách | ⭐ Ưu | ⚠ Nhược |
@@ -441,7 +441,7 @@ dòng đó không bao giờ chạy.
 
 | # | Quy tắc | Vì sao |
 |:-:|---|---|
-| 1 | **Mỗi nguồn lỗi tự chốt cờ của chính nó** — `M_Alm_…` cho nguồn chung, `Stn1_Fault` cho trạm, `.Fault` cho khối cơ cấu. Không ai khác ghi vào cờ đó | Một biến, một nơi ghi (Chương 10). Và cờ nói được **lỗi gì** |
+| 1 | **Mỗi nguồn lỗi tự chốt cờ của chính nó** — `M_Alm_…` cho nguồn chung, `Stn1.Fault` cho trạm, `.Fault` cho khối cơ cấu. Không ai khác ghi vào cờ đó | Một biến, một nơi ghi (Chương 10). Và cờ nói được **lỗi gì** |
 | 2 | ⭐ **`M_AnyFault` được GÁN đúng một chỗ** — phép `OR` của mọi cờ, tính lại mỗi vòng, đặt **sau** tầng cơ cấu và **trước** tầng máy. Không nguồn nào ghi thẳng `M_AnyFault` | Hai nơi cùng ghi thì phép gán chạy sau **xoá mất** lỗi của phép chạy trước |
 | 3 | ⭐⭐ **Xoá đi qua `Resetting`.** Chủ cờ xoá cờ của mình **khi thấy `M_ClearFaults`**, đặt dòng xoá **trước** dòng phát hiện | Nguyên nhân còn thì cờ chốt lại ngay trong vòng đó — `Resetting` nhìn thấy và đưa máy về `Alarm`. ⭐ Việc *"nguyên nhân đã hết chưa"* giao cho **đúng nơi biết nguyên nhân** |
 
@@ -455,7 +455,7 @@ nhất** có chứa cờ lỗi (Chương 27 mục 27.6).
 ```iecst
 // ── GOM LỖI — đúng MỘT chỗ gán M_AnyFault; chạy SAU các nguồn lỗi, TRƯỚC tầng máy ──
 M_AnyFault := M_Alm_AirLow                    // nguồn chung (Phụ lục L mục L.11)
-              OR Stn1_Fault OR Stn2_Fault     // tầng trạm (Chương 26)
+              OR Stn1.Fault OR Stn2.Fault     // tầng trạm (Chương 26)
               OR M_Alm_HomeTimeout            // trình tự về gốc (Chương 28)
               OR M_Alm_StateInvalid;          // giám sát bit trạng thái (mục 25.5)
 // Chương 27 thêm cờ của các khối cơ cấu: … OR Clamp1.Fault OR …

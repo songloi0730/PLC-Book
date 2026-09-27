@@ -422,17 +422,21 @@ IF ActiveRecipe.GlueTempSetX10 <> LastWrittenSetpoint THEN
     M_NeedWriteSetpoint := TRUE;
 END_IF;
 
-IF M_NeedWriteSetpoint AND NOT M_TcBusy THEN
-    WriteSetpoint(Execute := TRUE,
-                  SlaveId := 1,
-                  FunctionCode := 6,          // Write Single Register
-                  Addr := 1,
-                  Value := ActiveRecipe.GlueTempSetX10,
-                  Done => M_WriteDone);
-    IF M_WriteDone THEN
-        LastWrittenSetpoint := ActiveRecipe.GlueTempSetX10;
-        M_NeedWriteSetpoint := FALSE;
-    END_IF;
+// ⭐ Gọi MỖI vòng, NGOÀI IF — Execute lấy từ cờ yêu cầu (Chương 30 mục 30.5b)
+WriteSetpoint(Execute      := M_NeedWriteSetpoint AND NOT ReadTempCtrl.Busy,   // bus một đường
+              SlaveId      := 1,
+              FunctionCode := 6,          // Write Single Register
+              Addr         := 1,
+              Value        := ActiveRecipe.GlueTempSetX10,
+              Done         => M_WriteDone,
+              Error        => M_WriteError);
+
+IF M_WriteDone THEN
+    LastWrittenSetpoint := ActiveRecipe.GlueTempSetX10;
+    M_NeedWriteSetpoint := FALSE;         // ⭐ Execute hạ xuống → khối sẵn sàng cho lần ghi sau
+ELSIF M_WriteError THEN
+    M_NeedWriteSetpoint := FALSE;         // hạ Execute một vòng; vòng sau so lại → thử lại
+    TcErrCount := TcErrCount + 1;         // đếm lỗi liên tiếp — mục 38.9
 END_IF;
 ```
 
@@ -442,6 +446,10 @@ Ba điểm thiết kế:
   giới hạn số lần ghi (Chương 38, Bẫy 9).
 - **Không ghi khi đang bận** — bus chỉ có một đường (Chương 38, mục 38.8).
 - **Chỉ cập nhật `LastWrittenSetpoint` khi `Done`** — nếu ghi thất bại thì lần sau thử lại.
+- ⚠⚠ **Khối ghi được gọi mỗi vòng, ngoài `IF`.** Gọi `WriteSetpoint(Execute := TRUE, …)` bên trong
+  `IF` trông gọn hơn — nhưng khối không bao giờ thấy `Execute` hạ xuống: lần ghi đầu chạy, **lần đổi
+  công thức thứ hai thì không**, và nhánh *"ghi hỏng thì thử lại"* cũng không bao giờ chạy (Phụ lục B
+  mục B.9b). Bản trước của đoạn này mắc đúng lỗi đó.
 
 ### Xử lý mất kết nối
 

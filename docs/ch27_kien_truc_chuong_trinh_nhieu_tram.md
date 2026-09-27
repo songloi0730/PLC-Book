@@ -394,21 +394,33 @@ Vì sao sai, kể cả khi nó chạy:
 Mỗi trạm công bố một **tập biến ra nhỏ, ổn định**, và đó là **thứ duy nhất** người khác được đọc:
 
 ```iecst
+// Giao diện công bố của MỘT trạm — coi như hợp đồng, hạn chế thay đổi (kiểu ở Chương 11 mục 11.5)
+TYPE ST_Station :                      // giao diện CÔNG BỐ của một trạm — chỉ trạm đó ghi
+STRUCT
+    Ready       : BOOL;                // sẵn sàng nhận board mới
+    Busy        : BOOL;                // đang xử lý
+    Fault       : BOOL;                // trạm có lỗi — cờ đã chốt (Chương 25 mục 25.5c)
+    FaultStep   : INT;                 // bước lúc lỗi, 0 nếu không lỗi
+    BoardDone   : BOOL;                // board đã xong, chờ chuyển đi
+    DoneCount   : DINT;                // ⭐ DINT, không phải INT — sẽ tràn
+    LastCycleMs : DINT;                // ⭐ đơn vị trong tên
+END_STRUCT
+END_TYPE
+
 VAR_GLOBAL
-    // Giao diện công bố của trạm 2 — coi như hợp đồng, hạn chế thay đổi.
-    // ⭐ Toàn cục CÓ CHỦ Ý: nhiều phần cần đọc — và CHỈ trạm 2 được ghi (Chương 11 mục 11.6)
-    Stn2_Ready      : BOOL;     // sẵn sàng nhận board mới
-    Stn2_Busy       : BOOL;     // đang xử lý
-    Stn2_Fault      : BOOL;     // trạm này có lỗi
-    Stn2_BoardDone  : BOOL;     // board đã xử lý xong, chờ chuyển đi
+    // ⭐ Toàn cục CÓ CHỦ Ý: nhiều phần cần đọc — và CHỈ trạm N được ghi vào StnN (Chương 11 mục 11.6)
+    Stn1 : ST_Station;
+    Stn2 : ST_Station;
 END_VAR
 ```
 
-Bên trong trạm 2, cứ đổi bao nhiêu bước tuỳ ý — miễn là bốn biến trên vẫn đúng nghĩa. Trạm 1 chỉ đọc:
+⭐ Bước (`Stn2_Step`) **không** có trong kiểu này: nó là ruột, nằm trong chương trình của trạm 2.
+Bên trong trạm 2, cứ đổi bao nhiêu bước tuỳ ý — miễn là các trường trên vẫn đúng nghĩa. Trạm 1 chỉ
+đọc:
 
 ```iecst
 // ✓ ĐÚNG — đọc giao diện đã công bố, không đọc ruột
-IF Stn1_BoardDone AND Stn2_Ready THEN
+IF Stn1.BoardDone AND Stn2.Ready THEN
     M_Stn1_ReleaseBoard := TRUE;
 END_IF;
 ```
@@ -469,7 +481,7 @@ Chạy ổn định thì đơn giản. Bốn tình huống sau mới là chỗ c
 |---|---|---|
 | **Đổ đầy** *(startup)* — máy vừa chạy, chưa có board nào | Trạm 2 trống, chưa có gì để chờ | Chạy bình thường |
 | **Xả cạn** *(shutdown)* — không còn board mới vào | Trạm 1 rỗng, trạm 2 vẫn còn board đang xử lý | Không được báo "hết việc" cho tới khi trạm 2 xong |
-| **Trạm 2 chậm hơn** | Trạm 1 xong sớm, phải chờ | Giữ board, **không** nhả; báo `Stn1_BoardDone` và chờ `Stn2_Ready` |
+| **Trạm 2 chậm hơn** | Trạm 1 xong sớm, phải chờ | Giữ board, **không** nhả; báo `Stn1.BoardDone` và chờ `Stn2.Ready` |
 | **Trạm 2 lỗi** | Trạm 2 dừng, board kẹt ở đó | Trạm 1 **không được** nhả board sang. Tuỳ chính sách: dừng cả máy, hoặc cho trạm 1 giữ board và chờ |
 
 > 🔍 **BẪY — quên tình huống xả cạn**

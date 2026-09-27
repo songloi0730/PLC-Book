@@ -265,6 +265,37 @@ cùng một máy chạy nhiều mã hàng trong một ca.
 | Ngưỡng cường độ UV tối thiểu | mW/cm² | 20 – 180 | S2.40 |
 | Tốc độ chuyền | % | 20 – 100 | mọi bước chuyền |
 
+⭐ Khai báo kiểu công thức — bản **đầy đủ**, gom đúng các trường mà mã mẫu trong sách dùng tới
+(Chương 29 khai phần của lát cắt 2; Chương 39 thêm nhiệt độ keo; Chương 43 thêm đường tra keo). Các
+tham số còn lại của bảng trên thêm vào theo cùng khuôn:
+
+```iecst
+TYPE ST_Recipe :
+STRUCT
+    // ── Nhận dạng ──
+    Id                 : INT;          // mã số công thức
+    Name               : STRING[20];   // tên đọc được, hiện trên màn hình
+    Version            : INT;          // ⭐ tăng mỗi lần sửa (Chương 29 mục 29.6)
+    // ── Tham số trạm 1: tra keo ──
+    DispenseLenTenthMm : INT;          // ⭐ đơn vị trong tên (Chương 11)
+    DispenseSpeed      : INT;
+    GlueTempSetX10     : INT;          // nhiệt độ keo đặt, 0,1 °C — ghi xuống bộ điều khiển (Ch.39)
+    TempMinX10         : INT;          // dải cho phép của nhiệt độ keo, 0,1 °C (Ch.39)
+    TempMaxX10         : INT;
+    PathX              : ARRAY[1..20] OF DINT;   // đường tra keo, 0,01 mm (Chương 37, 43)
+    PathY              : ARRAY[1..20] OF DINT;
+    // ── Tham số trạm 2: sấy UV ──
+    CureTimeMs         : DINT;
+    // ── Tham số chung ──
+    ConvSpeedPct       : INT;
+END_STRUCT
+END_TYPE
+```
+
+> ⭐ Bộ kiểm mã của sách (`kiem_cu_phap_st.py`) so **mọi** bản khai báo `ST_Recipe` với bản này: bản
+> trích ở Chương 29 phải là tập con, và mọi `ActiveRecipe.<trường>` ở bất kỳ chương nào phải có thật ở
+> đây. Đợt 62 tìm ra năm trường được dùng ở Chương 39 và 43 mà chưa từng được khai.
+
 > ⚠⚠ **Kiểm tra hợp lệ là bắt buộc (Ch.29 mục 29.4).** Nếu công thức tải từ MES có nhiệt độ đặt 600 °C do lỗi
 > nhập liệu, máy phải **từ chối và báo lỗi**, không được nhận.
 >

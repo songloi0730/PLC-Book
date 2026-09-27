@@ -478,10 +478,10 @@ chỗ — khối giám sát thời gian bước. Tốt, chương trình có kỷ
 **Bước 4 — truy ngược.** Đoạn code liên quan:
 
 ```iecst
-T_Step20(IN := (Stn1.Step = 20), PT := T#3S);
+T_Step20(IN := (Stn1_Step = 20), PT := T#3S);
 IF T_Step20.Q THEN
     Stn1.FaultStep := 20;
-    Stn1.AnyFault  := TRUE;
+    Stn1.Fault     := TRUE;
 END_IF;
 ```
 

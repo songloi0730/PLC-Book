@@ -170,29 +170,34 @@ vì giữ nó nghĩa là máy tự chạy lại khi có điện trở lại.
 
 ### Bài toán
 
-DP-01 có hai trạm gần giống nhau. Mỗi trạm cần theo dõi: bước hiện tại, bước đang lỗi, cờ lỗi, số
-board đã làm, board hiện tại có NG không.
+DP-01 có hai trạm gần giống nhau. Mỗi trạm cần **công bố** cho phần còn lại của máy: sẵn sàng nhận
+board chưa, có đang bận không, có lỗi không và lỗi ở bước nào, board đã xong chưa, đã làm bao nhiêu
+board, chu kỳ gần nhất mất bao lâu.
 
 Cách ngây thơ — khai báo rời rạc:
 
 ```iecst
 VAR
-    Stn1_Step       : INT;
-    Stn1_FaultStep  : INT;
-    Stn1_AnyFault   : BOOL;
-    Stn1_DoneCount  : DINT;
-    Stn1_BoardIsNG  : BOOL;
+    Stn1_Ready       : BOOL;
+    Stn1_Busy        : BOOL;
+    Stn1_Fault       : BOOL;
+    Stn1_FaultStep   : INT;
+    Stn1_BoardDone   : BOOL;
+    Stn1_DoneCount   : DINT;
+    Stn1_LastCycleMs : DINT;
 
-    Stn2_Step       : INT;
-    Stn2_FaultStep  : INT;
-    Stn2_AnyFault   : BOOL;
-    Stn2_DoneCount  : DINT;
-    Stn2_BoardIsNG  : BOOL;
+    Stn2_Ready       : BOOL;
+    Stn2_Busy        : BOOL;
+    Stn2_Fault       : BOOL;
+    Stn2_FaultStep   : INT;
+    Stn2_BoardDone   : BOOL;
+    Stn2_DoneCount   : DINT;
+    Stn2_LastCycleMs : DINT;
 END_VAR
 ```
 
-Mười biến, chép hai lần. Thêm trạm thứ ba là chép lần nữa. Thêm một trường mới là sửa ba chỗ — và
-quên một chỗ là lỗi.
+Mười bốn biến — bảy cái, chép hai lần. Thêm trạm thứ ba là chép lần nữa. Thêm một trường mới là sửa
+ba chỗ — và quên một chỗ là lỗi.
 
 ### Cách đúng: một kiểu, nhiều biến
 
@@ -200,17 +205,19 @@ quên một chỗ là lỗi.
 liên quan thành **một kiểu**:
 
 ```iecst
-TYPE ST_Station :
+TYPE ST_Station :                      // giao diện CÔNG BỐ của một trạm — chỉ trạm đó ghi
 STRUCT
-    Step        : INT;      // bước hiện tại
-    FaultStep   : INT;      // bước đang lỗi, 0 nếu không lỗi
-    AnyFault    : BOOL;
-    DoneCount   : DINT;
-    BoardIsNG   : BOOL;
+    Ready       : BOOL;                // sẵn sàng nhận board mới
+    Busy        : BOOL;                // đang xử lý
+    Fault       : BOOL;                // trạm có lỗi — cờ đã chốt (Chương 25 mục 25.5c)
+    FaultStep   : INT;                 // bước lúc lỗi, 0 nếu không lỗi
+    BoardDone   : BOOL;                // board đã xong, chờ chuyển đi
+    DoneCount   : DINT;                // ⭐ DINT, không phải INT — sẽ tràn
+    LastCycleMs : DINT;                // ⭐ đơn vị trong tên
 END_STRUCT
 END_TYPE
 
-VAR
+VAR_GLOBAL
     Stn1 : ST_Station;
     Stn2 : ST_Station;
 END_VAR
@@ -219,19 +226,21 @@ END_VAR
 Dùng bằng dấu chấm:
 
 ```iecst
-IF Stn1.Step = 20 AND DI_Clamp1Up THEN
-    Stn1.Step := 30;
-END_IF;
-
-TotalDone := Stn1.DoneCount + Stn2.DoneCount;
+M_AllStnReady := Stn1.Ready AND Stn2.Ready;          // cả hai trạm đang trống
+TotalDone     := Stn1.DoneCount + Stn2.DoneCount;
 ```
 
 Bốn lợi ích cụ thể:
 
 - **Thêm trường là sửa một chỗ** — mọi trạm có ngay trường mới.
 - **Không thể quên trạm nào**, vì cấu trúc là chung.
-- **Truyền cả cụm** vào một khối chức năng bằng một tham số, thay vì năm tham số rời.
-- **Đọc rõ nghĩa**: `Stn2.AnyFault` nói ngay nó thuộc về ai.
+- **Truyền cả cụm** vào một khối chức năng bằng một tham số, thay vì bảy tham số rời.
+- **Đọc rõ nghĩa**: `Stn2.Fault` nói ngay nó thuộc về ai.
+
+> ⚠ **Bước hiện tại KHÔNG nằm trong kiểu này — có chủ ý.** `ST_Station` là thứ trạm **công bố** cho
+> phần còn lại của máy đọc. Bước là **ruột** của trạm: chỉ chương trình của trạm đó đọc và ghi, nên
+> nó là biến của chương trình trạm — `Stn1_Step`, mục 11.7. ⭐ Chương 27 mục 27.4 cho thấy vì sao để
+> lộ nó ra cả máy là nguồn lỗi: sớm muộn sẽ có người ở trạm khác viết `IF Stn2_Step = 0 …`.
 
 ### Mảng — khi các đối tượng đánh số được
 
@@ -299,7 +308,7 @@ dùng, một vòng lặp có thể phá chỉ số của vòng lặp kia.
 | **Gọi thẳng tên** biến toàn cục | Không cho phép | ⚠ Nhiều hệ **cho phép** — tài liệu CODESYS ghi rõ là không bắt khai `VAR_EXTERNAL`, từ khoá chỉ giữ để tương thích chuẩn |
 
 ```iecst
-PROGRAM Prg_Stn1Seq
+PROGRAM Prg_Stn1Dispense
 VAR_EXTERNAL
     DI_BoardStn1 : BOOL;         // "chương trình này dùng biến toàn cục DI_BoardStn1" — viết ra
 END_VAR
@@ -335,15 +344,15 @@ I/O toàn cục và nối vào chân của các thể hiện (Chương 27 mục 
 Gom cả chương thành một khối khai báo dùng được:
 
 ```iecst
-// ── Kiểu dữ liệu của một trạm ──
-TYPE ST_Station :
+// ── Kiểu dữ liệu: giao diện CÔNG BỐ của một trạm (mục 11.5) ──
+TYPE ST_Station :                      // giao diện CÔNG BỐ của một trạm — chỉ trạm đó ghi
 STRUCT
-    Step        : INT;                 // bước hiện tại
-    FaultStep   : INT;                 // bước đang lỗi
-    AnyFault    : BOOL;
+    Ready       : BOOL;                // sẵn sàng nhận board mới
+    Busy        : BOOL;                // đang xử lý
+    Fault       : BOOL;                // trạm có lỗi — cờ đã chốt (Chương 25 mục 25.5c)
+    FaultStep   : INT;                 // bước lúc lỗi, 0 nếu không lỗi
+    BoardDone   : BOOL;                // board đã xong, chờ chuyển đi
     DoneCount   : DINT;                // ⭐ DINT, không phải INT — sẽ tràn
-    NgCount     : DINT;
-    BoardIsNG   : BOOL;
     LastCycleMs : DINT;                // ⭐ đơn vị trong tên
 END_STRUCT
 END_TYPE
@@ -364,7 +373,8 @@ VAR_GLOBAL
     M_Running       : BOOL;            // ⚠⚠ KHÔNG giữ qua mất điện (Chương 16)
     M_AnyFault      : BOOL;
 
-    Stn1            : ST_Station;      // ⚠ Step KHÔNG giữ qua mất điện
+    // Giao diện công bố của hai trạm — CHỈ trạm N ghi vào StnN (Chương 27 mục 27.4)
+    Stn1            : ST_Station;
     Stn2            : ST_Station;
 END_VAR
 
@@ -375,17 +385,29 @@ VAR_GLOBAL RETAIN
     TotalCycleCount : DINT;            // tổng chu trình trọn đời — cho lịch bảo trì
     CurrentRecipeId : INT;             // mã hàng đang chạy
 END_VAR
+
+// ── Ruột của trạm 1: biến của CHƯƠNG TRÌNH trạm, không toàn cục ──
+PROGRAM Prg_Stn1Dispense
+VAR
+    Stn1_Step       : INT;             // ⚠⚠ bước hiện tại — KHÔNG giữ qua mất điện
+END_VAR
+    …
+END_PROGRAM
 ```
 
-Ba điều đáng chú ý trong khối trên:
+Bốn điều đáng chú ý trong khối trên:
 
 - **Bộ đếm dùng `DINT`, không dùng `INT`.** Sản lượng một ca có thể vượt 32 767 ở máy chạy nhanh, và
   tổng chu trình trọn đời thì chắc chắn vượt.
 - **`LastCycleMs` mang đơn vị trong tên.** Không có nó, người sửa sau sáu tháng phải đoán là giây hay
   mili-giây.
-- ⚠ **`Stn1.Step` nằm ở nhóm không giữ.** Đây là quyết định an toàn, không phải quyết định tiện lợi:
+- ⚠ **Bước của trạm nằm ở nhóm không giữ.** Đây là quyết định an toàn, không phải quyết định tiện lợi:
   giữ số bước qua mất điện nghĩa là máy chạy tiếp từ bước cũ trong khi cơ cấu có thể đã ở tư thế khác
   (Chương 16, Bẫy 4; Chương 28).
+- ⭐ **Thứ công bố thì toàn cục, ruột thì cục bộ.** `Stn1` (kiểu `ST_Station`) nằm trong
+  `VAR_GLOBAL` vì cả máy cần đọc; `Stn1_Step` nằm trong chương trình trạm 1 vì không ai khác được đọc.
+  Trong dự án thật, biến bước trong `Prg_Stn1Dispense` chỉ cần tên `Step`; ⚠ sách giữ tiền tố `Stn1_`
+  để mỗi đoạn trích đứng một mình vẫn biết là của trạm nào (Phụ lục N mục N.7).
 
 ---
 

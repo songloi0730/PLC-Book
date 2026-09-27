@@ -130,6 +130,9 @@ nhau mỗi lần** — và kết quả đo toạ độ sai theo.
 Cách đơn giản và đáng tin nhất: **dừng vật lại rồi mới chụp**.
 
 ```iecst
+// ⭐ Gọi MỖI vòng, NGOÀI CASE — vào bước 40 là bắt đầu đếm, rời bước là tự xoá (Phụ lục B mục B.9b)
+T_Settle(IN := (Step = 40), PT := T#100MS);      // chờ hết rung
+
 CASE Step OF
     30: // Đưa vật tới vị trí chụp
         IF DI_AtInspectPos THEN
@@ -137,7 +140,6 @@ CASE Step OF
         END_IF;
 
     40: // ⭐ Chờ vật ĐỨNG YÊN HẲN trước khi chụp
-        T_Settle(IN := TRUE, PT := T#100MS);     // chờ hết rung
         IF T_Settle.Q THEN
             DO_CameraTrigger := TRUE;             // ⭐ trigger phần cứng
             Step := 50;
@@ -157,6 +159,12 @@ END_CASE;
 >
 > ⚠ Thời gian chờ phải **đo**, không đoán: cho cơ cấu dừng rồi chụp liên tiếp nhiều ảnh, xem sau bao
 > lâu kết quả ổn định.
+>
+> ⚠⚠ **Và bộ định thời phải gọi ngoài `CASE`.** Bản trước của đoạn này gọi `T_Settle(IN := TRUE, …)`
+> **bên trong** bước 40. Vật đầu tiên chờ đúng 100 ms. Rời bước thì khối không được gọi nữa, nên nó
+> **đứng yên với `Q` = TRUE**; vật thứ hai vào bước 40, gọi lại với `IN` vẫn TRUE — không có sườn lên
+> nào, `Q` đã TRUE sẵn → **chụp ngay, bỏ qua thời gian chờ**. Triệu chứng đúng là *"thỉnh thoảng đo
+> sai"* ở trên, và nó chỉ xuất hiện từ **vật thứ hai** (Phụ lục B mục B.9b).
 
 ---
 

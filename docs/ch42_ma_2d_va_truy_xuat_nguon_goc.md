@@ -194,7 +194,7 @@ END_IF;
 ```iecst
 FUNCTION KiemTraMaHopLe : BOOL
 VAR_INPUT
-    Ma : STRING(40);
+    Ma : STRING[40];
 END_VAR
 VAR
     i  : INT;
@@ -473,22 +473,44 @@ END_CASE;
 ### Báo kết quả ở trạm 2
 
 ```iecst
-// Board rời trạm 2 — báo kết quả kèm số liệu quá trình
+// Board rời trạm 2 — CHỐT yêu cầu báo; khối gọi mỗi vòng, ngoài IF (Phụ lục B mục B.9b)
 IF TrigStn2Done.Q THEN
-    ReportMes(Execute   := TRUE,
-              BoardCode := Stn2_BoardCode,
-              Result    := SEL(M_Board2IsNG, RESULT_OK, RESULT_NG),
-              NgReason  := M_Ng2Reason,
-              RecipeId  := ActiveRecipe.Id,
-              RecipeVer := ActiveRecipe.Version,      // ⭐ phiên bản, Chương 29
-              // ⭐ Số liệu quá trình — trả lời câu hỏi ở mục 42.1
-              CureTimeMs    := ActualCureTimeMs,
-              UvIntensity   := UvIntensityX10,         // Chương 31, 33
-              GlueTempX10   := GlueTempX10,            // Chương 39
-              GluePressX100 := GluePressAvgX100,       // Chương 32
-              Degraded  := M_DegradedMode);            // ⚠ board này chưa được kiểm trước
+    M_ReportReq := TRUE;
+END_IF;
+
+ReportMes(Execute   := M_ReportReq,          // tham số chốt ở sườn lên — đúng board vừa rời trạm
+          BoardCode := Stn2_BoardCode,
+          Result    := SEL(M_Board2IsNG, RESULT_OK, RESULT_NG),
+          NgReason  := M_Ng2Reason,
+          RecipeId  := ActiveRecipe.Id,
+          RecipeVer := ActiveRecipe.Version,      // ⭐ phiên bản, Chương 29
+          // ⭐ Số liệu quá trình — trả lời câu hỏi ở mục 42.1
+          CureTimeMs    := ActualCureTimeMs,
+          UvIntensity   := UvIntensityX10,         // Chương 31, 33
+          GlueTempX10   := GlueTempX10,            // Chương 39
+          GluePressX100 := GluePressAvgX100,       // Chương 32
+          Degraded  := M_DegradedMode,             // ⚠ board này chưa được kiểm trước
+          Done      => M_ReportDone,
+          Error     => M_ReportError);
+
+IF M_ReportDone THEN
+    M_ReportReq := FALSE;                      // hạ Execute → sẵn sàng cho board sau
+    MesErrCount := 0;
+ELSIF M_ReportError THEN
+    M_ReportReq := FALSE;                      // bản ghi vào bộ đệm gửi bù — mục 42.6
+    MesErrCount := MesErrCount + 1;            // đếm lỗi liên tiếp → M_MesCommFault (mục 42.6)
 END_IF;
 ```
+
+> ⚠⚠ **Bản trước của đoạn này gọi `ReportMes(Execute := TRUE, …)` bên trong `IF TrigStn2Done.Q`** —
+> tức là khối chỉ được gọi **đúng một vòng quét** cho mỗi board. Khối truyền thông cần được gọi **suốt
+> thời gian `Busy`** để đi tới `Done`; gọi một vòng rồi thôi thì nó **đứng yên giữa chừng**, không xong,
+> không lỗi — và vì không bao giờ thấy `Execute` hạ xuống, board thứ hai cũng không phát được yêu cầu
+> (Phụ lục B mục B.9b). Mọi bản ghi truy xuất **mất lặng lẽ**.
+>
+> ⚠ Một yêu cầu tại một thời điểm là đủ khi chu kỳ máy (12 s) dài hơn hẳn thời gian chờ MES. Chu kỳ
+> của bạn ngắn hơn thời gian chờ thì cần **hàng đợi** — không thì board sau tới lúc yêu cầu trước còn
+> `Busy` sẽ không được báo.
 
 > ⭐ **Trường `UvIntensity` là trường đắt giá nhất trong bản ghi này.**
 > Nó biến câu hỏi "board nào bị ảnh hưởng khi đèn UV yếu" từ **không trả lời được** thành **một truy

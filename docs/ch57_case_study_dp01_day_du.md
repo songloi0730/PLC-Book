@@ -195,7 +195,9 @@ Chương trình chính
 | Ngõ vào số | `DI_<chỗ><cái gì>` | 23 |
 | Ngõ ra số | `DO_<chỗ><cái gì>` | 23 |
 | Analog | `AI_/AO_<đại lượng>` | 31 |
-| Bit trạng thái | `Stn1_<trạng thái>` | 26 |
+| Giao diện công bố của trạm | `Stn1.<trường>` — kiểu `ST_Station` | 11, 27 |
+| Ruột của trình tự trạm | `Stn1_<tên>` — bước, giới hạn thời gian bước | 26 |
+| Yêu cầu trạm gửi tầng cơ cấu | `M_Stn1_<cơ cấu>Req` | 27 |
 | Tham số công thức | ⭐ **Không** tiền tố riêng — là thành phần của cấu trúc: `ActiveRecipe.<tham số>`, kiểu `ST_Recipe` | 29 |
 
 > ⭐ Quy ước phải **khớp với số dây trong tủ** (Ch.49 mục 49.6) và **khớp với nhãn trên HMI** (Ch.44).
@@ -236,7 +238,7 @@ Và `Prg_OutputMap` — khối ngắn nhất, nhưng là khối giữ cho chươ
 // Mỗi ngõ ra xuất hiện ĐÚNG MỘT LẦN trong toàn chương trình, và là ở đây.
 DO_Stop1Vlv  := Stop1.Valve;                      // Ch.27 — FB_Cylinder2Pos
 DO_Clamp1Vlv := Clamp1.Valve;
-DO_UvLamp    := Stn2_UvReq AND M_AllPermissive AND DI_ShutterClosed;
+DO_UvLamp    := M_Stn2_UvReq AND M_AllPermissive AND DI_ShutterClosed;
 DO_LampRed   := M_AnyFault;                       // Ch.5, 25 — mẫu đèn tháp L.13
 ```
 

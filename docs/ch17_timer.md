@@ -181,13 +181,18 @@ Quy tắc thực dụng:
 | Lớn hơn 100 lần chu kỳ quét | ✅ Tốt | Dùng thoải mái |
 
 > 🔍 **BẪY — timer trong nhánh chương trình không phải lúc nào cũng chạy**
-> Nếu khối timer nằm trong một nhánh `IF` **không được thực thi ở vòng quét này**, thì timer đó
-> **không được cập nhật** — nó đứng yên chứ không chạy tiếp.
+> Nếu khối timer nằm trong một nhánh `IF` **không được thực thi ở vòng quét này**, thì ngõ ra của nó
+> **không được cập nhật** — `Q` và `ET` đứng yên ở giá trị cũ.
 >
-> Nhiều người tưởng timer chạy nền như đồng hồ. Không phải: nó chỉ tiến khi được gọi.
+> ⚠⚠ Nhưng *đứng yên* **không** có nghĩa là *tạm dừng*. Nhiều hệ ghi lại **thời điểm bắt đầu** theo
+> một đồng hồ chạy nền của CPU, rồi mỗi lần được gọi thì tính `ET` = *bây giờ trừ lúc bắt đầu*
+> (Siemens S7-1200), hoặc cộng *thời gian kể từ lần quét trước* (Rockwell). Bị bỏ không gọi mười
+> phút, rồi được gọi lại với `IN` vẫn TRUE → `ET` **nhảy vọt** mười phút, và `Q` lên **ngay** ở vòng
+> quét đầu tiên.
 >
-> Nếu cần timer chạy liên tục bất kể logic, hãy **gọi khối đó ở ngoài nhánh điều kiện**, và đưa điều
-> kiện vào chân `IN` thay vì bọc cả khối trong `IF`.
+> Cách đúng: **gọi khối ở ngoài nhánh điều kiện**, và đưa điều kiện vào chân `IN` thay vì bọc cả khối
+> trong `IF`. ⭐ Muốn timer ngưng đếm khi máy giữ, đưa **chính điều kiện giữ** vào `IN`: tắt `IN` là
+> xoá về 0, bật lại là đếm lại từ đầu (Phụ lục L mục L.6).
 
 ---
 
@@ -231,8 +236,8 @@ END_IF;
 // BÁO LỖI: bằng timer, chạy song song
 T_Step20(IN := (Stn1_Step = 20), PT := T#3S);
 IF T_Step20.Q THEN
-    Stn1_FaultStep := 20;
-    Stn1_Fault     := TRUE;      // "S1.20 quá thời gian — chờ DI_Clamp1Up" · cờ của trạm (Ch.25 mục 25.5c)
+    Stn1.FaultStep := 20;
+    Stn1.Fault     := TRUE;      // "S1.20 quá thời gian — chờ DI_Clamp1Up" · cờ của trạm (Ch.25 mục 25.5c)
 END_IF;
 ```
 
@@ -247,6 +252,12 @@ Hai khối này **làm hai việc khác nhau và không thay thế nhau**:
 
 Dòng cuối là toàn bộ lý do. Hai câu hỏi trùng nhau khi mọi thứ ổn, và **tách nhau đúng lúc bạn cần
 câu trả lời đúng nhất**.
+
+> ⚠ **Máy có trạng thái giữ (Hold) thì `IN` cần thêm một điều kiện.** Đang giữ ở bước 20, trình tự
+> đứng yên — đó **không** phải bước bị kẹt. Với `IN := (Stn1_Step = 20)`, giữ máy quá 3 giây là báo
+> lỗi giả. Khung ở Phụ lục L mục L.6 đưa luôn *"trình tự đang được phép chạy"* vào `IN`
+> (`M_CycleEnable`, Chương 25). ⚠ Đừng giải bằng cách đặt bộ định thời vào nhánh bị giữ — xem ô bẫy ở
+> mục 17.3.
 
 ---
 
@@ -320,6 +331,10 @@ nguyên nhân — và vấn đề nằm ở **điều kiện vào**, không ở 
 
 **Cách phân biệt hai bẫy:** xem giá trị đếm hiện tại. Nhảy về 0 liên tục → Bẫy 2. Đứng im một chỗ →
 Bẫy 3.
+
+⚠ Bẫy 3 còn một triệu chứng **ngược lại**, khó đoán hơn: nhánh chạy lại thì timer **hết giờ ngay lập
+tức** — vì lần gọi đó tính luôn cả khoảng thời gian nó đã không được gọi (mục 17.3). ⭐ Thấy một báo
+lỗi quá thời gian bật **đúng lúc máy vừa chạy tiếp** sau một lần dừng lâu → nghĩ tới bẫy này trước.
 
 ### 🔍 BẪY 4 — Đặt thời gian quá gần chu kỳ quét
 

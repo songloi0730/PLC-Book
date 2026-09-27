@@ -166,7 +166,7 @@ nhiều từ; và nếu có tiền tố thì chuyển sang `lowerCamelCase`. Sá
 | | Gợi ý của PLCopen | Sách chọn | ⭐ Lý do |
 |---|---|---|---|
 | Tên có tiền tố | `diBoardStn1` | `DI_BoardStn1` | ⭐⭐ Tên tag trong sách **là chữ in trên nhãn trong tủ** và trên màn hình (Chương 44). Chữ HOA có gạch tách tiền tố đọc được từ xa, và khớp cách đánh số dây (Chương 49 mục 49.6; Chương 57) |
-| Loại tiền tố | Thường là tiền tố **kiểu** — `x` cho BOOL, `i` cho INT | Tiền tố **vai trò** — `DI_` `DO_` `AI_` `M_` `T_` `Stn1_` | ⭐ Tiền tố vai trò trả lời câu người sửa máy cần hỏi nhất: *"tín hiệu này từ đâu tới?"* |
+| Loại tiền tố | Thường là tiền tố **kiểu** — `x` cho BOOL, `i` cho INT | Tiền tố **vai trò** — `DI_` `DO_` `AI_` `M_` `T_` `Stn1_` · `Stn1.` | ⭐ Tiền tố vai trò trả lời câu người sửa máy cần hỏi nhất: *"tín hiệu này từ đâu tới?"* |
 
 **Hai cách đặt tiền tố, cùng một biến — ưu và nhược:**
 
@@ -216,7 +216,7 @@ trong dự án thật.
 
 | Mã | Câu hỏi phải trả lời | Sách chọn |
 |---|---|---|
-| N2 | Có dùng tiền tố cho biến không, loại nào? | ⭐ Tiền tố **vai trò**: `DI_` `DO_` `AI_` `AO_` `AX_` `NET_` · `M_` cờ nội bộ · `T_` bộ định thời · `C_` bộ đếm · `Stn1_` biến của trạm · ⭐ tham số công thức **không** có tiền tố riêng: chúng là thành phần của cấu trúc `ActiveRecipe` kiểu `ST_Recipe` (Chương 29) — truy cập bằng tên, đúng CP1 |
+| N2 | Có dùng tiền tố cho biến không, loại nào? | ⭐ Tiền tố **vai trò**: `DI_` `DO_` `AI_` `AO_` `AX_` `NET_` · `M_` cờ nội bộ · `T_` bộ định thời · `C_` bộ đếm · `Stn1.` giao diện công bố của trạm (kiểu `ST_Station`) · `Stn1_` ruột của trạm (bước) · ⭐ tham số công thức **không** có tiền tố riêng: chúng là thành phần của cấu trúc `ActiveRecipe` kiểu `ST_Recipe` (Chương 29) — truy cập bằng tên, đúng CP1 |
 | N3 | Từ nào **không** được dùng trong tên? | Từ khoá và tên lệnh chuẩn (`TON`, `MOVE`…) · từ mơ hồ không nói được gì: `Temp`, `Data`, `Test`, `Flag`, `Aux` |
 | N4 | Viết hoa thế nào? | Tiền tố VIẾT HOA + `_` + `UpperCamelCase`: `DI_BoardStn1` · từ khoá VIẾT HOA: `IF`, `END_IF` |
 | N6 | Tên dài bao nhiêu? | ⭐ Tag của máy mẫu dài nhất **16 ký tự**; nên giữ **≤ 25** như PLCopen gợi ý |

@@ -262,8 +262,10 @@ END_CASE;
 > Instance DB. Cấu trúc tư duy giống hệt — vì cả hai bám IEC 61131-3.
 >
 > ⚠⚠ **Vì sao bộ định thời gọi NGOÀI `CASE` ở cả hai bản:** một thể hiện khối **không được gọi thì
-> giữ nguyên trạng thái**. Gọi nó bên trong nhánh `40` thì rời bước là nó đứng yên với `Q` = TRUE
-> (nếu vừa quá giờ) — lần sau vào bước 40 là **báo lỗi ngay** ở vòng quét đầu. Gọi ngoài `CASE` với
+> giữ nguyên trạng thái**. Gọi nó bên trong nhánh `40` thì rời bước là nó **đứng yên** — và lần sau
+> vào bước 40, `IN` vẫn TRUE nên không có sườn lên nào để đếm lại: `Q` còn TRUE từ lần trước, hoặc
+> `ET` tính luôn cả thời gian từ lần trước tới giờ (Phụ lục B mục B.9b) — **báo lỗi ngay** ở vòng quét
+> đầu, **dù lần trước không hề quá giờ**. Gọi ngoài `CASE` với
 > `IN` lấy từ bước thì rời bước là `IN` = FALSE → tự xoá, và mỗi thể hiện được gọi **đúng một lần**
 > mỗi vòng (PLCopen CP20, Phụ lục N).
 

@@ -398,8 +398,8 @@ MoveZ(Axis     := AX_Z,
       Error    => M_ZMoveError);
 
 // Chuyển bước bằng PHẢN HỒI THẬT — Done, không phải timer (Chương 17)
-IF Stn1.Step = 40 AND M_ZMoveDone THEN
-    Stn1.Step := 50;
+IF Stn1_Step = 40 AND M_ZMoveDone THEN
+    Stn1_Step := 50;
 END_IF;
 ```
 
@@ -521,15 +521,18 @@ Z 0–50 mm**, cả ba trục là **servo**.
 ### Thứ tự về gốc
 
 ```iecst
+// ⭐ Gọi MỖI vòng quét, NGOÀI CASE — Execute lấy thẳng từ bước: vào bước là sườn lên,
+//    rời bước là sườn xuống, nên lần về gốc SAU cũng phát được lệnh (Chương 30 mục 30.5b)
+HomeZ(Axis := AX_Z, Execute := (HomeStep = 10));
+HomeX(Axis := AX_X, Execute := (HomeStep = 20));
+HomeY(Axis := AX_Y, Execute := (HomeStep = 20));
+
 CASE HomeStep OF
     10:  // ⭐ Z LÊN TRƯỚC — nếu không, đầu keo quét ngang qua board
-        MC_Home_Z(Axis := AX_Z, Execute := TRUE);
-        IF M_ZHomed THEN  HomeStep := 20;  END_IF;
+        IF HomeZ.Done THEN  HomeStep := 20;  END_IF;
 
     20:  // X và Y về gốc được, sau khi Z đã an toàn
-        MC_Home_X(Axis := AX_X, Execute := TRUE);
-        MC_Home_Y(Axis := AX_Y, Execute := TRUE);
-        IF M_XHomed AND M_YHomed THEN  HomeStep := 30;  END_IF;
+        IF HomeX.Done AND HomeY.Done THEN  HomeStep := 30;  END_IF;
 
     30:
         M_Homed := TRUE;        // ⚠⚠ biến KHÔNG giữ qua mất điện (mục 37.3)
@@ -541,7 +544,7 @@ END_CASE;
 
 // Timeout song song — cữ hỏng thì trục chạy mãi (Chương 17, Chương 26)
 T_HomeTimeout(IN := (HomeStep > 0), PT := T#30S);
-IF T_HomeTimeout.Q THEN
+IF T_HomeTimeout.Q OR HomeZ.Error OR HomeX.Error OR HomeY.Error THEN
     M_HomeFault := TRUE;
     // dừng mọi trục
 END_IF;
@@ -634,10 +637,15 @@ mục 16.4).
 **Cách sửa:** phanh cơ khí, và ⚠ **thứ tự kẹp trước khi nhả mô-men** phải đặt đúng trong tham số
 drive (mục 37.9).
 
-### 🔍 BẪY 7 — Giữ `Execute` ở mức TRUE
+### 🔍 BẪY 7 — `Execute` không bao giờ hạ xuống
 
 **Hiện tượng:** lệnh chạy được lần đầu, những lần sau **không phát được** — trình tự treo ở bước đó.
-**Cách sửa:** kích bằng **cạnh lên** (mục 37.8, Chương 16).
+⚠ Hai cách viết gây ra nó, và cả hai trông vô hại: gọi với **hằng** `Execute := TRUE`, hoặc gọi khối
+**bên trong** nhánh `CASE` — rời bước thì khối không được gọi nữa, nên nó **không bao giờ thấy**
+`Execute` hạ xuống (Phụ lục B mục B.9b). Chính đoạn về gốc ở mục 37.9 từng mắc lỗi này.
+**Cách sửa:** lệnh kích bằng **cạnh lên**, nên giữa hai lệnh phải có **cạnh xuống**. Gọi khối **mỗi
+vòng, ngoài `CASE`**, với `Execute := (HomeStep = 10)` — giữ TRUE suốt bước, tự hạ khi rời bước — hoặc
+bằng một xung sườn lên như Phụ lục L mục L.9 (Chương 30 mục 30.5b, Chương 16).
 
 ### 🔍 BẪY 8 — Dùng chung một thể hiện khối chuyển động
 

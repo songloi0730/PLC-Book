@@ -269,41 +269,43 @@ END_VAR
 // ── 0. Xoá cờ lỗi của trạm khi tầng máy ra lệnh — đặt NGOÀI cửa vào, vì lúc máy đang
 //       Resetting thì trình tự không chạy (Chương 25 mục 25.5c) ──
 IF M_ClearFaults THEN
-    Stn1_Fault := FALSE;
+    Stn1.Fault := FALSE;
 END_IF;
 
-// ── 1. MỘT cửa vào: tạm dừng, hoặc tầng máy chưa cho phép → GIỮ NGUYÊN bước và ngõ ra ──
+// ── 1. Một timer dùng chung — gọi ĐÚNG MỘT lần mỗi vòng, NGOÀI cửa vào (Phụ lục B mục B.9b).
+//       Bước vừa đổi, hoặc trình tự đang bị giữ → IN = FALSE → timer về 0; chạy tiếp là bước
+//       được TRỌN thời gian cho phép (Chương 26 · Chương 17 Bẫy 3, Bẫy 5 · PLCopen CP20) ──
+CASE Stn1_Step OF
+    0:   Stn1_StepLimit := T#0S;         // 0 = chờ vô hạn, CÓ CHỦ Ý
+   10:   Stn1_StepLimit := T#3S;
+   20:   Stn1_StepLimit := T#3S;
+   30:   Stn1_StepLimit := T#60S;
+END_CASE;
+
+T_StepTimeout(IN := M_CycleEnable AND NOT M_Paused
+                    AND (Stn1_StepLimit > T#0S) AND (Stn1_Step = Stn1_StepPrev),
+              PT := Stn1_StepLimit);
+Stn1_StepPrev := Stn1_Step;
+
+IF T_StepTimeout.Q THEN
+    Stn1.FaultStep := Stn1_Step;         // ⭐ GHI LẠI bước bị kẹt — không chỉ "lỗi trạm 1"
+    Stn1.Fault     := TRUE;              // cờ của TRẠM — không ghi thẳng M_AnyFault (Chương 25 mục 25.5c)
+END_IF;
+
+// ── 2. MỘT cửa vào: tạm dừng, hoặc tầng máy chưa cho phép → GIỮ NGUYÊN bước và ngõ ra ──
 //    ⚠ Huỷ chu trình KHÔNG làm ở đây. Nó là một chuyển trạng thái riêng ở tầng máy
 //      (Hold → Idle, Chương 25), và bước được xoá ở đó — không phải mỗi lần cờ này tắt.
 IF M_Paused OR NOT M_CycleEnable THEN
     ;                                    // ⭐ CỐ Ý không làm gì (L.4, Chương 25)
 ELSE
 
-    // ── 2. Một timer dùng chung: bước vừa đổi thì IN = FALSE đúng một vòng → tự xoá.
-    //       Gọi ĐÚNG MỘT lần mỗi vòng quét (Chương 26 · Chương 17 Bẫy 5 · PLCopen CP20) ──
-    CASE Stn1_Step OF
-        0:   Stn1_StepLimit := T#0S;         // 0 = chờ vô hạn, CÓ CHỦ Ý
-       10:   Stn1_StepLimit := T#3S;
-       20:   Stn1_StepLimit := T#3S;
-       30:   Stn1_StepLimit := T#60S;
-    END_CASE;
-
-    T_StepTimeout(IN := (Stn1_StepLimit > T#0S) AND (Stn1_Step = Stn1_StepPrev),
-                  PT := Stn1_StepLimit);
-    Stn1_StepPrev := Stn1_Step;
-
-    IF T_StepTimeout.Q THEN
-        Stn1_FaultStep := Stn1_Step;         // ⭐ GHI LẠI bước bị kẹt — không chỉ "lỗi trạm 1"
-        Stn1_Fault     := TRUE;              // cờ của TRẠM — không ghi thẳng M_AnyFault (Chương 25 mục 25.5c)
-    END_IF;
-
     // ── 3. Thân trình tự — chuyển bước bằng PHẢN HỒI THẬT ──
     CASE Stn1_Step OF
-      0:  Stn1_Ready := TRUE;
-          Stn1_Busy  := FALSE;
+      0:  Stn1.Ready := TRUE;
+          Stn1.Busy  := FALSE;
           IF DI_BoardStn1 THEN
-              Stn1_Ready := FALSE;
-              Stn1_Busy  := TRUE;
+              Stn1.Ready := FALSE;
+              Stn1.Busy  := TRUE;
               Stn1_Step  := 10;
           END_IF;
 
@@ -334,11 +336,13 @@ END_IF;
 > ⚡ Nhánh rỗng `;` có chú thích là cách chính tài liệu PLCopen dùng để nói *"ở đây cố ý không làm
 > gì"* — Phụ lục N.
 
-> ⚠ **Một hệ quả phải biết: khi đang giữ, bộ định thời báo lỗi bước KHÔNG chạy** — nó nằm trong nhánh
-> không được thực thi nên bị đóng băng (Chương 17, Bẫy 3). Ở đây đó là **điều mong muốn**: một bước
-> đang tạm dừng không phải bước bị kẹt. ⚡ Nếu cơ cấu của bạn cần thời gian khởi động lại sau một lần
-> dừng lâu, hãy **đặt lại bộ định thời khi thoát khỏi trạng thái giữ** — đừng để nó báo lỗi ngay sau
-> khi chạy tiếp.
+> ⚠⚠ **Vì sao bộ định thời nằm NGOÀI cửa vào, với điều kiện giữ đưa vào `IN`.** Bản trước của khung
+> này gọi nó **bên trong** nhánh `ELSE`, với ý định *"đang giữ thì đóng băng — một bước đang tạm dừng
+> không phải bước bị kẹt"*. Ý định đúng, cách làm sai: bộ định thời **không được gọi thì không tạm
+> dừng** — nó tính `ET` từ thời điểm bắt đầu theo đồng hồ nền của CPU (Chương 17 mục 17.3, Phụ lục B
+> mục B.9b). Giữ máy mười phút ở bước 20 rồi chạy tiếp → lần gọi đầu tiên thấy `ET` = mười phút →
+> **báo lỗi bước ngay khi vừa bấm Start**. ⭐ Đưa điều kiện giữ vào `IN` thì đúng ý: đang giữ → timer
+> về 0; chạy tiếp → bước được **trọn** thời gian cho phép.
 
 > ⭐⭐ **Hai quy tắc của khung này quan trọng hơn bản thân đoạn code:**
 >
@@ -780,7 +784,7 @@ END_IF;
 M_AnyAlarmActive := M_Alm_EStop OR M_Alm_AirLow OR M_Alm_VisionNoAnswer OR M_Alm_AxisZ;
 M_AnyFault       := M_AnyAlarmActive
                     OR Stop1.Fault OR Clamp1.Fault OR Stop2.Fault OR Clamp2.Fault
-                    OR Stn1_Fault OR Stn2_Fault;
+                    OR Stn1.Fault OR Stn2.Fault;
 
 IF NOT M_AnyAlarmActive THEN
     FirstAlarmCode := ALM_NONE;              // hết sạch mới xoá

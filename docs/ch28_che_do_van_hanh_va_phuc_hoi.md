@@ -186,7 +186,7 @@ Thứ tự về gốc phải **không vi phạm bảng va chạm ở bất kỳ 
 
 Thứ tự đúng cho DP-01:
 
-```iecst
+```text
 Bước H0 — Dừng chuyền, cấm mọi chuyển động tự động
           DO_ConvRun := FALSE
 

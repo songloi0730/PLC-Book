@@ -21,6 +21,7 @@
   "tag_vi_du_chung": {
     "DO_RobotStart": "Ch.46 — robot, không có trên DP-01",
     "DI_RobotDone": "Ch.46 — robot",
+    "DI_RobotRunning": "Ch.46 — robot (đợt 62: bắt tay Bắt đầu/Đang chạy)",
     "DI_RobotError": "Ch.46 — robot",
     "DI_RobotAtSafePos": "Ch.46 — robot",
     "DO_CameraTrigger": "Ch.43 — vision, đã chốt KHÔNG đưa vào DP-01",

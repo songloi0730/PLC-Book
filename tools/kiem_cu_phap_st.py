@@ -24,9 +24,27 @@ Kiểm:
   9. (đợt 59) CP20 — một thể hiện khối được gọi ở HAI chỗ trở lên trong cùng một khối
      mã. Mẫu "gọi T(IN := FALSE) để xoá rồi gọi lại" từng có ở sáu chỗ trong sách.
  10. (đợt 59) Khai báo `tên : KIỂU;` nằm NGOÀI `VAR … END_VAR` — không biên dịch được.
+ 11. (đợt 62) ⭐ Kiểu cấu trúc / liệt kê cùng tên phải là CÙNG MỘT kiểu — sách từng có
+     ba `ST_Station` khác nhau. Bản trong khối có dấu lược được phép là TẬP CON.
+ 12. (đợt 62) `biến.trường` — trường phải có thật trong kiểu cấu trúc của biến.
+ 13. (đợt 62) ⭐⭐ Khối mở đầu bằng `// ✔ VÍ DỤ HOÀN CHỈNH` phải TỰ ĐỦ khai báo: mọi
+     biến dùng đến đều khai trong chính khối (kể cả I/O, qua VAR_GLOBAL/VAR_EXTERNAL);
+     mọi kiểu phải có thật (chuẩn, hoặc định nghĩa ở đâu đó trong sách, hoặc MC_*/AXIS_REF
+     của thư viện chuyển động); không dấu lược; biến cục bộ khai mà không dùng là lỗi
+     (PLCopen CP24). Khối khai báo có thêm chữ "sơ đồ ở khối kế tiếp" thì mọi tên có
+     dấu gạch dưới trong sơ đồ (LD/FBD/SFC) ở khối ngay sau cũng phải được khai.
+ 14. (đợt 62) ⭐⭐ Thể hiện khối gọi BÊN TRONG nhánh IF/CASE — Phụ lục B mục B.9b: khối
+     không được gọi thì không thấy sườn xuống, nên lần thứ hai đi qua nhánh đó nó không
+     chạy (đợt 61–62 tìm ra 7 chỗ như vậy, cả 7 chỉ lộ ra ở chu trình thứ hai). Được
+     phép khi dòng gọi hoặc dòng ngay trên có chữ "CỐ Ý" kèm lý do (PID gọi theo nhịp).
+ 15. (đợt 62) Đầu vào sườn là HẰNG: `CLK := TRUE/FALSE`, `Execute := TRUE` — không bao
+     giờ tạo được sườn thứ hai.
+ 16. (đợt 62) `CASE XStep OF` mà trong nhánh lại gán số cho một biến bước KHÁC
+     (`Step := 20` trong `CASE LoadStep`) — trình tự không bao giờ tiến.
 
-Không kiểm (giới hạn biết trước): kiểu dữ liệu của biểu thức; biến chưa khai báo;
-khối chuyển động MC_* (đặc tả PLCopen Part 1 không có trong bộ tài liệu cục bộ).
+Không kiểm (giới hạn biết trước): kiểu dữ liệu của biểu thức; biến chưa khai báo trong
+ĐOẠN TRÍCH (khối không có dấu hiệu hoàn chỉnh); khối chuyển động MC_* (đặc tả PLCopen
+Part 1 không có trong bộ tài liệu cục bộ).
 
 Chạy:  python tools/kiem_cu_phap_st.py
 """
@@ -299,15 +317,250 @@ def kiem_thoat(ma_goc, s):
     return loi
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Đợt 62 — kiểu người dùng, trường cấu trúc, ví dụ hoàn chỉnh
+# ─────────────────────────────────────────────────────────────────────────────
+
+DAU_HOAN_CHINH = re.compile(r"^\s*//\s*✔\s*VÍ DỤ HOÀN CHỈNH")
+SO_DO_KE_TIEP = re.compile(r"sơ đồ ở khối kế tiếp")
+
+TU_KHOA = {
+    "IF", "THEN", "ELSIF", "ELSE", "END_IF", "CASE", "OF", "END_CASE", "FOR", "TO", "BY", "DO",
+    "END_FOR", "WHILE", "END_WHILE", "REPEAT", "UNTIL", "END_REPEAT", "EXIT", "RETURN",
+    "CONTINUE", "AND", "OR", "XOR", "NOT", "MOD", "TRUE", "FALSE", "VAR", "VAR_INPUT",
+    "VAR_OUTPUT", "VAR_IN_OUT", "VAR_GLOBAL", "VAR_EXTERNAL", "VAR_TEMP", "VAR_STAT", "VAR_INST",
+    "END_VAR", "CONSTANT", "RETAIN", "PERSISTENT", "NON_RETAIN", "AT", "FUNCTION",
+    "FUNCTION_BLOCK", "PROGRAM", "END_FUNCTION", "END_FUNCTION_BLOCK", "END_PROGRAM", "TYPE",
+    "END_TYPE", "STRUCT", "END_STRUCT", "ARRAY", "POINTER", "REFERENCE", "REF", "REF_TO", "THIS",
+    "SUPER", "METHOD", "END_METHOD", "PROPERTY", "END_PROPERTY", "PROPERTY_GET", "PROPERTY_SET",
+    "INTERFACE", "END_INTERFACE", "EXTENDS", "IMPLEMENTS", "PUBLIC", "PRIVATE", "PROTECTED",
+    "INTERNAL", "ABSTRACT", "FINAL", "OVERRIDE", "ACTION", "END_ACTION", "NULL",
+}
+KIEU_CHUAN = {
+    "BOOL", "BYTE", "WORD", "DWORD", "LWORD", "SINT", "INT", "DINT", "LINT", "USINT", "UINT",
+    "UDINT", "ULINT", "REAL", "LREAL", "TIME", "LTIME", "DATE", "LDATE", "TIME_OF_DAY", "TOD",
+    "LTOD", "DATE_AND_TIME", "DT", "LDT", "STRING", "WSTRING", "CHAR", "WCHAR", "USTRING", "UCHAR",
+}
+LITERAL_CO_KIEU = re.compile(
+    r"\b(?:T|TIME|LT|LTIME|D|DATE|LD|LDATE|TOD|TIME_OF_DAY|LTOD|DT|DATE_AND_TIME|LDT|BOOL|SINT|"
+    r"INT|DINT|LINT|USINT|UINT|UDINT|ULINT|REAL|LREAL|BYTE|WORD|DWORD|LWORD|2|8|16)"
+    r"#[\w.:+\-]+", re.I)
+DIA_CHI = re.compile(r"%[IQM][XBWDL]?[\d.]+", re.I)
+
+
+def dinh_nghia_kieu(s):
+    """{tên: ("STRUCT", {trường: kiểu}) | ("ENUM", [giá trị])} của mọi TYPE trong khối."""
+    ra = {}
+    for m in re.finditer(r"\bTYPE\s+(\w+)\s*:\s*(.*?)\bEND_TYPE\b", s, re.S):
+        ten, than = m.group(1), m.group(2)
+        cs = re.match(r"\s*STRUCT\b(.*?)\bEND_STRUCT\b", than, re.S)
+        if cs:
+            truong = {}
+            for d in re.finditer(r"^\s*([A-Za-z_][\w\s,]*?)\s*:\s*(ARRAY\b.*?\bOF\s+)?([A-Za-z_]\w*)",
+                                 cs.group(1), re.M):
+                for t in d.group(1).split(","):
+                    truong[t.strip()] = ("[]" if d.group(2) else "") + d.group(3)
+            ra[ten] = ("STRUCT", truong)
+            continue
+        ce = re.match(r"\s*\(([^)]*)\)", than, re.S)
+        if ce:
+            ra[ten] = ("ENUM", [re.sub(r":=.*", "", v).strip() for v in ce.group(1).split(",")])
+    return ra
+
+
+def kiem_kieu_trung(khoi):
+    """Mục 11 — cùng tên kiểu thì cùng định nghĩa; bản có dấu lược được là tập con."""
+    noi = {}
+    for ten, d0, ma in khoi:
+        s = bo_chu_thich(ma)
+        luoc = bool(LUOC.search(ma))
+        for k, v in dinh_nghia_kieu(s).items():
+            noi.setdefault(k, []).append((v, luoc, ten, d0))
+    loi, dang_ky = [], {}
+    for k, ds in noi.items():
+        day_du = [x for x in ds if not x[1]]
+        chuan = day_du[0][0] if day_du else ds[0][0]
+        dang_ky[k] = chuan
+        cho = " · ".join("%s:%d" % (t, d) for _, _, t, d in ds)
+        if len({repr(sorted(x[0][1].items()) if x[0][0] == "STRUCT" else x[0])
+                for x in day_du}) > 1:
+            loi.append(("*", 0, "kiểu %s định nghĩa %d lần KHÁC NHAU: %s" % (k, len(ds), cho)))
+            continue
+        for v, luoc, t, d in ds:
+            if luoc and v[0] == "STRUCT" and chuan[0] == "STRUCT":
+                thua = {f: ft for f, ft in v[1].items() if chuan[1].get(f) != ft}
+                if thua:
+                    loi.append((t, d, "kiểu %s (bản trích) có trường không khớp bản đầy đủ: %s"
+                                % (k, ", ".join(sorted(thua)))))
+    return loi, dang_ky
+
+
+def mang_the_hien(s):
+    """{tên_mảng: kiểu_phần_tử} từ `x : ARRAY[..] OF KIỂU;`."""
+    ra = {}
+    for v in re.finditer(r"\bVAR\w*\b(.*?)\bEND_VAR\b", s, re.S):
+        for d in re.finditer(r"^\s*([A-Za-z_][\w\s,]*?)\s*:\s*ARRAY\s*\[[^\]]*\]\s*OF\s+(\w+)",
+                             v.group(1), re.M):
+            for t in d.group(1).split(","):
+                ra[t.strip()] = d.group(2)
+    return ra
+
+
+def kiem_truong(ma_goc, s, tu_dien, mang, kieu):
+    """Mục 12 — `biến.trường` (và `mảng[i].trường`, lồng nhiều cấp) phải có thật.
+
+    Dòng có dấu ✗/SAI, hoặc ngay dưới một chú thích có dấu đó, là ví dụ sai CÓ CHỦ Ý — bỏ qua.
+    """
+    loi = []
+    goc = ma_goc.split("\n")
+    for m in re.finditer(r"(?<![\w.#])([A-Za-z_]\w*)(\[[^\]]*\])?((?:\.[A-Za-z_]\w*)+)", s):
+        i = s[:m.start()].count("\n")
+        if re.search(r"✗|\bSAI\b", goc[i] + (goc[i - 1] if i else "")):
+            continue
+        k = mang.get(m.group(1)) if m.group(2) else tu_dien.get(m.group(1))
+        for f in m.group(3).split(".")[1:]:
+            if k not in kieu or kieu[k][0] != "STRUCT":
+                break
+            if f not in kieu[k][1]:
+                loi.append((s[:m.start()].count("\n") + 1, "%s: kiểu %s không có trường '%s'"
+                            % (m.group(0), k, f)))
+                break
+            k = kieu[k][1][f].lstrip("[]")
+    return loi
+
+
+def ten_khai_bao(s):
+    """(biến khai báo: {tên: loại_VAR}, tên kiểu được nhắc trong phần khai báo)."""
+    bien, kieu_nhac = {}, set()
+    for v in re.finditer(r"\b(VAR\w*)\b(.*?)\bEND_VAR\b", s, re.S):
+        for d in re.finditer(r"^\s*([A-Za-z_][\w\s,]*?)\s*(?:AT\s+\S+\s*)?:\s*([^;]*);",
+                             v.group(2), re.M):
+            for t in d.group(1).split(","):
+                bien[t.strip()] = v.group(1).upper()
+            vong = re.split(r":=", d.group(2), maxsplit=1)[0]
+            kieu_nhac |= set(re.findall(r"[A-Za-z_]\w*", vong)) - TU_KHOA
+    return bien, kieu_nhac
+
+
+def kiem_hoan_chinh(ma, s, the_gioi, so_do=None):
+    """Mục 13 — ví dụ hoàn chỉnh phải tự đủ khai báo; `the_gioi` là tên đã biết cả sách."""
+    loi = []
+    if LUOC.search(ma):
+        loi.append((1, "ví dụ hoàn chỉnh không được có dấu lược — hoặc bỏ dấu hiệu ✔"))
+    bien, kieu_nhac = ten_khai_bao(s)
+    pou = set(re.findall(r"\b(?:FUNCTION_BLOCK|FUNCTION|PROGRAM|METHOD|PROPERTY(?:_GET|_SET)?"
+                         r"|INTERFACE|ACTION|TYPE)\s+(?:(?:PUBLIC|PRIVATE|PROTECTED|INTERNAL"
+                         r"|ABSTRACT|FINAL|OVERRIDE)\s+)*(\w+)", s))
+    cac_kieu = the_gioi["kieu"] | pou | set(CHUAN) | KIEU_CHUAN
+    for k in sorted(kieu_nhac):
+        if k not in cac_kieu and not k.startswith(("MC_", "AXIS_REF")) and not k.isdigit():
+            loi.append((1, "kiểu '%s' không có ở đâu trong sách, cũng không phải kiểu chuẩn" % k))
+    biet = set(bien) | pou | the_gioi["kieu"] | the_gioi["enum"] | set(CHUAN) | KIEU_CHUAN
+    s2 = DIA_CHI.sub("0", LITERAL_CO_KIEU.sub("0", s))
+    s2 = re.sub(r"\b\w+#(\w+)", r"\1", s2)                  # E_X#Gia_tri → Gia_tri
+    # bỏ phần khai báo (tên biến bên trái dấu ':'), giữ giá trị khởi tạo sau ':='
+    s3 = re.sub(r"\b(VAR\w*)\b(.*?)\bEND_VAR\b",
+                lambda m: "\n".join((x.split(":=", 1)[1] if ":=" in x else "")
+                                    for x in m.group(2).split("\n")), s2, flags=re.S)
+    dung = set()
+    sau_so = 0
+    for i, dong in enumerate(s3.split("\n"), 1):
+        muc = 0
+        tk = list(re.finditer(r":=|=>|[()]|[A-Za-z_]\w*|\.", dong))
+        for j, m in enumerate(tk):
+            t = m.group(0)
+            if t == "(":
+                muc += 1
+                continue
+            if t == ")":
+                muc = max(0, muc - 1)
+                continue
+            if not re.match(r"[A-Za-z_]", t):
+                continue
+            if j and tk[j - 1].group(0) == ".":
+                continue
+            ke = tk[j + 1].group(0) if j + 1 < len(tk) else ""
+            if muc > 0 and ke in (":=", "=>"):
+                continue                                     # tên chân khi gọi khối
+            T = t.upper()
+            if T in TU_KHOA or T in HAM_CHUAN or "_TO_" in T or t in the_gioi["ham"]:
+                continue
+            if t.startswith(("MC_", "AXIS_REF")):
+                continue
+            dung.add(t)
+            if t not in biet:
+                loi.append((i, "'%s' dùng mà không khai báo trong ví dụ hoàn chỉnh" % t))
+                biet.add(t)                                  # báo mỗi tên một lần
+        sau_so = i
+    for t, loai in sorted(bien.items()):
+        if loai in ("VAR", "VAR_TEMP") and t not in dung and t not in pou:
+            loi.append((1, "biến cục bộ '%s' khai báo mà không dùng (PLCopen CP24)" % t))
+    if so_do is not None:
+        khai = set(bien) | pou
+        for t in sorted(set(re.findall(r"\b[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9_]*\b", so_do))):
+            if t not in khai and not t.startswith(("MC_",)) and t.upper() not in HAM_CHUAN:
+                loi.append((sau_so, "sơ đồ ở khối kế tiếp dùng '%s' — chưa khai báo ở khối này" % t))
+    return loi
+
+
+def kiem_goi_trong_nhanh(ma_goc, s, ham_sach):
+    """Mục 14–16 — gọi khối trong nhánh · đầu vào sườn là hằng · CASE lệch biến bước."""
+    if re.search(r"^\s*//.*(✗|\bSAI\b)", ma_goc, re.M):
+        return []
+    loi, ngan = [], []
+    goc = ma_goc.split("\n")
+    MO_K = {"IF", "CASE", "FOR", "WHILE", "REPEAT"}
+    DONG_K = {"END_IF", "END_CASE", "END_FOR", "END_WHILE", "END_REPEAT"}
+    for i, dong in enumerate(s.split("\n"), 1):
+        for t in re.finditer(r"(?<![\w.])(IF|CASE|FOR|WHILE|REPEAT|END_IF|END_CASE|END_FOR|"
+                             r"END_WHILE|END_REPEAT)\b|(?<![\w.])([A-Za-z_]\w*)\s*\((?=[^;]*(:=|=>))",
+                             dong):
+            k = t.group(1)
+            if k in MO_K:
+                ten_case = re.match(r"\s*(\w+)\s+OF\b", dong[t.end():]) if k == "CASE" else None
+                ngan.append((k, ten_case.group(1) if ten_case else None))
+                continue
+            if k in DONG_K:
+                if ngan:
+                    ngan.pop()
+                continue
+            ten = t.group(2)
+            if (not ten or ten.upper() in HAM_CHUAN or ten in ham_sach or "_TO_" in ten.upper()
+                    or ten.upper() in TU_KHOA):
+                continue
+            if any(x[0] in ("IF", "CASE") for x in ngan) and not any(x[0] == "FOR" for x in ngan):
+                tren = goc[i - 2] if i >= 2 else ""
+                if "CỐ Ý" not in goc[i - 1] and "CỐ Ý" not in tren:
+                    loi.append((i, "%s được gọi BÊN TRONG nhánh %s — khối không được gọi thì không "
+                                "thấy sườn xuống; gọi mỗi vòng, ngoài nhánh, đầu vào lấy từ trạng "
+                                "thái (Phụ lục B mục B.9b)" % (ten, "/".join(x[0] for x in ngan))))
+        for m in re.finditer(r"\b(CLK)\s*:=\s*(TRUE|FALSE)\b|\b(Execute)\s*:=\s*TRUE\b", dong):
+            loi.append((i, "%s là HẰNG — không bao giờ có sườn thứ hai" % m.group(0)))
+        for m in re.finditer(r"(?:^|;)\s*(?:\d+\s*:\s*)?([A-Za-z_][\w.]*)\s*:=\s*\d+\s*;", dong):
+            chon = next((x[1] for x in reversed(ngan) if x[0] == "CASE"), None)
+            dich = m.group(1)
+            if (chon and chon.upper().endswith("STEP") and dich.upper().endswith("STEP")
+                    and dich != chon and not dich.upper().endswith(("FAULTSTEP", "PREVSTEP"))):
+                loi.append((i, "CASE %s nhưng nhánh gán '%s' — trình tự không tiến" % (chon, m.group(0).strip())))
+    return loi
+
+
 def main():
     khoi = []   # (tệp, dòng_bắt_đầu, mã)
+    so_do_sau = {}   # (tệp, dòng_bắt_đầu) của khối iecst → nội dung khối mã NGAY SAU nó
     for p in sorted(glob.glob(os.path.join(DOCS, "*.md"))):
         ten = os.path.basename(p)
         if ten.startswith("00"):
             continue
         s = io.open(p, encoding="utf-8").read()
-        for m in re.finditer(r"^```iecst\n(.*?)^```", s, flags=re.S | re.M):
-            khoi.append((ten, s[:m.start()].count("\n") + 2, m.group(1)))
+        tat_ca = list(re.finditer(r"^```(\w*)\n(.*?)^```", s, flags=re.S | re.M))
+        for j, m in enumerate(tat_ca):
+            if m.group(1) != "iecst":
+                continue
+            d0 = s[:m.start()].count("\n") + 2
+            khoi.append((ten, d0, m.group(2)))
+            if j + 1 < len(tat_ca):
+                so_do_sau[(ten, d0)] = tat_ca[j + 1].group(2)
 
     # Hàm do sách tự định nghĩa — gọi nhiều lần là bình thường, không phải thể hiện khối
     ham_sach = set()
@@ -345,6 +598,25 @@ def main():
             toan_sach.setdefault(k, set()).add(v)
     chung = {k: next(iter(v)) for k, v in toan_sach.items() if len(v) == 1}
 
+    # Mục 11 — kiểu người dùng; và "thế giới" tên đã biết của cả sách cho mục 13
+    loi_kieu, kieu = kiem_kieu_trung(khoi)
+    loi_tong += loi_kieu
+    the_gioi = {"kieu": set(kieu) | set(gd), "enum": set(), "ham": set(ham_sach)}
+    for v in kieu.values():
+        if v[0] == "ENUM":
+            the_gioi["enum"] |= set(v[1])
+    mang_tep, mang_toan = {}, {}
+    for ten, _, ma in khoi:
+        s = bo_chu_thich(ma)
+        the_gioi["kieu"] |= set(re.findall(r"\b(?:INTERFACE|FUNCTION_BLOCK)\s+(\w+)", s))
+        the_gioi["ham"] |= set(re.findall(r"\bPROGRAM\s+(\w+)", s))
+        mg = mang_the_hien(s)
+        mang_tep.setdefault(ten, {}).update(mg)
+        for k, v in mg.items():
+            mang_toan.setdefault(k, set()).add(v)
+    mang_chung = {k: next(iter(v)) for k, v in mang_toan.items() if len(v) == 1}
+
+    so_hoan_chinh = 0
     for ten, d0, ma in khoi:
         s = bo_chu_thich(ma)
         co_luoc = bool(LUOC.search(s))
@@ -353,11 +625,21 @@ def main():
         tu_dien.update(the_hien_tep[ten])
         loi += kiem_chan(s, tu_dien, gd)
         loi += kiem_goi_doi(ma, s, tu_dien, gd, ham_sach) + kiem_khai_bao(s)
+        mang = dict(mang_chung)
+        mang.update(mang_tep[ten])
+        loi += kiem_truong(ma, s, tu_dien, mang, kieu)
+        loi += kiem_goi_trong_nhanh(ma, s, ham_sach)
+        dau = next((x for x in ma.split("\n") if x.strip()), "")
+        if DAU_HOAN_CHINH.match(dau):
+            so_hoan_chinh += 1
+            so_do = so_do_sau.get((ten, d0)) if SO_DO_KE_TIEP.search(dau) else None
+            loi += kiem_hoan_chinh(ma, s, the_gioi, so_do)
         for dong, noi_dung in loi:
             loi_tong.append((ten, d0 + dong - 1, noi_dung))
 
     print("=" * 78)
-    print("KIỂM CÚ PHÁP ST — %d khối iecst" % len(khoi))
+    print("KIỂM CÚ PHÁP ST — %d khối iecst · %d ví dụ hoàn chỉnh · %d kiểu người dùng"
+          % (len(khoi), so_hoan_chinh, len(kieu)))
     print("=" * 78)
     for ten, dong, nd in loi_tong:
         if ten == "*":

@@ -316,7 +316,7 @@ Ba câu hỏi mà bảng lệnh không trả lời, nhưng quyết định chư�
 
 | Khối | ⭐ Cập nhật khi nào | Lần gọi đầu sau khởi động | ⚠ Khi **không** được gọi |
 |---|---|---|---|
-| `TON` · `TOF` · `TP` | **Chỉ trong lần gọi** — `ET`, `Q` tính lại ở mỗi lần gọi | `ET` = 0, `Q` = FALSE; `IN` đã TRUE thì bắt đầu đếm từ lần này | ⚠⚠ **Đứng yên** — `ET` không tăng, `Q` giữ giá trị cũ. Khác hẳn lệnh `OUT` bộ định thời của hệ kiểu thiết bị: điều kiện tắt là **về 0** (Phụ lục A2 mục A2.8) |
+| `TON` · `TOF` · `TP` | **Chỉ trong lần gọi** — `ET`, `Q` tính lại ở mỗi lần gọi | `ET` = 0, `Q` = FALSE; `IN` đã TRUE thì bắt đầu đếm từ lần này | Ngõ ra **đứng yên** — `ET`, `Q` không cập nhật. ⚠⚠ Nhưng **không tạm dừng**: lần gọi kế tiếp tính **cả khoảng không được gọi** (Siemens: *bây giờ trừ lúc bắt đầu*; Rockwell: *cộng thời gian từ lần quét trước*) — `ET` **nhảy vọt**, `Q` có thể lên ngay. Khác hẳn lệnh `OUT` bộ định thời của hệ kiểu thiết bị: điều kiện tắt là **về 0** (Phụ lục A2 mục A2.8) |
 | `R_TRIG` | So `CLK` với giá trị **ở lần gọi trước** | ⚠⚠ `CLK` đã TRUE thì báo **một sườn lên giả** (Chương 16 Bẫy 9) | Không thấy những gì xảy ra lúc không gọi; lần gọi sau so với một giá trị **có thể đã rất cũ** |
 | `F_TRIG` | Như trên | ⭐ `CLK` đã FALSE thì **không** báo sườn — ⚠ **không đối xứng** với `R_TRIG` | Như trên |
 | `CTU` · `CTD` · `CTUD` | Đếm theo **sườn** của `CU` / `CD` | ⚠ Sườn được nhận như `R_TRIG` — đầu vào đã TRUE ở lần đầu thì có thể đếm một lần; kiểm trên hệ | Không đếm những sườn xảy ra lúc không gọi |
@@ -329,6 +329,17 @@ Ba câu hỏi mà bảng lệnh không trả lời, nhưng quyết định chư�
 > điều kiện, với đầu vào lấy từ trạng thái.** Muốn bộ định thời chạy ở bước 20 thì viết
 > `T_Step20(IN := (Stn1_Step = 20), …)` ngoài `CASE` — rời bước là tự xoá, không bao giờ đứng yên với
 > giá trị cũ, và không bao giờ phải gọi lần hai để xoá (PLCopen CP20, Phụ lục N).
+>
+> ⚠⚠ **Muốn bộ định thời ngưng đếm khi máy giữ (Hold), đưa điều kiện giữ vào `IN`** — đừng đặt khối
+> vào một nhánh không chạy. Tắt `IN` là xoá về 0, bật lại là đếm lại từ đầu; còn khối bị bỏ không gọi
+> thì lúc gọi lại **tính luôn** khoảng thời gian đã bỏ qua, và báo quá giờ ngay vòng quét đầu (Phụ lục L
+> mục L.6). ⭐ Bộ kiểm mã của sách báo lỗi mọi thể hiện khối được gọi bên trong nhánh `IF`/`CASE`.
+>
+> *Nguồn cho cột "khi không được gọi" của `TON`/`TOF`/`TP`: tài liệu hệ thống S7-1200 (mục 7.2 —
+> bộ định thời lưu thời điểm bắt đầu lấy từ đồng hồ chạy liên tục của CPU, cập nhật khi lệnh được gọi
+> hoặc khi `Q`/`ET` được đọc); tài liệu lệnh chung Logix 5000 (mục "How a Timer Runs" — `ACC` cộng
+> thời gian kể từ lần quét trước, và phải quét lại trong vòng 69 phút). Kiểm 2026-09-28. Hệ khác: thử
+> trên hệ của bạn trước khi dựa vào.*
 
 ---
 
