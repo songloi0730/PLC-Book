@@ -478,32 +478,69 @@ Thông tin "NG" đi cùng board qua từng vị trí. Tới chỗ loại bỏ, �
 
 ### Hiện thực
 
+Đóng gói thành một khối — vì máy nào có thanh ghi dịch thì thường cần nó ở nhiều chỗ — và đây là ví
+dụ hoàn chỉnh của chương:
+
 ```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — thanh ghi dịch mang dấu NG theo board, đóng gói thành khối dùng lại
+FUNCTION_BLOCK FB_NgShift
+VAR_INPUT
+    Shift    : BOOL;                     // chuyền đã tiến ĐÚNG một vị trí — sự kiện thật, không theo giờ
+    MarkNG   : BOOL;                     // trạm 1 thấy lỗi trên board ở vị trí 0
+    AtReject : BOOL;                     // có board ở chỗ loại bỏ
+    Clear    : BOOL;                     // máy đã xả hết — đồng bộ lại
+END_VAR
+VAR_OUTPUT
+    RejectNow : BOOL;                    // board ở chỗ loại bỏ chính là board NG → loại
+END_VAR
 VAR
-    BoardNG   : ARRAY[0..3] OF BOOL;    // 4 vị trí trên chuyền
+    BoardNG   : ARRAY[0..3] OF BOOL;     // 0 trạm 1 · 1 giữa · 2 trạm 2 · 3 chỗ loại bỏ
     TrigShift : R_TRIG;
     i         : INT;
 END_VAR
-
-// Dịch khi chuyền tiến đúng một vị trí — dùng chính tín hiệu tiến của chuyền
-TrigShift(CLK := M_ConveyorIndexDone);
-
-IF TrigShift.Q THEN
-    // Dịch từ CUỐI về ĐẦU — nếu làm ngược sẽ sao chép một giá trị ra cả mảng
-    FOR i := 3 TO 1 BY -1 DO
+TrigShift(CLK := Shift);
+IF Clear THEN
+    FOR i := 0 TO 3 DO
+        BoardNG[i] := FALSE;
+    END_FOR;
+ELSIF TrigShift.Q THEN
+    FOR i := 3 TO 1 BY -1 DO             // dịch từ CUỐI về ĐẦU — ngược lại là nhân bản ô 0
         BoardNG[i] := BoardNG[i - 1];
     END_FOR;
-    BoardNG[0] := FALSE;                // vị trí đầu: board mới, chưa đánh dấu
+    BoardNG[0] := FALSE;                 // vị trí đầu: board mới, chưa đánh dấu
 END_IF;
-
-// Đánh dấu tại trạm 1
-IF M_Stn1DispenseFault THEN
+IF MarkNG THEN
     BoardNG[0] := TRUE;
 END_IF;
+RejectNow := BoardNG[3] AND AtReject;
+END_FUNCTION_BLOCK
 
-// Quyết định tại chỗ loại bỏ
-M_RejectNow := BoardNG[3] AND M_BoardAtReject;
+VAR_GLOBAL
+    M_ConveyorIndexDone : BOOL;
+    M_Stn1DispenseFault : BOOL;
+    M_BoardAtReject     : BOOL;
+    M_MachineEmpty      : BOOL;
+    M_RejectNow         : BOOL;
+END_VAR
+
+PROGRAM Prg_NgTrack
+VAR_EXTERNAL
+    M_ConveyorIndexDone, M_Stn1DispenseFault, M_BoardAtReject : BOOL;
+    M_MachineEmpty, M_RejectNow                               : BOOL;
+END_VAR
+VAR
+    NgTrack : FB_NgShift;
+END_VAR
+NgTrack(Shift    := M_ConveyorIndexDone,
+        MarkNG   := M_Stn1DispenseFault,
+        AtReject := M_BoardAtReject,
+        Clear    := M_MachineEmpty);
+M_RejectNow := NgTrack.RejectNow;
+END_PROGRAM
 ```
+
+Chạy thử: đánh dấu NG cho board ở vị trí 0, dịch ba lần — board OK phía trước **không** bị loại, đúng
+board NG bị loại khi tới vị trí 3, và board OK đi sau nó cũng **không** bị loại.
 
 > ⚠ **Chiều của vòng lặp dịch là chỗ sai kinh điển.**
 > Phải dịch từ **chỉ số lớn về chỉ số nhỏ**. Làm ngược lại, `BoardNG[1] := BoardNG[0]` chạy trước, rồi

@@ -65,9 +65,11 @@ MO = {"IF": "END_IF", "CASE": "END_CASE", "FOR": "END_FOR", "WHILE": "END_WHILE"
       "FUNCTION": "END_FUNCTION", "PROGRAM": "END_PROGRAM", "TYPE": "END_TYPE",
       "STRUCT": "END_STRUCT", "METHOD": "END_METHOD", "PROPERTY": "END_PROPERTY",
       "INTERFACE": "END_INTERFACE", "ACTION": "END_ACTION", "VAR": "END_VAR",
-      "PROPERTY_GET": "END_PROPERTY", "PROPERTY_SET": "END_PROPERTY"}   # bản 4 (2025)
+      "PROPERTY_GET": "END_PROPERTY", "PROPERTY_SET": "END_PROPERTY",   # bản 4 (2025)
+      "INITIAL_STEP": "END_STEP", "STEP": "END_STEP", "TRANSITION": "END_TRANSITION"}  # SFC văn bản
 DONG = {v: k for k, v in MO.items()}
 DONG["END_PROPERTY"] = "PROPERTY"
+DONG["END_STEP"] = "STEP"
 VAR_MO = re.compile(r"^VAR(_INPUT|_OUTPUT|_IN_OUT|_GLOBAL|_EXTERNAL|_TEMP|_STAT|_INST)?$")
 CAN = {"IF": "THEN", "ELSIF": "THEN", "WHILE": "DO", "FOR": "DO", "CASE": "OF"}
 
@@ -116,9 +118,11 @@ def kiem_khung(s, co_luoc):
     loi = []
     tk = token(s)
     ngan = []
-    for k, (T, _, dong, sau_cham) in enumerate(tk):
+    for k, (T, goc_tk, dong, sau_cham) in enumerate(tk):
         if sau_cham:
             continue
+        if T in SFC_VB and not la_sfc_van_ban(tk, k):
+            continue                                     # `Step` là tên biến, không phải từ khoá SFC
         if T in MO or VAR_MO.match(T):
             ngan.append(("VAR" if VAR_MO.match(T) else T, dong))
         elif T in DONG:
@@ -146,6 +150,22 @@ def kiem_khung(s, co_luoc):
         if s.count(a) != s.count(b):
             loi.append((1, "ngoặc %s %d cái, %s %d cái" % (a, s.count(a), b, s.count(b))))
     return loi
+
+
+SFC_VB = {"INITIAL_STEP", "STEP", "END_STEP", "TRANSITION", "END_TRANSITION"}
+
+
+def la_sfc_van_ban(tk, k):
+    """Từ khoá SFC dạng văn bản chỉ khi VIẾT HOA và đúng hình: `STEP Ten :` · `TRANSITION FROM`."""
+    T, goc_tk = tk[k][0], tk[k][1]
+    if goc_tk != T:
+        return False
+    if T in ("END_STEP", "END_TRANSITION"):
+        return True
+    sau = [x[0] for x in tk[k + 1:k + 3]]
+    if T == "TRANSITION":
+        return bool(sau) and (sau[0] == "FROM" or (len(sau) > 1 and sau[1] == "FROM"))
+    return len(sau) == 2 and re.match(r"[A-Z_]", sau[0]) is not None and sau[1] == ":"
 
 
 BAT_DAU = re.compile(r"(;|\bTHEN|\bELSE|\bDO|\bOF|\bEND_VAR|\bREPEAT|^\s*\d+(\s*,\s*\d+)*\s*:)\s*$",
@@ -335,7 +355,9 @@ TU_KHOA = {
     "SUPER", "METHOD", "END_METHOD", "PROPERTY", "END_PROPERTY", "PROPERTY_GET", "PROPERTY_SET",
     "INTERFACE", "END_INTERFACE", "EXTENDS", "IMPLEMENTS", "PUBLIC", "PRIVATE", "PROTECTED",
     "INTERNAL", "ABSTRACT", "FINAL", "OVERRIDE", "ACTION", "END_ACTION", "NULL",
+    "INITIAL_STEP", "STEP", "END_STEP", "TRANSITION", "END_TRANSITION", "FROM",
 }
+BO_NGU = re.compile(r"\(\s*(?:N|R|S|P|P0|P1|L|D|SD|DS|SL)\s*(?:,[^)]*)?\)")  # bổ ngữ hành động SFC
 KIEU_CHUAN = {
     "BOOL", "BYTE", "WORD", "DWORD", "LWORD", "SINT", "INT", "DINT", "LINT", "USINT", "UINT",
     "UDINT", "ULINT", "REAL", "LREAL", "TIME", "LTIME", "DATE", "LDATE", "TIME_OF_DAY", "TOD",
@@ -433,8 +455,9 @@ def ten_khai_bao(s):
     """(biến khai báo: {tên: loại_VAR}, tên kiểu được nhắc trong phần khai báo)."""
     bien, kieu_nhac = {}, set()
     for v in re.finditer(r"\b(VAR\w*)\b(.*?)\bEND_VAR\b", s, re.S):
-        for d in re.finditer(r"^\s*([A-Za-z_][\w\s,]*?)\s*(?:AT\s+\S+\s*)?:\s*([^;]*);",
-                             v.group(2), re.M):
+        than_var = re.sub(r"^\s*(?:CONSTANT|RETAIN|PERSISTENT|NON_RETAIN)\b", "", v.group(2))
+        for d in re.finditer(r"^[ \t]*([A-Za-z_][\w \t,]*?)[ \t]*(?:AT\s+\S+\s*)?:\s*([^;]*);",
+                             than_var, re.M):
             for t in d.group(1).split(","):
                 bien[t.strip()] = v.group(1).upper()
             vong = re.split(r":=", d.group(2), maxsplit=1)[0]
@@ -445,12 +468,13 @@ def ten_khai_bao(s):
 def kiem_hoan_chinh(ma, s, the_gioi, so_do=None):
     """Mục 13 — ví dụ hoàn chỉnh phải tự đủ khai báo; `the_gioi` là tên đã biết cả sách."""
     loi = []
-    if LUOC.search(ma):
+    if LUOC.search(s):
         loi.append((1, "ví dụ hoàn chỉnh không được có dấu lược — hoặc bỏ dấu hiệu ✔"))
     bien, kieu_nhac = ten_khai_bao(s)
     pou = set(re.findall(r"\b(?:FUNCTION_BLOCK|FUNCTION|PROGRAM|METHOD|PROPERTY(?:_GET|_SET)?"
-                         r"|INTERFACE|ACTION|TYPE)\s+(?:(?:PUBLIC|PRIVATE|PROTECTED|INTERNAL"
-                         r"|ABSTRACT|FINAL|OVERRIDE)\s+)*(\w+)", s))
+                         r"|INTERFACE|ACTION|TYPE|INITIAL_STEP|STEP)\s+(?:(?:PUBLIC|PRIVATE|PROTECTED"
+                         r"|INTERNAL|ABSTRACT|FINAL|OVERRIDE)\s+)*(\w+)", s))
+    s = BO_NGU.sub("", s)
     cac_kieu = the_gioi["kieu"] | pou | set(CHUAN) | KIEU_CHUAN
     for k in sorted(kieu_nhac):
         if k not in cac_kieu and not k.startswith(("MC_", "AXIS_REF")) and not k.isdigit():
@@ -464,8 +488,8 @@ def kiem_hoan_chinh(ma, s, the_gioi, so_do=None):
                                     for x in m.group(2).split("\n")), s2, flags=re.S)
     dung = set()
     sau_so = 0
+    muc = 0                                                  # độ sâu ngoặc — tính XUYÊN dòng
     for i, dong in enumerate(s3.split("\n"), 1):
-        muc = 0
         tk = list(re.finditer(r":=|=>|[()]|[A-Za-z_]\w*|\.", dong))
         for j, m in enumerate(tk):
             t = m.group(0)
@@ -492,6 +516,8 @@ def kiem_hoan_chinh(ma, s, the_gioi, so_do=None):
                 loi.append((i, "'%s' dùng mà không khai báo trong ví dụ hoàn chỉnh" % t))
                 biet.add(t)                                  # báo mỗi tên một lần
         sau_so = i
+    if so_do is not None:
+        dung |= set(re.findall(r"\b[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9_]*\b", so_do))
     for t, loai in sorted(bien.items()):
         if loai in ("VAR", "VAR_TEMP") and t not in dung and t not in pou:
             loi.append((1, "biến cục bộ '%s' khai báo mà không dùng (PLCopen CP24)" % t))

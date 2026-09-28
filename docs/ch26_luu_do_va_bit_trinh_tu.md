@@ -238,6 +238,7 @@ Trình tự trạm 1, viết bằng biến số bước:
 
 ```iecst
 // ── Trình tự trạm 1 — chỉ chạy khi tầng máy cho phép (Chương 27) ──
+//    ⭐ Yêu cầu phát ở CHUYỂN TIẾP (hành động khi vào bước); thân bước chỉ CHỜ kết quả
 IF NOT M_CycleEnable THEN
     ;                                         // ⭐ CỐ Ý: giữ nguyên bước, không tiến
 ELSE
@@ -248,47 +249,47 @@ ELSE
           Stn1.Ready := TRUE;                     // giao diện công bố
           Stn1.Busy  := FALSE;
           IF DI_BoardStn1 OR M_DryRun THEN
-              Stn1.Ready := FALSE;
-              Stn1.Busy  := TRUE;
-              Stn1_Step  := 10;
+              Stn1.Ready     := FALSE;
+              Stn1.Busy      := TRUE;
+              M_Stn1_StopReq := TRUE;             // → 10: nâng chặn — yêu cầu, khối cơ cấu thực hiện
+              Stn1_Step      := 10;
           END_IF;
 
-     10:  // Nâng chặn
-          M_Stn1_StopReq := TRUE;                 // yêu cầu, khối cơ cấu thực hiện
+     10:  // Chờ chặn lên
           IF Stop1.Done THEN
-              Stn1_Step := 20;
+              M_Stn1_ClampReq := TRUE;            // → 20: nâng kẹp
+              Stn1_Step       := 20;
           END_IF;
 
-     20:  // Nâng kẹp
-          M_Stn1_ClampReq := TRUE;
+     20:  // Chờ kẹp lên
           IF Clamp1.Done THEN
               Stn1_Step := 30;
           END_IF;
 
      30:  // Xử lý board  (nội dung xử lý ở lát cắt sau)
           IF M_Stn1_ProcessDone THEN
-              Stn1_Step := 40;
+              M_Stn1_ClampReq := FALSE;           // → 40: hạ kẹp
+              Stn1_Step       := 40;
           END_IF;
 
-     40:  // Hạ kẹp
-          M_Stn1_ClampReq := FALSE;
+     40:  // Chờ kẹp xuống
           IF Clamp1.Done THEN
-              Stn1_Step := 50;
+              Stn1.BoardDone := TRUE;             // → 50: công bố board đã xong
+              Stn1_Step      := 50;
           END_IF;
 
      50:  // Chờ trạm 2 sẵn sàng  ← điểm đồng bộ giữa hai trạm
-          Stn1.BoardDone := TRUE;
           IF Stn2.Ready THEN
-              Stn1_Step := 60;
+              M_Stn1_StopReq := FALSE;            // → 60: hạ chặn, yêu cầu chuyền chạy
+              M_Stn1_ConvReq := TRUE;
+              Stn1_Step      := 60;
           END_IF;
 
-     60:  // Hạ chặn, chuyển board sang
-          M_Stn1_StopReq  := FALSE;
-          M_Stn1_ConvReq  := TRUE;                // yêu cầu chuyền chạy
+     60:  // Chờ board rời trạm
           IF NOT DI_BoardStn1 THEN
-              M_Stn1_ConvReq  := FALSE;
-              Stn1.BoardDone  := FALSE;
-              Stn1_Step       := 0;               // quay lại chờ board mới
+              M_Stn1_ConvReq := FALSE;
+              Stn1.BoardDone := FALSE;
+              Stn1_Step      := 0;                // quay lại chờ board mới
           END_IF;
 
     END_CASE;
@@ -300,6 +301,10 @@ Ba điểm thiết kế trong đoạn trên, mỗi cái đều nối tới một
 
 - **Không có dòng nào ghi `DO_…`** — trạm chỉ nêu yêu cầu, khối cơ cấu thực hiện (Chương 27, quy tắc Q3).
 - **Mọi chuyển tiếp dùng phản hồi thật** — `Stop1.Done`, `DI_BoardStn1` — không dùng timer (Chương 17).
+- ⭐⭐ **Yêu cầu phát ở CHUYỂN TIẾP, không phát trong thân bước.** Mỗi bước chỉ **chờ** kết quả của yêu
+  cầu đã phát lúc vào bước — đúng cột *"hành động khi vào trạng thái"* của bảng chuyển trạng thái
+  (Chương 25). ⚠ Viết kiểu *"trong bước 10: nâng chặn, rồi `IF Stop1.Done`"* thì trình tự **nhảy qua
+  bước mà không chờ** — Bẫy 7 giải thích vì sao.
 - **Cờ `M_DryRun` ở bước 0** cho phép chạy khô không có board (Chương 28).
 
 Nhưng đoạn code trên vẫn **chưa xong**. Nó thiếu đúng thứ đã gây ra sự cố ở mục 26.1.
@@ -413,9 +418,11 @@ Tách thành hai chuỗi bước độc lập, mỗi chuỗi một biến bướ
 ```iecst
 // Nhánh A: hạ kẹp
 CASE Stn1_BranchA OF
-   0:  IF M_ParallelStart THEN Stn1_BranchA := 10; END_IF;
-  10:  M_Stn1_ClampReq := FALSE;
-       IF Clamp1.Done THEN Stn1_BranchA := 99; END_IF;    // 99 = nhánh xong
+   0:  IF M_ParallelStart THEN
+           M_Stn1_ClampReq := FALSE;                         // phát ở CHUYỂN TIẾP (Bẫy 7)
+           Stn1_BranchA    := 10;
+       END_IF;
+  10:  IF Clamp1.Done THEN Stn1_BranchA := 99; END_IF;    // 99 = nhánh xong
 END_CASE;
 
 // Nhánh B: chuẩn bị dữ liệu cho trạm 2
@@ -433,10 +440,182 @@ IF Stn1_BranchA = 99 AND Stn1_BranchB = 99 THEN
 END_IF;
 ```
 
+> ⚠⚠ **Vùng song song có hai lối ra, không phải một.** Lối ra bình thường là điểm hợp nhất ở trên —
+> nó xoá cả hai biến nhánh. ⚠ Lối ra thứ hai là **lỗi hoặc huỷ chu trình giữa chừng**: trình tự bị kéo
+> về bước chờ trong khi `Stn1_BranchA` vẫn nằm ở 10. Chu trình sau, nhánh A **chạy tiếp ngay** — hạ
+> kẹp đúng lúc không ai yêu cầu. ⭐ Đây chính là quy tắc L7 của PLCopen cho SFC (*"đóng đúng nhánh song
+> song"*, Chương 21) viết lại cho `CASE`: **mọi chỗ đưa `Stn1_Step` về 0 cũng phải đưa mọi biến nhánh
+> về 0** — gom việc đó vào **một** đoạn *"huỷ chu trình"* duy nhất, đừng rải ra từng nơi.
+
 > ⚡ **LƯU Ý — đừng song song hoá thứ không cần**
 > Nhánh song song làm code khó đọc và khó gỡ lỗi hơn hẳn. Chỉ dùng khi **đo được** rằng nó rút ngắn
 > chu kỳ đáng kể (Chương 55). Song song hoá hai bước mỗi bước 200 ms trong một chu kỳ 12 giây là công
 > sức bỏ đi.
+
+---
+
+## 26.5b ⭐⭐ Ghép lại — trình tự trạm 1 hoàn chỉnh
+
+Mục 26.3 là thân trình tự, 26.4 là giám sát thời gian, 26.5 là lối ra thứ hai của một vùng dở dang.
+Dưới đây là cả ba ghép thành **một chương trình chép vào phần mềm được**, cộng thêm thứ mà ba mục kia
+chưa có: **một chỗ duy nhất huỷ chu trình**, khi tầng máy ra lệnh (Chương 25).
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — trình tự trạm 1 của DP-01, ghép mục 26.3 và 26.4 thành một chương trình
+//   Cần thêm: kiểu ST_Station (Chương 11 mục 11.5); khối FB_Cylinder2Pos, và tầng cơ cấu gọi
+//   Stop1, Clamp1 mỗi vòng quét (Chương 27 mục 27.3)
+VAR_GLOBAL
+    DI_BoardStn1       : BOOL;
+    M_CycleEnable      : BOOL;             // tầng máy cho trình tự chạy (Chương 25)
+    M_AbortCycle       : BOOL;             // tầng máy huỷ chu trình (Chương 25)
+    M_ClearFaults      : BOOL;             // lệnh xoá cờ lỗi (Chương 25 mục 25.5c)
+    M_DryRun           : BOOL;             // chạy khô — không có board (Chương 28)
+    M_Stn1_ProcessDone : BOOL;             // xử lý board xong — nội dung ở các lát cắt sau
+    M_Stn1_StopReq     : BOOL;             // ⭐ YÊU CẦU gửi tầng cơ cấu — trạm không ghi DO_
+    M_Stn1_ClampReq    : BOOL;
+    M_Stn1_ConvReq     : BOOL;
+    Stop1              : FB_Cylinder2Pos;  // tầng cơ cấu GỌI; trạm chỉ ĐỌC .Done
+    Clamp1             : FB_Cylinder2Pos;
+    Stn1               : ST_Station;       // giao diện công bố — CHỈ trạm 1 ghi
+    Stn2               : ST_Station;       // trạm 1 chỉ ĐỌC
+END_VAR
+
+PROGRAM Prg_Stn1Dispense
+VAR_EXTERNAL
+    DI_BoardStn1                                      : BOOL;
+    M_CycleEnable, M_AbortCycle, M_ClearFaults        : BOOL;
+    M_DryRun, M_Stn1_ProcessDone                      : BOOL;
+    M_Stn1_StopReq, M_Stn1_ClampReq, M_Stn1_ConvReq   : BOOL;
+    Stop1, Clamp1                                     : FB_Cylinder2Pos;
+    Stn1, Stn2                                        : ST_Station;
+END_VAR
+VAR
+    Stn1_Step      : INT;                  // ⚠⚠ bước — ruột của trạm, KHÔNG giữ qua mất điện
+    Stn1_StepPrev  : INT;
+    Stn1_StepLimit : TIME;
+    T_StepTimeout  : TON;
+END_VAR
+
+// ── 1 · Huỷ chu trình — MỘT chỗ duy nhất đưa bước và yêu cầu về trạng thái nghỉ ──
+IF M_AbortCycle THEN
+    Stn1_Step       := 0;
+    M_Stn1_ClampReq := FALSE;                  // hạ kẹp TRƯỚC…
+    M_Stn1_ConvReq  := FALSE;
+    IF Clamp1.Done AND NOT Clamp1.Valve THEN   // Done của lệnh HẠ — không phải Done cũ của lệnh nâng
+        M_Stn1_StopReq := FALSE;               // …kẹp hạ hẳn rồi mới hạ chặn (Chương 28, va chạm V1)
+    END_IF;
+    Stn1.Ready     := FALSE;
+    Stn1.Busy      := FALSE;
+    Stn1.BoardDone := FALSE;
+END_IF;
+
+// ── 2 · Xoá cờ lỗi của trạm khi tầng máy ra lệnh — ngoài cửa vào (Chương 25 mục 25.5c) ──
+IF M_ClearFaults THEN
+    Stn1.Fault     := FALSE;
+    Stn1.FaultStep := 0;
+END_IF;
+
+// ── 3 · Giám sát thời gian bước — gọi MỖI vòng, NGOÀI cửa vào (mục 26.4) ──
+CASE Stn1_Step OF
+    10, 20, 40: Stn1_StepLimit := T#5S;      // chờ chặn, chờ kẹp — DÀI HƠN giới hạn 3 s của khối
+                                             // cơ cấu: lỗi cụ thể nhất (xy-lanh nào) báo trước
+    30:         Stn1_StepLimit := T#60S;     // xử lý board
+    60:         Stn1_StepLimit := T#10S;     // chuyển board đi
+ELSE
+    Stn1_StepLimit := T#0S;                  // bước 0 và 50: chờ vô hạn, CÓ CHỦ Ý
+END_CASE;
+
+T_StepTimeout(IN := M_CycleEnable
+                    AND (Stn1_StepLimit > T#0S) AND (Stn1_Step = Stn1_StepPrev),
+              PT := Stn1_StepLimit);
+Stn1_StepPrev := Stn1_Step;
+
+IF T_StepTimeout.Q THEN
+    Stn1.FaultStep := Stn1_Step;             // ⭐ GHI LẠI bước bị kẹt
+    Stn1.Fault     := TRUE;                  // cờ của TRẠM — gom vào M_AnyFault (Chương 25)
+END_IF;
+
+// ── 4 · MỘT cửa vào: tầng máy chưa cho phép thì GIỮ NGUYÊN bước và yêu cầu ──
+//    ⭐ Yêu cầu phát ở CHUYỂN TIẾP — hành động khi vào bước; thân bước chỉ CHỜ kết quả
+IF NOT M_CycleEnable THEN
+    ;                                        // ⭐ CỐ Ý không làm gì
+ELSE
+    CASE Stn1_Step OF
+      0:  // Chờ board tới
+          Stn1.Ready := TRUE;
+          Stn1.Busy  := FALSE;
+          IF DI_BoardStn1 OR M_DryRun THEN
+              Stn1.Ready     := FALSE;
+              Stn1.Busy      := TRUE;
+              M_Stn1_StopReq := TRUE;        // → 10: nâng chặn
+              Stn1_Step      := 10;
+          END_IF;
+
+     10:  // Chờ chặn lên
+          IF Stop1.Done THEN
+              M_Stn1_ClampReq := TRUE;       // → 20: nâng kẹp
+              Stn1_Step       := 20;
+          END_IF;
+
+     20:  // Chờ kẹp lên
+          IF Clamp1.Done THEN
+              Stn1_Step := 30;
+          END_IF;
+
+     30:  // Xử lý board
+          IF M_Stn1_ProcessDone THEN
+              M_Stn1_ClampReq := FALSE;      // → 40: hạ kẹp
+              Stn1_Step       := 40;
+          END_IF;
+
+     40:  // Chờ kẹp xuống
+          IF Clamp1.Done THEN
+              Stn1.BoardDone := TRUE;        // → 50: công bố board đã xong
+              Stn1_Step      := 50;
+          END_IF;
+
+     50:  // Chờ trạm 2 trống — đọc GIAO DIỆN của trạm 2, không đọc bước của nó
+          IF Stn2.Ready THEN
+              M_Stn1_StopReq := FALSE;       // → 60: hạ chặn, cho chuyền chạy
+              M_Stn1_ConvReq := TRUE;
+              Stn1_Step      := 60;
+          END_IF;
+
+     60:  // Chờ board rời trạm
+          IF NOT DI_BoardStn1 THEN
+              M_Stn1_ConvReq := FALSE;
+              Stn1.BoardDone := FALSE;
+              Stn1.DoneCount := Stn1.DoneCount + 1;
+              Stn1_Step      := 0;
+          END_IF;
+
+    ELSE
+        Stn1_Step := 0;                      // giá trị lạ → về trạng thái đã biết (Chương 20)
+    END_CASE;
+END_IF;
+END_PROGRAM
+```
+
+⭐ Chương trình này **đã được chạy thử** cùng tầng máy của Chương 25 và khối xy-lanh của Chương 27,
+trên một mô hình chặn, kẹp, board đơn giản — theo thứ tự gọi của Chương 27 mục 27.6:
+
+| Kịch bản | Kết quả |
+|---|---|
+| Hai board **liên tiếp** | Cả hai đủ chu trình 0 → 60 → 0, `DoneCount` = 2, không lỗi |
+| ⚠ Giữ máy **10 giây** ở bước 20 (giới hạn 5 s) | **Không** báo lỗi giả lúc đang giữ, và **không** báo lỗi ngay khi chạy tiếp — bộ định thời nằm ngoài cửa vào, điều kiện giữ nằm trong `IN` (mục 26.4) |
+| Kẹp **kẹt** | Khối `Clamp1` báo lỗi ở giây thứ 3 (mã 1) — **trước** lưới 5 s của trạm; Reset khi còn kẹt → cờ chốt lại, máy quay về `Alarm` |
+| Gỡ kẹt, Reset → về gốc | Van kẹp tắt **trước**; van chặn chỉ tắt **sau** khi kẹp đã về gốc thật |
+
+> ⚠⚠ **Lần chạy thử đầu tiên tìm ra một lỗi thật — trong chính đoạn 26.3 của bản trước.** Khi yêu cầu
+> được phát **trong thân** bước 10 rồi đọc `Stop1.Done` ngay sau đó, trình tự đi từ bước 10 sang 30
+> **trong hai vòng quét**, không chờ chặn cũng không chờ kẹp. Bẫy 7 mổ xẻ nguyên nhân. ⭐ Và lần chạy
+> thử thứ hai tìm ra **cùng lỗi đó** trong đoạn huỷ chu trình của chính chương trình này lúc còn là bản
+> nháp — nên điều kiện hạ chặn mới là `Clamp1.Done AND NOT Clamp1.Valve`: *Done của lệnh hạ*.
+
+> ⭐ **Giới hạn của bước chờ cơ cấu là 5 s, dài hơn giới hạn 3 s của khối xy-lanh — có chủ ý.** Hai
+> tầng cùng canh một việc với cùng một con số thì **thứ tự quét** quyết định tầng nào báo trước. Đặt
+> bước dài hơn để lỗi **cụ thể nhất** — xy-lanh nào, mã gì — luôn tới trước; bước là lưới an toàn thứ
+> hai, bắt những gì khối cơ cấu không thấy.
 
 ---
 
@@ -562,6 +741,43 @@ lần nhánh kia chậm bất thường.
 
 Điểm hợp nhất **luôn dùng `AND`**, và bản thân nó cũng phải có timeout.
 
+### 🔍 BẪY 7 — Phát yêu cầu và đọc `Done` trong cùng một bước
+
+```iecst
+// ✗ SAI — nhảy qua bước mà không chờ
+10: M_Stn1_StopReq := TRUE;
+    IF Stop1.Done THEN
+        Stn1_Step := 20;
+    END_IF;
+```
+
+**Hiện tượng:** trình tự chạy "quá nhanh" — sang bước sau khi chặn chưa lên, kẹp chưa kẹp; cơ cấu kẹt
+cũng không báo lỗi vì không bước nào kịp chờ nó.
+
+**Vì sao:** tầng cơ cấu chạy **trước** tầng trạm (Chương 27 mục 27.6), nên `Stop1.Done` mà trạm đọc ở
+vòng đầu tiên của bước 10 được tính với **yêu cầu cũ** — chặn đang ở gốc, đúng như yêu cầu cũ, nên
+`Done` = TRUE. Khối cơ cấu chỉ thấy yêu cầu mới ở **vòng sau**. ⚡ Cùng một lỗi với cờ `M_CodeValid`
+của Chương 42: một kết quả **của lần trước** được đọc như kết quả của lần này.
+
+**Cách sửa:** phát yêu cầu ở **chuyển tiếp** — lúc gán bước mới — và để thân bước chỉ **chờ**:
+
+```iecst
+// ✓ ĐÚNG — phát khi VÀO bước; bước chỉ chờ kết quả
+0:  IF DI_BoardStn1 THEN
+        M_Stn1_StopReq := TRUE;
+        Stn1_Step      := 10;
+    END_IF;
+10: IF Stop1.Done THEN
+        Stn1_Step := 20;
+    END_IF;
+```
+
+⚡ Chỗ nào buộc phải đổi yêu cầu rồi đọc kết quả ngay trong cùng vòng — như đoạn huỷ chu trình ở mục
+26.5b — thì hỏi **Done của lệnh nào**: `Clamp1.Done AND NOT Clamp1.Valve` là *"đã về gốc theo lệnh
+hạ"*, còn `Clamp1.Done` một mình vẫn có thể là Done của lệnh nâng cũ. ⭐ Khối kích bằng sườn kiểu
+`Execute`/`Done`, gọi ngay trước `CASE` với `Execute` lấy từ bước, **không** mắc lỗi này: sườn lên của
+`Execute` xoá `Done` trong chính lần gọi đó (Chương 30 mục 30.5b).
+
 ---
 
 ## 26.8 Bảng chốt — kiểm tra một trình tự
@@ -576,10 +792,13 @@ lần nhánh kia chậm bất thường.
 | 6 | Số bước đánh **cách 10**? | Có |
 | 7 | ⭐ Đã hỏi *"có cảm biến nào cho biết bước này xong chưa?"* cho **từng** bước? | Có, và ghi lại câu trả lời |
 | 8 | ⚠ Bước nào **không** có phản hồi thật đã được **ghi vào đặc tả**? | Có — không để im lặng |
-| 7 | Có biến giữ **bước bị kẹt** lúc lỗi? | Có, chỉ xoá khi Reset |
-| 8 | Trình tự có kiểm **tầng máy cho phép** trước khi tiến bước? | Có — bằng một nhánh `IF` giữ nguyên bước, không bằng `RETURN` |
-| 9 | Điểm hợp nhất nhánh song song dùng **AND**? | Có |
-| 10 | Đã vẽ **đồ thị chờ** và kiểm không có vòng kín? | Có |
+| 9 | Có biến giữ **bước bị kẹt** lúc lỗi? | Có, chỉ xoá khi Reset |
+| 10 | Trình tự có kiểm **tầng máy cho phép** trước khi tiến bước? | Có — bằng một nhánh `IF` giữ nguyên bước, không bằng `RETURN` |
+| 11 | Điểm hợp nhất nhánh song song dùng **AND**? | Có |
+| 12 | Đã vẽ **đồ thị chờ** và kiểm không có vòng kín? | Có |
+| 13 | ⭐⭐ Yêu cầu phát ở **chuyển tiếp**, thân bước chỉ **chờ**? | Có — không bước nào vừa phát yêu cầu vừa đọc `Done` (Bẫy 7) |
+| 14 | ⭐ Bộ định thời giám sát bước gọi **ngoài** cửa vào, điều kiện giữ nằm trong `IN`? | Có — giữ máy lâu không báo lỗi giả, chạy tiếp không báo lỗi ngay |
+| 15 | ⭐ Có **một** chỗ duy nhất huỷ chu trình, đưa **mọi** biến bước và yêu cầu về nghỉ? | Có (mục 26.5b) |
 
 ---
 
@@ -601,6 +820,9 @@ lần nhánh kia chậm bất thường.
     nó là gì, và vì sao dùng sai điều kiện là quay lại sai lầm ở Chương 17?
 10. ⭐ Bạn đọc chương trình của người khác và thấy **một chuỗi timer nối tiếp, không có phản hồi nào**.
     Câu hỏi đầu tiên phải đặt là gì? Nêu hai kết luận có thể, và mỗi kết luận dẫn tới hành động nào.
+11. ⚠⚠ Bước 10 viết `M_Stn1_StopReq := TRUE; IF Stop1.Done THEN Stn1_Step := 20; END_IF;`. Máy chạy,
+    nhưng chặn chưa lên đã kẹp. **Vì sao** — dựa vào thứ tự gọi các tầng? Viết lại cho đúng.
+12. ⭐ Vì sao giới hạn thời gian của bước chờ kẹp nên **dài hơn** giới hạn của khối xy-lanh?
 
 Câu 2 và câu 6 là hai câu phân loại. Câu 2 là nguyên tắc trung tâm của chương; câu 6 kiểm tra bạn hiểu
 rằng "chờ" và "kẹt" nhìn từ ngoài **giống hệt nhau**, nên phải thiết kế cách phân biệt.

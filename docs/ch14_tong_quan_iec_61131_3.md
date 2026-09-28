@@ -185,6 +185,89 @@ END_VAR
 
 Sửa một lỗi trong FB là sửa cho cả bốn. Chương 27 và Chương 30 nói kỹ cách viết FB dùng lại được.
 
+### ⭐ Ba loại POU trong một ví dụ hoàn chỉnh
+
+Khối dưới đây có đủ ba loại, mỗi loại làm đúng việc của nó: **hàm** tính một con số từ đầu vào, **khối**
+nhớ số đếm của riêng mình, **chương trình** nối biến toàn cục vào chân khối. Nó cũng dùng đủ ba cách
+khai báo của mục 11.6: `VAR_GLOBAL` cho biến dùng chung, `VAR_EXTERNAL` cho *"chương trình này dùng biến
+toàn cục nào"*, `VAR` cho biến riêng.
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — ba loại POU trong một ví dụ: hàm, khối chức năng, chương trình
+FUNCTION PercentOf : INT                 // HÀM — không nhớ gì: cùng đầu vào, luôn cùng kết quả
+VAR_INPUT
+    Part  : DINT;
+    Whole : DINT;
+END_VAR
+IF Whole > 0 THEN
+    PercentOf := DINT_TO_INT((Part * 100) / Whole);    // nhân trước, chia sau (Chương 19)
+ELSE
+    PercentOf := 0;                                     // mẫu số 0: trả 0, không để CPU dừng
+END_IF;
+END_FUNCTION
+
+FUNCTION_BLOCK FB_BoardCounter           // KHỐI — mỗi thể hiện có bộ nhớ RIÊNG
+VAR_INPUT
+    Board : BOOL;                        // board đang ở trạm (tín hiệu đã lọc rung — Chương 17)
+    IsNG  : BOOL;                        // board đang rời trạm bị đánh dấu NG
+    Clear : BOOL;                        // xoá số đếm — ví dụ đầu ca
+END_VAR
+VAR_OUTPUT
+    Total : DINT;
+    NgQty : DINT;
+END_VAR
+VAR
+    Leave : F_TRIG;                      // đếm lúc board RỜI đi — sườn xuống
+END_VAR
+Leave(CLK := Board);
+IF Clear THEN
+    Total := 0;
+    NgQty := 0;
+ELSIF Leave.Q THEN
+    Total := Total + 1;
+    IF IsNG THEN
+        NgQty := NgQty + 1;
+    END_IF;
+END_IF;
+END_FUNCTION_BLOCK
+
+VAR_GLOBAL
+    M_Board1Present : BOOL;
+    M_Board1IsNG    : BOOL;
+    M_ShiftStart    : BOOL;
+    Stn1Total       : DINT;
+    Stn1NgQty       : DINT;
+    Stn1NgPct       : INT;
+END_VAR
+
+PROGRAM Prg_Stn1Count                    // CHƯƠNG TRÌNH — nơi nối biến toàn cục vào chân khối
+VAR_EXTERNAL
+    M_Board1Present, M_Board1IsNG, M_ShiftStart : BOOL;
+    Stn1Total, Stn1NgQty                        : DINT;
+    Stn1NgPct                                   : INT;
+END_VAR
+VAR
+    Counter1 : FB_BoardCounter;          // một THỂ HIỆN — trạm 2 sẽ có Counter2 của riêng nó
+END_VAR
+Counter1(Board := M_Board1Present, IsNG := M_Board1IsNG, Clear := M_ShiftStart);
+Stn1Total := Counter1.Total;
+Stn1NgQty := Counter1.NgQty;
+Stn1NgPct := PercentOf(Part := Stn1NgQty, Whole := Stn1Total);
+END_PROGRAM
+```
+
+Ba điều nhìn thấy được khi chạy thử (ba board đi qua, một board NG):
+
+- **`Counter1` nhớ** — `Total` tăng dần qua từng board. Hàm `PercentOf` thì **không nhớ gì**: gọi với
+  `(1, 3)` lúc nào cũng ra 33.
+- **Tạo `Counter2 : FB_BoardCounter` cho trạm 2** là có ngay một bộ đếm thứ hai, bộ nhớ riêng, không
+  đụng gì tới `Counter1` — đúng hình ảnh *bản thiết kế và cái máy* ở mục 14.3.
+- ⚠ **Hàm được bảo vệ khỏi mẫu số 0**: đầu ca `Total` = 0, hàm trả 0 thay vì làm CPU dừng (Chương 19).
+
+> ⭐ **Một khối hoàn chỉnh trong sách có thể gồm nhiều phần** — danh sách biến toàn cục, kiểu dữ liệu,
+> hàm, khối, chương trình. Trong phần mềm của bạn, **mỗi phần là một đối tượng riêng** (danh sách biến
+> toàn cục là một đối tượng, mỗi POU là một đối tượng); chép từng phần vào đúng chỗ của nó.
+
 ---
 
 ## 14.4 Tác vụ — chương trình chạy khi nào

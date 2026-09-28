@@ -220,6 +220,64 @@ T_StartDeb(IN := DI_StartPB, PT := T#20MS);
 M_StartClean := T_StartDeb.Q;
 ```
 
+### ⭐ Lọc hai chiều — khối dùng lại, ví dụ hoàn chỉnh
+
+`TON` ở hai mục trên chỉ lọc **một chiều**: tín hiệu phải ổn định mới được công nhận là **có**, nhưng
+mất một cái là công nhận **không** ngay. Với cảm biến board, một lần nháy tắt ở giữa board là một
+sườn xuống giả — và một board bị đếm thành hai. Khối dưới lọc cả hai chiều, và chương trình đi kèm
+dùng nó cho hai tín hiệu với hai thời gian lọc khác nhau:
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — khối lọc rung hai chiều, và chương trình lọc các ngõ vào dùng nó
+FUNCTION_BLOCK FB_Debounce
+VAR_INPUT
+    Raw     : BOOL;                      // tín hiệu thô từ ngõ vào
+    TimeOn  : TIME := T#20MS;            // phải ổn định TRUE bấy lâu mới công nhận TRUE
+    TimeOff : TIME := T#20MS;            // phải ổn định FALSE bấy lâu mới công nhận FALSE
+END_VAR
+VAR_OUTPUT
+    Out : BOOL;                          // tín hiệu đã lọc
+END_VAR
+VAR
+    T_On  : TON;
+    T_Off : TON;
+END_VAR
+// Mỗi TON chỉ chạy khi thô KHÁC đã lọc — nháy ngắn hơn thời gian lọc thì TON về 0, Out đứng yên
+T_On(IN := Raw AND NOT Out, PT := TimeOn);
+T_Off(IN := NOT Raw AND Out, PT := TimeOff);
+IF T_On.Q THEN
+    Out := TRUE;
+ELSIF T_Off.Q THEN
+    Out := FALSE;
+END_IF;
+END_FUNCTION_BLOCK
+
+VAR_GLOBAL
+    DI_BoardStn1    : BOOL;
+    DI_StartPB      : BOOL;
+    M_Board1Present : BOOL;              // board ở trạm 1 — đã lọc (Chương 16 dùng tín hiệu này)
+    M_StartPB       : BOOL;              // nút Start — đã lọc
+END_VAR
+
+PROGRAM Prg_Inputs
+VAR_EXTERNAL
+    DI_BoardStn1, DI_StartPB, M_Board1Present, M_StartPB : BOOL;
+END_VAR
+VAR
+    FltBoard1 : FB_Debounce;
+    FltStart  : FB_Debounce;
+END_VAR
+FltBoard1(Raw := DI_BoardStn1, TimeOn := T#50MS, TimeOff := T#50MS);   // chống nháy ở mép board
+FltStart(Raw := DI_StartPB, TimeOn := T#20MS, TimeOff := T#20MS);      // chống nảy tiếp điểm
+M_Board1Present := FltBoard1.Out;
+M_StartPB       := FltStart.Out;
+END_PROGRAM
+```
+
+Chạy thử: nháy ngắn hơn thời gian lọc — ở cả sườn lên lẫn giữa lúc có board — **không** làm đổi đầu
+ra; tín hiệu ổn định đủ lâu thì được công nhận. ⚠ Cái giá phải trả: đầu ra **trễ đúng bằng thời gian
+lọc**, nên thời gian lọc phải nhỏ hơn nhiều lần khoảng cách thật giữa hai sản phẩm (Chương 18 mục 18.4).
+
 ### Timeout của bước — ⭐ dùng để **báo lỗi**, không để chuyển bước
 
 Đây là cách dùng timer đúng đắn nhất trong toàn bộ chương trình trình tự:

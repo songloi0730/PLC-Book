@@ -39,10 +39,10 @@
 <polygon points='800.0,170.0 805.0,180.0 795.0,180.0' fill='#1A1D21'/>
 <text x='808' y='203' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='600' fill='#565E66' text-anchor='start'>Start</text>
 <line x1='766' y1='286' x2='766' y2='310' stroke='#1A1D21' stroke-width='2'/>
-<line x1='766' y1='310' x2='546' y2='310' stroke='#1A1D21' stroke-width='2'/>
-<line x1='546' y1='310' x2='546' y2='180' stroke='#1A1D21' stroke-width='2'/>
-<polygon points='546.0,170.0 551.0,180.0 541.0,180.0' fill='#1A1D21'/>
-<text x='656' y='326' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='600' fill='#565E66' text-anchor='middle'>giữ Stop 2 giây → huỷ chu trình</text>
+<line x1='766' y1='310' x2='380' y2='310' stroke='#1A1D21' stroke-width='2'/>
+<line x1='380' y1='310' x2='380' y2='180' stroke='#1A1D21' stroke-width='2'/>
+<polygon points='380.0,170.0 385.0,180.0 375.0,180.0' fill='#1A1D21'/>
+<text x='573' y='326' font-family="Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size='10' font-weight='600' fill='#565E66' text-anchor='middle'>giữ Stop 2 giây → huỷ chu trình, về gốc lại</text>
 <line x1='106' y1='166' x2='106' y2='340' stroke='#C0392B' stroke-width='1.5' stroke-dasharray='5,4'/>
 <line x1='356' y1='166' x2='356' y2='340' stroke='#C0392B' stroke-width='1.5' stroke-dasharray='5,4'/>
 <line x1='806' y1='286' x2='806' y2='340' stroke='#C0392B' stroke-width='1.5' stroke-dasharray='5,4'/>

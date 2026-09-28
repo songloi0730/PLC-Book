@@ -213,6 +213,76 @@ bộ đếm phần cứng ở mục 18.5.
 > giữa hai con số chính là số cạnh giả — bạn đo được vấn đề thay vì đoán, và biết được việc lọc có
 > thật sự cần thiết không.
 
+### ⭐ Ghép lại — ví dụ hoàn chỉnh
+
+Ba câu hỏi của chương trong một chương trình: *đang có bao nhiêu board trong máy* (`CTUD`), *đã ra
+bao nhiêu board tốt, bao nhiêu board NG* (đếm ở lối ra), và *làm sao để một lần nháy không thành hai
+lần đếm* (lọc hai chiều bằng khối của Chương 17):
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — đếm board ĐANG TRONG máy (CTUD) và sản lượng OK/NG ở lối ra
+//   Cần thêm: khối FB_Debounce (Chương 17)
+VAR_GLOBAL
+    DI_BoardInfeed  : BOOL;              // board vào máy — cảm biến đầu chuyền
+    DI_BoardOutfeed : BOOL;              // board ra khỏi máy — cảm biến cuối chuyền
+    M_Board2IsNG    : BOOL;              // dấu NG của board đang rời trạm 2 (Chương 16)
+    M_ShiftStart    : BOOL;              // xoá sản lượng đầu ca
+    M_MachineEmpty  : BOOL;              // đã xả hết và người vận hành xác nhận máy rỗng
+    M_MachineFull   : BOOL;              // đủ 2 board — không cho board thứ ba vào
+    BoardsInMachine : INT;
+END_VAR
+
+VAR_GLOBAL RETAIN
+    OkCount : DINT;                      // sản lượng ca — giữ qua mất điện (Chương 11)
+    NgCount : DINT;
+END_VAR
+
+PROGRAM Prg_Counting
+VAR_EXTERNAL
+    DI_BoardInfeed, DI_BoardOutfeed, M_Board2IsNG : BOOL;
+    M_ShiftStart, M_MachineEmpty, M_MachineFull   : BOOL;
+    BoardsInMachine                               : INT;
+    OkCount, NgCount                              : DINT;
+END_VAR
+VAR
+    FltIn       : FB_Debounce;
+    FltOut      : FB_Debounce;
+    TrigLeave   : F_TRIG;
+    C_InMachine : CTUD;
+END_VAR
+
+// ⭐ Lọc HAI chiều trước, bắt cạnh sau (Chương 16 Bẫy 8) — một lần nháy không thành hai lần đếm
+FltIn(Raw := DI_BoardInfeed, TimeOn := T#30MS, TimeOff := T#30MS);
+FltOut(Raw := DI_BoardOutfeed, TimeOn := T#30MS, TimeOff := T#30MS);
+TrigLeave(CLK := FltOut.Out);            // cạnh XUỐNG: board đã rời hẳn cảm biến lối ra
+
+C_InMachine(CU := FltIn.Out,             // CTUD tự bắt cạnh lên của CU và CD
+            CD := TrigLeave.Q,
+            R  := M_MachineEmpty,        // ⭐ đồng bộ lại sau khi xả — sửa được cả sườn giả lúc cấp điện
+            LD := FALSE,
+            PV := 2);                    // DP-01 chứa tối đa 2 board
+BoardsInMachine := C_InMachine.CV;
+M_MachineFull   := C_InMachine.CV >= 2;
+
+// Sản lượng đếm ở chỗ board RỜI máy — chỗ duy nhất một board chắc chắn đã xong (Phụ lục L mục L.14)
+IF M_ShiftStart THEN
+    OkCount := 0;
+    NgCount := 0;
+ELSIF TrigLeave.Q THEN
+    IF M_Board2IsNG THEN
+        NgCount := NgCount + 1;
+    ELSE
+        OkCount := OkCount + 1;
+    END_IF;
+END_IF;
+END_PROGRAM
+```
+
+Chạy thử với hai board vào và hai board ra, mỗi chiều có một board **nháy** giữa chừng: trong máy lên 2
+rồi về 0, sản lượng 1 NG + 1 OK — không cạnh giả nào lọt vào phép đếm. ⭐ Chân `R` nối vào *"máy đã xả
+và được xác nhận rỗng"* là **điểm đồng bộ** mà Bẫy 6 đòi hỏi — và nó cũng sửa luôn con số sai do sườn
+giả lúc cấp điện (Chương 16 Bẫy 9).
+
 ---
 
 ## 18.5 Khi nào PLC không đếm nổi — bộ đếm tốc độ cao

@@ -171,25 +171,36 @@ Bốn lý do không được tin:
 | **Nhận dạng** | `Id` tồn tại trong bảng; `Version` không rỗng |
 
 ```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — kiểm công thức trước khi nạp; dải lấy từ số liệu chốt của máy
+//   Cần thêm: kiểu ST_Recipe (mục 29.3 — bản đầy đủ ở Phụ lục J mục J.5)
 FUNCTION KiemTraCongThuc : BOOL
 VAR_INPUT
     r : ST_Recipe;
 END_VAR
 VAR_OUTPUT
-    LyDo : INT;          // ⭐ mã lý do — để nói được SAI Ở ĐÂU
+    LyDo : INT;                          // ⭐ mã lý do — để nói được SAI Ở ĐÂU
+END_VAR
+VAR CONSTANT
+    ID_MAX        : INT  := 20;          // số ô của bảng công thức (mục 29.3)
+    CURE_MIN_MS   : DINT := 5000;        // sấy UV 5 – 120 s (Phụ lục J mục J.5)
+    CURE_MAX_MS   : DINT := 120000;
+    LEN_MIN_TENTH : INT  := 50;          // đoạn keo 5 – 200 mm
+    LEN_MAX_TENTH : INT  := 2000;
+    CONV_MIN_PCT  : INT  := 20;          // tốc độ chuyền 20 – 100 % (Phụ lục J mục J.5)
+    CONV_MAX_PCT  : INT  := 100;
 END_VAR
 
     LyDo := 0;
     KiemTraCongThuc := FALSE;
 
     // ⭐ Một chuỗi ELSIF: dừng ở lỗi ĐẦU TIÊN, và hàm chỉ có MỘT điểm thoát (Phụ lục N, CP14)
-    IF r.Id < 1 OR r.Id > 20 THEN
+    IF r.Id < 1 OR r.Id > ID_MAX THEN
         LyDo := 1;                               // mã công thức ngoài dải
-    ELSIF r.CureTimeMs < 3000 OR r.CureTimeMs > 30000 THEN
+    ELSIF r.CureTimeMs < CURE_MIN_MS OR r.CureTimeMs > CURE_MAX_MS THEN
         LyDo := 2;                               // thời gian sấy ngoài dải
-    ELSIF r.DispenseLenTenthMm < 50 OR r.DispenseLenTenthMm > 2000 THEN
+    ELSIF r.DispenseLenTenthMm < LEN_MIN_TENTH OR r.DispenseLenTenthMm > LEN_MAX_TENTH THEN
         LyDo := 3;                               // chiều dài đoạn keo ngoài dải
-    ELSIF r.ConvSpeedPct < 10 OR r.ConvSpeedPct > 100 THEN
+    ELSIF r.ConvSpeedPct < CONV_MIN_PCT OR r.ConvSpeedPct > CONV_MAX_PCT THEN
         LyDo := 4;                               // tốc độ chuyền ngoài dải
     ELSE
         KiemTraCongThuc := TRUE;                 // ⭐ chỉ tới đây khi MỌI kiểm tra đều đạt

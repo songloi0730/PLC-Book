@@ -246,12 +246,43 @@ trong dự án thật.
 
 | Loại | Nhận ra bằng | Chép vào phần mềm được không |
 |---|---|---|
-| ⭐ **Ví dụ hoàn chỉnh** | Có khai báo `VAR … END_VAR`, hoặc là một POU đầy đủ (`FUNCTION_BLOCK … END_FUNCTION_BLOCK`) | ✅ **Được** — đủ khai báo để biên dịch |
-| **Đoạn trích** | Không có khai báo | ⚠ **Không trực tiếp** — tag lấy theo bảng I/O của máy mẫu (**Phụ lục J**); biến nội bộ tự suy ra từ ngữ cảnh |
+| ⭐ **Ví dụ hoàn chỉnh** | Dòng đầu là `// ✔ VÍ DỤ HOÀN CHỈNH` | ✅ **Được** — tự đủ khai báo; kiểu hay khối định nghĩa ở chương khác được ghi rõ ngay dòng thứ hai |
+| **Đoạn trích** | Không có dòng đó — kể cả khi có `VAR … END_VAR` | ⚠ **Không trực tiếp** — tag lấy theo bảng I/O của máy mẫu (**Phụ lục J**); biến nội bộ tự suy ra từ ngữ cảnh; phần lược bớt đánh dấu `…` |
+
+> ⚠ **Bản trước của mục này** định nghĩa *"có `VAR … END_VAR` là hoàn chỉnh"* — sai sự thật: nhiều khối
+> có `VAR` vẫn dùng tag không khai báo. Đợt 62 đổi sang **dấu hiệu tường minh**, để người đọc thấy ngay
+> và bộ kiểm biết khối nào phải nghiêm.
 
 > ⭐ **Vì sao không khai báo đầy đủ trong mọi khối:** một đoạn ba dòng minh hoạ một ý, nếu kèm mười dòng
 > khai báo thì **ý chính bị chìm**. ⚡ Sách chọn giữ đoạn trích gọn, và bảo đảm **mỗi chương về lập trình
-> có ít nhất một ví dụ hoàn chỉnh** để bạn có một điểm xuất phát chép chạy được.
+> (Chương 14–30) có ít nhất một ví dụ hoàn chỉnh** để bạn có một điểm xuất phát chép chạy được.
+
+**Một ví dụ hoàn chỉnh phải thoả — và bộ kiểm `tools/kiem_cu_phap_st.py` kiểm từng điều:**
+
+| # | Điều kiện | Vì sao |
+|:-:|---|---|
+| 1 | Mọi biến dùng tới đều **khai trong chính khối** — kể cả tag I/O, qua `VAR_GLOBAL` và `VAR_EXTERNAL` | Chép vào một dự án trống là biên dịch được; và `VAR_EXTERNAL` biến sự phụ thuộc thành một dòng nhìn thấy được (Chương 11 mục 11.6) |
+| 2 | Mọi **kiểu** có thật — chuẩn, định nghĩa ở đâu đó trong sách, hoặc khối chuyển động `MC_*` | Không có tên kiểu nào người đọc phải tự đoán |
+| 3 | Không có dấu lược `…` trong mã | Có lược thì là đoạn trích |
+| 4 | Không có biến cục bộ khai mà không dùng (CP24) | Rác trong khai báo làm người đọc tìm công dụng không có |
+| 5 | Sơ đồ LD, FBD hay SFC đi kèm: mọi tên có dấu gạch dưới trong sơ đồ đều đã khai | Phần khai báo và phần vẽ phải khớp nhau |
+
+Và mọi khối — hoàn chỉnh hay trích — còn chịu các phép kiểm chung: khối cùng tên **giống hệt từng chữ**
+ở mọi nơi; kiểu cấu trúc cùng tên **cùng các trường**; `biến.trường` phải là trường có thật; ⭐⭐ **thể
+hiện khối không được gọi bên trong nhánh `IF`/`CASE`** (Phụ lục B mục B.9b); đầu vào sườn không được là
+hằng (`CLK := TRUE`, `Execute := TRUE`); và `CASE` theo một biến bước thì không được gán số cho biến bước
+khác.
+
+> ⭐ **Ví dụ hoàn chỉnh về trình tự còn được CHẠY THỬ**, không chỉ kiểm cú pháp: một bộ chạy thử ST nhỏ
+> (`tools/chay_thu/`) chạy chính văn bản in trong sách, qua **nhiều chu trình liên tiếp**, giữ máy lâu,
+> cơ cấu kẹt, Reset khi lỗi còn nguyên. ⚡ Đợt 62 dùng nó tìm ra lỗi *"`Done` của lệnh cũ"* (Chương 26
+> Bẫy 7) — lỗi mà cả sáu bộ kiểm tĩnh đều không thấy.
+
+**Một quy ước tên của riêng mã mẫu:** biến **ruột** của một trạm — bước, giới hạn thời gian bước — mang
+tiền tố trạm (`Stn1_Step`). Trong dự án thật, đó là biến cục bộ của chương trình trạm và chỉ cần tên
+`Step`; sách thêm `Stn1_` để mỗi đoạn trích **đứng một mình vẫn biết là của trạm nào**. Thứ trạm
+**công bố** thì nằm trong một cấu trúc: `Stn1.Ready`, `Stn1.Fault` — kiểu `ST_Station` (Chương 11 mục
+11.5, lý do ở Chương 30 mục 30.3).
 
 ---
 

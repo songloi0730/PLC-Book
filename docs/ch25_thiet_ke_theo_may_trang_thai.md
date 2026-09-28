@@ -90,7 +90,7 @@ mấu chốt: lỗi có thể xảy ra ở bất cứ đâu.*
 | **Homing** | Đang đưa các cơ cấu về vị trí gốc đã biết | Về gốc xong → `Idle`; lỗi → `Alarm` |
 | **Idle** | Đã về gốc, đủ điều kiện, đang chờ lệnh | Nhấn Start → `Running`; chọn tay → `Manual` |
 | **Running** | Đang chạy chu trình tự động | Nhấn Hold; nhấn Stop; hoặc phát sinh lỗi |
-| **Hold** | Đã dừng có kiểm soát, **giữ nguyên vị trí và sản phẩm** | Tiếp tục → `Running`; huỷ → `Idle` |
+| **Hold** | Đã dừng có kiểm soát, **giữ nguyên vị trí và sản phẩm** | Tiếp tục → `Running`; huỷ → `Homing` (rồi mới `Idle`) |
 | **Alarm** | Có lỗi. Mọi chuyển động đã dừng | Xử lý xong nguyên nhân → nhấn Reset |
 | **Resetting** | Đang xoá lỗi và kiểm tra điều kiện | Sạch lỗi → `Homing` (không về thẳng `Idle` — xem dưới); còn lỗi → `Alarm` |
 
@@ -139,7 +139,7 @@ Mỗi dòng là một chuyển tiếp, và phải trả lời đủ bốn cột:
 | Running | `DI_StopPB` (nút Hold) | Hold | Bật đèn vàng; **giữ nguyên mọi ngõ ra vị trí** |
 | Running | Bất kỳ điều kiện lỗi nào | Alarm | Bật đèn đỏ + còi; cắt lệnh chuyển động |
 | Hold | `DI_StartPB` | Running | Bật đèn xanh; chạy tiếp từ bước đang nhớ |
-| Hold | Giữ `DI_StopPB` quá 2 giây | Idle | Nhả sản phẩm theo quy trình an toàn, về gốc |
+| Hold | Giữ `DI_StopPB` quá 2 giây | Homing | Huỷ chu trình: xả sản phẩm theo thứ tự an toàn, về gốc (Chương 28) — `Idle` chỉ tới **sau** khi về gốc xong |
 | Alarm | Sườn lên `DI_ResetPB` | Resetting | Tắt còi; ra lệnh xoá mọi cờ lỗi (`M_ClearFaults`) |
 | Resetting | Hết thời lượng xoá, **không còn cờ nào** | Homing | Bắt đầu trình tự về gốc |
 | Resetting | Hết thời lượng xoá, **còn cờ chốt lại** — nguyên nhân chưa hết | Alarm | Giữ đèn đỏ; còi không kêu lại |
@@ -164,101 +164,155 @@ Máy trạng thái không phụ thuộc ngôn ngữ. Dưới đây là cùng m�
 Cách gọn nhất khi ngôn ngữ có `CASE`.
 
 ```iecst
-// Khai báo trạng thái bằng kiểu liệt kê — KHÔNG dùng số trần
+// ✔ VÍ DỤ HOÀN CHỈNH — tầng máy của DP-01: bảy trạng thái, lỗi thắng mọi trạng thái
 TYPE E_MachineState :
     (Uninitialized, Homing, Idle, Running, Hold, Alarm, Resetting);
 END_TYPE
 
-VAR
-    MachineState : E_MachineState := Uninitialized;
-    T_Resetting  : TON;
+VAR_GLOBAL
+    // ── Vào: nút bấm và kết quả của các tầng khác ──
+    DI_StartPB      : BOOL;
+    DI_StopPB       : BOOL;             // ⚠ nút NC — bình thường TRUE, nhấn là FALSE (Chương 15)
+    DI_ResetPB      : BOOL;
+    M_AllPermissive : BOOL;             // chuỗi cho phép: dừng khẩn, khí, cửa (Phụ lục L mục L.2)
+    M_AnyFault      : BOOL;             // gom lỗi — gán ở ĐÚNG MỘT chỗ, ngay trước tầng máy (25.5c)
+    M_HomingDone    : BOOL;             // trình tự về gốc báo xong (Chương 28)
+    // ── Ra: trạng thái, lệnh cho các tầng khác, đèn tháp ──
+    MachineState    : E_MachineState := Uninitialized;
+    M_HomingRun     : BOOL;             // cho trình tự về gốc chạy
+    M_AbortCycle    : BOOL;             // huỷ chu trình: mọi trạm đưa bước về 0 (Chương 26)
+    M_CycleEnable   : BOOL;             // cho trình tự các trạm chạy (Chương 26)
+    M_MotionEnable  : BOOL;             // cho phép cơ cấu ĐỔI vị trí — chân Permit (Chương 27)
+    M_ClearFaults   : BOOL;             // lệnh xoá mọi cờ lỗi đã chốt (25.5c)
+    DO_LampGreen    : BOOL;
+    DO_LampYellow   : BOOL;
+    DO_LampRed      : BOOL;
+    DO_Buzzer       : BOOL;
 END_VAR
 
-// M_AnyFault đã được GOM ở đúng một chỗ, ngay trước đoạn này (mục 25.5c)
+PROGRAM Prg_Machine
+VAR_EXTERNAL
+    DI_StartPB, DI_StopPB, DI_ResetPB                  : BOOL;
+    M_AllPermissive, M_AnyFault, M_HomingDone          : BOOL;
+    MachineState                                       : E_MachineState;
+    M_HomingRun, M_AbortCycle, M_CycleEnable           : BOOL;
+    M_MotionEnable, M_ClearFaults                      : BOOL;
+    DO_LampGreen, DO_LampYellow, DO_LampRed, DO_Buzzer : BOOL;
+END_VAR
+VAR
+    TrigStart   : R_TRIG;
+    TrigStop    : R_TRIG;
+    TrigReset   : R_TRIG;
+    T_StopHeld  : TON;
+    T_Resetting : TON;
+    FirstScan   : BOOL := TRUE;         // KHÔNG giữ — TRUE ở mỗi lần khởi động (Chương 16 Bẫy 9)
+    StartPress  : BOOL;
+    StopPress   : BOOL;
+    ResetPress  : BOOL;
+    BuzzerOn    : BOOL;                 // còi của MỘT lần báo động mới — Reset thì tắt
+END_VAR
 
-// ── Chuyển tiếp ưu tiên cao nhất: lỗi từ BẤT KỲ trạng thái nào ──
-// Đặt TRƯỚC khối CASE để nó luôn thắng
-IF M_AnyFault AND MachineState <> Alarm AND MachineState <> Resetting THEN
-    MachineState := Alarm;
-    DO_LampRed  := TRUE;
-    DO_Buzzer   := TRUE;
-    M_MotionEnable := FALSE;          // cắt mọi lệnh chuyển động
-END_IF;
-
-// Thời lượng của Resetting — gọi đúng MỘT lần, ngoài CASE (Chương 17, Bẫy 5)
+// ── 1 · Mọi khối gọi ĐÚNG MỘT lần mỗi vòng, ngoài CASE, đầu vào lấy từ trạng thái ──
+TrigStart(CLK := DI_StartPB);
+TrigStop(CLK := NOT DI_StopPB);                     // nút NC: nhấn là sườn lên của NOT
+TrigReset(CLK := DI_ResetPB);
+StartPress := TrigStart.Q AND NOT FirstScan;        // che sườn giả của vòng quét đầu
+StopPress  := TrigStop.Q AND NOT FirstScan;
+ResetPress := TrigReset.Q AND NOT FirstScan;
+T_StopHeld(IN := (MachineState = Hold) AND NOT DI_StopPB, PT := T#2S);
 T_Resetting(IN := (MachineState = Resetting), PT := T#200MS);
 
-CASE MachineState OF
+// ── 2 · Lỗi thắng mọi trạng thái — đặt TRƯỚC CASE ──
+IF M_AnyFault AND MachineState <> Alarm AND MachineState <> Resetting THEN
+    MachineState := Alarm;
+    BuzzerOn     := TRUE;                           // báo động MỚI thì còi kêu
+END_IF;
+IF ResetPress THEN
+    BuzzerOn := FALSE;                              // người đã biết — tắt còi
+END_IF;
 
+// ── 3 · Chuyển trạng thái — mỗi nhánh CHỈ quyết định trạng thái kế tiếp ──
+CASE MachineState OF
     Uninitialized:
-        DO_LampYellow := TRUE;
-        IF R_TRIG_Reset.Q THEN                 // bắt sườn lên nút Reset
+        IF ResetPress THEN
             MachineState := Homing;
         END_IF;
 
     Homing:
-        M_HomingRun := TRUE;                   // gọi trình tự về gốc (Ch.28)
         IF M_HomingDone THEN
-            M_HomingRun := FALSE;
-            M_CycleStep := 0;                  // xoá bước chu trình
             MachineState := Idle;
         END_IF;
-        // timeout xử lý bên trong trình tự về gốc → chốt M_Alm_HomeTimeout (Ch.28)
 
     Idle:
-        DO_LampYellow := TRUE;
-        IF R_TRIG_Start.Q AND M_AllPermissive THEN
+        IF StartPress AND M_AllPermissive THEN
             MachineState := Running;
         END_IF;
 
     Running:
-        DO_LampGreen   := TRUE;
-        M_CycleEnable  := TRUE;                // cho phép trình tự chạy (Ch.26)
-        IF R_TRIG_Stop.Q THEN
-            M_CycleEnable := FALSE;            // dừng nhưng GIỮ nguyên vị trí
-            MachineState  := Hold;
+        IF StopPress THEN
+            MachineState := Hold;                   // dừng nhưng GIỮ nguyên vị trí
         END_IF;
 
     Hold:
-        DO_LampYellow := TRUE;
-        IF R_TRIG_Start.Q THEN
-            MachineState := Running;           // chạy tiếp từ bước đang nhớ
-        ELSIF T_StopHeld.Q THEN                // giữ nút Stop quá 2 giây
-            MachineState := Idle;              // huỷ chu trình, về gốc
+        IF StartPress AND M_AllPermissive THEN
+            MachineState := Running;                // chạy tiếp từ bước đang nhớ
+        ELSIF T_StopHeld.Q THEN
+            MachineState := Homing;                 // huỷ chu trình: xả sản phẩm, về gốc (Chương 28)
         END_IF;
 
     Alarm:
-        DO_LampRed := TRUE;
-        IF R_TRIG_Reset.Q THEN                 // chỉ cần SƯỜN LÊN — việc xét nguyên nhân
-            MachineState := Resetting;         // giao cho Resetting (mục 25.5c)
+        IF ResetPress THEN
+            MachineState := Resetting;              // chỉ cần sườn lên — xét nguyên nhân là việc của Resetting
         END_IF;
 
     Resetting:
-        M_ClearFaults := TRUE;                 // mọi chủ cờ lỗi tự xoá cờ của mình…
-        DO_Buzzer     := FALSE;
-        IF T_Resetting.Q THEN                  // …và đã có đủ vòng quét để làm việc đó
-            M_ClearFaults := FALSE;
+        IF T_Resetting.Q THEN
             IF M_AnyFault THEN
-                MachineState := Alarm;         // nguyên nhân còn → cờ đã chốt lại
+                MachineState := Alarm;              // nguyên nhân còn → cờ đã chốt lại; còi KHÔNG kêu lại
             ELSE
-                MachineState := Homing;        // KHÔNG về thẳng Idle
+                MachineState := Homing;             // KHÔNG về thẳng Idle
             END_IF;
         END_IF;
-
 END_CASE;
+
+// ── 4 · Lệnh và đèn SUY TỪ trạng thái — mỗi thứ gán ở MỘT chỗ, ngoài CASE (Bẫy 5) ──
+M_HomingRun    := (MachineState = Homing);
+M_AbortCycle   := (MachineState = Homing);              // đang về gốc: bước của mọi trạm giữ ở 0
+M_CycleEnable  := (MachineState = Running);
+M_MotionEnable := M_AllPermissive
+                  AND ((MachineState = Homing) OR (MachineState = Running));
+M_ClearFaults  := (MachineState = Resetting);
+DO_LampGreen   := (MachineState = Running);
+DO_LampYellow  := (MachineState = Uninitialized) OR (MachineState = Homing)
+                  OR (MachineState = Idle) OR (MachineState = Hold);
+DO_LampRed     := (MachineState = Alarm) OR (MachineState = Resetting);
+DO_Buzzer      := BuzzerOn AND (MachineState = Alarm);
+
+FirstScan := FALSE;                                     // dòng CUỐI của chương trình
+END_PROGRAM
 ```
 
-Ba điểm đáng chú ý trong đoạn trên:
+Bốn điểm đáng chú ý trong chương trình trên:
 
+- ⭐⭐ **Mỗi nhánh `CASE` chỉ quyết định trạng thái kế tiếp; mọi lệnh và đèn được SUY TỪ trạng thái, gán
+  ở MỘT chỗ ngoài `CASE`** (phần 4). Bản trước của đoạn này gán `DO_LampGreen := TRUE` bên trong nhánh
+  `Running` và không chỗ nào tắt nó — nên sang `Hold` thì **đèn xanh vẫn sáng**, đúng triệu chứng của
+  Bẫy 5 ở cuối chương; `M_CycleEnable` và `M_HomingRun` cũng ở lại TRUE khi máy vào `Alarm` qua khối
+  lỗi. ⚡ Một giá trị gán trong một nhánh sẽ **ở nguyên** khi rời nhánh bằng một đường khác — cùng bệnh
+  với hành động `N` viết bằng đoạn mã trong SFC (Chương 21). Gán theo trạng thái thì không thể sót.
 - **Khối lỗi đặt ngoài và trước `CASE`.** Nhờ vậy nó thắng mọi trạng thái, đúng như dòng cuối bảng
   chuyển trạng thái. Nếu nhét điều kiện lỗi vào từng nhánh `CASE` thì bạn phải nhớ lặp lại ở bảy chỗ,
   và sẽ quên ít nhất một chỗ.
+- **Hai chỗ nhỏ mà thiếu là có sự cố thật:** sườn nút bấm **che ở vòng quét đầu** (`FirstScan` —
+  nút Reset kẹt lúc cấp điện không được làm máy tự về gốc, Chương 16 Bẫy 9); và còi gắn với **một lần
+  báo động mới** (`BuzzerOn`) — Reset tắt còi, `Resetting` quay về `Alarm` thì còi **không kêu lại**,
+  đúng dòng cuối bảng chuyển trạng thái.
 - **Dùng kiểu liệt kê, không dùng số trần.** `MachineState := 3` không nói lên điều gì khi bạn xem
   trạng thái trực tuyến lúc hai giờ sáng; `Running` thì nói.
 - **Reset chỉ cần sườn lên — việc xét nguyên nhân thuộc về `Resetting`.** Nó ra lệnh xoá, chờ đủ
   lâu cho mọi nơi giữ cờ lỗi tự xoá rồi **phát hiện lại**, sau đó mới xem còn lỗi không. Nguyên nhân
   còn thì cờ đã chốt lại → quay về `Alarm`, **một lần cho mỗi lần nhấn** — không quay vòng. ⚠⚠ Đừng
-  viết `IF R_TRIG_Reset.Q AND NOT M_AnyFault`: khi cờ lỗi chỉ được xoá **bên trong** `Resetting`,
+  viết `IF ResetPress AND NOT M_AnyFault`: khi cờ lỗi chỉ được xoá **bên trong** `Resetting`,
   điều kiện đó không bao giờ đúng và máy **khoá chết** ở `Alarm` (mục 25.5c).
 
 ### Cách 2 — bit trạng thái (Ladder Diagram)
@@ -421,7 +475,7 @@ M_AnyFault := M_Alm_AirLow OR Stn1.Fault OR M_Alm_HomeTimeout;    // đúng MỘ
 
 ### ⚠⚠ Vì sao cách B khoá chết máy
 
-Viết `Alarm → Resetting` với điều kiện `R_TRIG_Reset.Q AND NOT M_AnyFault`, trong khi cờ lỗi chỉ được
+Viết `Alarm → Resetting` với điều kiện `ResetPress AND NOT M_AnyFault`, trong khi cờ lỗi chỉ được
 xoá **bên trong** `Resetting` — thì:
 
 1. Lỗi xảy ra → cờ chốt → `M_AnyFault` = TRUE → máy vào `Alarm`.
@@ -586,10 +640,10 @@ không tính lại từ điều kiện khác:
 DO_LampGreen  := (MachineState = Running);
 DO_LampYellow := (MachineState = Idle) OR (MachineState = Hold)
                  OR (MachineState = Homing) OR (MachineState = Uninitialized);
-DO_LampRed    := (MachineState = Alarm);
+DO_LampRed    := (MachineState = Alarm) OR (MachineState = Resetting);
 ```
 
-Ba dòng, không điều kiện phụ. Đèn **không thể** nói khác biến trạng thái.
+Ba dòng, không điều kiện phụ — đúng ba dòng ở phần 4 của chương trình mục 25.5. Đèn **không thể** nói khác biến trạng thái.
 
 ---
 

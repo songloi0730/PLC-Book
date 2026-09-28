@@ -343,6 +343,55 @@ board. Khó chịu, nhưng không nguy hiểm cho người.
  ────┤ ├──────────────────────────────────────────────────────────────( )───
 ```
 
+### ⭐ Ghép ba nấc — một chương trình LD hoàn chỉnh
+
+Một POU viết bằng LD có hai phần: **phần khai báo** — viết bằng chữ, giống hệt ST — và **thân** là các
+nấc thang. Khối đầu là phần khai báo, chép được nguyên văn; khối sau là thân, vẽ lại trong trình soạn
+thảo ladder của bạn đúng từng tiếp điểm.
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — chương trình LD của DP-01 ở lát cắt 1: phần khai báo; sơ đồ ở khối kế tiếp
+VAR_GLOBAL
+    DI_StartPB   : BOOL;                 // nút Start — NO
+    DI_StopPB    : BOOL;                 // nút Stop — NC, bình thường bằng 1
+    DI_AirOK     : BOOL;                 // công tắc áp suất — kín khi đủ khí
+    DI_BoardStn1 : BOOL;                 // cảm biến board ở trạm 1
+    DO_ConvRun   : BOOL;                 // cho phép chuyền chạy
+    DO_Stop1Vlv  : BOOL;                 // van chặn trạm 1
+END_VAR
+
+PROGRAM Prg_ConvLd                       // thân POU là ba nấc thang ở khối kế tiếp
+VAR_EXTERNAL
+    DI_StartPB, DI_StopPB, DI_AirOK, DI_BoardStn1 : BOOL;
+    DO_ConvRun, DO_Stop1Vlv                       : BOOL;
+END_VAR
+VAR
+    M_ConvRunCmd : BOOL;                 // lệnh chạy đã tự giữ — CHỈ nấc 1 ghi
+END_VAR
+END_PROGRAM
+```
+
+```text
+ Nấc 1 — tự giữ: (Start HOẶC đã chạy) VÀ Stop chưa nhấn VÀ đủ khí
+   DI_StartPB      DI_StopPB      DI_AirOK                        M_ConvRunCmd
+ ┌───┤ ├──────┬──────┤ ├────────────┤ ├──────────────────────────────( )───┐
+ │            │
+ │ M_ConvRunCmd
+ └───┤ ├──────┘
+
+ Nấc 2 — chuyền chỉ chạy khi trạm 1 còn trống
+   M_ConvRunCmd   DI_BoardStn1                                    DO_ConvRun
+ ────┤ ├─────────────┤/├──────────────────────────────────────────────( )───
+
+ Nấc 3 — có board ở trạm 1 thì nâng chặn
+   DI_BoardStn1                                                    DO_Stop1Vlv
+ ────┤ ├──────────────────────────────────────────────────────────────( )───
+```
+
+> ⭐ **Mỗi ngõ ra một nấc, mỗi cờ một nấc** — `M_ConvRunCmd` chỉ nấc 1 ghi, `DO_ConvRun` chỉ nấc 2,
+> `DO_Stop1Vlv` chỉ nấc 3 (Bẫy 1). Bộ kiểm mã của sách soát mọi tên trong sơ đồ này đều đã được khai ở
+> khối trên — thiếu một dòng khai báo là không biên dịch được.
+
 ---
 
 ## 15.4b ⚠⚠ Vùng điều khiển `MCR` — và một cái tên nguy hiểm

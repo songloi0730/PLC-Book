@@ -344,30 +344,51 @@ phải nhấn Start lần nữa: một hành động có chủ ý của người
 ### Đánh dấu board lỗi — SET/RESET đúng chỗ
 
 ```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — đánh dấu board NG ở trạm 1: cạnh lên xoá, SET giữ dấu, cạnh xuống chốt số
+VAR_GLOBAL
+    M_Board1Present : BOOL;              // board ở trạm 1 — tín hiệu ĐÃ LỌC RUNG (Chương 17)
+    M_Stn1Timeout   : BOOL;              // trạm 1 báo quá thời gian (Chương 26)
+    M_DispFault     : BOOL;              // lỗi tra keo (Chương 32)
+    M_Board1IsNG    : BOOL;              // dấu NG của board đang ở trạm 1
+END_VAR
+
+VAR_GLOBAL RETAIN
+    Stn1OkCount : DINT;                  // ⭐ giữ qua mất điện — số đã đếm là sự thật đã xảy ra
+    Stn1NgCount : DINT;
+END_VAR
+
+PROGRAM Prg_Board1Mark
+VAR_EXTERNAL
+    M_Board1Present, M_Stn1Timeout, M_DispFault, M_Board1IsNG : BOOL;
+    Stn1OkCount, Stn1NgCount                                  : DINT;
+END_VAR
 VAR
     TrigIn  : R_TRIG;
     TrigOut : F_TRIG;
 END_VAR
 
-TrigIn(CLK := DI_BoardStn1);
-TrigOut(CLK := DI_BoardStn1);
+TrigIn(CLK := M_Board1Present);
+TrigOut(CLK := M_Board1Present);
 
-// Board mới vào: xoá dấu của board TRƯỚC ĐÓ
+// 1 · Board mới vào: xoá dấu của board TRƯỚC — đặt TRƯỚC dòng đánh dấu
 IF TrigIn.Q THEN
     M_Board1IsNG := FALSE;
 END_IF;
 
-// Trong lúc gia công, bất kỳ chỗ nào cũng có thể đánh dấu
+// 2 · Trong lúc gia công, lỗi nào cũng đánh dấu được — và dấu DÍNH tới khi board mới vào
 IF M_Stn1Timeout OR M_DispFault THEN
     M_Board1IsNG := TRUE;
 END_IF;
 
-// Board rời trạm: chốt số liệu
+// 3 · Board rời trạm: chốt số liệu, đúng MỘT lần
 IF TrigOut.Q THEN
-    IF M_Board1IsNG THEN  NgCount := NgCount + 1;
-    ELSE                  OkCount := OkCount + 1;
+    IF M_Board1IsNG THEN
+        Stn1NgCount := Stn1NgCount + 1;
+    ELSE
+        Stn1OkCount := Stn1OkCount + 1;
     END_IF;
 END_IF;
+END_PROGRAM
 ```
 
 Ba mẩu trên minh hoạ trọn vẹn chương này: **cạnh lên** để xoá dấu đúng một lần khi board mới vào,
@@ -376,6 +397,12 @@ board rời đi.
 
 Chú ý thứ tự: nấc xoá dấu đặt **trước** nấc đánh dấu. Nếu đảo lại, một lỗi xảy ra đúng vào vòng quét
 board mới vào sẽ bị xoá mất.
+
+> ⭐ **Đây là ví dụ hoàn chỉnh của chương** — chép vào phần mềm là biên dịch được. Nó bắt cạnh trên
+> `M_Board1Present`, tín hiệu board **đã lọc rung** (Chương 17 mục 17.4), chứ không trên `DI_BoardStn1`
+> thô — đúng thứ tự *lọc trước, bắt cạnh sau* của Bẫy 8. ⚠ Và sườn giả lúc cấp điện (Bẫy 9) ở đây vô
+> hại: nó chỉ **xoá** một dấu NG, không đếm gì. Chạy thử với hai board, board đầu có lỗi thoáng qua: dấu
+> NG dính suốt lúc gia công, board sau vào thì dấu được xoá, mỗi board được đếm **đúng một lần**.
 
 ### Nút một chạm đổi trạng thái đèn báo
 

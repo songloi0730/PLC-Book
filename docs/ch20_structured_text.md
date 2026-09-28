@@ -514,7 +514,53 @@ END_IF;
 ### ST — tính toán
 
 Phần thống kê chu kỳ và hiệu suất ở Chương 19, mục 19.8. Không ai muốn viết nó bằng ladder, và người
-bảo trì cũng không cần đọc nó để sửa máy.
+bảo trì cũng không cần đọc nó để sửa máy. Một ví dụ hoàn chỉnh — xếp loại chu kỳ gần đây so với chu kỳ
+chuẩn của công thức, dùng đủ các cấu trúc của mục 20.2:
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — một hàm ST dùng đủ các cấu trúc của chương: hằng có tên, FOR, IF, CASE
+FUNCTION CycleClass : INT                // 0 chưa đủ số liệu · 1 bình thường · 2 chậm · 3 rất chậm
+VAR_INPUT
+    CycleMs  : ARRAY[1..8] OF DINT;      // 8 chu kỳ gần nhất; 0 = ô chưa có số liệu
+    RecipeMs : DINT;                     // chu kỳ chuẩn theo công thức (Chương 29)
+END_VAR
+VAR CONSTANT
+    N_CYCLE : INT := 8;                  // phải khớp cận trên của mảng CycleMs
+END_VAR
+VAR
+    i       : INT;
+    Count   : INT;
+    SumMs   : DINT;
+    LoadPct : DINT;
+END_VAR
+
+SumMs := 0;
+Count := 0;
+FOR i := 1 TO N_CYCLE DO
+    IF CycleMs[i] > 0 THEN
+        SumMs := SumMs + CycleMs[i];
+        Count := Count + 1;
+    END_IF;
+END_FOR;
+
+IF Count = 0 OR RecipeMs <= 0 THEN
+    CycleClass := 0;                     // chưa đủ số liệu — và KHÔNG BAO GIỜ chia cho 0
+ELSE
+    LoadPct := (SumMs * 100) / (Count * RecipeMs);      // nhân trước, chia sau (Chương 19)
+    CASE LoadPct OF
+        0..119:   CycleClass := 1;       // bình thường
+        120..149: CycleClass := 2;       // chậm — cảnh báo (Chương 19 mục 19.8)
+    ELSE
+        CycleClass := 3;                 // rất chậm
+    END_CASE;
+END_IF;
+END_FUNCTION
+```
+
+Bốn chỗ đáng xem: **hằng có tên** làm trần vòng lặp (mục 20.2); `FOR` có trần cố định, không tính từ
+dữ liệu (Bẫy 4); **kiểm mẫu số trước khi chia** — và kiểm cả phía chu kỳ chuẩn, vì công thức có thể
+chưa nạp; `CASE` theo **dải giá trị** thay cho một chuỗi `IF` so sánh. Chạy thử: không có số liệu → 0;
+quanh 12 s với chuẩn 12 s → 1; 15 s → 2; 19 s → 3; chuẩn bằng 0 → 0, không dừng CPU.
 
 Sự phân chia này là **ranh giới thực dụng**: thứ người bảo trì cần nhìn thì để ở dạng nhìn được; thứ
 họ không cần nhìn thì viết ở dạng gọn nhất.

@@ -74,11 +74,11 @@ Trước khi bàn về gốc, phải rõ máy có những chế độ nào và m
 **Một — chuyển chế độ phải có kiểm soát.** Không được chuyển từ `Auto` sang `Manual` giữa lúc cơ cấu
 đang chuyển động. Chuyển chế độ đi qua trạng thái trung gian: dừng chu trình → về `Idle` → mới đổi.
 
-**Two — Manual không có nghĩa là bỏ hết liên động.** Đây là hiểu nhầm nguy hiểm nhất về chế độ tay.
+**Hai — Manual không có nghĩa là bỏ hết liên động.** Đây là hiểu nhầm nguy hiểm nhất về chế độ tay.
 Ở `Manual`, người vận hành được chọn *thứ tự* thao tác, nhưng **các liên động chống va chạm vẫn phải
 còn nguyên**:
 
-```iecst
+```text
 // Ở Manual, nút "hạ chặn trạm 1" chỉ tác dụng khi kẹp đã hạ
 Cmd_ManStop1Down  AND  M_ModeManual  AND  DI_Clamp1Dn   →   DO_Stop1Vlv := FALSE
                                           ▲
@@ -93,8 +93,9 @@ chương trình không biết điều đó, mọi bước chờ cảm biến boa
 `M_DryRun` mà các bước chờ sản phẩm kiểm tra:
 
 ```iecst
+// Bước 0 của trạm 1 — chờ board (Chương 26)
 IF DI_BoardStn1 OR M_DryRun THEN
-    Step := Step + 1;
+    Stn1_Step := 10;
 END_IF;
 ```
 
@@ -202,8 +203,10 @@ Bước H3 — Đẩy board ra theo THỨ TỰ TỪ CUỐI VỀ ĐẦU
           H3b: hạ chặn trạm 1, chạy chuyền tới khi DI_BoardStn1 = 0
           ▸ vì sao từ cuối: xả trạm 2 trước thì trạm 1 mới có chỗ đi — tránh V3
 
-Bước H4 — Nâng lại chặn cả hai trạm về tư thế gốc
-          chờ DI_Stop1Up AND DI_Stop2Up          timeout 3 s
+Bước H4 — Xác nhận chặn và kẹp cả hai trạm đã ở tư thế NGHỈ (hạ)
+          chờ DI_Stop1Dn AND DI_Stop2Dn AND DI_Clamp1Dn AND DI_Clamp2Dn
+                                                  timeout 3 s
+          ▸ tư thế nghỉ lấy từ bảng I/O (Phụ lục J mục J.2.1) — không tự suy
 
 Bước H5 — Dừng chuyền, báo đã về gốc
           M_HomingDone := TRUE
@@ -236,6 +239,74 @@ END_IF;
 
 Không có timeout thì trình tự về gốc kẹt vĩnh viễn ở một bước, và không ai biết bước nào — người sửa
 phải đọc code để đoán. Với timeout có mã lỗi, màn hình nói thẳng chỗ kẹt.
+
+⭐ Trình tự về gốc và bốn trạm của máy đều cần đúng một thứ: *"bước này đã quá giờ chưa, và là bước
+nào"*. Viết nó **một lần**, thành khối — ví dụ hoàn chỉnh của chương:
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — giám sát thời gian bước đóng gói thành khối, dùng cho trình tự về gốc
+FUNCTION_BLOCK FB_StepWatch
+VAR_INPUT
+    Step   : INT;                        // bước hiện tại của trình tự được giám sát
+    Limit  : TIME;                       // thời gian cho phép của bước này; T#0S = không giới hạn
+    Active : BOOL;                       // trình tự đang được phép chạy — tắt khi giữ, khi không chạy
+    Clear  : BOOL;                       // xoá lỗi đã chốt — nối M_ClearFaults (Chương 25)
+END_VAR
+VAR_OUTPUT
+    Fault     : BOOL;                    // ĐÃ CHỐT: có một bước quá thời gian
+    FaultStep : INT;                     // bước lúc quá thời gian — cho mã lỗi và màn hình
+END_VAR
+VAR
+    T_Step   : TON;
+    StepPrev : INT;
+END_VAR
+IF Clear THEN                            // xoá TRƯỚC…
+    Fault     := FALSE;
+    FaultStep := 0;
+END_IF;
+T_Step(IN := Active AND (Limit > T#0S) AND (Step = StepPrev), PT := Limit);
+StepPrev := Step;
+IF T_Step.Q THEN                         // …phát hiện SAU (Chương 25 mục 25.5c)
+    Fault     := TRUE;
+    FaultStep := Step;
+END_IF;
+END_FUNCTION_BLOCK
+
+VAR_GLOBAL
+    HomingStep        : INT;             // bước của trình tự về gốc: 1 = H1 … 5 = H5 (mục 28.4)
+    M_HomingRun       : BOOL;            // tầng máy đang ở Homing (Chương 25)
+    M_ClearFaults     : BOOL;
+    M_Alm_HomeTimeout : BOOL;            // cờ chốt — gom vào M_AnyFault (Chương 25)
+    HomeFaultStep     : INT;             // HOME-0x trên màn hình: x chính là số này
+END_VAR
+
+PROGRAM Prg_HomeWatch
+VAR_EXTERNAL
+    HomingStep, HomeFaultStep                       : INT;
+    M_HomingRun, M_ClearFaults, M_Alm_HomeTimeout   : BOOL;
+END_VAR
+VAR
+    HomeWatch : FB_StepWatch;
+    HomeLimit : TIME;
+END_VAR
+CASE HomingStep OF
+    1, 4: HomeLimit := T#3S;             // H1 hạ kẹp · H4 kiểm tư thế nghỉ
+    3:    HomeLimit := T#10S;            // H3 xả board
+ELSE
+    HomeLimit := T#0S;                   // H2 đánh dấu NG, H5 — tức thời
+END_CASE;
+HomeWatch(Step := HomingStep, Limit := HomeLimit, Active := M_HomingRun, Clear := M_ClearFaults);
+M_Alm_HomeTimeout := HomeWatch.Fault;
+HomeFaultStep     := HomeWatch.FaultStep;
+END_PROGRAM
+```
+
+Chạy thử: bước H1 2,5 s — chưa lỗi; sang H3 là đếm lại từ đầu (9 s — chưa lỗi); H3 quá 10 s — lỗi
+**chốt**, bước ghi lại là 3; máy rời `Homing` — lỗi **vẫn** chốt; lệnh xoá — hết lỗi; bước H2 không giới
+hạn — không bao giờ lỗi. ⚠ Chân `Active` là thứ làm khối **không báo lỗi giả khi máy đang giữ**: tắt
+`Active` là đưa bộ định thời về 0, bật lại là đếm lại từ đầu — đúng bài học của Chương 17 mục 17.3 về
+bộ định thời không được gọi. ⭐ Tên chân là `Active`, **không** phải `Enable`: tắt nó không xoá lỗi đã
+chốt, nên nó không theo hợp đồng `Enable`/`Valid` (Chương 30 mục 30.5b).
 
 ---
 

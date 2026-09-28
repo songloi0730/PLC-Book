@@ -390,6 +390,39 @@ Ba dòng này là cách viết gọn của bảng bốn dòng. Điểm mấu ch�
 — chương trình không bao giờ phải đoán. Đây là nội dung Chương 28, và bảng chân lý là cách chứng minh
 ba dòng code trên phủ hết bốn tổ hợp.
 
+### ⭐ Từ bảng chân lý tới một hàm dùng lại — ví dụ hoàn chỉnh
+
+Máy có bốn xy-lanh thì ba dòng trên phải chép bốn lần. Viết thành **một hàm**, mỗi **dòng của bảng**
+thành **một nhánh**, và kết quả là một kiểu liệt kê — đọc lên là hiểu, không phải giải mã hai bit:
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — bảng chân lý bốn dòng thành một hàm: tư thế xy-lanh từ hai cảm biến
+TYPE E_CylPose :
+    (AtHome, AtWork, Unknown, SensorFault);
+END_TYPE
+
+FUNCTION CylPose : E_CylPose
+VAR_INPUT
+    SensHome : BOOL;                     // cảm biến vị trí gốc
+    SensWork : BOOL;                     // cảm biến vị trí làm việc
+END_VAR
+IF SensHome AND NOT SensWork THEN
+    CylPose := AtHome;                   // dòng 1 · chắc chắn ở gốc
+ELSIF SensWork AND NOT SensHome THEN
+    CylPose := AtWork;                   // dòng 2 · chắc chắn ở vị trí làm việc
+ELSIF NOT SensHome AND NOT SensWork THEN
+    CylPose := Unknown;                  // dòng 3 · giữa hành trình — HOẶC một cảm biến đứt dây
+ELSE
+    CylPose := SensorFault;              // dòng 4 · cả hai cùng bật — vô lý về vật lý, chắc chắn hỏng
+END_IF;
+END_FUNCTION
+```
+
+Đặt hàm cạnh bảng ở trên: bốn dòng, bốn nhánh, không thừa không thiếu. ⭐ Nhánh cuối là `ELSE` chứ
+không phải `ELSIF SensHome AND SensWork` — nhờ vậy **không tổ hợp nào** rơi ra ngoài, kể cả khi ai đó
+sửa ba nhánh trên sai. Chạy thử đủ bốn tổ hợp: ra đúng bốn giá trị. Chương 28 dùng đúng phép phân loại
+này ở bước đầu tiên của trình tự về gốc — *"xác định tư thế thật, không nhớ tư thế cũ"*.
+
 ---
 
 ## 24.9 Khác biệt giữa các hãng

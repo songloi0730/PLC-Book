@@ -290,8 +290,23 @@ AI_  ngõ vào analog    AO_  ngõ ra analog
 AX_  trục              NET_ kết nối mạng
 ```
 
-Mọi đoạn code trong sách đều **tự kiểm được về mặt logic**: không có cuộn dây trùng, không có vòng lặp
-vô hạn, có xử lý điều kiện biên, và mọi bước chờ đều có timeout báo lỗi.
+Mọi khối mã được viết theo bốn luật: không có cuộn dây trùng, không có vòng lặp vô hạn, có xử lý điều
+kiện biên, và mọi bước chờ đều có timeout báo lỗi. ⭐ Sách có **hai loại khối mã**, và bạn nên phân biệt
+chúng trước khi chép:
+
+| Loại | Nhận ra bằng | Chép vào phần mềm được không |
+|---|---|---|
+| ⭐ **Ví dụ hoàn chỉnh** | Dòng đầu là `// ✔ VÍ DỤ HOÀN CHỈNH` | ✅ **Được** — tự đủ khai báo; cần một kiểu hay một khối ở chương khác thì dòng đầu ghi rõ ở đâu |
+| **Đoạn trích** | Không có dòng đó | ⚠ Minh hoạ **một ý** — tag lấy theo bảng I/O của máy mẫu (Phụ lục J), biến nội bộ suy từ ngữ cảnh; chỗ lược bớt đánh dấu `…` |
+
+Mỗi chương về lập trình (Chương 14–30) có ít nhất một ví dụ hoàn chỉnh. Cả hai loại đều đi qua **bộ
+kiểm mã của sách** (Phụ lục N mục N.7) — và các ví dụ hoàn chỉnh về trình tự còn được **chạy thử** qua
+nhiều chu trình liên tiếp.
+
+> ⚠ **Kiểm bằng công cụ không thay được việc chạy trên phần mềm và phần cứng của bạn.** Bộ kiểm không
+> biết kiểu dữ liệu của từng biểu thức, bộ chạy thử là một mô hình chứ không phải PLC thật, và mỗi hãng
+> có chỗ khác chuẩn (Phụ lục A2). ⭐ Hãy coi ví dụ hoàn chỉnh là **điểm xuất phát đã được kiểm**, không
+> phải một bản đã được nghiệm thu trên máy của bạn.
 
 ---
 

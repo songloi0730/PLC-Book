@@ -425,6 +425,7 @@ M_BoardArrived := R_Board.Q;
 lý do của từng quyết định thiết kế nằm ở đó; ở đây là bản để chép.
 
 ```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — khối xy-lanh hai vị trí (giống hệt Chương 27 mục 27.3)
 FUNCTION_BLOCK FB_Cylinder2Pos
 VAR_INPUT
     Req       : BOOL;            // TRUE = yêu cầu tới vị trí LÀM VIỆC — giữ mức, không phải xung
@@ -526,6 +527,7 @@ chu trình con, đọc một thanh ghi. Viết theo đúng năm quy tắc chung 
 **y như khối của hãng** — lý do và bảng quy tắc ở Chương 30 mục 30.5b; ở đây là bản để chép.
 
 ```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — khối kích bằng sườn theo hợp đồng Execute/Done (giống hệt Chương 30 mục 30.5b)
 FUNCTION_BLOCK FB_BoardTransfer
 VAR_INPUT
     Execute   : BOOL;            // ⭐ SƯỜN LÊN = bắt đầu · tham số được CHỐT tại sườn này

@@ -160,6 +160,7 @@ DP-01 ở lát cắt này có bốn xy-lanh hai vị trí (chặn ×2, kẹp ×2
 hành vi. Vậy viết một khối:
 
 ```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — khối xy-lanh hai vị trí, dùng lại cho mọi xy-lanh (giống hệt Phụ lục L mục L.8)
 FUNCTION_BLOCK FB_Cylinder2Pos
 VAR_INPUT
     Req       : BOOL;            // TRUE = yêu cầu tới vị trí LÀM VIỆC — giữ mức, không phải xung
@@ -232,7 +233,8 @@ thật:
 Rồi tạo bốn thể hiện:
 
 ```iecst
-VAR
+VAR_GLOBAL
+    // ⭐ Toàn cục có chủ ý: tầng cơ cấu GỌI, tầng trạm ĐỌC Done (Chương 26) — không ai khác gọi
     Stop1  : FB_Cylinder2Pos;
     Clamp1 : FB_Cylinder2Pos;
     Stop2  : FB_Cylinder2Pos;
@@ -591,7 +593,12 @@ Trong tác vụ duy nhất, thứ tự gọi các khối **là một phần củ
 ```
 
 Thứ tự này không tuỳ ý. Tầng cơ cấu chạy **trước** để `Done` và `Fault` là của **vòng quét này**; nếu
-gọi sau, tầng trạm sẽ dùng giá trị của vòng quét trước và mọi phản ứng chậm thêm một chu kỳ. ⭐ Gom
+gọi sau, tầng trạm sẽ dùng giá trị của vòng quét trước và mọi phản ứng chậm thêm một chu kỳ.
+
+⚠⚠ Nhưng *"Done của vòng này"* là Done **của yêu cầu mà khối đã nhận** — tức yêu cầu của vòng trước.
+Yêu cầu tầng trạm vừa phát ở vòng này thì **chưa khối nào nhìn thấy**. Hệ quả thực hành: trạm phát yêu
+cầu ở **chuyển tiếp**, bước sau mới đọc `Done` — viết ngược lại thì trình tự nhảy qua bước mà không chờ
+(Chương 26 Bẫy 7; ví dụ hoàn chỉnh ở Chương 26 mục 26.5b đã chạy thử theo đúng thứ tự gọi này). ⭐ Gom
 lỗi đứng ngay trước tầng máy vì cùng lý do: máy vào `Alarm` **trong chính vòng quét** lỗi được chốt.
 
 ---

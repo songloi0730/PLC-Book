@@ -724,6 +724,7 @@ Bài toán: đưa board từ trạm 1 sang trạm 2 — bước 60 ở Chương 
 không được chờ mãi.
 
 ```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — khối kích bằng sườn theo hợp đồng Execute/Done (giống hệt Phụ lục L mục L.8b)
 FUNCTION_BLOCK FB_BoardTransfer
 VAR_INPUT
     Execute   : BOOL;            // ⭐ SƯỜN LÊN = bắt đầu · tham số được CHỐT tại sườn này
