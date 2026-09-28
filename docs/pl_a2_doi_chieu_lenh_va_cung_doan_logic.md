@@ -41,10 +41,14 @@ Trước khi vào bảng, cần phân biệt ba loại quan hệ:
 | | Siemens | Mitsubishi | Inovance | ⭐ CODESYS | Rockwell |
 |---|---|---|---|---|---|
 | Trễ khi bật | `TON` (IEC) | ⭐ `OUT T0 K20` — thiết bị T | `TON` hoặc thiết bị T | ⭐ `TON` | ⭐ `TON` |
-| Trễ khi tắt | `TOF` | ⚠ **Thường phải tự dựng** | `TOF` | `TOF` | `TOF` |
-| Xung | `TP` | ⚠ Tự dựng | `TP` | `TP` | ⚡ `TP`/tự dựng |
+| Trễ khi tắt | `TOF` | ⚠ Thiết bị `T` **chỉ có trễ khi bật**; dòng iQ-F có khối chuẩn `TOF` và lệnh `STMR` | `TOF` | `TOF` | `TOF` |
+| Xung | `TP` | Dòng iQ-F: khối chuẩn `TP`; dòng cũ: tra tài liệu dòng | `TP` | `TP` | ⚡ `TP`/tự dựng |
 | **Đặt thời gian** | ⭐ Kiểu `TIME`: `T#2s` | ⭐⭐ **Số nguyên × độ phân giải**: `K20` = 2,0 s nếu T là 100 ms | Tuỳ dòng | ⭐ `T#2s` | ⭐ Mili giây: `2000` |
 | **Mức tương đương** | ⚡ Gần | ⚠⚠ **Khác đáng kể** | ⚡ Gần | — (cột neo) | ⚡ Gần |
+
+> ⚠ *Bản trước của phụ lục ghi Mitsubishi "phải tự dựng" trễ khi tắt và xung — sai với dòng iQ-F: chính
+> sổ tay lập trình FX5 liệt kê khối chuẩn `TOF`, `TP` (kèm biến thể `_10`, `_E`) và lệnh `STMR` (sửa ở
+> đợt 64). Cái thật sự khác là **thiết bị `T`** — ngay dưới đây.*
 
 > ⚠⚠ **Cột Mitsubishi là chỗ khác biệt thật, không phải khác tên.**
 >
@@ -122,6 +126,11 @@ Trước khi vào bảng, cần phân biệt ba loại quan hệ:
 | Cạnh lên | ⭐ Tiếp điểm `P` · `R_TRIG` | ⭐ `LDP` · `PLS` | `LDP` | ⭐ `R_TRIG` | ⭐ `ONS` · `OSR` |
 | Cạnh xuống | Tiếp điểm `N` · `F_TRIG` | `LDF` · `PLF` | `LDF` | `F_TRIG` | `OSF` |
 | **Mức tương đương** | ⚡ Gần | ⚡ Gần | ⚡ Gần | — | ⚡ Gần |
+
+> ⭐ **Riêng Mitsubishi: lệnh kiểu xung.** Thêm `P` vào tên lệnh — `MOVP`, `INCP`, `CALLP` — thì lệnh chỉ
+> chạy **một lần**, ở sườn lên của điều kiện; không có `P` thì lệnh chạy **mọi vòng quét** chừng nào điều
+> kiện còn bật. ⚠ `INC D0` và `INCP D0` khác nhau giữa *"cộng 1 mỗi vòng quét"* và *"cộng 1 một lần"* —
+> và nhìn nấc thang thì chỉ khác **một chữ**. *(Sổ tay lập trình FX5 — điều kiện thực thi lệnh.)*
 
 > ⚠⚠ **Điểm chung phải nhớ trên MỌI hệ: mỗi chỗ bắt cạnh cần một BIT NHỚ RIÊNG.**
 >
@@ -261,6 +270,11 @@ END_CASE;
 > ⭐ **Khác biệt so với CODESYS gần như chỉ là dấu `#` cho biến cục bộ** và việc bộ định thời cần
 > Instance DB. Cấu trúc tư duy giống hệt — vì cả hai bám IEC 61131-3.
 >
+> ⚡ **Vì sao bản Siemens ở đây là SCL, không phải LAD:** hướng dẫn phong cách lập trình của chính Siemens
+> khuyên viết ruột khối bằng SCL, còn LAD/FBD để nối các khối trong OB và cho khối chủ yếu là logic nhị
+> phân. ⚠ Ngoài hiện trường bạn vẫn gặp rất nhiều chương trình Siemens viết LAD từ đầu tới cuối — phong
+> cách LAD của Siemens, đặt cạnh Mitsubishi và Rockwell: Chương 15 mục 15.6.
+>
 > ⚠⚠ **Vì sao bộ định thời gọi NGOÀI `CASE` ở cả hai bản:** một thể hiện khối **không được gọi thì
 > giữ nguyên trạng thái**. Gọi nó bên trong nhánh `40` thì rời bước là nó **đứng yên** — và lần sau
 > vào bước 40, `IN` vẫn TRUE nên không có sườn lên nào để đếm lại: `Q` còn TRUE từ lần trước, hoặc
@@ -280,8 +294,8 @@ END_CASE;
                     │
                     ├──[LD  X5]──[MOV K50 D100]   // X5 = DI_Clamp1Up → bước 50
                     │
-                    └──[LD  T5]──┬──[MOV K3041 D200]
-                                 └──[MOV K900  D100]
+                    └──[LD  T5]──[ANI  X5]──┬──[MOV K3041 D200]   // ⭐ ANI X5: xem bảng dưới
+                                            └──[MOV K900  D100]
 ```
 
 | ⚠ Điểm khác cần chú ý | |
@@ -289,6 +303,7 @@ END_CASE;
 | ⚠⚠ **`K20` phụ thuộc độ phân giải của `T5`** | ⭐ Phải kiểm dải; xem A2.2 |
 | ⚠ **Không có `CASE`** ở dòng cũ | ⭐ Dùng so sánh `LD= D100 K40` cho mỗi bước |
 | ⭐ **Số bước nằm trong thanh ghi `D100`** | Cùng ý tưởng, khác cách gọi |
+| ⚠⚠ **Nấc thang không có `ELSIF`** | ⭐ Mọi nhánh sau `LD= D100 K40` dùng **chung một kết quả đã lưu** (`MPS`/`MRD`/`MPP`) và chạy lần lượt trong **cùng** vòng quét. Kẹp lên đúng vòng quét hết giờ thì thiếu `ANI X5`, cả `MOV K50` lẫn `MOV K900` cùng chạy — bước cuối là **900**, trong khi bản ST cho **50**. `ANI X5` làm phản hồi thật thắng, như `ELSIF` |
 | ⭐ `OUT T5` nằm **dưới** phép so sánh bước | ⭐ Lệnh **vẫn được thực thi** mỗi vòng quét với điều kiện là phép so sánh — rời bước là điều kiện tắt, bộ định thời thường **tự về 0** (loại giữ giá trị thì không) |
 
 > ⚠⚠ **Hàng cuối ngược với trực giác của người quen CODESYS.** ⭐ Ở đây chính **bộ định thời kiểu

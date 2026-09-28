@@ -606,6 +606,119 @@ Nhưng những chi tiết sau **khác nhau thật** và sẽ làm bạn vấp kh
 | **Lệnh mở rộng trên nấc thang** | Mỗi hãng một bộ lệnh số học/so sánh/chuyển dữ liệu với tên riêng. Chương 19 nêu tên cụ thể |
 | **Cuộn dây có nhớ (SET/RESET)** | Siemens `(S)`/`(R)`; Mitsubishi `SET`/`RST`; Rockwell `OTL`/`OTU`. ⚠ Hành vi khi mất điện: ở hệ IEC phụ thuộc **khai báo biến**, còn `OTL`/`OTU` của Rockwell **tự nó đã giữ được** — Chương 16, mục 16.7 |
 
+### ⭐⭐ Cùng một nấc thang — ba phong cách viết
+
+Hai bảng trên là khác biệt về **tên lệnh**. Nhưng mở một chương trình máy thật, thứ làm bạn lạ lẫm là
+chuyện khác: **người ta tổ chức và viết chương trình theo phong cách nào**. Mỗi hệ kéo theo một phong
+cách riêng, và bạn nhận ra nó ngay từ nấc thang đầu tiên. Dưới đây là cùng nấc 1 ở mục 15.4, viết theo ba
+phong cách.
+
+**Kiểu thiết bị — Mitsubishi, và dòng nhỏ của Inovance.** Tên trên nấc thang là **địa chỉ thiết bị**;
+nghĩa của nó nằm trong **bảng chú thích** gắn với từng thiết bị. Dòng iQ-F có thêm **nhãn** *(label)* —
+tên có nghĩa gán cho thiết bị, gần với tag.
+
+```text
+   X0            X1            X2                                   M100
+ ┌───┤ ├──────┬──────┤ ├──────────┤ ├────────────────────────────────( )───┐
+ │            │
+ │ M100       │
+ └───┤ ├──────┘
+
+ Chú thích thiết bị:  X0 Nút Start · X1 Nút Dừng (NC) · X2 Đủ khí · M100 Cho phép chuyền chạy
+ Dạng danh sách lệnh: LD X0 · OR M100 · AND X1 · AND X2 · OUT M100
+```
+
+**Kiểu khối — Siemens TIA Portal.** Nấc thang nằm **trong một khối chức năng**, dùng biến **cục bộ** của
+khối (dấu `#`); khối tổ chức chính `OB1` gọi khối và nối tag toàn cục (trong ngoặc kép) vào chân của nó.
+Mỗi *network* có tiêu đề và chú thích riêng.
+
+```text
+ FB_Conveyor — Network 1: Cho phép chuyền chạy — tự giữ Start/Stop
+   #StartPB        #StopPB        #AirOK                             #RunCmd
+ ┌───┤ ├──────┬──────┤ ├────────────┤ ├──────────────────────────────( )───┐
+ │            │
+ │ #RunCmd    │
+ └───┤ ├──────┘
+
+ OB1 — Network 1: gọi khối chuyền (vẽ lại bằng chữ)
+                   "InstConveyor"
+                ┌─────────────────────┐
+ ───────────────┤EN   FB_Conveyor  ENO├──
+ "DI_StartPB" ──┤StartPB        RunCmd├── "M_ConvRunCmd"
+ "DI_StopPB"  ──┤StopPB               │
+ "DI_AirOK"   ──┤AirOK                │
+                └─────────────────────┘
+```
+
+**Kiểu tag — Rockwell Logix.** Không có địa chỉ tuyệt đối: tên trên nấc thang **là** tag. Nấc thang nằm
+trong một *routine*, được routine chính gọi bằng lệnh `JSR`.
+
+```text
+   XIC DI_StartPB      XIC DI_StopPB      XIC DI_AirOK            OTE M_ConvRunCmd
+ ┌───┤ ├──────────┬──────┤ ├────────────────┤ ├────────────────────────( )───┐
+ │                │
+ │ XIC M_ConvRunCmd
+ └───┤ ├──────────┘
+```
+
+Logic giống hệt nhau. Khác nhau là **mọi thứ xung quanh nó**:
+
+| Khía cạnh | ⭐ Kiểu thiết bị — Mitsubishi, Inovance dòng nhỏ | Kiểu khối — Siemens TIA | Kiểu tag — Rockwell Logix |
+|---|---|---|---|
+| Tên trên nấc thang | Địa chỉ `X0`, `M100`, `D100`; nghĩa ở **bảng chú thích**; dòng iQ-F có thêm nhãn | Tag toàn cục `"DI_StartPB"`; trong khối là biến cục bộ `#StartPB` | Chỉ có tag |
+| Tổ chức chương trình | Kiểu truyền thống: **một chương trình chính dài**, chia đoạn bằng chú thích; chương trình con đặt sau `FEND`, gọi bằng `CALL` theo con trỏ `P`. Dòng mới có thêm khối chương trình và FB | ⭐ `OB1` gọi các khối; mỗi thiết bị hay trạm là **một FB có dữ liệu thể hiện riêng**; ruột khối chỉ dùng chân vào/ra của nó | Task → Program → Routine; routine chính gọi routine khác bằng `JSR`; khối dùng lại là lệnh tự định nghĩa (AOI) |
+| Tự giữ viết thế nào | ⚠ Hay gặp **cặp `SET`/`RST`** thay cho nhánh tự giữ (xem ngay dưới) | Nhánh tự giữ, hoặc cuộn `(S)`/`(R)` | Nhánh tự giữ, hoặc `OTL`/`OTU` |
+| Làm một lần ở sườn | `LDP`/`LDF`, `PLS`/`PLF`; ⭐ **lệnh kiểu xung**: thêm `P` vào tên lệnh (`MOVP`, `INCP`) — lệnh chạy **một lần** ở sườn lên | Tiếp điểm `P`/`N` cần một **bit nhớ sườn riêng**; hoặc khối `R_TRIG` | `ONS`/`OSR`/`OSF` cần một bit lưu riêng |
+| Bộ định thời | Thiết bị `T`: `OUT T0 K20` — số nguyên nhân độ phân giải (Phụ lục A2 mục A2.2) | Khối IEC `TON` có dữ liệu thể hiện — Siemens khuyên đặt nó **bên trong** FB dùng nó | Tag kiểu `TIMER`: `.PRE` tính bằng mili giây, `.DN`, `.TT` |
+| Trình tự | Số bước trong thanh ghi `D`, so bằng `LD=`; hoặc bit `M` bật tắt bằng `SET`/`RST`; hoặc bậc thang bước `STL` / SFC | SCL `CASE` trong FB; hoặc GRAPH — gói riêng (Chương 21 mục 21.7) | Số bước so bằng `EQU`; routine SFC; ST `CASE` |
+| Tín hiệu vòng quét đầu (Chương 16 Bẫy 9) | `SM402` ở dòng iQ-F · `M8002` ở dòng FX cũ và Inovance H3U | Khối tổ chức **khởi động** *(startup OB)* chạy một lần trước vòng quét đầu | Bit hệ thống `S:FS` |
+| ⭐ Mở một chương trình lạ: bắt đầu từ | Bảng chú thích thiết bị · tham chiếu chéo thanh ghi bước | ⭐ Cây gọi khối từ `OB1` · bảng tag | Cây Task/Program/Routine · tham chiếu chéo tag |
+
+| Phong cách | ⭐ Mạnh | ⚠ Yếu | Hợp khi |
+|---|---|---|---|
+| Kiểu thiết bị | Nấc thang **nhìn thẳng ra phần cứng** — thợ điện dò `X0` từ bản vẽ tới chương trình không cần tra; giám sát trực tuyến rất trực quan | Thiếu chú thích là **mất nghĩa**; tài nguyên toàn cục (`T5`, `M100`) dễ bị dùng trùng (Phụ lục A2 mục A2.8); khó chép một cụm sang máy khác | Máy nhỏ, một người viết, đội bảo trì quen ladder |
+| Kiểu khối | ⭐ Dùng lại được — **thêm một trạm giống hệt là thêm một thể hiện**; nhiều người cùng làm một dự án | Người bảo trì phải lần theo **cây gọi** và **thể hiện** mới tới được nấc có lỗi; ruột khối viết SCL thì khó chẩn đoán với thợ chỉ quen ladder | Máy nhiều trạm giống nhau, có đội phần mềm |
+| Kiểu tag | Tên có nghĩa ngay trên nấc thang; không thể trùng địa chỉ | ⚠ Ảnh I/O không đồng bộ với vòng quét (Phụ lục A1 mục A1.5); nhiều tag thì phải có quy ước đặt tên chặt | Máy lớn, dự án nhiều routine |
+
+**Cặp `SET`/`RST` — khác nhánh tự giữ ở đâu.** Cùng mạch cho phép chạy, viết theo phong cách hay gặp
+trong chương trình máy Nhật:
+
+```text
+ Nấc a:   X0 (sườn lên)
+        ──┤↑├────────────────────────────────────────────[ SET  M100 ]──
+ Nấc b:   X1 (Dừng, NC — nhấn là 0)
+        ──┤/├───┬────────────────────────────────────────[ RST  M100 ]──
+          X2    │
+        ──┤/├───┘
+```
+
+| | Nhánh tự giữ (mục 15.4) | Cặp `SET`/`RST` |
+|---|---|---|
+| Start và Dừng cùng lúc | Dừng thắng — Dừng nằm **nối tiếp** ngay trong nấc | Nấc **viết sau** thắng: `RST` viết sau `SET` thì Dừng thắng; ⚠ đảo thứ tự hai nấc là Start thắng |
+| Mất điện rồi có lại | Bit về 0 — trừ khi bạn khai nó là biến giữ | ⚠⚠ Nếu `M100` nằm trong **dải chốt** — Mitsubishi đặt việc giữ theo dải thiết bị (Chương 16 mục 16.7) — bit **còn 1** khi có điện lại, trái nguyên tắc khởi động lại phải có chủ ý (Chương 47 Bẫy 4) |
+| Tìm chỗ tắt khi chẩn đoán | Một nấc | Phải tìm **mọi** `RST` của bit — có thể rải khắp chương trình |
+| Thêm điều kiện dừng về sau | Thêm một tiếp điểm nối tiếp | Thêm một nhánh `RST` — dễ quên một chỗ |
+
+⭐ Sách viết lệnh chạy bằng nhánh tự giữ vì hai hàng đầu: Dừng thắng ngay trong nấc, và mất điện là
+tắt. Gặp cặp `SET`/`RST` trong máy thật — đó là phong cách hợp lệ — thì kiểm ba thứ: `RST` đã viết sau
+`SET` chưa, bit có nằm trong dải chốt không, và bạn đã tìm hết mọi `RST` của nó chưa.
+
+> ⚠ **Một lời phản biện chính cuốn sách.** Mọi ví dụ của sách dùng tên tag kiểu `DI_StartPB`, và phần lớn
+> mã trình tự viết bằng ST — tức gần phong cách Siemens, CODESYS, Rockwell. Ở nhà máy chạy nhiều máy
+> Nhật, bạn sẽ mở ra `X0`, `M100`, `D100` và rất nhiều `SET`/`RST`. ⭐ Nguyên tắc của sách không đổi — chỉ
+> phải đọc qua bảng chú thích thiết bị. Và khi **viết** cho nhà máy đó, hãy viết theo phong cách đội bảo
+> trì ở đó đọc được (Chương 20 mục 20.6). Chính Siemens, trong hướng dẫn phong cách lập trình của mình,
+> khuyên viết ruột khối bằng SCL — nhưng chọn LAD hoặc FBD cho khối chủ yếu là logic nhị phân, *vì người
+> bảo trì chẩn đoán nhanh hơn*.
+
+⭐⭐ **Năm điều mang theo, phong cách nào cũng vậy:**
+
+1. Mọi tín hiệu có **tên hoặc chú thích** nói được nghĩa — `X0` không có chú thích là một món nợ.
+2. Mỗi bit, mỗi ngõ ra **một chỗ ghi** (Bẫy 1); với cặp `SET`/`RST`: mọi `RST` phải tìm thấy được.
+3. Chuyển bước bằng **phản hồi thật**; bộ định thời chỉ để báo lỗi (Chương 17, 26).
+4. Mỗi chỗ bắt sườn một **bit nhớ riêng** (Phụ lục A2 mục A2.5).
+5. Lệnh chạy **không được sống qua mất điện** mà thiếu một hành động khởi động có chủ ý (Chương 16, 47).
+
 Đối chiếu chi tiết năm hệ: **Phụ lục A2**.
 
 > ⚡ **LƯU Ý**
@@ -671,6 +784,19 @@ khi reset**. Chương 16 so sánh hai cách và chỉ ra khi nào cách gọn l�
 - Tài liệu hãng về ngôn ngữ Ladder Diagram — dùng để đối chiếu khác biệt ở mục 15.6; số hiệu cụ thể ghi
   trong Phụ lục A2.
 - Cấu hình I/O của DP-01 (kiểu tiếp điểm từng thiết bị) — Phụ lục J.
+- **Siemens** — *Programming Styleguide for S7-1200/S7-1500* (V1.2, 10/2016), mục 4.1: ⭐ khuyên viết
+  ruột khối bằng SCL, còn LAD/FBD để nối các khối trong OB và cho khối chủ yếu là logic nhị phân — vì
+  người bảo trì chẩn đoán dễ hơn; trong khối chỉ dùng biến cục bộ; ưu tiên đa thể hiện; tiền tố `Inst`
+  cho thể hiện. Tài liệu S7-1200 tiếng Việt, mục lệnh sườn: tiếp điểm `P`/`N` và `P_TRIG` cần một **bit
+  nhớ sườn** *(edge memory bit)*.
+- **Mitsubishi** — *MELSEC iQ-F FX5 Programming Manual (Instructions, Standard Functions/Function
+  Blocks)*: điều kiện thực thi lệnh và lệnh kiểu xung (thêm `P`), `LDP`/`LDF`, `PLS`/`PLF`,
+  `MPS`/`MRD`/`MPP`, `CALL`/`CALLP` gọi chương trình con theo con trỏ `P` đặt sau `FEND`, `STL`/`RETSTL`,
+  `SM400` luôn bật, `SM402` xung vòng quét đầu; *(Program Design)*: nhãn toàn cục và cục bộ, SFC.
+  `M8002` của dòng FX cũ: tài liệu lệnh cơ bản Mitsubishi tiếng Việt; Inovance H3U dùng cùng bit.
+- **Rockwell Automation** — *Logix 5000 Tasks, Programs, and Routines* (1756-PM005): Task → Program →
+  Routine, gọi routine bằng `JSR`, bit vòng quét đầu `S:FS`; *General Instructions* (1756-RM003):
+  `ONS`/`OSR`/`OSF` cần bit lưu riêng. Kiểm 2026-09-29.
 - ⚠ **Giới hạn của bảng 4 tổ hợp** (mục 15.3): nó chỉ phủ **hỏng kiểu hở**. Cơ chế chống **hỏng kiểu
   chập** — tiếp điểm dẫn động cưỡng bức, hai kênh, xung kiểm tra OSSD — nằm ở Chương 3 mục 3.5 và
   Chương 47 mục 47.7.

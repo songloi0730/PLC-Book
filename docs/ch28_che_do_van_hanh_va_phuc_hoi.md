@@ -388,6 +388,7 @@ của người lập trình** — nhưng người lập trình phải trình bà
 | Rủi ro va chạm | **Thấp** — về gốc đã xử lý mọi tư thế | **Cao** — giả định tư thế còn đúng |
 | Độ phức tạp code | Vừa | **Rất cao** — phải khôi phục đúng cho từng bước |
 | Hợp với | Sản phẩm rẻ, chu trình ngắn | Sản phẩm rất đắt, chu trình rất dài |
+| ⚠⚠ Thời gian phục hồi | **Dài** — về gốc, xả hàng, mỗi lần | **Ngắn** — nếu tư thế xác minh được |
 
 > ⚠ **NGUY HIỂM**
 > Chạy tiếp từ chỗ dừng chỉ chấp nhận được khi **cả ba** điều sau đúng:
@@ -397,9 +398,26 @@ của người lập trình** — nhưng người lập trình phải trình bà
 >
 > Thiếu bất kỳ điều nào — chọn huỷ chu trình. Một sản phẩm hỏng rẻ hơn một cỗ máy hỏng rất nhiều.
 
+> ⚠⚠ **Phản biện chính bảng trên — nó thiếu một chiều: TẦN SUẤT.** *"Huỷ chu trình"* đúng với lỗi
+> **hiếm**. Với một lỗi lặp **mỗi giờ**, đường phục hồi dài nhân với số máy mỗi người trông sẽ đẩy người
+> vận hành tới chỗ **vượt qua cửa an toàn** — và khi đó máy kém an toàn hơn hẳn một máy phục hồi nhanh
+> (Chương 47 mục 47.7c). ⭐ Cách giữ được cả hai: **chia lỗi theo cách phục hồi**, không dùng một đường
+> cho mọi lỗi.
+
+| Nhóm lỗi | Ví dụ trên DP-01 | Cách phục hồi |
+|---|---|---|
+| ⭐ **Lặp lại, không làm mất tư thế, xử lý được từ ngoài** | Board lệch cảm biến; board tới chặn chậm hơn giới hạn | **Thử lại bước** bằng một nút trên tủ điều khiển, cửa vẫn đóng — không về gốc |
+| **Cần tay người, nhưng tư thế còn xác minh được** | Gỡ một board kẹt ở chặn | Mở cửa theo đường an toàn → đóng → **kiểm tư thế bằng cảm biến** → khớp thì chạy tiếp, không khớp thì về gốc — đúng ba điều kiện ở trên |
+| **Làm mất tư thế** | Mất khí giữa hành trình; cơ cấu bị đẩy bằng tay khi cửa mở | ⚠ **Về gốc toàn bộ** — không có đường tắt (mục 28.2) |
+
+⭐ Coi **thời gian phục hồi** là một thông số thiết kế: đo nó khi chạy thử (Chương 52). Đường phục hồi
+tốn gấp nhiều lần việc thật là tín hiệu phải thiết kế lại — thường bắt đầu bằng việc **sửa cho lỗi đó
+thôi lặp lại**.
+
 Ở DP-01, `Hold` (dừng có chủ ý, máy vẫn lành) thì chạy tiếp được. Còn `Alarm` (dừng vì sự cố, tư thế
 không chắc chắn) thì **luôn đi qua về gốc** — đó chính là lý do Chương 25 quy định `Resetting → Homing`
-chứ không về thẳng `Idle`.
+chứ không về thẳng `Idle`. Ở lát cắt này, về gốc của DP-01 chỉ gồm các xy-lanh nên ngắn; máy có trục
+và trình tự về gốc dài thì nhóm lỗi thứ hai ở bảng trên mới thật sự đáng làm.
 
 ---
 
@@ -527,6 +545,7 @@ xuất thật mà vẫn bỏ qua kiểm tra có board, cho ra hàng loạt sản
 | 10 | ⭐ Về gốc trục luôn theo **cùng một chiều**, có **bước bò chậm** | Có — đó là thứ quyết định độ lặp lại |
 | 11 | ⚠⚠ Có cờ *"vị trí còn tin được"*, và **về gốc nhanh chỉ dùng khi cờ đó đúng** | Cờ bị xoá ở **mọi** chỗ có thể làm mất vị trí |
 | 8 | Lập **danh sách tư thế xuất phát** để kiểm thử | Có ít nhất 5 tư thế, gồm cả tư thế giữa chừng |
+| 12 | ⭐ Chia **nhóm lỗi theo cách phục hồi**; đo **thời gian phục hồi** khi chạy thử | Lỗi lặp lại không buộc mở cửa; đường an toàn không dài hơn nhiều việc thật (Chương 47 mục 47.7c) |
 
 ---
 
@@ -548,6 +567,8 @@ xuất thật mà vẫn bỏ qua kiểm tra có board, cho ra hàng loạt sản
     chiều**?
 11. ⚠⚠ Phân biệt **về gốc bằng cảm biến** với **về gốc nhanh**. Sau khi mất điện với encoder gia số,
     được dùng cái nào? ⭐ Nêu cách kiểm rẻ nhất để không dùng nhầm.
+12. ⭐⭐ Một lỗi lặp **mỗi giờ**. Vì sao *"luôn huỷ chu trình và về gốc"* có thể làm máy **kém an toàn
+    hơn**? Nêu ba nhóm lỗi theo cách phục hồi, mỗi nhóm một ví dụ trên DP-01.
 
 Câu 2, 3 và 7 là ba câu phân loại. Trả lời được cả ba nghĩa là bạn đã có phản xạ *suy thứ tự từ phân
 tích va chạm* — thứ phân biệt người viết được máy chạy an toàn với người viết được máy chạy.
@@ -574,6 +595,9 @@ kiểm tra công thức hợp lệ thuộc về PLC chứ không thuộc về h�
   tự ⭐ **tốc độ về gốc → cữ báo gần gốc → tốc độ bò → tín hiệu điểm không → dừng**, thời gian dừng
   tuỳ chọn, và ⭐ **về gốc nhanh** bằng định vị tuyệt đối tới địa chỉ gốc đã thiết lập — ⚠ **không dùng
   cữ và điểm không**. *(Tên gọi khác nhau giữa các hãng; cơ chế giống nhau.)*
+- **SICK** — *Guidelines for Safe Machinery — Six Steps*, mục ước lượng rủi ro: biện pháp bảo vệ **làm
+  chậm sản xuất** là một động cơ để vượt qua nó — nền cho chiều *tần suất* ở mục 28.5; chi tiết và các
+  nguồn khác ở Chương 47 mục 47.7c. Kiểm 2026-09-29.
 
 > ⚠ Bảng va chạm và trình tự về gốc trong chương là **ví dụ dạy học cho DP-01 ở lát cắt 2**. Máy thật
 > có thêm cơ cấu và thêm dạng năng lượng sẽ có bảng va chạm dài hơn — và bảng đó phải do người thiết kế

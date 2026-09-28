@@ -503,6 +503,67 @@ phải hỏi thứ gì, và nhận ra khi mình đang định viết lại một
 
 ---
 
+## 47.7c ⭐⭐ Khi đường an toàn chậm hơn đường vượt qua — thiết kế để không ai muốn vượt
+
+Mọi thứ từ đầu chương tới đây đều **đúng trên giấy**. Giờ nhìn nó qua một ca làm việc thật.
+
+Trạm 1 của một máy kẹt board **mỗi giờ một lần** — board lệch chặn, gỡ ra mất **20 giây**. Nhưng để chạm
+được vào board, người vận hành phải đi hết con đường an toàn mà máy được thiết kế:
+
+| Bước | Thời gian — ví dụ minh hoạ, không phải số đo |
+|---|---|
+| Máy báo lỗi, người vận hành đi tới | 30 s |
+| Yêu cầu mở cửa, chờ khoá cửa nhả | 10 s |
+| ⭐ Gỡ board — **việc thật** | 20 s |
+| Đóng cửa, nhấn Reset | 10 s |
+| Máy về gốc toàn bộ (Chương 28) | 60 s |
+| Xử lý board dở dang, nhấn Start | 30 s |
+| **Tổng** | **≈ 2 phút 40 giây — gấp tám lần việc thật** |
+
+Một người trông **bốn** máy như thế mất gần **11 phút mỗi giờ** chỉ để đi con đường an toàn — trong khi
+sản lượng của ca được tính vào tên họ. ⚠⚠ Đó là lúc người ta tìm cách **cho máy chạy khi cửa mở**. Và một
+khi đã vậy, mọi tính toán mức hiệu năng ở mục 47.5 thành vô nghĩa: chức năng an toàn tốt nhất cũng không
+bảo vệ được ai khi nó đã bị vô hiệu hoá.
+
+> ⭐⭐ **Đây là lỗi thiết kế, không phải lỗi kỷ luật** — và các tài liệu an toàn máy nói đúng như vậy:
+>
+> - Đánh giá rủi ro phải tính cả **sử dụng sai có thể lường trước**, trong đó có việc **vô hiệu hoá thiết
+>   bị bảo vệ** (báo cáo IFA 2/2017e).
+> - Hướng dẫn của SICK liệt kê đúng những thứ sinh ra **động cơ vượt qua**: biện pháp bảo vệ khiến **không
+>   làm được việc**, **làm chậm sản xuất**, **cản trở việc khác**, hoặc **khó dùng**.
+> - Thiết bị khoá liên động phải được chọn và lắp để **khó bị vô hiệu hoá**, và che chắn nói chung **không
+>   được cản trở sản xuất quá mức cần thiết** (hướng dẫn an toàn máy của Schneider).
+> - ⭐ ISO 14119 dành hẳn một chương cho việc này — chương 8 ở bản 2024 (ở bản 2013 là mục 7): *thiết kế để
+>   giảm động cơ vô hiệu hoá*. Trình tự của nó: làm biện pháp cơ bản → kiểm xem có **động cơ vô hiệu hoá
+>   có thể lường trước** không → **loại bỏ** động cơ nếu được → còn động cơ thì **bắt buộc** thêm biện pháp.
+
+### Năm tầng biện pháp — theo thứ tự, như mục 47.3
+
+| # | Tầng | Làm gì | Trên DP-01 |
+|:-:|---|---|---|
+| 1 | ⭐⭐ **Bỏ lý do phải vào** | Một lỗi lặp mỗi giờ là lỗi **quy trình hoặc cơ khí** cần sửa từ gốc — không phải việc người vận hành cần làm nhanh hơn. Đếm lỗi theo nguyên nhân (Chương 53), sửa cái đứng đầu | Board lệch chặn: kiểm dẫn hướng và tốc độ chuyền lúc board vào chặn |
+| 2 | ⭐ **Làm được việc thường xuyên mà không mở cửa** | Việc lặp lại được thiết kế để làm **từ ngoài** che chắn: thử lại bước từ màn hình, chạy lùi chuyền chậm khi cửa **đóng**, ô kính để nhìn | Nút *thử lại bước* trên màn hình vận hành (Chương 44), chỉ cho phép khi cửa đóng |
+| 3 | ⭐ **Làm cho đường an toàn nhanh** | **Chia vùng** — mở cửa trạm 1 chỉ dừng mối nguy ở trạm 1, nếu đánh giá rủi ro cho phép; nút **yêu cầu vào** — máy dừng ở tư thế an toàn rồi mới nhả khoá; thời gian nhả khoá bằng **thời gian dừng đo thật**, không đặt dư "cho chắc"; sau khi đóng cửa, **phục hồi có kiểm chứng** thay vì luôn về gốc toàn bộ (Chương 28 mục 28.5) | DP-01 có sẵn hai cửa cho hai trạm (SF3, mục 47.9) — nền để chia vùng, nếu đánh giá rủi ro cho phép |
+| 4 | **Làm cho việc vượt qua khó** | Thiết bị khoá liên động có **mã hoá** (cơ, điện, từ hoặc quang); gắn chắc, tháo phải dùng dụng cụ; che không cho với tới thiết bị khi cửa mở; giá đỡ đủ cứng (Schneider) — và không vượt qua được bằng **vật dụng sẵn có** (SICK) | Mức mã hoá lấy theo đánh giá rủi ro, không chọn theo giá |
+| 5 | **Làm cho việc vượt qua lộ ra** | Ghi mỗi lần mở và đóng cửa, mỗi lần xử lý lỗi, thời gian phục hồi; báo cáo lên người quản lý | ⚠ Đây là **dữ liệu tổ chức**, không phải chức năng an toàn — chạy trên PLC thường được, nhưng không bao giờ được coi là biện pháp bảo vệ |
+
+> ⚠⚠ **Thứ tự là phần quan trọng nhất.** Tầng 4 và 5 chỉ đỡ phần còn sót. Bỏ trống tầng 1–3 rồi dồn tiền
+> vào thiết bị mã hoá cao nhất thì **động cơ vẫn còn nguyên** — và người ta sẽ tìm ra cách khác.
+>
+> ⚠ Chia vùng, dừng ở tư thế an toàn, phục hồi nhanh đều là **thay đổi thiết kế an toàn**: chúng phải nằm
+> trong đánh giá rủi ro và do người có thẩm quyền quyết định. Mục này đặt đúng câu hỏi — nó **không** cho
+> phép bạn tự nới một chức năng an toàn nào (Bẫy 5).
+
+⭐ **Đo được, nên phải đo.** Khi chạy thử (Chương 52), ghi lại mọi việc buộc người vận hành vào trong che
+chắn, tần suất của từng việc, và thời gian đi hết đường an toàn. Đường an toàn tốn gấp nhiều lần việc
+thật là tín hiệu phải thiết kế lại — trước khi người vận hành tự "thiết kế lại" giúp bạn.
+
+> ⭐ Sách đã gặp nguyên tắc này ba lần: cảnh báo sớm làm dừng máy (Chương 12), ức chế báo động (Chương 44),
+> quy trình nặng tới mức bị lách (Chương 53 Bẫy 5). Ở đây nó chạm tới tính mạng. ⭐⭐ **Thứ gây phiền sẽ bị
+> vô hiệu hoá — hãy thiết kế để cách an toàn cũng là cách nhanh nhất.**
+
+---
+
 ## 47.8 STO — dừng an toàn cho truyền động
 
 Với trục có servo hoặc biến tần, cách "cắt năng lượng" ngây thơ là **ngắt contactor phía trước bộ điều
@@ -644,6 +705,17 @@ Thử đúng phải bao gồm: nhấn E-Stop **ở từng bước của chu trì
 chạy**, cắt từng kênh của mạch hai kênh **riêng lẻ** để xác nhận phát hiện được. Danh mục này thuộc
 Chương 52, và nó là phần bắt buộc.
 
+### 🔍 BẪY 8 — Đường phục hồi sau khi mở cửa dài hơn chính việc sửa lỗi
+
+Mọi chức năng an toàn đều đạt khi nghiệm thu: mở cửa là dừng, đóng cửa phải Reset, sau Reset máy về gốc.
+Vài tuần sau, người ta phát hiện khoá liên động của một cửa **đã bị vô hiệu hoá**. Không ai cố ý phá
+hoại — mỗi lần kẹt board chỉ mất 20 giây để gỡ, còn đường an toàn mất gần ba phút, và mỗi người trông
+bốn máy.
+
+Cách tránh: coi **thời gian phục hồi** là một thông số thiết kế, như thời gian chu kỳ. Liệt kê các việc
+buộc người vận hành vào trong che chắn, tần suất và thời gian đi đường an toàn của từng việc, rồi áp năm
+tầng ở mục 47.7c — **bắt đầu từ tầng 1**.
+
 ---
 
 ## 47.12 Bảng chốt — làm gì với chức năng an toàn
@@ -661,6 +733,7 @@ Chương 52, và nó là phần bắt buộc.
 | 8b | ⭐ Nếu dùng **PLC an toàn**: chốt **mức người dùng** trước khi báo giá | Nhóm thiết kế + chủ đầu tư | ⚠⚠ Ở mức cơ bản chỉ **nối khối đã chứng nhận**; tự viết khối là **cả chương trình** phải kiểm định |
 | 8c | Chốt **ngôn ngữ** dùng cho phần an toàn | Nhóm thiết kế | ⭐ **FBD/LD**; ST chỉ ở mức mở rộng; IL và SFC không đặt vấn đề |
 | 2b | ⚠⚠ Đã rà **hình học**: lỗ trên che chắn · khe hở chống kẹp · ⭐ **điểm cuốn** | Người có thẩm quyền | ⭐ Con số tra từ **bảng tiêu chuẩn** và **có người ký** — không ước lượng |
+| 2c | ⭐⭐ Liệt kê **các việc buộc người vận hành vào trong che chắn**, tần suất, thời gian đi đường an toàn | Nhóm thiết kế + người vận hành | ⭐ Việc lặp lại đã được **loại bỏ**, làm được **từ ngoài**, hoặc đường an toàn **không dài hơn nhiều** việc thật (mục 47.7c) |
 | 9 | **Không phát hành** khi mục 1, 4, 8 chưa có | — | — |
 
 ---
@@ -693,8 +766,11 @@ Chương 52, và nó là phần bắt buộc.
 15. ⭐⭐ Chống kẹp có **hai** cách. Cách nào **loại bỏ** mối nguy, cách nào chỉ **giảm** rủi ro?
 16. ⚠⚠ **Điểm cuốn** là gì, và nêu bốn cấu hình sinh ra nó. ⭐ Vì sao **không cảm biến nào và không
     logic nào** bảo vệ được? Băng tải của DP-01 thuộc cấu hình nào?
+17. ⭐⭐ Một lỗi lặp mỗi giờ, gỡ mất 20 giây, nhưng đi hết đường an toàn mất ba phút. Vì sao đây là **lỗi
+    thiết kế** chứ không phải lỗi kỷ luật? Nêu năm tầng biện pháp theo thứ tự — và vì sao thiết bị mã
+    hoá cao không được đứng đầu danh sách.
 
-Câu 1, 4 và 7 là ba câu phân loại. Nhưng lưu ý: **trả lời trôi chảy mười câu này không có nghĩa là bạn
+Câu 1, 4 và 7 là ba câu phân loại. Nhưng lưu ý: **trả lời trôi chảy các câu này không có nghĩa là bạn
 đủ thẩm quyền thiết kế mạch an toàn.** Nó có nghĩa là bạn đủ hiểu để làm việc được với người có thẩm
 quyền — và biết khi nào phải gọi họ.
 
@@ -747,6 +823,16 @@ tin lệnh** là nguyên tắc xuyên suốt cả cuốn sách.
   ⭐ quan hệ giữa **kích thước lỗ trên che chắn** và **khoảng cách an toàn**; hai cách chống kẹp
   (⭐ **khe hở tối thiểu** — loại bỏ mối nguy — so với **giảm lực/năng lượng**); và ⚠⚠ **bốn cấu hình
   sinh ra điểm cuốn**, trong đó có **con lăn tiếp xúc băng tải** — nền cho mục 47.7.
+- ⭐ **Động cơ vô hiệu hoá thiết bị bảo vệ** (mục 47.7c): **SICK** — *Guidelines for Safe Machinery — Six
+  Steps*, mục ước lượng rủi ro: khả năng vượt qua biện pháp bảo vệ và động cơ vượt qua (không làm được
+  việc, làm chậm sản xuất, cản trở việc khác, khó dùng); mục che chắn di động: không vượt qua được bằng
+  vật dụng sẵn có; *Safety Guide for the Americas*: yếu tố con người. **Schneider Electric** — *Machine
+  Safety Guide*, mục thiết bị khoá liên động: chọn và lắp để giảm khả năng bị vô hiệu hoá, không cản trở
+  sản xuất quá mức cần thiết, bốn biện pháp (gắn chắc, mã hoá, che thiết bị, giá đỡ cứng). **DGUV / IFA
+  Report 2/2017e**: sử dụng sai có thể lường trước gồm cả vô hiệu hoá thiết bị bảo vệ. **ISO 14119:2024**,
+  chương 8 *thiết kế để giảm động cơ vô hiệu hoá* (bản 2013: mục 7) — đối chiếu qua bản tóm tắt công khai
+  của một đơn vị tư vấn an toàn máy (GT Engineering, trang về EN ISO 14119:2024 chương 8). Kiểm
+  2026-09-29.
 
 > ⚠⚠ **Toàn bộ tiêu chuẩn liệt kê ở trên đều có bản quyền và phải mua từ tổ chức phát hành.** Chương
 > này diễn giải khái niệm ở mức đủ để trao đổi chuyên môn; **nó không trích dẫn nội dung tiêu chuẩn và

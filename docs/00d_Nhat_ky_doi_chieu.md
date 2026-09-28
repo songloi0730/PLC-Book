@@ -3531,6 +3531,71 @@ chạy thử đợt 62 chưa đọc được. Tệp đã tải (tên, dung lư�
 
 ---
 
+## Đợt 64 — 2026-09-29 · Phong cách ladder của từng hãng, và "đúng trên giấy nhưng người ta sẽ vượt qua"
+
+Chủ dự án hỏi hai việc: ladder của Siemens và Mitsubishi **viết khác nhau** thế nào; và phản biện nội
+dung đã viết theo hướng *"mã có thể đúng nhưng thực tế làm khác"* — ví dụ cửa an toàn: lỗi nhỏ mỗi giờ
+một lần mà mở cửa, phục hồi còn lâu hơn xử lý lỗi, người trông nhiều máy sẽ tìm cách vượt qua. Quyết
+định đặt nội dung: design note 0010.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 676 | Siemens *Programming Styleguide for S7-1200/S7-1500* V1.2 (10/2016) mục 4.1: ⭐ khuyên SCL cho ruột khối; LAD/FBD để nối khối trong OB và cho khối chủ yếu là logic nhị phân — *"người bảo trì chẩn đoán dễ hơn"*; trong FB/FC chỉ dùng biến cục bộ; ưu tiên đa thể hiện (FB có bộ định thời bên trong); tiền tố `Inst` cho thể hiện | ✔ |
+| 677 | Tài liệu S7-1200 tiếng Việt, bảng tham số lệnh sườn: tiếp điểm `P`/`N` và `P_TRIG`/`N_TRIG` cần một **bit nhớ sườn** | ✔ |
+| 678 | Sổ tay lập trình FX5 (Instructions): điều kiện thực thi — chạy khi bật, **kiểu xung** chạy một lần ở sườn lên hoặc sườn xuống (`ALTP`, `LDP`…); `SET`/`RST`; `MPS` lưu, `MRD` đọc, `MPP` đọc và xoá kết quả phép toán | ✔ |
+| 679 | FX5: `CALL`/`CALLP` gọi chương trình con theo con trỏ `P`, chương trình con đặt sau `FEND`; `STL`/`RETSTL`; `SM400` luôn bật, `SM402` xung vòng quét đầu. FX5 *Program Design*: nhãn toàn cục và cục bộ, SFC | ✔ |
+| 680 | `M8002` — xung vòng quét đầu của dòng FX cũ (tài liệu lệnh cơ bản Mitsubishi tiếng Việt) và Inovance H3U (ví dụ trong sổ tay H3U); Rockwell 1756-PM005: bit `S:FS`, gọi routine bằng `JSR` | ✔ |
+| 681 | ⚠ Sổ tay FX5, mục khối chuẩn: `TOF`, `TP` (và `_10`, `_E`) cùng lệnh bộ định thời đặc biệt `STMR` — **ngược** với Phụ lục A2 mục A2.2 | ⚠ |
+| 682 | SICK *Six Steps* (mục ước lượng rủi ro) và *Safety Guide for the Americas*: khả năng vượt qua biện pháp bảo vệ; **động cơ vượt qua** — không làm được việc, làm chậm sản xuất, cản trở việc khác, khó dùng; mục che chắn di động: không vượt qua được bằng vật dụng sẵn có | ✔ |
+| 683 | Schneider *Machine Safety Guide*, mục thiết bị khoá liên động: chọn và lắp để giảm khả năng bị vô hiệu hoá và hỏng; che chắn không cản trở sản xuất quá mức cần thiết; bốn biện pháp — gắn chắc, mã hoá, che thiết bị khi cửa mở, giá đỡ cứng; công tắc cho phép ba vị trí cho việc dò lỗi | ✔ |
+| 684 | DGUV *IFA Report 2/2017e*: sử dụng sai có thể lường trước gồm cả **vô hiệu hoá thiết bị bảo vệ**; công thái học giao diện nhằm ngăn vượt qua và thao túng phần điều khiển an toàn | ✔ |
+| 685 | ISO 14119:2024 **chương 8** *thiết kế để giảm động cơ vô hiệu hoá* (bản 2013: mục 7) — qua bản tóm tắt công khai của GT Engineering: khoá liên động cản trở công việc **ít nhất có thể**; trình tự biện pháp cơ bản → kiểm động cơ → loại bỏ động cơ → còn thì biện pháp bổ sung bắt buộc. ⚠ Nguồn thứ cấp — tiêu chuẩn gốc có bản quyền, trang xem trước của ISO đòi chấp nhận điều khoản nên không mở | ✔ |
+
+### B — Lỗi, lưu ý tìm ra
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 686 | ⚠ Phụ lục A2 mục A2.2: Mitsubishi *"trễ khi tắt, xung: phải tự dựng"* — sai với dòng iQ-F (#681); chính sổ tay A2.2 dẫn đã có câu trả lời | ⚠ |
+| 687 | ⚠ A2.8, bản Mitsubishi: các nhánh sau `LD= D100 K40` dùng **chung kết quả đã lưu** — không có `ELSIF`. Kẹp lên đúng vòng quét hết giờ thì bước cuối là **900**, bản ST cho **50**. Thêm `ANI X5` vào nhánh lỗi | ⚠ |
+| 688 | ⚠ A2.8 trình bày Siemens bằng SCL mà không nói vì sao — người đọc không thấy LAD của Siemens. Thêm lý do (#676) và con trỏ về Ch.15 | ⚠ |
+| 689 | ⚠ Ch.15 mục 15.6 chỉ có khác biệt **tên lệnh** — thiếu **phong cách**: tổ chức chương trình, cách đặt tên, cặp `SET`/`RST` thay cho tự giữ, lệnh kiểu xung, tín hiệu vòng quét đầu của từng hệ (sách chưa nêu cái nào, dù Ch.16 Bẫy 9 dùng `M_FirstScan`) | ⚠ |
+| 690 | ⚠⚠ Ch.28 mục 28.5: bảng *huỷ chu trình hay chạy tiếp* thiếu chiều **tần suất × thời gian phục hồi**. *"Luôn huỷ và về gốc"* đúng với lỗi hiếm; với lỗi lặp mỗi giờ nó tạo **động cơ vô hiệu hoá** cửa an toàn | ⚠⚠ |
+| 691 | ⚠⚠ Ch.47 không có một dòng nào về **động cơ vô hiệu hoá** thiết bị bảo vệ — trong khi ISO 14119 có nguyên một chương | ⚠⚠ |
+| 692 | ⚠ Ch.47 mục 47.13: *"trả lời trôi chảy **mười** câu này"* — danh sách có 16 câu (nay 17) | ⚠ |
+
+### C — Bổ sung
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 693 | ➕➕ Ch.15 mục 15.6 *"Cùng một nấc thang — ba phong cách viết"*: nấc 1 của DP-01 theo kiểu thiết bị (Mitsubishi), kiểu khối (Siemens — cả ruột FB lẫn lời gọi trong OB1), kiểu tag (Rockwell); bảng tám khía cạnh; bảng mạnh/yếu (B18); cặp `SET`/`RST` so với nhánh tự giữ; *năm điều mang theo*; lời phản biện chính cuốn sách | ➕➕ |
+| 694 | ➕ Phụ lục A2: lệnh kiểu xung của Mitsubishi (`INC` so với `INCP`) ở A2.5; lý do bản Siemens là SCL ở A2.8 | ➕ |
+| 695 | ➕➕ Ch.47 mục 47.7c: ví dụ con số (đường an toàn gấp tám lần việc thật, bốn máy mỗi người); *vì sao là lỗi thiết kế* (#682–#685); **năm tầng biện pháp** theo thứ tự; Bẫy 8; bảng chốt dòng 2c; câu tự kiểm 17. ⚠ Tuân B3: không một dòng nào mô tả cách vượt qua | ➕➕ |
+| 696 | ➕ Ch.28 mục 28.5: dòng *thời gian phục hồi*; ba nhóm lỗi theo cách phục hồi; bảng chốt dòng 12; câu tự kiểm 12 | ➕ |
+| 697 | ➕ Nối bốn chỗ cùng một nguyên tắc — *thứ gây phiền sẽ bị vô hiệu hoá*: Ch.12, Ch.44, Ch.53 Bẫy 5, Ch.47 mục 47.7c | ➕ |
+
+### Kết quả đợt 64
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **22** |
+| ✔ Xác nhận | 9 |
+| ⚠⚠ Lỗi nặng | 2 — #690, #691 |
+| ⚠ Lỗi, lưu ý | 6 |
+| ➕➕ / ➕ | 2 / 3 |
+| Mục mới | Ch.15 *ba phong cách* · Ch.47 mục 47.7c, Bẫy 8 · Ch.28 ba nhóm lỗi theo cách phục hồi |
+
+> ⭐⭐ **Bài học 1 — "đúng" có hai nghĩa.** Mọi chức năng an toàn của DP-01 đều đúng theo nghĩa *nghiệm
+> thu được*. Nhưng đúng theo nghĩa *còn đang bảo vệ người sau ba tuần* thì cần thêm một câu hỏi mà
+> không bảng đánh giá nào tự hỏi: **đi con đường an toàn mất bao lâu, bao nhiêu lần một ca?**
+
+> ⭐ **Bài học 2 — cùng một logic, hai kết quả.** Nhánh lỗi của A2.8 đúng từng ký tự, và vẫn cho kết quả
+> khác bản ST ở đúng một vòng quét hiếm hoi. Ladder không có `ELSIF`; muốn ưu tiên thì phải **viết** ưu
+> tiên ra — cùng bài học *"X AND NOT Y"* mà PLCopen dạy cho nhánh lựa chọn của SFC (đợt 63).
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

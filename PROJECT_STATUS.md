@@ -1,6 +1,6 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-09-28 (đợt 63 — bản đầy đủ ba tài liệu PLCopen, chạy thử SFC)
+**Cập nhật:** 2026-09-29 (đợt 64 — phong cách ladder từng hãng; động cơ vô hiệu hoá cửa an toàn)
 **Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 14 phụ lục (15 dòng A1–N).** Kế hoạch hoàn
 thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61 ✅ · 62 ✅).
 
@@ -32,7 +32,11 @@ thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ 
    trong nhánh ở Ch.37–46.
 5. ~~Bản đầy đủ của 3 tài liệu PLCopen~~ ✅ đợt 63 — chủ dự án duyệt tải cả ba; đối chiếu Ch.14, 21, 30
    (nhật ký #651–#675, design note 0009). Kèm: bộ chạy thử đọc SFC dạng văn bản, ví dụ Ch.21 chạy thử.
-6. ⚠⚠ Tìm chuyên gia an toàn duyệt các chương ở dòng "chặn phát hành".
+6. ⚠⚠ Tìm chuyên gia an toàn duyệt các chương ở dòng "chặn phát hành" — ⚠ kể cả mục mới **47.7c** (động
+   cơ vô hiệu hoá thiết bị bảo vệ, đợt 64): năm tầng biện pháp, chia vùng, phục hồi có kiểm chứng.
+7. ~~**Đợt 64**~~ ✅ (2026-09-29, design note 0010) — Ch.15 *ba phong cách ladder* (thiết bị · khối · tag);
+   Phụ lục A2 sửa `TOF`/`TP` Mitsubishi, lệnh kiểu xung, nhánh ladder không có `ELSIF`; Ch.47 mục 47.7c +
+   Bẫy 8; Ch.28 mục 28.5 thêm chiều tần suất × thời gian phục hồi.
 
 ---
 
@@ -301,9 +305,10 @@ PLC_Programming_Book/
     case_study_may_mau.md         — hồ sơ máy mẫu DP-01 (bản làm việc; bản phát hành là Phụ lục J)
     ch01_… ch58_…                 — 58 chương
     pl_a1_… pl_n_…                — 15 phụ lục
-    design-notes/0001 … 0009      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
+    design-notes/0001 … 0010      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
                                     0007: đường đi của lỗi · 0008: giao diện trạm, ví dụ hoàn chỉnh, SFC ·
-                                    0009: bản đầy đủ PLCopen, chạy thử SFC)
+                                    0009: bản đầy đủ PLCopen, chạy thử SFC · 0010: phong cách ladder,
+                                    động cơ vô hiệu hoá)
   tools/
     gop_sach.sh                   — chạy 7 bộ kiểm → ghép → HTML → chép sang kho phát hành
     kiem_*.py                     — 6 bộ kiểm tĩnh (xem bảng ở đầu tệp)
