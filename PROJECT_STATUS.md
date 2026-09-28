@@ -250,13 +250,14 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
    ⚠ Khung đợt 4 ban đầu **sót Ch.14** (tổng quan IEC 61131-3) — đã bổ sung, vì Ch.15/20/21
    đều dựa vào khái niệm POU và thể hiện của nó.
 7. ~~**Bổ sung tên hãng vào 8 mục cũ**~~ ✅ xong session 10.
-8. **Đợt 5** — analog & truyền thông (Ch.31–46).
-9. **Đợt 6** — ráp lại (Ch.49, 53–58) + 11 phụ lục. Phụ lục A1/A2 viết sau cùng.
-10. **Chốt 5 câu hỏi còn lại của máy mẫu** (`docs/case_study_may_mau.md` §7) — chưa chặn, nhưng
-   Ch.55 và Ch.57 sẽ cần.
+8. ~~**Đợt 5** — analog & truyền thông (Ch.31–46).~~ ✅
+9. ~~**Đợt 6** — ráp lại (Ch.49, 53–58) + 11 phụ lục. Phụ lục A1/A2 viết sau cùng.~~ ✅
+10. ~~**Chốt 5 câu hỏi còn lại của máy mẫu**~~ ✅ chủ dự án chốt ở session 11 — `docs/case_study_may_mau.md`
+   mục 7 (300 board/giờ, đầu đọc Ethernet, không vision, trục Z servo, board 100 × 80 mm).
 11. ~~Bổ sung tài liệu nguồn Siemens & Mitsubishi~~ ✅ xong session 2–3. Thư viện nguồn coi như **đủ để viết**:
    40 file PDF / ~12.500 trang, phủ cả 5 hệ của Phụ lục A + đặc tả chuẩn mở + an toàn + điện nền tảng.
-12. Khi viết Phần I–II: quét mục lục sách Rabiee (file không có bookmark) để đối chiếu — không chặn đợt 1.
+12. ~~Khi viết Phần I–II: quét mục lục sách Rabiee~~ ✅ đợt 43 (nhật ký #271): 16/18 chương trùng chủ đề đã có,
+   gắn chặt một hãng → quyết định không đọc tiếp.
 
 ---
 
@@ -277,7 +278,7 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
 
 ## Chưa quyết
 
-- **Giấy phép phát hành** (CC BY-NC-SA hay đóng).
+- ~~**Giấy phép phát hành**~~ ✅ CC BY-NC-SA 4.0 — ghi trên bìa và đã phát hành công khai ở kho GitHub.
 - ~~Định dạng xuất bản~~ ✅ `.md` + `.html` một tệp tự đủ (ảnh nhúng), qua `tools/gop_sach.sh`.
 - ~~Repo git~~ ✅ repo cục bộ nhánh `master`; bản ghép đẩy lên kho phát hành.
 - Nền mô phỏng cụ thể cho bài tập Phụ lục I — nghiêng về CODESYS vì miễn phí và là cột neo trung lập,
