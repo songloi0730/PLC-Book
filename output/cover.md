@@ -34,7 +34,7 @@
 > đánh giá rủi ro cho cỗ máy cụ thể của bạn · thiết kế điện do người có chuyên
 > môn thực hiện · bản gốc tiêu chuẩn · quy định hiện hành tại thị trường của bạn.
 >
-> ⚠ Các chương chạm phần an toàn — **Chương 3, 6, 47, 48 và Phụ lục D** — mang
+> ⚠ Các chương chạm phần an toàn — **Chương 3, 6, 47, 48, 56 và Phụ lục D** — mang
 > cờ cảnh báo và **đang chờ chuyên gia an toàn máy rà soát**. Không dùng chúng
 > làm căn cứ thiết kế cho tới khi có.
 
