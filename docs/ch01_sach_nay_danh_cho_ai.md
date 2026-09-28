@@ -301,8 +301,8 @@ chúng trước khi chép:
 
 Mỗi chương dạy viết mã (Chương 14–21, 24–30) có ít nhất một ví dụ hoàn chỉnh; Chương 22, 23 dạy cách
 đọc mã và viết đặc tả nên không có. Cả hai loại khối đều đi qua **bộ kiểm mã của sách** (Phụ lục N mục
-N.7) — và các ví dụ hoàn chỉnh viết bằng ST còn được **chạy thử** qua nhiều vòng quét, nhiều chu trình
-liên tiếp (ví dụ LD, SFC thì chưa: bộ chạy thử chỉ hiểu ST).
+N.7) — và các ví dụ hoàn chỉnh viết bằng ST hay SFC dạng văn bản còn được **chạy thử** qua nhiều vòng
+quét, nhiều chu trình liên tiếp (ví dụ LD thì chưa: bộ chạy thử không đọc sơ đồ thang).
 
 > ⚠ **Kiểm bằng công cụ không thay được việc chạy trên phần mềm và phần cứng của bạn.** Bộ kiểm không
 > biết kiểu dữ liệu của từng biểu thức, bộ chạy thử là một mô hình chứ không phải PLC thật, và mỗi hãng

@@ -101,7 +101,19 @@
       "PLCopen_Motion_Control_Part3"
     ],
     "PLCopen — Structuring Program Development": [
-      "PLCopen_Structuring"
+      "PLCopen_Structuring_Program"
+    ],
+    "PLCopen — SFC do's and don'ts": [
+      "structuring_with_sfc"
+    ],
+    "PLCopen — Coding Guidelines": [
+      "PLCopen_Coding_Guidelines"
+    ],
+    "PLCopen — Object-Oriented Programming": [
+      "PLCopen_OOP_Guidelines"
+    ],
+    "PLCopen — Compliant Libraries": [
+      "Creating_PLCopen_Compliant"
     ],
     "PLCopen XML exchange": [
       "PLCopen_XML"

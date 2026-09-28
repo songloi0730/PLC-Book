@@ -54,7 +54,8 @@
     ["pl_m_cau_hinh_du_an_phan_mem.md", "thời gian quét", 36],
     ["pl_m_cau_hinh_du_an_phan_mem.md", "thời gian quét", 51],
     ["ch50_mo_phong_va_kiem_thu.md", "tràn số", 10],
-    ["pl_n_quy_uoc_viet_ma.md", "đánh số dây", 44]
+    ["pl_n_quy_uoc_viet_ma.md", "đánh số dây", 44],
+    ["ch21_fbd_sfc_va_il.md", "SFC", 10]
   ],
   "so_chuong_cu": {
     "_muc_dich": "Con trỏ theo SỐ CHƯƠNG CŨ — khung sách từng đánh số lại; cụm lỗi tái phát ở đợt 13, 58, 61. Mỗi luật: [số cũ bị dùng sai, chủ đề (regex), các chương đúng]. Dòng dẫn kèm một chương đúng thì không báo.",

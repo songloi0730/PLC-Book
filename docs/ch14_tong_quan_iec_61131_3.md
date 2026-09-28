@@ -49,6 +49,12 @@ thừa, mà vì **những nhóm bài toán khác nhau**, và ép tất cả vào
 | **SFC** — *Sequential Function Chart* | Đồ hoạ, bước và chuyển tiếp | **Trình tự** có thứ tự trước sau | 21, 26 |
 | **IL** — *Instruction List* | Văn bản, giống hợp ngữ | ⚠ Di sản — **đã bị bỏ khỏi chuẩn ở bản 2025**; chỉ để **đọc** chương trình cũ | 21 |
 
+> ⚡ **Nói cho chính xác: SFC không hẳn là "ngôn ngữ thứ năm".** Nó chia một POU thành **bước và
+> chuyển tiếp**, còn điều kiện chuyển và hành động phải viết bằng một trong các ngôn ngữ kia — nên
+> PLCopen nói thẳng SFC *"không được coi là một ngôn ngữ lập trình"* (tài liệu *Structuring with
+> SFC*, mục 1). Sách vẫn đếm "năm" theo thói quen của nghề và của tài liệu hãng; chỉ cần nhớ: viết
+> SFC là viết **cùng** một ngôn ngữ khác.
+
 ### Chọn ngôn ngữ theo bài toán
 
 | Bài toán | Ngôn ngữ hợp nhất | Vì sao |

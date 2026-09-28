@@ -550,10 +550,130 @@ END_PROGRAM
              "huỷ chu trình: van kẹp tắt TRƯỚC, van chặn tắt SAU khi kẹp về gốc (V1)")
     kiem(m.doc("Prg_Stn1Dispense.Stn1_Step") == 0 and not m.doc("M_Stn1_ClampReq"), "bước về 0, yêu cầu về nghỉ")
 
+def ch21_sfc():
+    print("Ch.21 — trạm 1 bằng SFC dạng văn bản; chạy HAI lần: .T giữ khi rời bước (chuẩn) và .T về 0")
+    ma = khoi("ch21_*.md", "PROGRAM Prg_Stn1Sfc")
+
+    def mot_lan(kieu):
+        m = May(ma)
+        m.t_khi_roi = kieu
+        # vat: vị trí kẹp 0..1 · board · kẹt (kẹp đứng yên) · board kẹt · thời gian xử lý · xử lý hỏng
+        v = {"kep": 0.0, "board": False, "roi": 0, "ket": False, "ket_board": False, "xl": 0,
+             "xl_hong": False, "hanh_trinh": 300}
+        nk = []                                                 # (bước đang sống, ClampReq, ConvReq, Alm)
+
+        def song():
+            return tuple(b for b in ("S10", "S20", "S30", "S40", "S50", "S90")
+                         if m.doc("Prg_Stn1Sfc.%s.X" % b))
+
+        def vat_ly(dt):
+            if not v["ket"]:
+                huong = 1 if m.doc("M_Stn1_ClampReq") else -1
+                v["kep"] = min(1.0, max(0.0, v["kep"] + huong * dt / v["hanh_trinh"]))
+            m.dat("DI_Clamp1Up", v["kep"] >= 1.0)
+            m.dat("DI_Clamp1Dn", v["kep"] <= 0.0)
+            if v["board"] and m.doc("M_Stn1_ConvReq") and not v["ket_board"]:
+                v["roi"] += dt
+                if v["roi"] >= 500:
+                    v["board"], v["roi"] = False, 0
+            m.dat("DI_BoardStn1", v["board"])
+            # "lát cắt sau": bộ xử lý làm 1 s khi trạm ở S30 — bộ thử nhìn được mọi thứ, PLC thì không
+            v["xl"] = v["xl"] + dt if m.doc("Prg_Stn1Sfc.S30.X") else 0
+            m.dat("M_Stn1_ProcessDone", v["xl"] >= 1000 and not v["xl_hong"])
+
+        def chay(ms):
+            for _ in range(ms // 10):
+                vat_ly(10)
+                m.quet("Prg_Stn1Sfc", 10)
+                nk.append((song(), m.doc("M_Stn1_ClampReq"), m.doc("M_Stn1_ConvReq"),
+                           m.doc("M_Alm_Stn1Seq")))
+
+        def nhan_reset():
+            m.dat("DI_ResetPB", True)
+            chay(30)
+            m.dat("DI_ResetPB", False)
+            chay(20)
+
+        kq = {}
+        chay(100)
+        kq["dau"] = song() == ("S10",) and not (m.doc("M_Stn1_ClampReq") or m.doc("M_Stn1_ConvReq"))
+        for _ in range(3):                                      # ba board bình thường
+            v["board"] = True
+            chay(4000)
+        vong = [x[0] for x in nk]
+        kq["ba_chu_trinh"] = sum(1 for a, b in zip(vong, vong[1:]) if a == ("S50",) and b == ("S10",)) == 3
+        doi_20_30 = [i for i in range(1, len(nk)) if nk[i - 1][0] == ("S20",) and nk[i][0] == ("S30",)]
+        kq["kep_lien_mach"] = bool(doi_20_30) and all(nk[i - 1][1] and nk[i][1] for i in doi_20_30)
+        kq["cho_that"] = vong.count(("S20",)) >= 3 * 25 and vong.count(("S40",)) >= 3 * 25
+        kq["mot_buoc"] = all(len(x) == 1 for x in vong)
+        # kẹp chạy chậm 2,9 s (sát giới hạn 3 s) — vẫn qua; board kế tiếp chạy bình thường
+        v["hanh_trinh"], v["board"] = 2900, True
+        chay(8000)
+        v["hanh_trinh"] = 300
+        kq["cham_van_qua"] = not any(x[3] for x in nk[-800:]) and song() == ("S10",)
+        # kẹp kẹt GIỮA hành trình → S20 quá 3 s → S90
+        v["board"] = True
+        chay(200)
+        v["ket"] = True
+        chay(3500)
+        kq["ket_s90"] = song() == ("S90",) and m.doc("M_Alm_Stn1Seq") and not m.doc("M_Stn1_ClampReq")
+        nhan_reset()
+        kq["reset_khi_kep_chua_ha"] = song() == ("S90",)
+        v["ket"] = False
+        chay(500)
+        nhan_reset()
+        chay(1500)
+        kq["gỡ_kẹt_xả_board"] = song() == ("S10",) and not v["board"] and not m.doc("M_Alm_Stn1Seq")
+        # board kế tiếp vào S20 sau lần quá giờ: .T của S20 phải bắt đầu lại từ 0
+        v["board"] = True
+        chay(4000)
+        kq["sau_qua_gio_khong_bao_ngay"] = not any(x[3] for x in nk[-400:]) and song() == ("S10",)
+        # xử lý không bao giờ xong → S30 quá 60 s → S90; Reset → xả board, KHÔNG gia công lại
+        v["xl_hong"], v["board"] = True, True
+        chay(62000)
+        kq["s30_qua_gio"] = song() == ("S90",) and m.doc("DI_Clamp1Dn")
+        v["xl_hong"] = False
+        truoc = len(nk)
+        nhan_reset()
+        chay(1500)
+        kq["xa_khong_gia_cong_lai"] = song() == ("S10",) and all(x[0] != ("S30",) for x in nk[truoc:])
+        # board kẹt trên chuyền → S50 quá 10 s → S90; Reset → S50 lần nữa → gỡ kẹt → S10
+        v["ket_board"], v["board"] = True, True
+        chay(16000)
+        kq["s50_qua_gio"] = song() == ("S90",)
+        nhan_reset()
+        v["ket_board"] = False
+        chay(1500)
+        kq["s50_phuc_hoi"] = song() == ("S10",) and not v["board"]
+        kq["nhap_nhang"] = list(m.chuong_trinh["PRG_STN1SFC"].nhap_nhang)
+        return kq, [x[0] for x in nk]
+
+    a, vet_a = mot_lan("giu")
+    b, vet_b = mot_lan("ve0")
+    for k, mo_ta in (("dau", "khởi động: chỉ S10 sống, mọi hành động FALSE"),
+                     ("ba_chu_trinh", "ba board: đủ ba vòng S10 → S50 → S10"),
+                     ("kep_lien_mach", "M_Stn1_ClampReq gắn hai bước: KHÔNG rớt một vòng quét nào ở chỗ S20 → S30"),
+                     ("cho_that", "S20, S40 thật sự CHỜ kẹp lên/xuống (Bẫy 7 của Chương 26, phiên bản SFC)"),
+                     ("mot_buoc", "trình tự tuyến tính: luôn đúng MỘT bước sống"),
+                     ("cham_van_qua", "kẹp chậm 2,9 s — sát giới hạn 3 s — vẫn qua, không báo lỗi"),
+                     ("ket_s90", "kẹp kẹt giữa hành trình → S90: báo động bật, yêu cầu kẹp tắt"),
+                     ("reset_khi_kep_chua_ha", "Reset khi kẹp chưa về → ĐỨNG YÊN ở S90"),
+                     ("gỡ_kẹt_xả_board", "gỡ kẹt, Reset → S50 xả board → S10, báo động tắt"),
+                     ("sau_qua_gio_khong_bao_ngay", "board kế tiếp sau lần quá giờ: S20 KHÔNG báo lỗi ngay"),
+                     ("s30_qua_gio", "xử lý không xong 60 s → S90, kẹp đã hạ"),
+                     ("xa_khong_gia_cong_lai", "Reset → xả board, KHÔNG quay lại S30"),
+                     ("s50_qua_gio", "board kẹt trên chuyền 10 s → S90"),
+                     ("s50_phuc_hoi", "Reset → S50 lần nữa, gỡ kẹt → board ra, về S10")):
+        kiem(a[k] and b[k], mo_ta + " (cả hai kiểu .T)")
+    kiem(not a["nhap_nhang"] and not b["nhap_nhang"],
+         "không lần nào hai chuyển tiếp từ một bước cùng đúng (dòng 5: loại trừ nhau)")
+    kiem(vet_a == vet_b, "hai kiểu .T khi rời bước cho CÙNG một chuỗi bước — ví dụ đúng với cả hai hệ")
+
 
 def main():
     for f in (ch27_xylanh, ch30_chuyen_board, ch42_ma, ch14_pou, ch16_danh_dau, ch17_loc, ch18_dem,
-              ch19_dich, ch20_ham, ch24_bang, ch28_giam_sat, ch29_cong_thuc, ch25_may, tich_hop):
+              ch19_dich, ch20_ham, ch24_bang, ch28_giam_sat, ch29_cong_thuc, ch25_may, tich_hop,
+              ch21_sfc):
         f()
     print("-" * 78)
     print("CHẠY THỬ: %d đạt · %d hỏng" % (SO_DAT[0], len(SO_HONG)))

@@ -3461,6 +3461,76 @@ ST** — và chính nó tìm ra lỗi lớn nhất của đợt, một lỗi mà
 
 ---
 
+## Đợt 63 — 2026-09-28 · Bản đầy đủ ba tài liệu PLCopen, và chạy thử SFC
+
+Chủ dự án duyệt tải **ba bản đầy đủ** mà các đợt trước chỉ có tờ giới thiệu 1–4 trang, và chọn việc
+tiếp theo là **chạy thử ví dụ SFC** của Ch.21 — ví dụ hoàn chỉnh viết bằng SFC dạng văn bản, thứ bộ
+chạy thử đợt 62 chưa đọc được. Tệp đã tải (tên, dung lượng khớp trang Downloads của PLCopen):
+`PLCopen_Structuring_with_SFC_version_1.0.pdf` (59 trang) · `PLCopen_OOP_Guidelines_version_1.0.pdf`
+(27 trang) · `Creating_PLCopen_Compliant_Libraries_version_1_0.pdf` (89 trang), đặt ở `08_Open_Specs/`.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 651 | *Structuring with SFC* mục 1: SFC *"không được coi là một ngôn ngữ lập trình"* vì cần ngôn ngữ khác cho điều kiện và hành động; chỉ dùng trong khối chức năng và chương trình; một phần POU là SFC thì cả POU — xác nhận đúng hai luật mà Ch.21 lấy từ tờ giới thiệu | ✔ |
+| 652 | SFC mục 2.1: `.T` **giữ** giá trị lúc rời bước, về `t#0s` khi vào; tên bước, cờ bước, thời gian bước **cục bộ trong POU**; đánh giá điều kiện chuyển **không được có tác dụng phụ**; mỗi mạng SFC đúng một bước đầu | ✔ |
+| 653 | SFC mục 3.5: `P` chạy **một lần** khi bước được kích hoạt; `N` có thể chạy lần cuối **ngay sau** khi bước tắt, tuỳ cơ chế của hệ | ✔ |
+| 654 | SFC mục 3.6: mỗi hành động có một khối điều khiển hành động ngầm; *cách thực thi điển hình* — xét chuyển tiếp theo trạng thái cũ → ghi trạng thái mới → chạy hành động; *lần quét cuối* là tính năng **tuỳ hệ** (bảng 60 của chuẩn bản 3: có hoặc không, loại trừ nhau); chuẩn **không quy định thứ tự** chạy các hành động | ✔ |
+| 655 | SFC mục 4.1–4.10: bốn quy tắc nhánh song song; điều kiện **loại trừ nhau**, không dùng độ ưu tiên — viết lại `Tx' = Tx AND NOT Ty`; hành động **độc lập**; hạn chế `S`/`R`; tránh `.X`/`.T` trong hành động (quy tắc này tài liệu còn để dạng nháp) | ✔ |
+| 656 | Trợ giúp CODESYS *Implicit Variables*: POU khác đọc cờ bước bằng `<POU>.<bước>.x`; `._x` là trạng thái của vòng sau, chép sang `.x` đầu vòng | ✔ |
+| 657 | *Guidelines for usage of OOP* mục 2.3: bảng so sánh — bản 3 có lớp, phương thức, interface, đa hình, **không** có thuộc tính, hàm tạo chỉ một phần. Khớp nhận định *"thuộc tính vào chuẩn ở bản 4"* của Ch.30 mục 30.5c (đợt 60) | ✔ |
+| 658 | OOP mục 1.1, 3.1, 4.5, 5.1, 5.2: cách cổ điển dùng song song; năm nguyên tắc SOLID; ví dụ lò hơi kế thừa khối mô hình hành vi rồi vướng giới hạn **một cha**, chuyển sang **chứa**; lời gọi "ảo" tốn thời gian khác hẳn nhau theo phần cứng | ✔ |
+| 659 | *Creating PLCopen Compliant Libraries* mục 2.2, 3.1–3.5: `Execute` ↔ `Done`, `Enable` ↔ `Valid`; phát hiện sườn cần hai vòng quét; quy tắc khối kích bằng sườn; việc xong trong một lần gọi thì **không bao giờ thấy** `Busy`; mỗi thư viện một miền mã lỗi, `0` = không lỗi và `1` = quá thời gian **dành sẵn** | ✔ |
+| 660 | Libraries Phụ lục 4 — quy tắc chung của khối chuyển động PLCopen: bốn quy tắc đầu ở Ch.30 mục 30.5b **đúng từng điểm** (trước đây chỉ kiểm gián tiếp qua tài liệu hai hãng); kích lại khi chưa xong → lệnh trước **không có phản hồi** | ✔ |
+| 661 | ⚠ Libraries mục 5.1 — khối mẫu `ETrig`: trạng thái đang chạy **không đọc** `xExecute` → kích lại khi bận bị **bỏ qua**. Tức chỗ *"hai hãng lệch nhau"* ở quy tắc 5 là **hai câu trả lời có sẵn trong chính PLCopen** | ⚠ |
+
+### B — Lỗi, lưu ý tìm ra
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 662 | ⚠ Ch.21: *"`.T` khi rời bước thì **tuỳ hệ**"* — chuẩn (theo PLCopen #652) nói rõ là **giữ**; câu cũ đặt chuẩn ngang hàng với một mô tả trái chuẩn. Sửa lời; lời khuyên `.X AND .T` giữ nguyên | ⚠ |
+| 663 | ⚠ Ch.21: *"`.X` là cách đúng để phần còn lại của chương trình biết trình tự đang ở đâu"* — theo chuẩn cờ bước **cục bộ trong POU**; đọc từ POU khác là **phần mở rộng** của hệ (CODESYS #656). Thêm hai đường: hành động biến BOOL, hoặc đường truy cập của hệ — không mang sang hệ khác được | ⚠ |
+| 664 | ⚠ Ch.21 bảng bổ ngữ: *"`P` — ở CODESYS chạy hai lần"* — thiếu nửa chuẩn: theo chuẩn `P` chạy **một** lần; hai lần là hệ quả của *lần quét cuối* | ⚠ |
+| 665 | ⚠ Ch.21: bảng *nên và không nên* thiếu **hành động độc lập** — chuẩn không quy định thứ tự hành động, và vì lần quét cuối, hành động của hai bước **liền nhau** vẫn chạy cùng một vòng dù không có nhánh song song | ⚠ |
+| 666 | ⚠ Ch.14 *"năm ngôn ngữ"* — PLCopen #651: SFC không phải một ngôn ngữ đứng riêng. Thêm ghi chú, giữ cách đếm quen của nghề | ⚠ |
+| 667 | ⚠ Ch.21 ví dụ hoàn chỉnh dùng `M_ProcessDone`, Ch.26 dùng `M_Stn1_ProcessDone` cho cùng một tín hiệu — đổi theo quy ước `M_Stn1_` (Phụ lục N mục N.7) | ⚠ |
+| 668 | ⚠ Ch.30 quy tắc 3: thiếu `Aborted` và vế *"khi `Execute` đang TRUE thì luôn có đúng một ngõ ra bật"* (#660) | ⚠ |
+| 669 | ⚠ Ch.30 quy tắc 5: *"hãng xử lý khác nhau"* → sự khác nhau **bắt nguồn từ PLCopen** (#660, #661); khuyến nghị *"khối của bạn nên bỏ qua"* nay có gốc: khối mẫu `ETrig` | ⚠ |
+| 670 | ⚠ Ch.30 hai mục nguồn ghi *"bản đầy đủ chưa có trong bộ tài liệu"*, Ch.21 dẫn tờ giới thiệu — cập nhật theo bản đầy đủ | ⚠ |
+
+### C — Bổ sung
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 671 | ➕➕ Bộ chạy thử đọc **SFC dạng văn bản**: bước, chuyển tiếp (kể cả nhiều bước ở hai đầu), hành động biến BOOL bổ ngữ `N`; một vòng quét theo cách thực thi điển hình (#654); `.T` giữ khi rời bước, tuỳ chọn *về 0* để thử hệ khác. ⭐ Kiểm ngay khi nạp: một bước đầu, tên bước có thật, bước **tới được**, POU không trộn SFC với câu lệnh, SFC không nằm trong hàm; ghi nhận mọi lần **hai chuyển tiếp từ một bước cùng đúng** | ➕➕ |
+| 672 | ➕➕ Kịch bản Ch.21 — **16 phép**, mỗi phép chạy **hai lần** theo hai kiểu `.T` và đòi cùng một chuỗi bước; tổng **98 phép**. Cài 8 lỗi vào ví dụ (bỏ hành động giữ kẹp, lỗi xong quay về đầu, Reset không chờ kẹp, rời S50 sớm, giới hạn 30 s, quên hành động chuyền, hai bước đầu, bước không tới được) — **bắt 8/8** | ➕➕ |
+| 673 | ➕ Ch.21: dòng 10 *hành động độc lập*; dòng 5 cách viết lại `X AND NOT Y`; `S`/`R` — PLCopen khuyên tránh; lần quét cuối là lựa chọn của hệ; ví dụ áp **sáu** dòng của bảng và ghi kết quả chạy thử | ➕ |
+| 674 | ➕ Ch.30: `Busy` có thể không bao giờ được thấy; mã `0`/`1` dành sẵn và miền mã lỗi — khối `FB_BoardTransfer` dùng đúng hai mã đó; bẫy 5 có ví dụ lò hơi; chi phí lời gọi qua interface | ➕ |
+| 675 | ➕ Ch.14 mục 14.2: ghi chú *"SFC không hẳn là ngôn ngữ thứ năm"* | ➕ |
+
+### Kết quả đợt 63
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **25** |
+| ✔ Xác nhận | 10 |
+| ⚠ Lỗi, lưu ý | 10 |
+| ➕➕ / ➕ | 2 / 3 |
+| Mục mới | Ch.21 dòng 10 + kết quả chạy thử · Ch.14 ghi chú SFC · Ch.30 hai chi tiết khối mẫu · SFC trong `tools/chay_thu/` |
+
+> ⭐⭐ **Bài học 1 — tờ giới thiệu cho đúng hướng, bản đầy đủ mới cho câu trả lời.**
+>
+> Ba tờ 1–4 trang đủ để đợt 58–62 viết đúng hướng. Nhưng câu *"hai hãng xử lý kích lại khác nhau"* chỉ
+> được giải khi đọc bản 89 trang: sự khác nhau nằm **trong chính PLCopen** — quy tắc cho khối chuyển
+> động một đằng, khối mẫu cho người viết thư viện một nẻo. Sách chọn đúng từ trước, nay có gốc.
+
+> ⭐ **Bài học 2 — muốn nói "đúng với cả hai hệ", hãy chạy cả hai.** Đợt 62 viết ví dụ SFC sao cho đúng
+> dù `.T` giữ hay về 0 khi rời bước — một lập luận. Đợt 63 chạy nó theo **cả hai** cách và so hai chuỗi
+> bước — một bằng chứng.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

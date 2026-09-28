@@ -700,16 +700,17 @@ PLCopen chia khối có hành vi kéo dài thành **hai loại**, mỗi loại m
 
 ### ⭐⭐ Năm quy tắc của hợp đồng `Execute` / `Done`
 
-Tài liệu thư viện khối chuyển động của **hai hãng khác nhau**, cùng mô tả *"quy tắc chung"* theo
-PLCopen, khớp nhau ở bốn điểm đầu — và ⚠ **lệch nhau ở điểm thứ năm**:
+Quy tắc chung cho khối của PLCopen (Phụ lục 4 của tài liệu *Creating PLCopen Compliant Libraries*) và
+tài liệu thư viện khối chuyển động của **hai hãng** nói giống nhau ở bốn điểm đầu — ⚠ còn điểm thứ năm
+thì **chính PLCopen có hai câu trả lời**:
 
 | # | Quy tắc | Vi phạm thì người gọi gặp gì |
 |:-:|---|---|
 | 1 | Tham số được **chốt ở sườn lên** của `Execute`; đổi tham số giữa chừng **không** ảnh hưởng việc đang chạy | Đổi giới hạn thời gian giữa chừng và khối *tự* đổi hành vi |
 | 2 | `Busy` bật **ngay ở sườn lên** và giữ tới khi xong hoặc lỗi; trong lúc `Busy`, khối phải được **gọi mỗi vòng** | Khối không được gọi thì **đứng yên** — không xong, không lỗi (Chương 14 mục 14.3) |
-| 3 | `Busy`, `Done`, `Error` **loại trừ nhau** — mỗi lúc nhiều nhất một cái | Thấy vừa `Done` vừa `Error`, không biết tin cái nào |
+| 3 | `Busy`, `Done`, `Error` — và `Aborted` nếu khối có chân huỷ — **loại trừ nhau**; khi `Execute` đang TRUE thì luôn có **đúng một** cái bật | Thấy vừa `Done` vừa `Error`, không biết tin cái nào |
 | 4 | ⭐ `Done`/`Error` **xoá ở sườn xuống** của `Execute`; nếu `Execute` tắt **giữa chừng**, kết quả vẫn **hiện ít nhất một vòng quét** lúc xong | Người gọi dùng `Execute` dạng xung **không bao giờ thấy** `Done` |
-| 5 | ⚠ Kích lại khi **đang `Busy`** | ⚠ **Hãng xử lý khác nhau**: một tài liệu ghi là lệnh mới bị **bỏ qua**, tài liệu kia ghi là lệnh cũ **mất phản hồi**. ⭐ Khối của bạn nên **bỏ qua**; còn người gọi thì **đừng làm** — chờ `Busy` tắt |
+| 5 | ⚠ Kích lại khi **đang `Busy`** | ⚠ **Không thống nhất — ngay trong PLCopen**: quy tắc chung của khối chuyển động ghi lệnh trước **mất phản hồi** (lệnh mới thay nó); còn khối mẫu `ETrig` PLCopen đưa cho người viết thư viện thì **không nhìn** `Execute` khi đang bận — tức **bỏ qua**. Tài liệu hãng cũng chia hai phe như vậy. ⭐ Khối của bạn theo `ETrig`: **bỏ qua**; còn người gọi thì **đừng làm** — chờ `Busy` tắt |
 
 ```text
   Execute giữ mức tới khi xong          Execute chỉ là một xung
@@ -717,6 +718,12 @@ PLCopen, khớp nhau ở bốn điểm đầu — và ⚠ **lệch nhau ở đi�
   Busy    ▁▁██████▁▁▁▁▁▁▁▁▁▁            Busy    ▁▁██████▁▁▁▁▁▁▁▁
   Done    ▁▁▁▁▁▁▁▁██████▁▁▁▁            Done    ▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁   ← đúng MỘT vòng quét
 ```
+
+> ⚡ **Hai chi tiết của khối mẫu PLCopen đáng chép theo.** Việc xong **ngay trong lần gọi đầu** thì `Busy`
+> **không bao giờ** được thấy — người gọi đừng chờ thấy `Busy` mới coi là khối đã nhận lệnh. Và mã lỗi
+> `0` = không lỗi, `1` = quá thời gian là hai mã PLCopen **dành sẵn** cho mọi thư viện: mỗi thư viện có
+> miền mã riêng, mã của thư viện con phải **dịch** sang miền của mình chứ không đẩy thẳng ra — khối dưới
+> dùng đúng hai mã đó (tài liệu thư viện, mục 3.4 và 3.5).
 
 ### Một khối viết theo đúng năm quy tắc
 
@@ -933,12 +940,16 @@ Người đến từ C# hay Java mang theo thói quen đúng ở đó và **sai 
 | 2 | ⚠ **Đặt logic chạy theo thời gian vào phương thức.** Phương thức chỉ chạy **khi được gọi** — không ai gọi thì nó đứng yên, y như khối không được gọi (mục 30.5b, quy tắc 2) | Logic chạy theo vòng quét nằm ở **thân khối**, và thân khối vẫn được gọi **mỗi vòng**. ⭐ Phương thức chỉ để **hỏi** và **ra lệnh** |
 | 3 | ⚠⚠ **Gọi phương thức qua một biến interface chưa gắn.** Biến kiểu interface là **tham chiếu**, và bằng 0 tới lần gắn đầu tiên | Gắn **một lần** lúc khởi động; và ở chỗ nào không chắc, kiểm `aStation[i] <> 0` **trước** khi gọi |
 | 4 | ⚠ **Dùng `:=` với tham chiếu để "trỏ sang chỗ khác".** Với `REFERENCE TO`, `:=` **chép giá trị** vào chỗ tham chiếu đang trỏ — muốn trỏ sang chỗ khác phải dùng `REF=`. Và không khai được **mảng các tham chiếu** | Đọc kỹ từng phép gán có tham chiếu; ⭐ và như PLCopen yêu cầu: **không** tính toán trên con trỏ, **không** so lớn–nhỏ trên con trỏ hay tham chiếu (quy tắc E2, E3, Phụ lục N) |
-| 5 | ⚠ **Kế thừa theo kiểu "có liên quan".** Máy bơm **dùng** một động cơ, nhưng máy bơm **không phải là** một động cơ — cho `FB_Pump EXTENDS FB_Motor` là trộn hai quan hệ | Hỏi *"khối con **có phải là** khối cha không?"* — không phải thì **chứa** một thể hiện của nó thay vì kế thừa. ⭐ PLCopen đặt đúng câu hỏi này cho người viết thư viện: *kết hợp hay kế thừa?* |
+| 5 | ⚠ **Kế thừa theo kiểu "có liên quan".** Máy bơm **dùng** một động cơ, nhưng máy bơm **không phải là** một động cơ — cho `FB_Pump EXTENDS FB_Motor` là trộn hai quan hệ | Hỏi *"khối con **có phải là** khối cha không?"* — không phải thì **chứa** một thể hiện của nó thay vì kế thừa. ⭐ PLCopen đặt đúng câu hỏi này cho người viết thư viện: *kết hợp hay kế thừa?* — và tài liệu OOP của họ kể một chuyện thật: ví dụ lò hơi cho mọi khối kế thừa một khối mô hình hành vi, rồi không mở rộng thêm được vì một khối chỉ có **một** cha, phải chuyển sang **chứa** (mục 4.5, 5.1) |
 
 > ⚡ **Thêm hai điều về kế thừa trên CODESYS:** một khối chỉ kế thừa được **một** khối (nhưng thực hiện
 > được **nhiều** interface); và khối con **không được** khai lại biến trùng tên với khối cha. Khi sửa
 > chương trình đang chạy mà có tham chiếu interface, hệ phải định địa chỉ lại các tham chiếu đó — tài
 > liệu hãng cảnh báo việc này tốn thêm thời gian và có thể gây **rung thời gian quét**.
+>
+> ⚡ Và về thời gian quét nói chung: tài liệu OOP của PLCopen ghi nhận một lời gọi phương thức qua
+> interface (gọi "ảo") có thể tốn thời gian **hơn hẳn** một lời gọi thường, tuỳ phần cứng (mục 5.2).
+> Dùng interface trong một vòng lặp dài chạy mỗi vòng quét thì **đo** trước.
 
 ### Thuộc tính — và vì sao sách dùng phương thức thay cho nó
 
@@ -1184,20 +1195,29 @@ một lớp: analog và chuyển động.
   phải **phát triển cùng dự án**, để tới cuối thì chi tiết đã quên nên vừa lâu hơn vừa thiếu; và cách
   dùng **biểu mẫu để sẵn**, đặt nơi mọi người truy cập và cập nhật được khi máy thay đổi.
 
-- **PLCopen** — *Creating PLCopen compliant Function Block libraries* (tờ tóm tắt, bản 1.0 phát hành
-  5/2017): hai loại khối — **kích bằng sườn** (`Execute` ↔ `Done`) và **điều khiển theo mức**
-  (`Enable` ↔ `Valid`); ⭐ phát hiện sườn cần **hai vòng quét** nên khối phải nhận giá trị mới mỗi vòng
-  thì dùng mô hình mức — nền cho mục 30.5b. Bản đặc tả đầy đủ chưa có trong bộ tài liệu.
+- **PLCopen** — *Creating PLCopen Compliant Libraries*, v1.0 (5/2017, 89 trang; bản đầy đủ, đối chiếu
+  2026-09-28): hai loại khối — **kích bằng sườn** (`Execute` ↔ `Done`) và **điều khiển theo mức**
+  (`Enable` ↔ `Valid`) (mục 2.2); ⭐ phát hiện sườn cần **hai vòng quét** nên khối phải nhận giá trị mới
+  mỗi vòng thì dùng mô hình mức (mục 3.1); quy tắc khối kích bằng sườn — tham số chốt ở sườn lên, sườn
+  xuống không huỷ việc, ngõ ra giữ ít nhất một lần gọi (mục 3.2); `Busy` bật ngay khi nhận lệnh, việc
+  xong trong một lần gọi thì không thấy `Busy` (mục 3.4); miền mã lỗi, `0` và `1` dành sẵn (mục 3.5);
+  khối mẫu `ETrig` không nhìn `Execute` khi đang bận (mục 5.1); quy tắc chung của khối chuyển động —
+  loại trừ nhau, xoá ở sườn xuống, kích lại khi chưa xong thì lệnh trước không có phản hồi (Phụ lục 4)
+  — nền cho mục 30.5b.
 - Tài liệu thư viện khối chuyển động của **hai hãng khác nhau**, mục *quy tắc chung cho khối* theo
   PLCopen (đối chiếu 2026-09-26): tham số chốt ở sườn lên; `Busy`/`Done`/`Error` loại trừ nhau; kết
   quả xoá ở sườn xuống và vẫn hiện ít nhất một vòng nếu `Execute` tắt giữa chừng; `Enable` tắt thì
-  khối ngừng và xoá ngõ ra. ⚠ Hai tài liệu **lệch nhau** ở hành vi kích lại khi đang `Busy` — bảng
-  năm quy tắc ở mục 30.5b ghi rõ chỗ lệch.
+  khối ngừng và xoá ngõ ra. ⚠ Hai tài liệu **lệch nhau** ở hành vi kích lại khi đang `Busy` — đúng hai
+  câu trả lời có trong chính PLCopen; bảng năm quy tắc ở mục 30.5b ghi rõ chỗ lệch.
 
-- **PLCopen** — *Guidelines for Object Orientation* (tờ giới thiệu 1 trang): bản 3 của IEC 61131-3 cho
-  phép lập trình hướng đối tượng; cách cổ điển **không bị thay thế** mà cùng tồn tại; các câu hỏi thiết
-  kế — chỉ dùng phương thức hay cả truy cập biến trực tiếp, interface, *kết hợp hay kế thừa* — nền cho
-  mục 30.5c. Bản hướng dẫn đầy đủ chưa có trong bộ tài liệu.
+- **PLCopen** — *Guidelines for usage of Object-Oriented Programming*, v1.0 (11/2021, 27 trang; bản đầy
+  đủ, đối chiếu 2026-09-28): cách cổ điển **không bị thay thế** mà cùng tồn tại (mục 1.1); các câu hỏi
+  thiết kế — chỉ dùng phương thức hay cả truy cập biến trực tiếp, interface, *kết hợp hay kế thừa* (mục
+  1); bảng so sánh ở mục 2.3 — bản 3 có lớp, phương thức, interface, đa hình, nhưng **không** có thuộc
+  tính và hàm tạo chỉ một phần, khớp nhận định *"thuộc tính vào chuẩn ở bản 4"* của mục 30.5c; năm
+  nguyên tắc SOLID (mục 3.1); ví dụ lò hơi vướng giới hạn một cha, chuyển từ kế thừa sang chứa (mục
+  4.5, 5.1); gọi phương thức "ảo" tốn thời gian khác hẳn nhau theo phần cứng (mục 5.2) — nền cho mục
+  30.5c.
 - **CODESYS** — trợ giúp trực tuyến (đối chiếu 2026-09-26), các mục *Method*, *Property*, *Interface*,
   *Implementation of an Interface*, *Extension of a Function Block*, *REFERENCE TO*, *THIS*, *SUPER*,
   *FB_Init*: biến trong phương thức **khởi tạo lại mỗi lần gọi**; phương thức không đọc được `VAR_TEMP`

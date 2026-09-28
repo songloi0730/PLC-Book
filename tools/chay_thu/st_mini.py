@@ -7,8 +7,16 @@ Khối chuẩn: TON, TOF, TP (tính ET = bây giờ − lúc bắt đầu — KH
 liệu S7-1200 và Logix 5000, Phụ lục B mục B.9b), R_TRIG (bộ nhớ khởi tạo FALSE), F_TRIG (bộ nhớ
 khởi tạo TRUE), CTU, CTD, CTUD, SR, RS. Tên không phân biệt hoa thường (như chuẩn).
 
-⚠ Giới hạn biết trước: không kiểm kiểu dữ liệu, không mô phỏng tràn số nguyên, không có SFC, LD,
-FBD, phương thức hay giao diện. Nó là MÔ HÌNH để thử logic qua nhiều vòng quét — không phải PLC.
+SFC dạng văn bản (đợt 63): INITIAL_STEP/STEP … END_STEP, TRANSITION FROM … TO … := điều kiện;
+END_TRANSITION — kể cả nhiều bước ở hai đầu (nhánh song song). Hành động là biến BOOL với bổ ngữ N.
+Một vòng quét theo "cách thực thi điển hình" của PLCopen (Structuring with SFC, mục 3.6.1): xét
+chuyển tiếp theo trạng thái ĐẦU vòng → đổi bước → đặt biến hành động theo trạng thái MỚI. `.T` về 0
+khi vào bước, GIỮ giá trị lúc rời (chuẩn, mục 2.1); đặt May.t_khi_roi = "ve0" để thử hệ đặt lại khi
+rời bước. Hai chuyển tiếp cùng đúng từ một bước → ghi vào the.nhap_nhang (luật loại trừ nhau, 4.3).
+
+⚠ Giới hạn biết trước: không kiểm kiểu dữ liệu, không mô phỏng tràn số nguyên, không có LD, FBD,
+phương thức hay giao diện; SFC chưa có ACTION … END_ACTION và các bổ ngữ khác N. Nó là MÔ HÌNH để thử
+logic qua nhiều vòng quét — không phải PLC.
 Kịch bản thử nằm ở kich_ban.py cùng thư mục.
 
 Dùng:
@@ -246,11 +254,72 @@ class PhanTich:
         while self.xem()[0] == "KW" and self.xem()[1].startswith("VAR"):
             bien.append(self.khoi_var())
         het = "END_" + loai
-        than = []
+        than, sfc = [], None
         while not self.la("KW", het):
-            than.append(self.cau_lenh())
+            if self.la_sfc():
+                if loai == "FUNCTION":
+                    raise LoiST("%s: SFC chỉ dùng trong khối chức năng và chương trình" % ten)
+                sfc = sfc or {"buoc": {}, "dau": None, "chuyen": []}
+                self.phan_tu_sfc(sfc)
+            else:
+                than.append(self.cau_lenh())
         self.an("KW", het)
-        return {"loai": loai, "ten": ten, "tra": tra, "bien": bien, "than": than}
+        if sfc is not None:
+            if than:
+                raise LoiST("%s: một phần POU là SFC thì cả POU phải là SFC — có câu lệnh ngoài sơ đồ" % ten)
+            kiem_sfc(ten, sfc)
+        return {"loai": loai, "ten": ten, "tra": tra, "bien": bien, "than": than, "sfc": sfc}
+
+    # ── SFC dạng văn bản ──
+    def la_sfc(self):
+        t = self.xem()
+        if t[0] != "ID":
+            return False
+        if t[1] in ("INITIAL_STEP", "STEP"):                    # chữ HOA đúng như chuẩn viết
+            return self.la("ID", k=1) and self.la("OP", ":", 2)
+        return t[1] == "TRANSITION" and self.la("ID", "FROM", 1)
+
+    def ds_buoc(self):
+        if self.co("OP", "("):
+            ds = [self.an("ID").upper()]
+            while self.co("OP", ","):
+                ds.append(self.an("ID").upper())
+            self.an("OP", ")")
+            return ds
+        return [self.an("ID").upper()]
+
+    def phan_tu_sfc(self, sfc):
+        loai = self.an("ID")
+        if loai in ("INITIAL_STEP", "STEP"):
+            ten = self.an("ID").upper()
+            self.an("OP", ":")
+            hd = []
+            while not self.la("ID", "END_STEP"):
+                ten_hd = self.an("ID").upper()
+                self.an("OP", "(")
+                bo_ngu = self.an("ID").upper()
+                tg = self.bieu_thuc() if self.co("OP", ",") else None
+                self.an("OP", ")")
+                self.an("OP", ";")
+                hd.append((ten_hd, bo_ngu, tg))
+            self.an("ID", "END_STEP")
+            if ten in sfc["buoc"]:
+                raise LoiST("bước %s khai hai lần" % ten)
+            sfc["buoc"][ten] = hd
+            if loai == "INITIAL_STEP":
+                if sfc["dau"]:
+                    raise LoiST("sơ đồ có hai bước đầu: %s và %s" % (sfc["dau"], ten))
+                sfc["dau"] = ten
+            return
+        self.an("ID", "FROM")
+        tu = self.ds_buoc()
+        self.an("KW", "TO")
+        den = self.ds_buoc()
+        self.an("OP", ":=")
+        dk = self.bieu_thuc()
+        self.an("OP", ";")
+        self.an("ID", "END_TRANSITION")
+        sfc["chuyen"].append((tu, den, dk))
 
     # ── câu lệnh ──
     def khoi_lenh(self, *dung):
@@ -508,6 +577,31 @@ class PhanTich:
                 return nut
 
 
+def kiem_sfc(ten, sfc):
+    """Luật cấu trúc kiểm được ngay khi nạp: một bước đầu, tên bước có thật, bổ ngữ hỗ trợ, tới được."""
+    if not sfc["dau"]:
+        raise LoiST("%s: sơ đồ không có INITIAL_STEP" % ten)
+    for tu, den, _ in sfc["chuyen"]:
+        for b in tu + den:
+            if b not in sfc["buoc"]:
+                raise LoiST("%s: chuyển tiếp nhắc bước không có: %s" % (ten, b))
+    for b, ds in sfc["buoc"].items():
+        for ten_hd, bo_ngu, _ in ds:
+            if bo_ngu != "N":
+                raise LoiST("%s: bước %s — bổ ngữ %s chưa hỗ trợ trong bộ chạy thử" % (ten, b, bo_ngu))
+    toi = {sfc["dau"]}
+    doi = True
+    while doi:
+        doi = False
+        for tu, den, _ in sfc["chuyen"]:
+            if set(tu) <= toi and not set(den) <= toi:
+                toi |= set(den)
+                doi = True
+    thieu = sorted(set(sfc["buoc"]) - toi)
+    if thieu:
+        raise LoiST("%s: bước không bao giờ tới được: %s" % (ten, ", ".join(thieu)))
+
+
 # ───────────────────────────── Thực thi ─────────────────────────────
 class ThoatVong(Exception):
     pass
@@ -540,6 +634,7 @@ class May:
                 for g in v[1]:
                     self.enum[g] = g
         self.gio = 0                                             # đồng hồ nền, mili-giây
+        self.t_khi_roi = "giu"                                   # SFC: .T khi rời bước — "giu" | "ve0"
         self.toan_cuc = {}
         for ten, k, dau in cay["global"]:
             self.toan_cuc[ten.upper()] = self.tao(k, dau, {})
@@ -609,6 +704,12 @@ class May:
                     the.bien[ten.upper()] = ("NGOAI", ten.upper())
                 else:
                     the.bien[ten.upper()] = self.tao(k, dau, the.bien)
+        if p.get("sfc"):
+            for b in p["sfc"]["buoc"]:
+                if b in the.bien:
+                    raise LoiST("%s: tên bước %s trùng tên biến" % (p["ten"], b))
+                the.bien[b] = {"X": False, "T": 0}              # biến ngầm của bước: .X, .T
+            the.sfc_moc, the.nhap_nhang, the.sfc_khoi = {}, [], False
         return the
 
     # ── đọc/ghi theo tên ──
@@ -745,6 +846,8 @@ class May:
             for t, k, dau in getattr(the, "tam", []):       # VAR_TEMP: khởi tạo lại mỗi lần gọi
                 the.bien[t] = self.tao(k, dau, the.bien)
             self.chay_than(self.pou[the.kieu]["than"], the.bien)
+            if self.pou[the.kieu].get("sfc"):
+                self.chay_sfc(self.pou[the.kieu]["sfc"], the)
         for c, dich_ra in ra.items():
             kho, k = self.lay_o(pv, dich_ra)
             kho[k] = the.bien[c]
@@ -846,6 +949,45 @@ class May:
             self.chay_than(self.pou[the.kieu]["than"], the.bien)
         except TraVe:
             pass
+        if self.pou[the.kieu].get("sfc"):
+            self.chay_sfc(self.pou[the.kieu]["sfc"], the)
+
+    def chay_sfc(self, sfc, the):
+        """Một vòng quét của sơ đồ — thứ tự theo PLCopen, Structuring with SFC, mục 3.6.1."""
+        b = the.bien
+        if not the.sfc_khoi:                                    # khởi động: chỉ bước đầu hoạt động
+            the.sfc_khoi = True
+            b[sfc["dau"]]["X"] = True
+            the.sfc_moc[sfc["dau"]] = self.gio
+        for ten in sfc["buoc"]:                                 # .T của bước đang hoạt động
+            if b[ten]["X"]:
+                b[ten]["T"] = self.gio - the.sfc_moc[ten]
+        dang = {t for t in sfc["buoc"] if b[t]["X"]}
+        da_dung, xoa = set(), []
+        for tu, den, dk in sfc["chuyen"]:                       # 1 · xét theo trạng thái ĐẦU vòng
+            if all(t in dang for t in tu) and self.tinh(dk, b):
+                if any(t in da_dung for t in tu):
+                    the.nhap_nhang.append((self.gio, tuple(tu), tuple(den)))
+                    continue                                    # đi nhánh viết trước — như "trái nhất"
+                da_dung.update(tu)
+                xoa.append((tu, den))
+        for tu, den in xoa:                                     # 2 · đổi bước
+            for t in tu:
+                b[t]["X"] = False
+                if self.t_khi_roi == "ve0":
+                    b[t]["T"] = 0
+            for t in den:
+                b[t]["X"], b[t]["T"] = True, 0
+                the.sfc_moc[t] = self.gio
+        hd = {}                                                 # 3 · hành động BOOL theo trạng thái MỚI
+        for ten, ds in sfc["buoc"].items():
+            for ten_hd, _, _ in ds:
+                hd[ten_hd] = hd.get(ten_hd, False) or b[ten]["X"]
+        for ten_hd, v in hd.items():
+            kho, k = self._o(b, ten_hd)
+            if kho is None:
+                raise LoiST("hành động %s: biến chưa khai báo" % ten_hd)
+            kho[k] = v
 
     def _duong(self, duong):
         phan = duong.upper().split(".")

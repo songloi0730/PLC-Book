@@ -128,7 +128,7 @@ ladder**, kể cả khi FBD gọn hơn.
         │  S30  Gia công   │               │
         └────────┬─────────┘               │
                  │                         │
-            ─────┼─────  M_ProcessDone     │
+            ─────┼───── M_Stn1_ProcessDone │
                  └─────────────────────────┘
 ```
 
@@ -186,6 +186,9 @@ Chuẩn có nhiều **bổ ngữ hành động** *(action qualifier)*; ba cái b
 
 > ⚠ Dùng `S` mà quên `R` là biến thể SFC của bẫy SET/RESET ở Chương 16: một thứ được bật rồi không ai
 > tắt. Quy tắc giống hệt — **mỗi `S` phải có một `R` tương ứng**, và bạn phải chỉ ra được nó ở đâu.
+> ⚡ PLCopen còn đi xa hơn: **tránh** `S`/`R` — khoảng giữa `S` và `R` dài, hay có nhánh chen giữa, thì
+> nhìn sơ đồ không biết hành động đang chạy hay không. Thay bằng `N` gắn vào từng bước cần nó, hoặc
+> một nhánh song song giữ hành động đó (tài liệu SFC, mục 4.6 và 4.8).
 
 > ⚠⚠ **Hành động `N` "tự tắt" — nhưng thứ nó đã GÁN thì không.**
 >
@@ -194,7 +197,9 @@ Chuẩn có nhiều **bổ ngữ hành động** *(action qualifier)*; ba cái b
 > (`DO_Clamp1Vlv := TRUE;` viết trong hành động): cái dừng là **đoạn mã**, còn giá trị nó đã gán thì **ở
 > nguyên**. Sổ tay SFC của Rockwell ghi thẳng: với tuỳ chọn mặc định, khi rời bước *"mọi dữ liệu giữ
 > giá trị hiện tại"* — muốn tắt thì phải tự viết lệnh tắt. CODESYS thì **chạy đoạn mã thêm một lần**
-> sau khi rời bước (ở vòng quét kế tiếp) — tức một hành động `N` luôn chạy ít nhất hai lần.
+> sau khi rời bước (ở vòng quét kế tiếp) — tức một hành động `N` luôn chạy ít nhất hai lần. ⚡ Chuẩn bản 3
+> để lần chạy thêm này — *lần quét cuối* *(final scan)* — là **lựa chọn của hệ**: có hoặc không, mỗi
+> hệ chọn một (tài liệu SFC của PLCopen, mục 3.6).
 >
 > ⭐ Hệ quả thực hành: ngõ ra và yêu cầu của máy, hoặc là **hành động biến BOOL**, hoặc là **gán ở
 > ngoài sơ đồ theo cờ bước** (`M_Stn1_ClampReq := S20.X OR S30.X;`) — đừng gán TRUE trong đoạn mã rồi
@@ -206,7 +211,7 @@ Chuẩn có nhiều **bổ ngữ hành động** *(action qualifier)*; ba cái b
 |---|---|---|
 | **P1** — *pulse, rising* | Chạy **đúng một lần** khi bước được kích hoạt | ⭐ Khối bắt cạnh `R_TRIG` (Chương 16) |
 | **P0** — *pulse, falling* | Chạy **đúng một lần** khi rời bước | ⭐ Khối `F_TRIG` |
-| ⚠ **P** — *pulse* | ⚠⚠ Ở CODESYS: chạy **đúng hai lần** — một lần khi vào bước, một lần khi rời bước | ⚠ **Không** thay được `R_TRIG`: đoạn `Count := Count + 1` trong hành động `P` cộng **hai** mỗi lần đi qua bước |
+| ⚠ **P** — *pulse* | Theo chuẩn: chạy **một lần** khi bước được kích hoạt (PLCopen). ⚠⚠ Nhưng ở hệ có *lần quét cuối* như CODESYS: chạy **đúng hai lần** — một lần khi vào bước, một lần khi rời bước | ⚠ Trên hệ đó **không** thay được `R_TRIG`: đoạn `Count := Count + 1` trong hành động `P` cộng **hai** mỗi lần đi qua bước |
 | **L** — *time limited* | Chạy rồi **tự dừng sau một khoảng**, hoặc khi rời bước | ⭐ Một `TP` (Chương 17) |
 | **D** — *time delayed* | ⭐ **Bắt đầu sau một khoảng**, nếu lúc đó vẫn còn ở bước | ⭐ Một `TON` |
 
@@ -229,7 +234,7 @@ tự động, không phải khai báo**:
 | Biến | Kiểu | Nội dung |
 |---|---|---|
 | `TênBước.X` | `BOOL` | ⭐ **TRUE khi bước đang hoạt động**, FALSE khi không |
-| ⭐⭐ `TênBước.T` | `TIME` | ⭐ **Thời gian đã ở trong bước** — **về `t#0s` khi VÀO bước**, rồi chạy suốt lúc bước hoạt động. ⚠ Khi **rời** bước thì **tuỳ hệ**: có hệ giữ nguyên giá trị cuối, có tài liệu nói về 0 — xem ô dưới |
+| ⭐⭐ `TênBước.T` | `TIME` | ⭐ **Thời gian đã ở trong bước** — **về `t#0s` khi VÀO bước**, rồi chạy suốt lúc bước hoạt động. ⚠ Khi **rời** bước: chuẩn cho **giữ nguyên** giá trị lúc rời — nhưng có tài liệu mô tả về 0; xem ô dưới |
 
 > ⚠ **Coi cả hai là chỉ đọc.** Nhiều hệ báo lỗi khi chương trình gán vào chúng. ⚠ Nhưng không phải mọi
 > hệ: CODESYS **cho** ghi cờ bước để ép một bước hoạt động — và chính tài liệu của nó cảnh báo làm vậy
@@ -249,17 +254,22 @@ tự động, không phải khai báo**:
 > ⚡ Và vì `.T` **tự về 0 mỗi lần vào bước**, bạn không phải nhớ đặt lại timer — ⚠ đúng cái hay quên
 > nhất khi tự dựng bằng `TON` (Chương 17, Bẫy 2).
 >
-> ⚠⚠ **Nhưng luôn kèm `.X`.** Tài liệu của một hệ SFC theo chuẩn (Horner) ghi rõ: rời bước thì `.T`
-> **giữ nguyên**, chỉ về 0 ở lần vào bước sau — bộ đếm thời gian bước của Rockwell cũng vậy. Trên hệ
-> như thế, một bước từng chờ 3,2 giây rồi mới đi tiếp để lại `.T` = 3,2 s: điều kiện thiếu `.X` **đúng
-> mãi**, cờ lỗi **chốt lại ngay sau mỗi lần Reset**, và máy kẹt ở `Alarm` (Chương 25 mục 25.5c). ⚡ Giáo
-> trình Hanssen (viết trên CoDeSys) lại nói `.T` về 0 khi rời bước — hai nguồn ngược nhau, nên viết
-> sao cho **đúng với cả hai**: thêm `.X`.
+> ⚠⚠ **Nhưng luôn kèm `.X`.** Theo chuẩn — tài liệu SFC của PLCopen tóm tắt ở mục 2.1 — rời bước thì
+> `.T` **giữ nguyên** giá trị lúc rời, chỉ về 0 ở lần vào bước sau; Horner và bộ đếm thời gian bước của
+> Rockwell làm đúng như vậy. Trên hệ như thế, một bước từng chờ 3,2 giây rồi mới đi tiếp để lại `.T` =
+> 3,2 s: điều kiện thiếu `.X` **đúng mãi**, cờ lỗi **chốt lại ngay sau mỗi lần Reset**, và máy kẹt ở
+> `Alarm` (Chương 25 mục 25.5c). ⚡ Giáo trình Hanssen (viết trên CoDeSys) lại mô tả `.T` về 0 khi rời
+> bước — hệ của bạn theo cách nào thì cũng viết sao cho **đúng với cả hai**: thêm `.X`.
 
 > ⭐ **Công dụng hai — `.X` là cách đúng để phần còn lại của chương trình biết trình tự đang ở đâu.**
 >
 > Dùng cho đèn báo, cho điều kiện liên động, cho chẩn đoán — ⚠ **thay vì tự nuôi một biến "bước hiện
 > tại" song song**, thứ chắc chắn sẽ lệch với thực tế vào một ngày nào đó.
+>
+> ⚠ Nhưng theo chuẩn, tên bước, cờ bước và thời gian bước **chỉ có nghĩa bên trong POU chứa sơ đồ**
+> (tài liệu SFC của PLCopen, mục 2.1). Muốn POU khác biết, có hai đường: xuất ra bằng **hành động biến
+> BOOL** — cách ví dụ ở mục 21.6 làm với `M_Stn1_ClampReq` — hoặc dùng đường truy cập riêng của hệ:
+> CODESYS cho POU khác đọc `Prg_Stn1Sfc.S20.x`. Đường thứ hai **không mang sang hệ khác được**.
 
 > ⚠ **Một luật cấu trúc dễ vi phạm khi vẽ: không được đặt hai bước liền nhau mà không có bước chuyển
 > ở giữa.** Nghe hiển nhiên, nhưng khi **chèn thêm bước vào sơ đồ có sẵn** thì đây là lỗi hay gặp —
@@ -297,20 +307,21 @@ trình tự trong ladder. Vẽ GRAFCET không bắt buộc bạn phải lập tr
 
 Trước hết, hai luật của **chuẩn** — không phải lời khuyên: SFC **chỉ** dùng được trong khối chức năng
 và chương trình, **không** trong hàm — vì sơ đồ phải **nhớ** bước nào đang hoạt động; và một phần
-của POU đã viết bằng SFC thì **cả POU** phải chia thành bước và chuyển tiếp (tờ giới thiệu của PLCopen
-về SFC). Còn lại là các lựa chọn — và mỗi dòng dưới đây có một sự cố thật đứng sau:
+của POU đã viết bằng SFC thì **cả POU** phải chia thành bước và chuyển tiếp (tài liệu SFC của PLCopen,
+mục 1). Còn lại là các lựa chọn — và mỗi dòng dưới đây có một sự cố thật đứng sau:
 
 | # | ⭐ Nên | ⚠ Không nên | Vì sao |
 |:-:|---|---|---|
 | 1 | Mở nhánh song song bằng vạch đôi thì **đóng bằng vạch đôi**; nhánh con bên trong đóng **trước** khi ra khỏi vùng song song | ⚠⚠ Nối từ một bước bên trong vùng song song **ra ngoài** vùng, hoặc từ ngoài **vào giữa** vùng | Một nhánh thoát ra, nhánh kia vẫn hoạt động → **nhiều bước sống cùng lúc ngoài ý muốn** *(token proliferation)*, và hành vi **tuỳ hệ**. PLCopen xếp quy tắc này mức **cao** (L7); sổ tay SFC Rockwell: *"không nối vào, ra, hay giữa một nhánh song song"* |
 | 2 | Viết **hành động** bằng ST, LD hoặc FBD | Viết hành động bằng **chính SFC** (SFC lồng) | Chuẩn **không quy định** SFC con chạy thế nào; nhiều hệ chỉ chạy nó khi hành động cha đang hoạt động — SFC con không phản ứng được lúc cần. Cần máy trạng thái con thì gói vào một khối riêng (PLCopen L8) |
 | 3 | Giữ mỗi sơ đồ **nhỏ** — gợi ý khoảng 32 phần tử, vừa một màn hình; lớn hơn thì tách | Một sơ đồ trăm bước | Mất đúng lợi thế lớn nhất của SFC — **nhìn thấy toàn cảnh** (PLCopen L9) |
-| 4 | Điều kiện chuyển là **biểu thức thuần**: đọc, so sánh, kết hợp | Gán biến hay gọi khối **trong** điều kiện chuyển | CODESYS **không cho** gán hay gọi khối trong điều kiện viết thẳng trên sơ đồ; điều kiện có tác dụng phụ chạy theo thứ tự rất khó đoán |
-| 5 | Nhánh lựa chọn: các điều kiện **loại trừ nhau** | Hai điều kiện có thể cùng đúng | Hệ xét từ trái sang phải và đi nhánh **đầu tiên** đúng — nhánh nào "thắng" do **vị trí vẽ**, không do logic. Giáo trình Hanssen coi hai nhánh lựa chọn cùng kích hoạt là **lỗi** |
+| 4 | Điều kiện chuyển là **biểu thức thuần**: đọc, so sánh, kết hợp | Gán biến hay gọi khối **trong** điều kiện chuyển | ⭐ Chuẩn: đánh giá điều kiện chuyển **không được có tác dụng phụ** (tài liệu SFC của PLCopen, mục 2.1). CODESYS **không cho** gán hay gọi khối trong điều kiện viết thẳng trên sơ đồ; điều kiện có tác dụng phụ chạy theo thứ tự rất khó đoán |
+| 5 | Nhánh lựa chọn: các điều kiện **loại trừ nhau** — muốn nhánh Y thắng nhánh X thì viết lại X thành `X AND NOT Y` | Hai điều kiện có thể cùng đúng; ⚠ gán **độ ưu tiên** cho nhánh | Mặc định nhánh **trái nhất** đang đúng thắng — nhánh nào "thắng" do **vị trí vẽ**, không do logic; độ ưu tiên đánh số thì dễ sai khi nhiều nhánh chồng nhau. PLCopen khuyên chỉ dùng điều kiện loại trừ nhau (tài liệu SFC, mục 4.3–4.4) — ví dụ ở mục 21.6 viết nhánh lỗi đúng kiểu đó: `S20.T > T#3S AND NOT DI_Clamp1Up`. Giáo trình Hanssen coi hai nhánh lựa chọn cùng kích hoạt là **lỗi** |
 | 6 | Ngõ ra, yêu cầu: hành động **biến BOOL**, hoặc gán **ngoài** sơ đồ theo `.X` | Gán TRUE trong hành động đoạn mã rồi tin nó tự tắt | Giá trị đã gán **ở nguyên** khi rời bước — ngõ ra kẹt (lưu ý dưới bảng bổ ngữ) |
 | 7 | Timeout bước: `S30.X AND S30.T > T#3S` | `S30.T > T#3S` một mình | Ở hệ giữ `.T` sau khi rời bước, báo động **chốt lại mãi** (mục trên) |
 | 8 | Lên kế hoạch **đưa sơ đồ về bước đầu** khi Reset hay huỷ chu trình — bằng cơ chế của hệ: CODESYS có cờ `SFCInit`/`SFCReset`, Rockwell có lệnh `SFR` | ⚠ Ép bước bằng cách **ghi cờ bước** | Ghi cờ bước có thể đưa sơ đồ vào trạng thái không ổn định — chính tài liệu CODESYS cảnh báo |
 | 9 | SFC cho trình tự **bên trong** chế độ `Running` | SFC cho **chế độ máy** | Mục trên: "mọi trạng thái → `Alarm`" vẽ ra thành mớ bòng bong |
+| 10 | Các hành động có thể chạy trong **cùng một vòng quét** thì **độc lập**: không ghi chung một biến, không đọc thứ hành động kia vừa ghi | Hai hành động cùng sửa một biến, hay cái này dựa vào kết quả cái kia | ⭐ Chuẩn **không quy định thứ tự chạy các hành động**. Và vì *lần quét cuối*, hành động của **hai bước liền nhau** vẫn có thể chạy cùng một vòng dù không có nhánh song song — kết quả đổi theo hệ (tài liệu SFC của PLCopen, mục 3.6 và 4.7). Cùng bệnh với cuộn dây trùng (Chương 10, Bẫy 4) |
 
 > ⭐⭐ **Dòng 6, 7 và 8 là ba dạng của cùng một câu hỏi — câu hỏi mà Chương 25 và Chương 26 cũng hỏi:**
 > *"lần thứ hai đi qua đây, cái gì còn sót lại từ lần thứ nhất?"* Ngõ ra đã gán, thời gian của bước cũ,
@@ -445,20 +456,20 @@ trình soạn thảo đồ hoạ, dùng khối dưới như bản vẽ chính x�
 // ✔ VÍ DỤ HOÀN CHỈNH — trạm 1 bằng SFC, viết ở DẠNG VĂN BẢN của chuẩn IEC 61131-3
 //   Phần mềm đồ hoạ vẽ lại đúng từng bước, chuyển tiếp và hành động dưới đây
 VAR_GLOBAL
-    DI_BoardStn1    : BOOL;
-    DI_Clamp1Up     : BOOL;
-    DI_Clamp1Dn     : BOOL;
-    DI_ResetPB      : BOOL;
-    M_ProcessDone   : BOOL;              // xử lý board xong — lát cắt sau
-    M_Stn1_ClampReq : BOOL;              // hành động BOOL: yêu cầu nâng kẹp
-    M_Stn1_ConvReq  : BOOL;              // hành động BOOL: yêu cầu chuyền chạy
-    M_Alm_Stn1Seq   : BOOL;              // hành động BOOL: báo động của trình tự trạm 1
+    DI_BoardStn1       : BOOL;
+    DI_Clamp1Up        : BOOL;
+    DI_Clamp1Dn        : BOOL;
+    DI_ResetPB         : BOOL;
+    M_Stn1_ProcessDone : BOOL;           // xử lý board xong — lát cắt sau
+    M_Stn1_ClampReq    : BOOL;           // hành động BOOL: yêu cầu nâng kẹp
+    M_Stn1_ConvReq     : BOOL;           // hành động BOOL: yêu cầu chuyền chạy
+    M_Alm_Stn1Seq      : BOOL;           // hành động BOOL: báo động của trình tự trạm 1
 END_VAR
 
 PROGRAM Prg_Stn1Sfc
 VAR_EXTERNAL
     DI_BoardStn1, DI_Clamp1Up, DI_Clamp1Dn, DI_ResetPB : BOOL;
-    M_ProcessDone                                      : BOOL;
+    M_Stn1_ProcessDone                                 : BOOL;
     M_Stn1_ClampReq, M_Stn1_ConvReq, M_Alm_Stn1Seq     : BOOL;
 END_VAR
 
@@ -494,9 +505,9 @@ END_TRANSITION
 TRANSITION FROM S20 TO S90 := S20.T > T#3S AND NOT DI_Clamp1Up;
 END_TRANSITION
 
-TRANSITION FROM S30 TO S40 := M_ProcessDone;
+TRANSITION FROM S30 TO S40 := M_Stn1_ProcessDone;
 END_TRANSITION
-TRANSITION FROM S30 TO S90 := S30.T > T#60S AND NOT M_ProcessDone;
+TRANSITION FROM S30 TO S90 := S30.T > T#60S AND NOT M_Stn1_ProcessDone;
 END_TRANSITION
 
 TRANSITION FROM S40 TO S50 := DI_Clamp1Dn;
@@ -515,7 +526,7 @@ END_TRANSITION
 END_PROGRAM
 ```
 
-Chương trình này áp **năm dòng** của bảng *nên và không nên* ở mục 21.3:
+Chương trình này áp **sáu dòng** của bảng *nên và không nên* ở mục 21.3:
 
 | Dòng | Ở đâu trong chương trình |
 |:-:|---|
@@ -524,6 +535,15 @@ Chương trình này áp **năm dòng** của bảng *nên và không nên* ở 
 | 6 | Mọi hành động là **biến BOOL** — `M_Stn1_ClampReq` gắn vào **hai** bước S20, S30 nên nó TRUE suốt hai bước và về FALSE đúng lúc vào S40 |
 | 7 | Timeout nằm trong **điều kiện chuyển** — chỉ được xét khi bước đó đang hoạt động, nên `.T` còn sót của lần trước không bao giờ được đọc |
 | 8 | Lỗi xong **không** quay về bước đầu mà đi **xả board** (S90 → S50): board đang dở không bị gia công lại |
+| 10 | Mỗi biến chỉ do **một** hành động ghi. `M_Stn1_ClampReq` gắn vào hai bước nhưng vẫn là **một** hành động — chuẩn điều khiển nó bằng một khối điều khiển hành động duy nhất, nên dù hai bước cùng sống nó cũng chỉ chạy một lần mỗi vòng (tài liệu SFC của PLCopen, mục 3.6.1) |
+
+⭐ **Ví dụ này đã được chạy thử** (đợt 63): bộ chạy thử của sách đọc chính văn bản trên và cho nó qua
+ba board liền nhau, kẹp chậm sát giới hạn 3 giây, kẹp kẹt giữa hành trình, Reset khi kẹp chưa về, xử
+lý không bao giờ xong, board kẹt trên chuyền. ⭐⭐ Mỗi tình huống chạy **hai lần** — một lần `.T` giữ giá
+trị khi rời bước như chuẩn, một lần `.T` về 0 — và hai lần cho **cùng một chuỗi bước**: dòng 7 giữ đúng
+lời hứa *"đúng với cả hai hệ"*. Cũng không lần nào hai chuyển tiếp từ một bước cùng đúng (dòng 5).
+⚠ Bộ chạy thử là một mô hình, theo cách thực thi *"điển hình"* mà PLCopen mô tả; hệ của bạn có thể khác
+ở chi tiết trong một vòng quét.
 
 ---
 
@@ -682,12 +702,18 @@ có tài liệu, và phải sửa nó mà không làm hỏng thứ đang chạy.
   thực; có hãng không cho vẽ hồi tiếp tường minh); ⭐⭐ **`Step.X` và `Step.T`** — mọi bước SFC có sẵn
   cờ trạng thái và **timer nội**, cả hai chỉ đọc; bảng **bổ ngữ hành động** `N`/`S`/`R`/`P`/`L`/`D`;
   và luật **không đặt hai bước liền nhau không có bước chuyển**. ⚠ Giáo trình này ghi `.T` về 0 khi
-  rời bước — ngược với Horner và Rockwell bên dưới; sách viết mã đúng với cả hai (đợt 62).
+  rời bước — ngược với chuẩn (theo PLCopen) và với Horner, Rockwell bên dưới; sách viết mã đúng với
+  cả hai (đợt 62, 63).
 - **PLCopen** — *Coding Guidelines v1.0* (2016), nhóm quy tắc ngôn ngữ SFC: L7 đóng đúng nhánh song
   song (mức cao), L8 không viết hành động bằng SFC, L9 giới hạn độ phức tạp một sơ đồ (gợi ý 32 phần
-  tử); và danh sách tính năng bị bỏ ở bản 3 (biến chỉ báo của khối hành động). Tờ giới thiệu
-  *"Structuring with SFC — do's and don'ts"*: SFC chỉ trong khối chức năng và chương trình; một phần
-  POU là SFC thì cả POU là SFC.
+  tử); và danh sách tính năng bị bỏ ở bản 3 (biến chỉ báo của khối hành động).
+- **PLCopen** — *Structuring with SFC: do's and don'ts*, v1.0 (2018, 59 trang; bản đầy đủ, đối chiếu
+  2026-09-28): SFC *"không được coi là một ngôn ngữ lập trình"*, chỉ dùng trong khối chức năng và
+  chương trình, một phần POU là SFC thì cả POU (mục 1); `.T` giữ khi rời bước và về 0 khi vào, cờ bước
+  cục bộ trong POU, điều kiện chuyển không có tác dụng phụ (mục 2.1); `P` chạy một lần khi bước được
+  kích hoạt, `N` có thể chạy lần cuối ngay sau khi bước tắt (mục 3.5); lần quét cuối là lựa chọn của
+  hệ (mục 3.6); bốn quy tắc cho nhánh song song (mục 4.1); điều kiện loại trừ nhau, không dùng độ ưu
+  tiên (mục 4.3–4.4); hành động độc lập (mục 4.7, 4.10); hạn chế `S`/`R` (mục 4.8).
 - **Rockwell Automation** — *Logix 5000 Sequential Function Charts* (1756-PM006L, 9/2024): chọn cỡ
   bước; bước đầu dùng để khởi tạo; *"không nối vào, ra, hay giữa một nhánh song song"*; bộ đếm thời
   gian bước về 0 khi bước **bắt đầu** hoạt động; tuỳ chọn *Don't scan* mặc định — rời bước thì mọi dữ
@@ -696,7 +722,7 @@ có tài liệu, và phải sửa nó mà không làm hỏng thứ đang chạy.
   Element: Action* (hành động IEC chạy thêm một lần khi bước tắt; biến BOOL làm hành động), *Processing
   Order in SFC* (nhánh lựa chọn xét trái sang phải), *SFC Elements: Step and Transition* (điều kiện
   viết thẳng không chứa phép gán hay lời gọi khối), *Implicit Variables* (ghi cờ bước để ép bước — có
-  thể mất ổn định), *SFC flags* (`SFCInit`, `SFCReset`). Kiểm 2026-09-28.
+  thể mất ổn định; POU khác đọc cờ bước bằng `<POU>.<bước>.x`), *SFC flags* (`SFCInit`, `SFCReset`). Kiểm 2026-09-28.
 - **Horner Automation** — trợ giúp Cscape, mục IEC SFC: `.T` giữ nguyên khi bước tắt, về 0 ở lần
   kích hoạt sau. **Fernhill Software** — trợ giúp IEC 61131-3, mục SFC Step: bảng bổ ngữ có `P1`/`P0`;
   gán vào thành phần của bước là lỗi. Kiểm 2026-09-28.

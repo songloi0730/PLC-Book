@@ -13,9 +13,9 @@
 
 | Chỉ số | Giá trị |
 |---|---|
-| Tài liệu PDF | **72** |
-| Tổng số trang | **29 916** |
-| Mục lục nhúng đọc được | **13 024 mục** trên 55 tài liệu |
+| Tài liệu PDF | **79** |
+| Tổng số trang | **30 224** |
+| Mục lục nhúng đọc được | **13 219 mục** trên 59 tài liệu |
 | ⚠ Không trích được text | **4** |
 
 > ⚠⚠ **Tài liệu không trích được text — coi như KHÔNG CÓ cho tới khi OCR.**
@@ -35,7 +35,6 @@
 
 | Nguồn | Trang | Mục lục | Nhật ký đã nhắc? |
 |---|--:|--:|:--:|
-| Mitsubishi FX5 — Instructions/FB | 1470 | 651 | ✔ |
 | Inovance H5U/Easy — lệnh | 1113 | 642 | ✔ |
 | Siemens Safety programming | 579 | 405 | ✔ |
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
@@ -64,18 +63,19 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 
 | Nguồn | Trang | Chương dẫn |
 |---|--:|---|
-| Kuphaldt — Industrial Instrumentation | 3311 | 38 |
-| Kuphaldt — Electric Circuits | 2354 | 47 |
-| Petruzella — PLC (2025) | 441 | 16, 18, 19, 51 |
+| Kuphaldt — Industrial Instrumentation | 3311 | 1, 38 |
+| Kuphaldt — Electric Circuits | 2354 | 24, 26, 47 |
+| Petruzella — PLC (2025) | 441 | 11, 14, 16, 17, 18, 19, 27, 30, 51 |
 | Petruzella — PLC 6th ed | 417 | 16, 18, 19, 51 |
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30, 45 |
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21, 32 |
-| AutomationDirect PLC Handbook | 85 | 13 |
-| Siemens S7-1200 System Manual | 864 | 7, 12, 51 |
-| Siemens S7-1500 / TIA | 37 | 38 |
+| AutomationDirect PLC Handbook | 85 | 1, 13 |
+| Siemens S7-1200 System Manual | 864 | 7, 11, 12, 17, 30, 51 |
+| Siemens S7-1500 / TIA | 37 | 11, 30, 38 |
+| Mitsubishi FX5 — Instructions/FB | 1470 | 11, 17, 30 |
 | Mitsubishi FX5 — Program Design | 136 | 25, 26, 53 |
-| Rockwell — IEC 61131-3 compliance | 30 | 14 |
-| Rockwell — khác | 1432 | 35 |
+| Rockwell — IEC 61131-3 compliance | 30 | 14, 30 |
+| Rockwell — khác | 1432 | 30, 35 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
 | IO-Link — đặc tả giao diện | 294 | 37, 38, 41, 43, 54 |
 | SICK — an toàn | 322 | 47 |
@@ -84,11 +84,15 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | PLCopen Safety Part 1 | 194 | 47 |
 | PLCopen Safe Motion | 45 | 37 |
 | PLCopen Motion Control | 213 | 28, 37, 43, 45 |
-| PLCopen — Structuring Program Development | 4 | 27 |
+| PLCopen — Structuring Program Development | 4 | 21, 27 |
+| PLCopen — SFC do's and don'ts | 60 | 21, 26 |
+| PLCopen — Coding Guidelines | 127 | 11, 21, 30 |
+| PLCopen — Object-Oriented Programming | 28 | 30 |
+| PLCopen — Compliant Libraries | 93 | 30 |
 | PLCopen XML exchange | 80 | 14 |
 | Mitsubishi FX5 — Positioning | 302 | 28 |
-| Tài liệu PLC tiếng Việt | 367 | 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
-| Bryan — Theory and Implementation | 1047 | 8, 22, 23, 49, 51, 52 |
+| Tài liệu PLC tiếng Việt | 367 | 17, 19, 21, 30, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 47, 56, 58 |
+| Bryan — Theory and Implementation | 1047 | 8, 22, 23, 33, 49, 51, 52 |
 | IRSST — Prevention of Mechanical Hazards | 71 | 47 |
 | SEMI — bộ tiêu chuẩn (E10, E79…) | 5292 | 21, 29, 37, 38, 41, 45, 55 |
 | Sensors — vision & PLC (CC BY) | 20 | 43 |
