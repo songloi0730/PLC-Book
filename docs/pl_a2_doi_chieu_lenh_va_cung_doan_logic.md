@@ -78,8 +78,10 @@ Trước khi vào bảng, cần phân biệt ba loại quan hệ:
 > mục lệnh `OUT` cho bộ định thời.)*
 
 > ⭐ **Điểm chung của cả năm hệ — nhắc lại vì nó quan trọng hơn mọi khác biệt cú pháp:**
-> ⚠⚠ **Bộ định thời KHÔNG dùng để chuyển bước trình tự** — chỉ để báo lỗi khi phản hồi không tới
-> (Chương 17, 26).
+> ⚠⚠ **Bộ định thời KHÔNG dùng để chờ một cơ cấu** — có cảm biến báo cơ cấu đã tới thì chuyển bước bằng
+> cảm biến đó; bộ định thời chỉ để báo lỗi khi nó không tới (Chương 17, 26). ⚡ Ngoại lệ có thật: bước mà
+> **chính thời gian là yêu cầu của quy trình** (thời gian sấy, thời gian giữ), hoặc bước không có gì để đo
+> — Chương 26 mục 26.2b nêu điều kiện, và đòi ghi rõ điều đó trong đặc tả.
 
 ---
 

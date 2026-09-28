@@ -117,10 +117,12 @@ TON:  IN ▔▔▔▔▔▔▁▁▁      TOF:  IN ▔▔▔▔▁▁▁▁▁  
          └PT┘                        └PT┘               └─PT─┘
 ```
 
-> ⚠⚠ **Bộ định thời KHÔNG dùng để chuyển bước trình tự.**
+> ⚠⚠ **Bộ định thời KHÔNG dùng để chờ một cơ cấu.**
 >
 > ⭐ Chuyển bước bằng **tín hiệu phản hồi thật**; bộ định thời chỉ để **báo lỗi khi phản hồi không
-> tới**. Một bộ định thời không biết khi cơ cấu không tới nơi (Chương 17, 26).
+> tới**. Một bộ định thời không biết khi cơ cấu không tới nơi (Chương 17, 26). ⚡ Ngoại lệ: bước mà
+> **thời gian là yêu cầu của chính quy trình** (sấy, giữ), hoặc không có gì để đo — điều kiện và cách
+> ghi vào đặc tả ở Chương 26 mục 26.2b.
 
 ---
 
