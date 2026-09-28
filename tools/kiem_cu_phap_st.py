@@ -518,6 +518,18 @@ def kiem_hoan_chinh(ma, s, the_gioi, so_do=None):
         sau_so = i
     if so_do is not None:
         dung |= set(re.findall(r"\b[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9_]*\b", so_do))
+    toan_cuc = set()
+    for v in re.finditer(r"\bVAR_GLOBAL\b(.*?)\bEND_VAR\b", s, re.S):
+        than_var = re.sub(r"^\s*(?:CONSTANT|RETAIN|PERSISTENT|NON_RETAIN)\b", "", v.group(1))
+        for d in re.finditer(r"^[ \t]*([A-Za-z_][\w \t,]*?)[ \t]*:", than_var, re.M):
+            toan_cuc |= {t.strip() for t in d.group(1).split(",")}
+    for v in re.finditer(r"\bVAR_EXTERNAL\b(.*?)\bEND_VAR\b", s, re.S):
+        for d in re.finditer(r"^[ \t]*([A-Za-z_][\w \t,]*?)[ \t]*:", v.group(1), re.M):
+            for t in d.group(1).split(","):
+                t = t.strip()
+                if t and t not in toan_cuc:
+                    loi.append((1, "VAR_EXTERNAL '%s' không có VAR_GLOBAL tương ứng trong ví dụ — "
+                                "chép vào dự án trống sẽ không biên dịch được" % t))
     for t, loai in sorted(bien.items()):
         if loai in ("VAR", "VAR_TEMP") and t not in dung and t not in pou:
             loi.append((1, "biến cục bộ '%s' khai báo mà không dùng (PLCopen CP24)" % t))
@@ -562,7 +574,8 @@ def kiem_goi_trong_nhanh(ma_goc, s, ham_sach):
                                 "thái (Phụ lục B mục B.9b)" % (ten, "/".join(x[0] for x in ngan))))
         for m in re.finditer(r"\b(CLK)\s*:=\s*(TRUE|FALSE)\b|\b(Execute)\s*:=\s*TRUE\b", dong):
             loi.append((i, "%s là HẰNG — không bao giờ có sườn thứ hai" % m.group(0)))
-        for m in re.finditer(r"(?:^|;)\s*(?:\d+\s*:\s*)?([A-Za-z_][\w.]*)\s*:=\s*\d+\s*;", dong):
+        for m in re.finditer(r"(?:^|;|\bTHEN\b|\bELSE\b|\bDO\b)\s*(?:\d+\s*:\s*)?([A-Za-z_][\w.]*)\s*:=\s*\d+\s*;",
+                             dong):
             chon = next((x[1] for x in reversed(ngan) if x[0] == "CASE"), None)
             dich = m.group(1)
             if (chon and chon.upper().endswith("STEP") and dich.upper().endswith("STEP")

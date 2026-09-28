@@ -299,9 +299,10 @@ chúng trước khi chép:
 | ⭐ **Ví dụ hoàn chỉnh** | Dòng đầu là `// ✔ VÍ DỤ HOÀN CHỈNH` | ✅ **Được** — tự đủ khai báo; cần một kiểu hay một khối ở chương khác thì dòng đầu ghi rõ ở đâu |
 | **Đoạn trích** | Không có dòng đó | ⚠ Minh hoạ **một ý** — tag lấy theo bảng I/O của máy mẫu (Phụ lục J), biến nội bộ suy từ ngữ cảnh; chỗ lược bớt đánh dấu `…` |
 
-Mỗi chương về lập trình (Chương 14–30) có ít nhất một ví dụ hoàn chỉnh. Cả hai loại đều đi qua **bộ
-kiểm mã của sách** (Phụ lục N mục N.7) — và các ví dụ hoàn chỉnh về trình tự còn được **chạy thử** qua
-nhiều chu trình liên tiếp.
+Mỗi chương dạy viết mã (Chương 14–21, 24–30) có ít nhất một ví dụ hoàn chỉnh; Chương 22, 23 dạy cách
+đọc mã và viết đặc tả nên không có. Cả hai loại khối đều đi qua **bộ kiểm mã của sách** (Phụ lục N mục
+N.7) — và các ví dụ hoàn chỉnh viết bằng ST còn được **chạy thử** qua nhiều vòng quét, nhiều chu trình
+liên tiếp (ví dụ LD, SFC thì chưa: bộ chạy thử chỉ hiểu ST).
 
 > ⚠ **Kiểm bằng công cụ không thay được việc chạy trên phần mềm và phần cứng của bạn.** Bộ kiểm không
 > biết kiểu dữ liệu của từng biểu thức, bộ chạy thử là một mô hình chứ không phải PLC thật, và mỗi hãng

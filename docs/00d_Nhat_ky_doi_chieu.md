@@ -3371,6 +3371,96 @@ chương truy xuất nguồn gốc — cả hai chỉ lộ ra từ **sản phẩ
 
 ---
 
+## Đợt 62 — 2026-09-28 · Mã mẫu: ví dụ hoàn chỉnh, SFC, và một bộ chạy thử
+
+⭐ Đợt cuối của kế hoạch 5 đợt (design note 0005, quyết định ở 0008). Trọng tâm: **mỗi chương về lập
+trình có một ví dụ chép vào phần mềm được**. ⚠⚠ Để giữ lời hứa đó, đợt này viết thêm một **bộ chạy thử
+ST** — và chính nó tìm ra lỗi lớn nhất của đợt, một lỗi mà sáu bộ kiểm tĩnh không thể thấy.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 612 | Tài liệu lệnh chung Logix 5000, mục *"How a Timer Runs"*: `ACC = ACC + (current_time − last_time_scanned)`; đặt bộ định thời trong chương trình con, đoạn `JMP`/`LBL`, SFC… thì phải bảo đảm nó được quét lại trong vòng 69 phút | ✔ |
+| 613 | Tài liệu hệ thống S7-1200 (04/2012) mục 7.2: bộ định thời chép giá trị bộ đếm chạy liên tục của CPU vào `START`; mỗi lần cập nhật lấy *bây giờ trừ START*; có những vòng quét không cập nhật — cập nhật lại khi lệnh được gọi **hoặc** khi `Q`/`ELAPSED` được đọc | ✔ |
+| 614 | Trợ giúp CODESYS *"Qualifiers for Actions in SFC"*: bổ ngữ `P` chạy **đúng hai lần**; mọi hành động IEC chạy thêm một lần khi tắt. Tài liệu TwinCAT 2 (dòng CoDeSys 2.3) ghi y hệt | ✔ |
+| 615 | Trợ giúp CODESYS *"SFC Element: Action"*, *"Processing Order in SFC"*: biến BOOL làm hành động; hành động IEC chạy lần thứ hai ở vòng sau khi bước tắt; nhánh lựa chọn xét từ trái sang phải | ✔ |
+| 616 | Trợ giúp CODESYS *"Implicit Variables"*: `.t` là thời gian kể từ khi bước được kích hoạt; ⚠ **ghi được** cờ bước để ép bước, kèm cảnh báo trạng thái không ổn định | ✔ |
+| 617 | ⚠ `.T` khi bước tắt: Horner (trợ giúp Cscape, IEC SFC) — **giữ nguyên**, về 0 ở lần kích hoạt sau; Rockwell (1756-PM006L, 9/2024) — bộ đếm thời gian bước đặt lại khi bước **bắt đầu**; ⚠ giáo trình Hanssen (trên CoDeSys) — **về 0 khi tắt**. Hai nguồn ngược nhau → sách viết mã đúng với cả hai (`.X AND .T`) | ⚠ |
+| 618 | Trợ giúp Fernhill (IEC 61131-3): cú pháp SFC dạng văn bản `INITIAL_STEP Ten:` … `END_STEP`, `TRANSITION FROM A TO B := …; END_TRANSITION`; bảng bổ ngữ có `P1`/`P0`; gán vào thành phần của bước là lỗi | ✔ |
+| 619 | PLCopen *Coding Guidelines v1.0*: L7 đóng đúng nhánh song song (mức **cao**), L8 không viết hành động bằng SFC, L9 giới hạn độ phức tạp (gợi ý 32 phần tử); biến chỉ báo của khối hành động bị bỏ ở bản 3. Tờ PLCopen về SFC: chỉ dùng trong FB/PROGRAM; một phần POU là SFC thì cả POU | ✔ |
+| 620 | Rockwell 1756-PM006L: *"không nối vào, ra, hay giữa một nhánh song song"*; tuỳ chọn mặc định *Don't scan* — rời bước thì mọi dữ liệu **giữ giá trị**; `P1`/`P0`; lệnh `SFR` | ✔ |
+| 621 | Trợ giúp CODESYS *"SFC Elements: Step and Transition"*: điều kiện viết thẳng **không** chứa phép gán hay lời gọi khối; *"SFC flags"*: `SFCInit`, `SFCReset` | ✔ |
+| 622 | Trợ giúp CODESYS *"Data Type: STRING"*: nhận cả `STRING(n)` lẫn `STRING[n]`, mặc định 80 → sách thống nhất `STRING[n]` (dạng của chuẩn và của Siemens) | ✔ |
+
+### B — ⚠⚠ Lỗi tìm ra
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 623 | ⚠⚠ Ch.21: *"`.T` về `t#0s` khi rời bước"* — không đúng ở mọi hệ (#617). Đoạn timeout mẫu `IF Step30_Clamp.T > T#3s` thiếu `.X`: trên hệ giữ `.T`, bước từng chờ 3,2 s để lại `.T` = 3,2 s — cờ lỗi **chốt lại sau mỗi lần Reset**, máy kẹt ở `Alarm` | ⚠⚠ |
+| 624 | ⚠⚠ Ch.21: *"`P` chạy đúng một lần, thay `R_TRIG`"* — ở CODESYS `P` chạy **hai lần**; một lần khi vào bước là `P1` | ⚠⚠ |
+| 625 | ⚠ Ch.21: *"`N` tự tắt khi rời bước"* — chỉ đúng với hành động **biến BOOL**; hành động đoạn mã để lại giá trị đã gán | ⚠ |
+| 626 | ⚠ Ch.21: *"`.X`, `.T` sửa thì trình biên dịch báo lỗi"* — CODESYS cho ghi | ⚠ |
+| 627 | ⚠⚠ Ch.25 mục 25.5: đèn gán `TRUE` trong nhánh, không chỗ nào tắt → Running sang Hold **đèn xanh vẫn sáng** — đúng triệu chứng Bẫy 5 của chính chương; `M_CycleEnable`, `M_HomingRun` ở lại TRUE khi vào `Alarm`; `M_MotionEnable` tắt mà không chỗ nào bật lại | ⚠⚠ |
+| 628 | ⚠ Ch.25: *"Hold → Idle (huỷ, về gốc)"* trái nguyên tắc trung tâm *"Idle là đã về gốc"* → Hold → **Homing**; vẽ lại Hình 25.1 | ⚠ |
+| 629 | ⚠⚠⚠ Ch.26 mục 26.3: trình tự phát yêu cầu **trong thân** bước rồi đọc `Stop1.Done` ngay — tầng cơ cấu chạy trước nên `Done` là **của yêu cầu cũ** → trình tự đi từ bước 10 sang 30 trong hai vòng quét, **không chờ chặn cũng không chờ kẹp**; kẹp kẹt cũng không báo lỗi. Bộ chạy thử tìm ra; cùng lỗi ở nhánh A mục 26.5 | ⚠⚠⚠ |
+| 630 | ⚠⚠ Bộ định thời không được gọi **không tạm dừng** (#612, #613). Phụ lục B mục B.9b ghi *"đứng yên"* — thiếu nửa sau: gọi lại là `ET` **nhảy vọt**. Khung L.6 đặt bộ định thời bước trong nhánh bị giữ → báo lỗi **ngay khi bấm Start** sau một lần giữ lâu; Ch.26 mục 26.4 thiếu điều kiện giữ trong `IN` → báo lỗi **trong lúc** giữ | ⚠⚠ |
+| 631 | ⚠⚠ Ch.37: về gốc gọi `MC_Home(Execute := TRUE)` bên trong từng bước → **lần về gốc thứ hai không chạy** — đúng bẫy 7 của chính chương | ⚠⚠ |
+| 632 | ⚠⚠ Ch.39: `WriteSetpoint(Execute := TRUE)` trong `IF` → **lần đổi công thức thứ hai không ghi được**, nhánh *"ghi hỏng thì thử lại"* không bao giờ chạy | ⚠⚠ |
+| 633 | ⚠⚠ Ch.42: `ReportMes(Execute := TRUE)` trong `IF TrigStn2Done.Q` — khối truyền thông chỉ được gọi **một vòng** → không bao giờ xong, bản ghi MES **mất lặng lẽ**. ⚠ Đợt 61 sửa `AskMes` cùng chương mà sót khối này | ⚠⚠ |
+| 634 | ⚠⚠ Ch.43: `T_Settle(IN := TRUE)` trong bước 40 → từ **vật thứ hai** máy chụp ngay, bỏ qua thời gian chờ rung — đúng triệu chứng *"thỉnh thoảng đo sai"* chương tự mô tả | ⚠⚠ |
+| 635 | ⚠⚠ Ch.46: `CASE LoadStep` nhưng nhánh gán `Step` — trình tự **không bao giờ rời bước 10**; `R_TRIG` gọi với hằng `CLK := TRUE`; `DO_RobotStart` gán trong nhánh — **kẹt TRUE** | ⚠⚠ |
+| 636 | ⚠ `ST_Station` có **ba định nghĩa khác nhau** (Ch.11 ×2, Ch.30); Ch.11 gọi biến rời là *"ngây thơ"* trong khi ~200 chỗ mã mẫu dùng biến rời; và gói cả `Step` vào cấu trúc toàn cục thì trái Ch.27 mục 27.4. Tên chương trình trạm 1 lệch (`Prg_Stn1Seq` / `Prg_Stn1Dispense`) | ⚠ |
+| 637 | ⚠ `ST_Recipe`: năm trường Ch.39, Ch.43 dùng (`GlueTempSetX10`, `TempMinX10`, `TempMaxX10`, `PathX`, `PathY`) **chưa từng được khai** | ⚠ |
+| 638 | ⚠ Ch.29 hàm kiểm công thức dùng dải 3–30 s và 10–100 %; số liệu chốt của máy (Phụ lục J mục J.5) là **5–120 s** và **20–100 %** | ⚠ |
+| 639 | ⚠ Ch.28 bước H4 *"nâng lại chặn về tư thế gốc — chờ `DI_Stop1Up`"* — bảng I/O (J.2.1) ghi trạng thái nghỉ của chặn là **hạ**; kèm: chữ *"Two"* trong văn bản tiếng Việt, hai khối giả mã đặt trong khung `iecst`, `Step := Step + 1` ngược quy ước đánh số cách 10 | ⚠ |
+| 640 | ⚠ Ch.1 hứa *"mọi đoạn code đều tự kiểm được"*; Phụ lục N mục N.7 định nghĩa *"có `VAR` là hoàn chỉnh"* — cả hai không đúng sự thật | ⚠ |
+| 641 | ⚠ Ch.26 bảng chốt 26.8 đánh số trùng (7, 8 lặp lại) | ⚠ |
+| 642 | ⚠ Ch.27 mục 27.6: *"`Done` là của vòng quét này"* — là Done **của yêu cầu mà khối đã nhận**, tức yêu cầu vòng trước | ⚠ |
+
+### C — Bổ sung
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 643 | ➕➕ **17 ví dụ hoàn chỉnh** mang dấu `// ✔ VÍ DỤ HOÀN CHỈNH` — Ch.14, 15 (LD), 16, 17, 18, 19, 20, 21 (SFC văn bản), 24, 25, 26, 27, 28, 29, 30, L.8, L.8b; Ch.22, 23 là chương phương pháp | ➕➕ |
+| 644 | ➕➕ **Bộ chạy thử ST** `tools/chay_thu/` — 14 kịch bản, **82 phép thử**, đọc thẳng khối mã trong sách, có kịch bản tích hợp máy + trạm + xy-lanh theo thứ tự gọi của Ch.27; nối vào `gop_sach.sh` làm bộ kiểm thứ bảy. ⭐ Thử bằng cách **cài lại 7 lỗi** — `Done` của lệnh cũ ở thân bước và ở đoạn huỷ (#629), bộ định thời bước thiếu điều kiện giữ (#630), đèn gán trong nhánh (#627), bỏ che sườn vòng quét đầu, lọc một chiều, dịch từ đầu về cuối — **bắt 7/7** | ➕➕ |
+| 645 | ➕➕ `kiem_cu_phap_st` thêm **bảy phép**: kiểu cùng tên cùng định nghĩa · trường có thật · ví dụ hoàn chỉnh tự đủ khai báo (kể cả `VAR_EXTERNAL` phải có `VAR_GLOBAL`) · sơ đồ LD khớp khai báo · ⭐ khối gọi trong nhánh `IF`/`CASE` · đầu vào sườn là hằng · `CASE` lệch biến bước. Thử **12/12** lỗi cài mới + **13/13** lỗi cài cũ | ➕➕ |
+| 646 | ➕➕ Ch.21 mục *"Nên và không nên khi viết SFC"* — chín dòng, mỗi dòng có nguồn; ví dụ hoàn chỉnh trạm 1 ở dạng văn bản của chuẩn | ➕➕ |
+| 647 | ➕➕ Ch.26 mục 26.5b ghép trình tự trạm 1 hoàn chỉnh + **Bẫy 7** *"phát yêu cầu và đọc `Done` trong cùng một bước"*; giới hạn bước chờ cơ cấu 5 s > 3 s của khối, có lý do | ➕➕ |
+| 648 | ➕ Ch.30 mục 30.3 *"Gói những gì — ba cách"* (B18): gói tất cả / để rời / ⭐ gói phần công bố; Phụ lục N mục N.7 quy ước `Stn1.` (công bố) và `Stn1_` (ruột) | ➕ |
+| 649 | ➕ Ch.26 mục 26.5: L7 viết lại cho `CASE` — lối ra thứ hai của vùng song song | ➕ |
+| 650 | ➕ Ch.1, Phụ lục N mục N.7: quy ước **ví dụ hoàn chỉnh / đoạn trích** và năm điều kiện của một ví dụ hoàn chỉnh | ➕ |
+
+### Kết quả đợt 62
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **39** |
+| ✔ Xác nhận | 10 |
+| ⚠⚠⚠ / ⚠⚠ Lỗi nặng | 1 / 9 — #629 · #623, #624, #627, #630–#635 |
+| ⚠ Lỗi, lưu ý | 11 |
+| ➕➕ / ➕ | 5 / 3 |
+| Mục mới | Ch.21 *nên và không nên* · Ch.26 mục 26.5b, Bẫy 7 · Ch.30 *ba cách gói* · Phụ lục J khai báo `ST_Recipe` · `tools/chay_thu/` |
+
+> ⭐⭐⭐ **Bài học 1 — có loại lỗi chỉ CHẠY mới thấy.**
+>
+> Sáu bộ kiểm tĩnh đọc từng khối mã và thấy nó đúng: đúng cú pháp, đúng tên chân, không gọi khối trong
+> nhánh. ⚡ Lỗi *"`Done` của lệnh cũ"* không nằm trong khối nào — nó nằm ở **thứ tự hai tầng chạy trong
+> một vòng quét**. Chỉ khi ghép tầng máy, tầng trạm, tầng cơ cấu và một mô hình máy rồi cho chạy nhiều
+> vòng, trình tự mới lộ ra đang *"chạy quá nhanh"*.
+
+> ⭐⭐ **Bài học 2 — một giá trị gán trong một nhánh sẽ sống sót khi rời nhánh bằng đường khác.**
+>
+> Đèn xanh của Ch.25, hành động `N` dạng đoạn mã của SFC, `DO_RobotStart` của Ch.46, cờ `M_CodeValid`
+> của đợt 61, bộ định thời nằm trong nhánh — **năm triệu chứng, một gốc**. ⭐ Cách chữa chung: thứ gì
+> *suy ra được* từ trạng thái thì **gán theo trạng thái, ở một chỗ, ngoài nhánh**; thứ gì là *yêu cầu có
+> đời sống* thì phát ở **chuyển tiếp** và xoá ở **một** chỗ huỷ chu trình.
+
+> ⭐ **Bài học 3 — kiểu dữ liệu cũng trôi dạt như khối.** Ba `ST_Station`, một `ST_Recipe` thiếu năm
+> trường. Đợt 58 buộc hai bản `FB_Cylinder2Pos` phải giống hệt; đợt này buộc cả kiểu cấu trúc.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

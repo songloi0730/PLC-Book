@@ -1,6 +1,6 @@
 # 0005 — Kế hoạch hoàn thiện: tổ chức chương trình, cấu trúc mã, cách thực hiện lệnh, mã mẫu
 
-**Trạng thái:** ✅ **ĐÃ DUYỆT** — chủ dự án chọn phương án đề xuất ở cả bốn câu hỏi, và *"làm hết 5 đợt theo thứ tự"*. Đợt 58 xong 2026-09-26 (mục 6).
+**Trạng thái:** ✅ **ĐÃ DUYỆT** — chủ dự án chọn phương án đề xuất ở cả bốn câu hỏi, và *"làm hết 5 đợt theo thứ tự"*. ✅ **Cả 5 đợt xong** — đợt 58 ngày 2026-09-26, đợt 62 (cuối) ngày 2026-09-28 (mục 6).
 **Ngày:** 2026-09-23
 **Phạm vi:** bốn trục chủ dự án chỉ định — tổ chức chương trình · cấu trúc mã lệnh · cách thực hiện
 lệnh · các đoạn mã ví dụ.
@@ -203,3 +203,16 @@ nhất.
 | Dịch bit, `MUX`, `MIN`/`MAX` | ✅ Phụ lục B B.3, B.6 (thanh ghi dịch đã có ở Ch.19 mục 19.6) |
 | Thay đổi của bản 4 | ✅ `TRUNC`, BCD, `USTRING`, `LEN_MAX`, `LEN_CODE_UNIT` |
 | ⚠⚠ Ngoài kế hoạch | Hai lỗi của Ch.42 chỉ lộ ra từ board thứ hai; cụm con trỏ số chương cũ tái phát lần ba → phép kiểm cố định |
+
+### Đợt 62 — xong 2026-09-28
+
+Quyết định và chi tiết: design note 0008. Nhật ký đối chiếu #612–#650.
+
+| Hạng mục | Kết quả |
+|---|---|
+| Ví dụ hoàn chỉnh cho Ch.14–30 | ✅ 17 khối mang dấu `// ✔ VÍ DỤ HOÀN CHỈNH` (Ch.22, 23 là chương phương pháp) |
+| SFC nên / không nên | ✅ Ch.21 — chín dòng có nguồn; sửa bốn lời sai về `.T`, `P`, `N`, cờ bước |
+| Quy ước *đoạn trích* ở Ch.1 | ✅ Ch.1 + Phụ lục N mục N.7 |
+| Kiểm biến chưa khai báo (dời từ đợt 58) | ✅ Trong phạm vi ví dụ hoàn chỉnh; bộ kiểm thứ sáu thêm bảy phép, thử 12/12 + 13/13 |
+| `Stn1.Step` hay `Stn1_Step` | ✅ Cả hai có vai trò: `Stn1.` giao diện công bố (`ST_Station`), `Stn1_` ruột của trạm |
+| ⭐⭐ Ngoài kế hoạch | Bộ chạy thử ST `tools/chay_thu/` (82 phép thử, bộ kiểm thứ bảy) — tìm ra lỗi *"`Done` của lệnh cũ"* ở Ch.26 mà kiểm tĩnh không thấy; năm chỗ gọi khối trong nhánh ở Ch.37–46 |

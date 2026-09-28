@@ -1,8 +1,8 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-09-27 (đợt 61)
-**Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 14 phụ lục (15 dòng A1–N).** Đang hoàn thiện
-theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61 ✅ · 62 còn lại).
+**Cập nhật:** 2026-09-28 (đợt 62 — xong kế hoạch 5 đợt)
+**Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 14 phụ lục (15 dòng A1–N).** Kế hoạch hoàn
+thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61 ✅ · 62 ✅).
 
 ---
 
@@ -16,7 +16,8 @@ theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 5
 | Bản thảo | ✅ 58 chương · 14 phụ lục (A tách A1/A2 → 15 dòng, tới Phụ lục N) |
 | Ghép & phát hành | `bash tools/gop_sach.sh` → `output/*.md` + `.html` → chép sang kho phát hành `../CSharp Automation Machine/CSharp-Automation-Machine/book` · ⚠ kho đó còn **sách khác — chỉ stage tệp của sách này, không xoá gì khác** |
 | Phiên bản | `v1.0.0.YYMMDD` theo ngày ghép · ⚠ **chỉ đổi `1.0.0` khi chủ dự án bảo** |
-| Bộ kiểm (trong `gop_sach.sh`, có LỖI là dừng ghép) | 6 bộ: `kiem_tra_chuong` · `kiem_nhat_quan` · `kiem_tro_muc` · `kiem_danh_so` · `kiem_chu_nha` · ⭐ `kiem_cu_phap_st` (đợt 58 — đã thử bằng 11 lỗi cài) + markdownlint · sau khi render: `kiem_html` |
+| Bộ kiểm (trong `gop_sach.sh`, có LỖI là dừng ghép) | 7 bộ: `kiem_tra_chuong` · `kiem_nhat_quan` · `kiem_tro_muc` · `kiem_danh_so` · `kiem_chu_nha` · ⭐ `kiem_cu_phap_st` (đợt 58, mở rộng đợt 62 — thử bằng 12 + 13 lỗi cài) · ⭐⭐ `chay_thu/kich_ban.py` (đợt 62 — **chạy thử** các ví dụ ST qua nhiều vòng quét, 82 phép; thử bằng 7 lỗi cài) + markdownlint · sau khi render: `kiem_html` |
+| Mã mẫu | 17 ví dụ hoàn chỉnh — dòng đầu `// ✔ VÍ DỤ HOÀN CHỈNH` (Ch.14–21, 24–30, Phụ lục L mục L.8, L.8b); còn lại là **đoạn trích**. Quy ước: Ch.1, Phụ lục N mục N.7 |
 | Nhật ký đối chiếu | `docs/00d_Nhat_ky_doi_chieu.md` — mỗi đợt một mục, khẳng định đánh số liên tục |
 | ⚠⚠ Chặn phát hành chính thức | Ch.3, 6, 47, 48, 56 + Phụ lục D cần **người có thẩm quyền về an toàn** duyệt · 🔍 Ch.35, 40 chờ xác minh kỹ thuật |
 
@@ -25,10 +26,10 @@ theo kế hoạch 5 đợt ở `docs/design-notes/0005-*.md` (đợt 58 ✅ · 5
 1. ~~**Đợt 59 — tổ chức chương trình**~~ ✅ — hợp đồng `Execute`/`Enable` (Ch.30 mục 30.5b, L.8b) · phạm vi biến (Ch.11 mục 11.6) · khung chương trình chính thống nhất (Ch.14, 27, 57) · ⭐⭐ **đường đi của lỗi** sửa khoá chết Reset (design note 0007, Ch.25 mục 25.5c).
 2. ~~**Đợt 60 — hướng đối tượng**~~ ✅ — Ch.30 mục 30.5c; ⚠⚠ phát hiện IEC 61131-3 **bản 4 (5/2025)** bỏ IL → sửa Ch.13, 14, 21.
 3. ~~**Đợt 61 — cách thực hiện lệnh**~~ ✅ — Phụ lục B mục B.6b, B.9b; Ch.16 Bẫy 9 (`M_FirstScan`); Ch.42 hàm kiểm mã; ⚠⚠ hai lỗi của Ch.42 chỉ lộ từ board thứ hai.
-4. **Đợt 62 — mã mẫu:** ≥ 1 ví dụ hoàn chỉnh mỗi chương 14–30 · SFC nên/không nên · quy ước *"đoạn
-   trích"* ở Ch.1 · ⭐ thêm vào `kiem_cu_phap_st` phép kiểm **biến chưa khai báo** trong ví dụ hoàn chỉnh ·
-   ⚠ Ch.30 khuyên gói trạng thái trạm vào cấu trúc (`Stn1.Step`) nhưng gần như mọi mã mẫu dùng dạng rời
-   (`Stn1_Step`) — chọn một, hoặc ghi rõ là lệch có chủ ý (Phụ lục N mục N.5).
+4. ~~**Đợt 62 — mã mẫu**~~ ✅ — 17 ví dụ hoàn chỉnh · Ch.21 SFC nên/không nên · quy ước đoạn trích
+   (Ch.1, N.7) · `Stn1.` giao diện công bố / `Stn1_` ruột của trạm (design note 0008) · ⭐⭐ bộ chạy thử
+   `tools/chay_thu/` tìm ra lỗi *"`Done` của lệnh cũ"* ở Ch.26 mà kiểm tĩnh không thấy · năm chỗ gọi khối
+   trong nhánh ở Ch.37–46.
 5. ⚠ Bản đầy đủ của 3 tài liệu PLCopen (OOP ~2,3 MB · thư viện khối ~12,6 MB · SFC ~1,1 MB) —
    **chỉ tải khi chủ dự án đồng ý từng tệp**. Hiện chỉ có tờ giới thiệu.
 6. ⚠⚠ Tìm chuyên gia an toàn duyệt các chương ở dòng "chặn phát hành".
@@ -289,7 +290,7 @@ hơi thì sách rơi lại thành một tutorial nữa. Sau đợt 1–3 đã c�
 
 ```text
 PLC_Programming_Book/
-  CLAUDE.md                       — quy ước viết, bất biến B1–B18, quy trình đánh giá
+  CLAUDE.md                       — quy ước viết, bất biến B1–B19, quy trình đánh giá
   PROJECT_STATUS.md               — file này
   docs/
     00_Muc_luc.md                 — mục lục + trạng thái từng chương (ghép vào sách)
@@ -299,10 +300,12 @@ PLC_Programming_Book/
     case_study_may_mau.md         — hồ sơ máy mẫu DP-01 (bản làm việc; bản phát hành là Phụ lục J)
     ch01_… ch58_…                 — 58 chương
     pl_a1_… pl_n_…                — 15 phụ lục
-    design-notes/0001 … 0006      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh)
+    design-notes/0001 … 0008      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
+                                    0007: đường đi của lỗi · 0008: giao diện trạm, ví dụ hoàn chỉnh, SFC)
   tools/
-    gop_sach.sh                   — chạy 6 bộ kiểm → ghép → HTML → chép sang kho phát hành
-    kiem_*.py                     — 6 bộ kiểm (xem bảng ở đầu tệp)
+    gop_sach.sh                   — chạy 7 bộ kiểm → ghép → HTML → chép sang kho phát hành
+    kiem_*.py                     — 6 bộ kiểm tĩnh (xem bảng ở đầu tệp)
+    chay_thu/                     — bộ chạy thử: st_mini.py (thông dịch ST tối giản) + kich_ban.py
     sinh_hinh*.py                 — sinh hình SVG theo chương
     tra_nguon.py · lap_chi_muc_nguon.py — tra bộ tài liệu nguồn
   output/                         — bản ghép mới nhất (.md, .html) + bìa

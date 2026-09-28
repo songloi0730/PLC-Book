@@ -1,6 +1,6 @@
 # 0008 — Đợt 62: giao diện trạm, ví dụ hoàn chỉnh, SFC — quyết định và phát hiện
 
-**Trạng thái:** ĐANG LÀM — nghiên cứu xong, **chưa sửa chương nào**. Phiên sau bắt đầu từ mục 6.
+**Trạng thái:** ✅ **XONG 2026-09-28** — mọi việc ở mục 6 đã làm; kết quả và chỗ khác kế hoạch ở mục 7.
 **Ngày:** 2026-09-27
 **Thuộc:** đợt 62 (đợt cuối) của kế hoạch 0005.
 
@@ -56,7 +56,7 @@ mọi tên trong sơ đồ đã khai báo. Ch.22, Ch.23 là chương phương ph
 Thêm vào `kiem_cu_phap_st.py`: (1) biến chưa khai báo trong khối có dấu hiệu; (2) `TYPE` cùng tên phải
 giống hệt (bản có dấu lược được là tập con); (3) `X.trường` phải là trường có thật của kiểu cấu trúc.
 
-## 4. ⚠⚠ Phát hiện đã kiểm — chưa sửa
+## 4. ⚠⚠ Phát hiện đã kiểm — ✅ đã sửa ở đợt 62
 
 | # | Chỗ | Lỗi | Nguồn đối chiếu |
 |---|---|---|---|
@@ -66,6 +66,10 @@ giống hệt (bản có dấu lược được là tập con); (3) `X.trường
 | 4 | Ch.21 | `.X`/`.T` *"sửa thì trình biên dịch báo lỗi"* — Fernhill: gán là lỗi; ⚠ CODESYS **cho ghi** để ép bước, kèm cảnh báo mất ổn định | CODESYS "Implicit Variables"; Fernhill |
 | 5 | Ch.25 mục 25.5 | Đèn gán `:= TRUE` trong nhánh `CASE`, không bao giờ tắt → Running→Hold **đèn xanh vẫn sáng** — đúng triệu chứng Bẫy 5 của chính Ch.25. `M_CycleEnable`, `M_HomingRun` ở lại TRUE khi vào `Alarm` qua khối lỗi; `M_MotionEnable` tắt mà không chỗ nào bật lại → sửa: mọi cờ/ngõ ra suy từ trạng thái, gán **ngoài `CASE`** (cùng bệnh với hành động `N` của SFC) | Đọc mã, mô phỏng tay |
 | 6 | Phụ lục B mục B.9b · L.6 | ⚠ **CHƯA KIỂM XONG**: *"TON không được gọi thì đứng yên"* — nhiều hiện thực tính `ET` theo đồng hồ hệ thống, nên lần gọi lại có thể **nhảy vọt** → khung L.6 (timer bước nằm trong nhánh, cố ý đứng khi Hold) có thể báo lỗi giả ngay khi chạy tiếp. Cần nguồn trước khi viết | Trang TON của CODESYS không nói; cần tìm tiếp |
+
+> ✅ Phát hiện 6 kiểm xong bằng hai tài liệu hãng (nhật ký #612, #613): bộ định thời không được gọi
+> **không** đứng yên — gọi lại thì `ET` nhảy vọt. Đã sửa Phụ lục B mục B.9b, khung L.6 và Ch.26 mục
+> 26.4 (điều kiện giữ đưa vào `IN`, không đặt khối vào nhánh).
 
 ## 5. Tài liệu SFC có trong kho (không cần tải thêm)
 
@@ -79,12 +83,28 @@ vùng song song vì lỗi mà không đưa **mọi** nhánh về 0 → nhánh s�
 
 ## 6. Việc còn lại — theo thứ tự
 
-1. Mở rộng bộ kiểm (mục 3), thử bằng lỗi cài.
-2. Đổi tên theo quyết định 1; thống nhất `ST_Station`, `Prg_Stn1Dispense`.
-3. Sửa phát hiện 1–5; kiểm xong phát hiện 6 rồi mới sửa B.9b/L.6.
-4. Ch.21 mục mới *"SFC — nên và không nên"*; Ch.26 thêm ghi chú L7.
-5. Ví dụ hoàn chỉnh: Ch.14, 15, 16, 17, 18, 19, 20, 21, 24, 25 (chính là 25.5 đã sửa), 26, 28 viết
+1. ✅ Mở rộng bộ kiểm (mục 3), thử bằng lỗi cài.
+2. ✅ Đổi tên theo quyết định 1; thống nhất `ST_Station`, `Prg_Stn1Dispense`.
+3. ✅ Sửa phát hiện 1–5; kiểm xong phát hiện 6 rồi mới sửa B.9b/L.6.
+4. ✅ Ch.21 mục mới *"SFC — nên và không nên"*; Ch.26 thêm ghi chú L7.
+5. ✅ Ví dụ hoàn chỉnh: Ch.14, 15, 16, 17, 18, 19, 20, 21, 24, 25 (chính là 25.5 đã sửa), 26, 28 viết
    mới hoặc nâng khối sẵn có; đánh dấu các POU đã đủ ở Ch.27, 29, 30.
-6. Ch.1 mục *"Ví dụ code"*: bỏ lời hứa *"mọi đoạn code đều tự kiểm được"*, thay bằng quy ước đoạn
+6. ✅ Ch.1 mục *"Ví dụ code"*: bỏ lời hứa *"mọi đoạn code đều tự kiểm được"*, thay bằng quy ước đoạn
    trích / ví dụ hoàn chỉnh; Phụ lục N mục N.7 theo quyết định 2.
-7. Nhật ký đối chiếu, `PROJECT_STATUS.md`, ghép sách, phát hành.
+7. ✅ Nhật ký đối chiếu, `PROJECT_STATUS.md`, ghép sách, phát hành.
+
+## 7. Kết quả — 2026-09-28
+
+| Hạng mục | Kết quả |
+|---|---|
+| Bộ kiểm (mục 3) | ✅ `kiem_cu_phap_st.py` thêm bảy phép: kiểu cùng tên cùng định nghĩa · trường có thật · ví dụ hoàn chỉnh tự đủ khai báo (kể cả `VAR_EXTERNAL` phải có `VAR_GLOBAL`) · sơ đồ LD khớp khai báo · khối gọi trong nhánh `IF`/`CASE` · đầu vào sườn là hằng · `CASE` lệch biến bước. Thử **12/12** lỗi cài mới, **13/13** lỗi cài cũ |
+| Quyết định 1 | ✅ Một định nghĩa `ST_Station` (Ch.27 mục 27.4), bản chép ở Ch.11 giống hệt; `Prg_Stn1Dispense` thống nhất. ⚠ Khác mục 2: trường thứ bảy là `LastCycleMs` chứ không phải `BoardIsNG` — giữ trường Ch.11 đã dùng để dạy *đơn vị trong tên*; kết quả NG đi theo board ở thanh ghi dịch Ch.19. Quy ước `Stn1.`/`Stn1_` ghi ở Phụ lục N mục N.7, không ở N.5 |
+| Phát hiện 1–6 | ✅ Sửa hết (nhật ký #623–#630) |
+| SFC | ✅ Ch.21 *"Nên và không nên khi viết SFC"* — chín dòng, có nguồn; ví dụ hoàn chỉnh trạm 1 ở dạng văn bản của chuẩn. Ch.26 mục 26.5 ghi chú L7 |
+| Ví dụ hoàn chỉnh | ✅ **17 khối**: Ch.14–21, 24–30, Phụ lục L mục L.8, L.8b. Ch.22, 23 là chương phương pháp |
+| Ch.1, Phụ lục N mục N.7 | ✅ Quy ước ví dụ hoàn chỉnh / đoạn trích; năm điều kiện của một ví dụ hoàn chỉnh |
+| ⭐⭐ Ngoài kế hoạch — bộ chạy thử | `tools/chay_thu/`: trình thông dịch ST tối giản + 14 kịch bản, **82 phép thử**, đọc thẳng khối mã trong sách; bộ kiểm thứ bảy của `gop_sach.sh`. Cài lại 7 lỗi đã sửa — **bắt 7/7**. ⚠ Chỉ hiểu ST: ví dụ LD (Ch.15) và SFC (Ch.21) vẫn chỉ được kiểm tĩnh |
+| ⚠⚠⚠ Ngoài kế hoạch — lỗi lớn nhất | Bộ chạy thử tìm ra: Ch.26 phát yêu cầu trong thân bước rồi đọc `Done` ngay → `Done` **của lệnh cũ**, trình tự không chờ chặn cũng không chờ kẹp (nhật ký #629). Sửa: yêu cầu phát ở **chuyển tiếp**; Ch.26 Bẫy 7; Ch.27 mục 27.6 nói rõ `Done` là của yêu cầu vòng trước |
+| ⚠⚠ Ngoài kế hoạch — khối gọi trong nhánh | Phép kiểm mới tìm ra năm chỗ ở Ch.37, 39, 42, 43, 46 — mỗi chỗ hỏng từ lần chạy thứ hai (#631–#635) |
+| ⚠ Ngoài kế hoạch — dữ liệu | `ST_Recipe` thiếu năm trường → khai đầy đủ ở Phụ lục J mục J.5; Ch.29 dải kiểm lệch J.5; Ch.28 bước H4 sai tư thế nghỉ của chặn (#637–#639) |
+| Chưa làm | Ba tài liệu PLCopen bản đầy đủ (hướng đối tượng, thư viện khối, SFC) — chưa được duyệt tải |

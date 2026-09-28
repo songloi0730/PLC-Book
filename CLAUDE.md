@@ -74,7 +74,7 @@ Bản thảo **không nhắc tên bất kỳ sách/dự án nào khác** của t
 | **B13** | ⭐ **Hình phải tự vẽ, và chỉ vẽ khi hình nói được điều chữ không nói được — mới, session 5.** Mọi hình là **SVG tự vẽ** trong `assets/chNN/`, nhãn tiếng Việt, theo bộ token thị giác ở mục "Quy ước hình" bên dưới. ⚠ **Tuyệt đối không tải hình từ tài liệu hãng, sách thương mại, hay web** — vi phạm bản quyền và phá vỡ tính nhất quán. Tiêu chí quyết định có vẽ hay không: *đường đi của dòng điện, quan hệ thời gian, cấu trúc không gian, và máy trạng thái* thì vẽ; *danh sách, so sánh, phân loại* thì dùng bảng. |
 | **B14** | ⭐ **Bảng tổng hợp cho nội dung quan trọng — mới, session 5.** Mỗi khái niệm trọng tâm phải có **một bảng chốt lại** để người đọc tra sau này mà không phải đọc lại cả chương (ví dụ: bảng 4 tổ hợp NO/NC, bảng 4 tổ hợp PNP/NPN). Bảng đặt **sau** phần giải thích, không thay cho giải thích (B4). |
 | **B18** | ⭐⭐ **Nhắc tới nhiều thứ khác nhau thì phải SO SÁNH ĐƯỢC — mới, session 13 (yêu cầu của chủ dự án).** Cấm viết *"có nhiều cách" / "tuỳ nơi" / "không cách nào đúng tuyệt đối"* rồi bỏ qua. Mỗi chỗ như vậy phải có đủ **bốn thứ**: (1) **liệt kê đích danh** các cách đó; (2) ⭐ **một ví dụ thật, ngắn, CÙNG MỘT bài toán** cho từng cách để đặt cạnh nhau so được; (3) **bảng ưu / nhược**; (4) ⭐ **khuyến nghị dùng cái nào trong hoàn cảnh nào** — dừng ở *"tuỳ bạn"* là chưa viết xong. ⚠ Nếu chỗ khác trong sách đã so sánh rồi thì **dẫn chiếu tới đúng mục**, đừng nhắc lại và cũng đừng bỏ trống. Lý do: nói "có nhiều cách" rồi thôi là **đẩy việc nghiên cứu sang người đọc** — đúng thứ cuốn sách sinh ra để gánh hộ. Ví dụ mẫu: Ch.30 mục 30.2 (bốn quy ước đặt tên), Ch.40 mục 40.3 (ba họ giao thức), Ch.41 mục 41.7b (vào trước ra trước / vào sau ra trước). |
-| **B19** | ⭐⭐ **Mã mẫu theo quy ước ĐÃ VIẾT RA — mới, đợt 58.** Quy ước nằm ở **Phụ lục N** (đối chiếu PLCopen Coding Guidelines v1.0). Mọi khối ` ```iecst ` phải qua `tools/kiem_cu_phap_st.py`. ⭐ **Đoạn trích** đánh dấu phần lược bằng `…` — khối không có dấu lược thì phải **đóng đủ** mọi `IF`/`CASE`/`FOR`/POU. ⭐⭐ Một khối tự viết xuất hiện ở **hai nơi** (chương dạy + Phụ lục L) phải **giống hệt từng chữ** — bộ kiểm so cả giao diện lẫn thân; sửa một nơi là sửa cả hai. ⚠ Ví dụ SAI đánh dấu `// ✗` ở dòng đầu khối. Không `RETURN`/`EXIT`/`CONTINUE` ngoài ví dụ SAI (CP14, L10). Tên thể hiện **không** mang tiền tố kiểu (`Clamp1`, không phải `FB_Clamp1`). Lý do: đợt 58 tìm ra hai khối `FB_Cylinder2Pos` khác nhau ở hai nơi — mỗi nơi đúng một mình, ghép lại thì máy kẹt ở `Alarm` và thả kẹp khi báo lỗi (design note 0006). |
+| **B19** | ⭐⭐ **Mã mẫu theo quy ước ĐÃ VIẾT RA — mới, đợt 58.** Quy ước nằm ở **Phụ lục N** (đối chiếu PLCopen Coding Guidelines v1.0). Mọi khối ` ```iecst ` phải qua `tools/kiem_cu_phap_st.py`. ⭐ **Đoạn trích** đánh dấu phần lược bằng `…` — khối không có dấu lược thì phải **đóng đủ** mọi `IF`/`CASE`/`FOR`/POU. ⭐⭐ Một khối tự viết xuất hiện ở **hai nơi** (chương dạy + Phụ lục L) phải **giống hệt từng chữ** — bộ kiểm so cả giao diện lẫn thân; sửa một nơi là sửa cả hai. ⚠ Ví dụ SAI đánh dấu `// ✗` ở dòng đầu khối. Không `RETURN`/`EXIT`/`CONTINUE` ngoài ví dụ SAI (CP14, L10). Tên thể hiện **không** mang tiền tố kiểu (`Clamp1`, không phải `FB_Clamp1`). Lý do: đợt 58 tìm ra hai khối `FB_Cylinder2Pos` khác nhau ở hai nơi — mỗi nơi đúng một mình, ghép lại thì máy kẹt ở `Alarm` và thả kẹp khi báo lỗi (design note 0006). ⭐⭐ **Đợt 62 — ví dụ hoàn chỉnh:** khối có dòng đầu `// ✔ VÍ DỤ HOÀN CHỈNH` phải chép vào dự án trống là biên dịch được — tự khai mọi biến (có `VAR_EXTERNAL` thì phải có `VAR_GLOBAL` trong chính khối), kiểu được định nghĩa nơi khác trong sách; LD/SFC: khối khai báo mang dấu, sơ đồ ở khối kế tiếp. Ví dụ ST của Ch.14–30 đều có kịch bản trong `tools/chay_thu/kich_ban.py` (bộ kiểm thứ bảy, chạy qua nhiều vòng quét) — ví dụ mới cũng phải có. ⭐ Mỗi thể hiện khối gọi **một lần mỗi vòng, ngoài `IF`/`CASE`**, đầu vào suy từ trạng thái (ngoại lệ ghi `CỐ Ý`); thứ suy ra được từ trạng thái gán **ngoài `CASE`**; yêu cầu gửi cơ cấu phát ở **chuyển tiếp**, không trong thân bước. Lý do: bộ chạy thử tìm ra lỗi *"`Done` của lệnh cũ"* ở Ch.26 mà sáu bộ kiểm tĩnh không thấy (design note 0008). |
 
 ---
 
@@ -245,7 +245,7 @@ remote thường đi trước.
 
 ## Quy trình đánh giá — chạy máy trước, mắt sau
 
-Bản thảo có **sáu bộ kiểm tự động** ứng với sáu loại lỗi khác nhau — cả sáu chạy trong
+Bản thảo có **bảy bộ kiểm tự động** ứng với bảy loại lỗi khác nhau — cả bảy chạy trong
 `tools/gop_sach.sh`, ⚠ có LỖI thì **không ghép**. Chạy chúng trước khi coi một chương là xong, và
 trước khi kết luận bất cứ điều gì bằng cảm nhận:
 
@@ -255,7 +255,9 @@ python tools/kiem_nhat_quan.py         # các chương có KHỚP NHAU không (t
 python tools/kiem_tro_muc.py           # con trỏ "mục N.M" / "Phụ lục X.N" trỏ tới chỗ CÓ THẬT không
 python tools/kiem_danh_so.py           # dãy số mục / hình / bẫy có thủng hoặc trùng không
 python tools/kiem_chu_nha.py           # "Chương N" có trỏ đúng chương CHỦ NHÀ của chủ đề không
-python tools/kiem_cu_phap_st.py        # mã ST: đóng/mở khối, ngoặc, ':=', tên chân, khối cùng tên
+python tools/kiem_cu_phap_st.py        # mã ST: đóng/mở khối, ngoặc, ':=', tên chân, khối/kiểu cùng tên,
+                                       #   trường có thật, ví dụ hoàn chỉnh đủ khai báo, khối gọi trong nhánh
+python tools/chay_thu/kich_ban.py      # CHẠY THỬ các ví dụ ST hoàn chỉnh qua nhiều vòng quét (đợt 62)
 python tools/kiem_html.py <bản.html>    # SAU khi ghép: bản HTML đã render không còn '**' lọt ra
 npx markdownlint-cli2 "docs/**/*.md"   # cấu trúc markdown, liên kết, bảng
 python tools/ban_do_nguon.py           # ĐỘ PHỦ: nguồn nào chưa chương nào dẫn
@@ -270,14 +272,15 @@ python tools/ban_do_nguon.py           # ĐỘ PHỦ: nguồn nào chưa chươn
 | `kiem_tro_muc.py` | Con trỏ tới **mục không tồn tại** | Đợt 51 — hơn 1.800 con trỏ, mỗi lần ghép đều kiểm lại |
 | `kiem_danh_so.py` | Dãy số **thủng hoặc trùng** | Đợt 54 — số bẫy, số hình trong một chương |
 | `kiem_chu_nha.py` | Con trỏ hợp lệ nhưng **sang nhầm chương** | Đợt 56 — cụm bốn chỗ dẫn *"Chương 24"* cho việc ghi chú thích (chủ nhà là Ch.30) |
-| ⭐⭐ `kiem_cu_phap_st.py` | Mã ST **sai cú pháp**, gọi **chân không có thật**, **hai khối cùng tên khác nhau** | Đợt 58 — hai khối `FB_Cylinder2Pos` khác giao diện ở Ch.27 và Phụ lục L; 6 khối `IF`/`CASE` không đóng |
+| ⭐⭐ `kiem_cu_phap_st.py` | Mã ST **sai cú pháp**, gọi **chân không có thật**, **hai khối cùng tên khác nhau**, khối gọi **trong nhánh** `IF`/`CASE` | Đợt 58 — hai khối `FB_Cylinder2Pos` khác giao diện ở Ch.27 và Phụ lục L; 6 khối `IF`/`CASE` không đóng · đợt 62 — năm khối gọi trong nhánh ở Ch.37–46, hỏng từ lần chạy thứ hai |
+| ⭐⭐⭐ `chay_thu/kich_ban.py` | Mã **đúng từng khối** mà **ghép lại chạy sai** — thứ tự tầng trong vòng quét, giá trị sót lại qua nhiều vòng | Đợt 62 — Ch.26 đọc `Done` **của lệnh cũ**: trình tự đi qua bước chặn, bước kẹp trong hai vòng quét mà không chờ cơ cấu |
 | ⭐ **Đối chiếu nguồn** (skill) | ⚠⚠ Câu **đúng khung, nghe thuyết phục, SAI SỰ THẬT** | Độ phân giải timer Mitsubishi; ISO 6431 đã thu hồi |
 | ⭐⭐ `ban_do_nguon.py` | ⚠⚠ **Nguồn có trong tay mà CHƯA AI MỞ** | Hugh Jack 860 trang — nguồn mạnh nhất cho nhóm chương thiết kế — chưa chương nào dẫn |
 
 ⚠⚠ **Loại thứ ba là loại nguy hiểm nhất và KHÔNG máy nào bắt được.** Nó chỉ lộ ra khi so với tài
 liệu gốc — xem mục *Đối chiếu nguồn* bên dưới.
 
-⭐⭐ **Sáu bộ kiểm soát bản thảo VỚI CHÍNH NÓ. Bản đồ nguồn kiểm bản thảo VỚI BỘ NGUỒN** — nó trả lời câu
+⭐⭐ **Bảy bộ kiểm soát bản thảo VỚI CHÍNH NÓ. Bản đồ nguồn kiểm bản thảo VỚI BỘ NGUỒN** — nó trả lời câu
 hỏi mà không bộ nào khác hỏi được: ⚠ *"tài liệu nào đang có trong tay mà chưa chương nào dẫn?"*
 
 ```bash

@@ -254,8 +254,9 @@ trong dự án thật.
 > và bộ kiểm biết khối nào phải nghiêm.
 
 > ⭐ **Vì sao không khai báo đầy đủ trong mọi khối:** một đoạn ba dòng minh hoạ một ý, nếu kèm mười dòng
-> khai báo thì **ý chính bị chìm**. ⚡ Sách chọn giữ đoạn trích gọn, và bảo đảm **mỗi chương về lập trình
-> (Chương 14–30) có ít nhất một ví dụ hoàn chỉnh** để bạn có một điểm xuất phát chép chạy được.
+> khai báo thì **ý chính bị chìm**. ⚡ Sách chọn giữ đoạn trích gọn, và bảo đảm **mỗi chương dạy viết mã
+> (Chương 14–21, 24–30) có ít nhất một ví dụ hoàn chỉnh** để bạn có một điểm xuất phát chép chạy được
+> (Chương 22, 23 dạy cách đọc mã và viết đặc tả).
 
 **Một ví dụ hoàn chỉnh phải thoả — và bộ kiểm `tools/kiem_cu_phap_st.py` kiểm từng điều:**
 
@@ -273,10 +274,11 @@ hiện khối không được gọi bên trong nhánh `IF`/`CASE`** (Phụ lục
 hằng (`CLK := TRUE`, `Execute := TRUE`); và `CASE` theo một biến bước thì không được gán số cho biến bước
 khác.
 
-> ⭐ **Ví dụ hoàn chỉnh về trình tự còn được CHẠY THỬ**, không chỉ kiểm cú pháp: một bộ chạy thử ST nhỏ
+> ⭐ **Ví dụ hoàn chỉnh viết bằng ST còn được CHẠY THỬ**, không chỉ kiểm cú pháp: một bộ chạy thử ST nhỏ
 > (`tools/chay_thu/`) chạy chính văn bản in trong sách, qua **nhiều chu trình liên tiếp**, giữ máy lâu,
 > cơ cấu kẹt, Reset khi lỗi còn nguyên. ⚡ Đợt 62 dùng nó tìm ra lỗi *"`Done` của lệnh cũ"* (Chương 26
-> Bẫy 7) — lỗi mà cả sáu bộ kiểm tĩnh đều không thấy.
+> Bẫy 7) — lỗi mà cả sáu bộ kiểm tĩnh đều không thấy. ⚠ Nó chỉ hiểu ST: ví dụ SFC (Chương 21)
+> và LD (Chương 15) mới được kiểm tĩnh.
 
 **Một quy ước tên của riêng mã mẫu:** biến **ruột** của một trạm — bước, giới hạn thời gian bước — mang
 tiền tố trạm (`Stn1_Step`). Trong dự án thật, đó là biến cục bộ của chương trình trạm và chỉ cần tên
