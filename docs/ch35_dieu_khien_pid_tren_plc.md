@@ -306,6 +306,17 @@ Cùng một mức tác động tích phân được ghi bằng **hai đơn vị 
 *(Đối chiếu: Kuphaldt — Lessons in Industrial Instrumentation, mục về tác động tích phân và đơn vị
 minutes-per-repeat / repeats-per-minute; và mục về thiết bị direct-acting / reverse-acting.)*
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG**
+> **Người ta làm gì:** chép bộ tham số PID từ một máy "chị em" đang chạy tốt sang máy mới — gần như ai
+> cũng làm.
+> **Vì sao:** chỉnh định từ đầu mất cả buổi, còn máy kia đang chạy được.
+> **Ranh giới:** câu *"không được chép"* ở trên nói tuyệt đối để chặn cách làm nguy hiểm nhất: **chép
+> rồi coi như xong**. Chép làm **điểm xuất phát** thì chấp nhận được, với ba điều kiện: cùng model và
+> **đơn vị khâu tích phân đã xác minh** trên cả hai bộ, không suy ra từ việc cùng model (phần Hai);
+> cùng **chiều tác động** (phần Một); và sau đó vẫn **chỉnh lại có đồ thị** trên chính máy này (mục
+> 35.10, Bẫy 7) — tải, cảm biến, đường ống không bao giờ giống hệt. Giữa hai hệ **khác hãng** thì không
+> có điểm xuất phát nào: chỉnh lại từ đầu (Phụ lục A2 mục A2.7).
+
 ---
 
 ## 35.7 ⚠ Chu kỳ vòng điều khiển

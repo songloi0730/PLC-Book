@@ -1,6 +1,6 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-09-29 (đợt 64 — phong cách ladder từng hãng; động cơ vô hiệu hoá cửa an toàn)
+**Cập nhật:** 2026-09-30 (đợt 65 — PLC an toàn thật; ô ⚖ *ngoài hiện trường* cho các chương còn lại)
 **Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 14 phụ lục (15 dòng A1–N).** Kế hoạch hoàn
 thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61 ✅ · 62 ✅).
 
@@ -33,10 +33,19 @@ thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ 
 5. ~~Bản đầy đủ của 3 tài liệu PLCopen~~ ✅ đợt 63 — chủ dự án duyệt tải cả ba; đối chiếu Ch.14, 21, 30
    (nhật ký #651–#675, design note 0009). Kèm: bộ chạy thử đọc SFC dạng văn bản, ví dụ Ch.21 chạy thử.
 6. ⚠⚠ Tìm chuyên gia an toàn duyệt các chương ở dòng "chặn phát hành" — ⚠ kể cả mục mới **47.7c** (động
-   cơ vô hiệu hoá thiết bị bảo vệ, đợt 64): năm tầng biện pháp, chia vùng, phục hồi có kiểm chứng.
+   cơ vô hiệu hoá thiết bị bảo vệ, đợt 64): năm tầng biện pháp, chia vùng, phục hồi có kiểm chứng; và
+   ⚠ mục mới **47.4c** (PLC an toàn thật, đợt 65): thời gian phản hồi, thụ động hoá/tái tích hợp, chặn khởi
+   động lại, ghi từ màn hình vào phần an toàn; ô ⚖ LOTO ở Ch.3 mục 3.7.
 7. ~~**Đợt 64**~~ ✅ (2026-09-29, design note 0010) — Ch.15 *ba phong cách ladder* (thiết bị · khối · tag);
    Phụ lục A2 sửa `TOF`/`TP` Mitsubishi, lệnh kiểu xung, nhánh ladder không có `ELSIF`; Ch.47 mục 47.7c +
    Bẫy 8; Ch.28 mục 28.5 thêm chiều tần suất × thời gian phục hồi.
+8. ~~**Đợt 65**~~ ✅ (2026-09-29 – 30, design note 0011, nhật ký #698–#717) — chủ dự án duyệt tải bốn tài
+   liệu an toàn (Siemens, Rockwell, SICK Flexi Soft, Pilz) + dùng sổ tay Siemens đã có sẵn; Ch.47 mục
+   **47.4c** *sáu điều trên PLC an toàn thật*, mục 47.7c thêm số liệu; loại ô thứ năm **⚖ NGOÀI HIỆN
+   TRƯỜNG** — sáu ô mới (Ch.3, 23, 35, 43, 47, 52) + hai ô đợt 64 đổi nhãn; A2.2/B sửa quy tắc bộ định thời.
+9. 🔧 (thấp) Bản đồ nguồn khớp theo từ nên quy thừa chương cho vài nhãn — tên *Guidelines for Safe
+   Machinery* rơi vào nhãn PLCopen Safe Motion và Coding Guidelines, `S7-1200/1500` rơi vào hai nhãn
+   Siemens (nhật ký #712). Không che lỗ hổng nào; sửa khi chạm `tools/ban_do_nguon.py`.
 
 ---
 
@@ -305,10 +314,10 @@ PLC_Programming_Book/
     case_study_may_mau.md         — hồ sơ máy mẫu DP-01 (bản làm việc; bản phát hành là Phụ lục J)
     ch01_… ch58_…                 — 58 chương
     pl_a1_… pl_n_…                — 15 phụ lục
-    design-notes/0001 … 0010      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
+    design-notes/0001 … 0011      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
                                     0007: đường đi của lỗi · 0008: giao diện trạm, ví dụ hoàn chỉnh, SFC ·
                                     0009: bản đầy đủ PLCopen, chạy thử SFC · 0010: phong cách ladder,
-                                    động cơ vô hiệu hoá)
+                                    động cơ vô hiệu hoá · 0011: PLC an toàn thật, ô ⚖)
   tools/
     gop_sach.sh                   — chạy 7 bộ kiểm → ghép → HTML → chép sang kho phát hành
     kiem_*.py                     — 6 bộ kiểm tĩnh (xem bảng ở đầu tệp)

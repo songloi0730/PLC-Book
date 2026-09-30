@@ -703,7 +703,7 @@ trong chương trình máy Nhật:
 tắt. Gặp cặp `SET`/`RST` trong máy thật — đó là phong cách hợp lệ — thì kiểm ba thứ: `RST` đã viết sau
 `SET` chưa, bit có nằm trong dải chốt không, và bạn đã tìm hết mọi `RST` của nó chưa.
 
-> ⚠ **Một lời phản biện chính cuốn sách.** Mọi ví dụ của sách dùng tên tag kiểu `DI_StartPB`, và phần lớn
+> ⚖ **NGOÀI HIỆN TRƯỜNG — và một lời phản biện chính cuốn sách.** Mọi ví dụ của sách dùng tên tag kiểu `DI_StartPB`, và phần lớn
 > mã trình tự viết bằng ST — tức gần phong cách Siemens, CODESYS, Rockwell. Ở nhà máy chạy nhiều máy
 > Nhật, bạn sẽ mở ra `X0`, `M100`, `D100` và rất nhiều `SET`/`RST`. ⭐ Nguyên tắc của sách không đổi — chỉ
 > phải đọc qua bảng chú thích thiết bị. Và khi **viết** cho nhà máy đó, hãy viết theo phong cách đội bảo

@@ -245,7 +245,7 @@ Phụ lục A **mô tả khác biệt, không xếp hạng hãng**. Chỗ nào m
 
 ### Khối cảnh báo
 
-Bốn loại, phân biệt theo **hậu quả nếu bỏ qua**:
+Bốn loại, phân biệt theo **hậu quả nếu bỏ qua** — cộng một loại thứ năm:
 
 > ⚠ **NGUY HIỂM**
 > Sai là hỏng thiết bị, điện giật, máy chạy bất ngờ, hoặc gây thương tích cho người.
@@ -258,6 +258,12 @@ Bốn loại, phân biệt theo **hậu quả nếu bỏ qua**:
 
 > 🔍 **BẪY**
 > Chỗ người mới sai nhiều nhất. Mỗi cái bẫy được đặt tên riêng để bạn tra lại được sau này.
+
+> ⚖ **NGOÀI HIỆN TRƯỜNG**
+> Chỗ sách dạy đúng về kỹ thuật, nhưng ngoài hiện trường người ta **làm khác**. Mỗi ô trả lời ba câu:
+> **người ta làm gì**, **vì sao** — áp lực thật về thời gian, chi phí, tần suất — và **ranh giới** nào không
+> được vượt. ⭐ Không phải để bênh cách làm tắt, mà để bạn nhận ra nó, và thiết kế sao cho cách đúng cũng
+> là cách nhanh.
 
 ### Thuật ngữ song ngữ
 

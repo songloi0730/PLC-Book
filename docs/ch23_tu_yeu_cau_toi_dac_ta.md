@@ -319,6 +319,18 @@ Vì thứ tự thật sự của công việc là ba bước, và **bước sau 
 > tinh thần Bẫy 1 ở mục 23.7. ⚡ Thời gian bỏ ra ở đây **rẻ hơn nhiều lần** so với sửa cùng vấn đề đó
 > ở bước 3.
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG**
+> **Người ta làm gì:** bắt đầu lập trình khi đặc tả còn trống vài chỗ, vì tiến độ đã ký không chờ; rồi
+> khách đổi yêu cầu ngay trong lúc chạy thử.
+> **Vì sao:** khách thường chỉ biết chắc mình muốn gì khi thấy máy chạy; và hiếm ai trả tiền cho những
+> tuần ngồi viết đặc tả.
+> **Ranh giới:** viết trước phần **đã rõ** thì được — phần đó vẫn phải có bảng I/O và trình tự bằng lời
+> (ngưỡng thực dụng ở Bẫy 1, mục 23.7). Chỗ chưa rõ thì ghi thành **giả định có tên** trong đặc tả và
+> cho khách xác nhận — đừng tự quyết âm thầm (câu 3 của bảng *Ba câu hỏi* ở trên). Thay đổi sau khi
+> đã chốt thì cập nhật đặc tả thành **phiên bản mới**, có lý do và người duyệt — cùng tinh thần quy
+> trình thay đổi ở Chương 53 mục 53.3 — để lúc nghiệm thu (mục 23.6) còn biết máy được làm theo yêu
+> cầu nào.
+
 ---
 
 ## 23.6 Tiêu chí nghiệm thu — viết từ đầu, không viết cuối

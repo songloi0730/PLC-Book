@@ -360,6 +360,17 @@ lúc có người đang làm việc.
 > (Chương 6, mục 6.7; Chương 47, mục 47.10):
 > khoá được · có cửa xả · đặt ở chỗ với tới được.
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG**
+> **Người ta làm gì:** bỏ LOTO cho những việc "một phút" — gỡ một sản phẩm kẹt, lau một cảm biến, chỉnh
+> một cữ — vì đi tới tủ, cắt, khoá, xả khí rồi thử lại mất lâu hơn chính việc đó.
+> **Vì sao:** việc ấy lặp lại nhiều lần mỗi ca, còn quy trình LOTO không phân biệt việc lớn việc nhỏ.
+> **Ranh giới:** hướng dẫn an toàn máy của SICK, dẫn theo quy định kiểm soát năng lượng nguy hiểm ở Mỹ,
+> cho biết việc bảo dưỡng nhỏ **lặp lại, gắn liền với sản xuất** có thể được miễn LOTO — nhưng ⚠ **chỉ
+> khi** nó được làm dưới một **biện pháp bảo vệ thay thế hiệu quả**; và LOTO là để **bổ sung**, không thay
+> cho che chắn. Nghĩa là việc can thiệp thường xuyên phải được **thiết kế cho**: che chắn có khoá liên
+> động, chế độ vận hành đặc biệt (Chương 47 mục 47.7c). Không có biện pháp đó thì LOTO — không ngoại
+> lệ. Quy định nơi bạn làm việc có thể khác; quy trình của cơ sở vẫn là thứ quyết định.
+
 Quy trình LOTO cụ thể do **cơ sở của bạn ban hành**. Nội dung trên là để bạn hiểu logic đằng sau nó —
 không phải để thay nó.
 
@@ -501,6 +512,10 @@ hợp mà thiếu nó thì đấu cảm biến chỉ là đoán.
   toàn — nền cho mục 3.5.
 - IEC 61140 — *Protection against electric shock*: phân loại điện áp và nguyên tắc bảo vệ chống điện
   giật — nền cho mục 3.3 và 3.7.
+- **SICK** — *Guidelines for Safe Machinery — Six Steps*, mục *Lock-Out/Tag-Out* (tr. 2-7): việc
+  bảo dưỡng nhỏ lặp lại, gắn liền với sản xuất chỉ được miễn LOTO khi làm dưới biện pháp bảo vệ
+  thay thế hiệu quả; LOTO bổ sung, không thay che chắn — dẫn theo OSHA 29 CFR 1910.147. Nền cho ô
+  *Ngoài hiện trường* ở mục 3.7. Kiểm 2026-09-29.
 - **Quy định an toàn điện và quy trình LOTO của cơ sở nơi bạn làm việc** — đây mới là văn bản bạn phải
   tuân theo; chương này chỉ giải thích logic đằng sau nó.
 

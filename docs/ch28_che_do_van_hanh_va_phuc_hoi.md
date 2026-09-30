@@ -398,7 +398,7 @@ của người lập trình** — nhưng người lập trình phải trình bà
 >
 > Thiếu bất kỳ điều nào — chọn huỷ chu trình. Một sản phẩm hỏng rẻ hơn một cỗ máy hỏng rất nhiều.
 
-> ⚠⚠ **Phản biện chính bảng trên — nó thiếu một chiều: TẦN SUẤT.** *"Huỷ chu trình"* đúng với lỗi
+> ⚖ **NGOÀI HIỆN TRƯỜNG — bảng trên thiếu một chiều: TẦN SUẤT.** *"Huỷ chu trình"* đúng với lỗi
 > **hiếm**. Với một lỗi lặp **mỗi giờ**, đường phục hồi dài nhân với số máy mỗi người trông sẽ đẩy người
 > vận hành tới chỗ **vượt qua cửa an toàn** — và khi đó máy kém an toàn hơn hẳn một máy phục hồi nhanh
 > (Chương 47 mục 47.7c). ⭐ Cách giữ được cả hai: **chia lỗi theo cách phục hồi**, không dùng một đường

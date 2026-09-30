@@ -125,6 +125,9 @@ N.5  Khi nào dừng lại và gọi người khác
 - `> ⚡ **LƯU Ý**` — sai là không chạy được hoặc không đạt chuẩn, nhưng không gây nguy hiểm
 - `> 💡 **MẸO**` — kinh nghiệm thực tế
 - `> 🔍 **BẪY**` — chỗ người mới sai nhiều nhất (B5)
+- `> ⚖ **NGOÀI HIỆN TRƯỜNG**` — chỗ sách đúng về kỹ thuật nhưng thực tế người ta làm khác: **người ta
+  làm gì · vì sao · ranh giới không được vượt** (đợt 64–65, theo yêu cầu *phản biện* của chủ dự án). ⚠ Không
+  bao giờ mô tả cách vượt qua một chức năng an toàn (B3)
 
 ---
 

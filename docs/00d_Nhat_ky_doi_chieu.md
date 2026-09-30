@@ -3596,6 +3596,80 @@ một lần mà mở cửa, phục hồi còn lâu hơn xử lý lỗi, người
 
 ---
 
+## Đợt 65 — 2026-09-29 – 30 · PLC an toàn thật, và ô "ngoài hiện trường" cho các chương còn lại
+
+Chủ dự án bảo tiếp tục phản biện các chương còn lại theo hướng của đợt 64, và cho tải thêm tài liệu về
+PLC an toàn. Bốn tệp đã được duyệt từng tệp (tên, nguồn, dung lượng) và tải vào
+`reference/04_Safety_Standards/`: Siemens *Programming Guideline Safety* (42 trang), Rockwell *GuardLogix
+5580 Safety Reference Manual* (117 trang), SICK *Flexi Soft Designer* (548 trang), Pilz *The Safety
+Compendium* (328 trang). Thêm một tài liệu **đã có sẵn** mà chưa chương nào dẫn: sổ tay *SIMATIC Safety —
+Configuring and Programming* của Siemens (#706). Quyết định đặt nội dung: design note 0011.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 698 | Siemens *Programming Guideline Safety for SIMATIC S7-1200/1500* (mã 109750255, V1.2, 09/2021): nhóm thời gian chạy an toàn gọi từ khối ngắt chu kỳ; chu kỳ phải dài hơn thời gian chạy chương trình an toàn; chu kỳ dài thì phản hồi chậm (hãng có bảng tính); trao đổi dữ liệu qua hai khối, mỗi chiều một khối; nút reset và công tắc chế độ đọc trong chương trình an toàn; `ACK_OP`; chương trình thường khoá lệnh chạy bằng tín hiệu cho phép từ phần an toàn | ✔ |
+| 699 | Cùng tài liệu, mục 4.2 và chương 5: xử lý mã hoá; hỏng dữ liệu thì một khối hệ thống đưa CPU về F-STOP; ⭐ nguyên nhân **hay gặp nhất** do lập trình là chương trình thường hoặc thiết bị ngoài (màn hình) **ghi đúng lúc chương trình an toàn đang đọc** — qua ngắt ưu tiên cao, qua màn hình/truyền thông, qua bit nhịp đồng hồ; tràn số; thụ động hoá với giá trị thay thế 0; tái tích hợp tự động có thể nguy hiểm, lỗi truyền thông phải tái tích hợp bằng tay; chú thích không làm đổi chữ ký | ✔ |
+| 700 | Rockwell *GuardLogix 5580 / Compact GuardLogix 5380 Safety Reference Manual* (1756-RM012J, 9/2025): một tác vụ an toàn định kỳ, 2–500 ms, khuyên ưu tiên cao nhất, chỉ ladder; ngõ vào an toàn và thời gian **đóng băng** ở đầu mỗi lần tác vụ chạy; quá watchdog là lỗi an toàn không phục hồi; thời gian phản hồi của tác vụ = **(chu kỳ + watchdog) × 1,01**, cộng giới hạn thời gian của kết nối vào và ra | ✔ |
+| 701 | Cùng tài liệu: chữ ký an toàn 64 ký tự, phân cấp; khoá an toàn; có chữ ký hoặc đã khoá thì không ép và không sửa được phần an toàn; khi nạp phải tự so chữ ký; ⚠ hãng **không có dịch vụ phá mật khẩu**; ánh xạ tag — dữ liệu thường nằm trong tag an toàn vẫn không phải dữ liệu an toàn; sáu bước ghi từ màn hình | ✔ |
+| 702 | SICK *Flexi Soft in Flexi Soft Designer* (IM0031659): giá trị an toàn là 0; lỗi có thể tạo sườn giả; bit trung gian và đường nhảy vòng ngược trễ thêm một chu kỳ logic; khối `Reset`/`Restart` — xung tối thiểu đặt được 100 ms hoặc 350 ms, dài quá 30 s bị bỏ qua; ngõ ra *cần reset* nháy 1 Hz; chập dây lên 24 V có thể tạo ra một xung reset | ✔ |
+| 703 | Pilz *The Safety Compendium* (2017) mục 4.4: nghiên cứu của liên hiệp các hội bảo hiểm tai nạn nghề nghiệp Đức (HVBG) — gần 37 % máy gia công kim loại được khảo sát có thiết bị bảo vệ bị vô hiệu hoá; danh sách thiếu sót thiết kế dẫn tới vô hiệu hoá (trong đó có: mở che chắn thì máy dừng nhanh và chắc, nhưng sau đó không chạy tiếp được hoặc phải khởi động lại; và thiếu vùng dừng riêng có đệm vật liệu); chế độ vận hành đặc biệt | ✔ |
+| 704 | DGUV/IFA, trang *Manipulation von Schutzeinrichtungen verhindern* (đọc 2026-09-29): ước tính cứ bốn máy một máy; nguyên nhân chủ yếu là khái niệm bảo vệ không khớp với việc vận hành; máy có động cơ vô hiệu hoá cao không được coi là an toàn | ✔ |
+| 705 | SICK *Six Steps* tr. 2-7 (và *Safety Guide for the Americas* tr. 2-9), mục *Lock-Out/Tag-Out*: việc bảo dưỡng nhỏ **lặp lại, gắn liền với sản xuất** chỉ được miễn LOTO khi làm dưới **biện pháp bảo vệ thay thế hiệu quả**; LOTO **bổ sung, không thay** che chắn — dẫn theo OSHA 29 CFR 1910.147 | ✔ |
+| 706 | Siemens *SIMATIC Safety — Configuring and Programming* (sổ tay lập trình và vận hành, 11/2023, A5E02714440-AN) — ⭐ **đã có sẵn** ở thư mục `PLC/` từ trước, bản đồ nguồn báo *chưa chương nào dẫn*. Mục 6.4–6.5: tái tích hợp tự động chỉ được phép khi an toàn cho phép (mặc định là bằng tay); sau lỗi truyền thông chỉ tái tích hợp bằng sườn lên ở `ACK_REI` hoặc `ACK_GL` — khớp #699. ➕ Mục 5.5: khi chương trình an toàn khởi động lại, dữ liệu an toàn về giá trị đầu, thông tin lỗi mất, module **tự động** tái tích hợp — chặn khởi động ngoài ý muốn phải tự lập trình. Thêm vào Ch.47 mục 47.4c, phần Bốn | ✔➕ |
+
+### B — Lỗi, lưu ý tìm ra
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 707 | ⚠ Phụ lục A2 mục A2.2 và Phụ lục B: quy tắc *"bộ định thời không dùng để chờ"* nói tuyệt đối — lệch với Ch.26 mục 26.2b, nơi thời gian **của quy trình** (keo đông, sấy) là ngoại lệ hợp lệ. Sửa thành *"không dùng để chờ một cơ cấu"* kèm ngoại lệ — commit phần 1 của đợt (1292175) | ⚠ |
+| 708 | ⚠⚠ Ch.47 dạy khái niệm (mức hiệu năng, kiến trúc, thiết bị) và cách công cụ ràng buộc (mục 47.4b), nhưng **không có** gì về việc viết chương trình trên một PLC an toàn thật: chương trình và nhịp riêng, thời gian phản hồi phải tính, CPU dừng hẳn khi hỏng dữ liệu, thụ động hoá, chữ ký, cửa hẹp giữa hai phần (#698–#702) | ⚠⚠ |
+| 709 | ⚠ Ch.47 mục 47.7c chỉ có lập luận và nguồn định tính — thiếu **số liệu** cho thấy việc vô hiệu hoá phổ biến tới đâu (#703, #704) | ⚠ |
+| 710 | ⚠ Sáu chỗ sách dạy đúng nhưng hiện trường làm khác mà sách chưa nói ra: LOTO cho việc "một phút" (Ch.3); lập trình khi đặc tả chưa đủ (Ch.23); chép tham số PID từ máy chị em (Ch.35); nới ngưỡng hoặc bỏ qua camera (Ch.43); rút gọn chạy thử ở SAT (Ch.52); dời logic khỏi phần an toàn để khỏi nghiệm thu lại (Ch.47) | ⚠ |
+| 711 | ⚠ Ch.35 mục 35.6b: *"không được chép tham số PID từ máy này sang máy khác"* — nói tuyệt đối, trong khi ai cũng chép từ máy chị em; thứ nguy hiểm là chép **rồi coi như xong**. Thêm ranh giới, khớp với Phụ lục A2 mục A2.7 (khác hãng thì chỉnh lại từ đầu) | ⚠ |
+| 712 | ⚠ Công cụ bản đồ nguồn: chỉ đọc **dòng đầu** của mỗi gạch đầu dòng — gạch đầu dòng gộp ba hãng của Ch.47 làm hai tài liệu mới hiện ra như *chưa chương nào dẫn*; đã tách mỗi tài liệu một dòng. Còn lại: công cụ khớp theo từ nên tên *Guidelines for Safe Machinery* quy thêm Ch.3, 28, 47 cho hai nhãn PLCopen, và `S7-1200/1500` quy thêm Ch.15, 47 cho hai nhãn Siemens — **thừa**, không che lỗ hổng nào (các tài liệu đó đều có chương dẫn thật). Ghi vào TODO | ⚠ |
+
+### C — Bổ sung
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 713 | ➕➕ Ch.47 mục 47.4c *"Trên một PLC an toàn thật — sáu điều bạn sẽ gặp ngay"*: chương trình và nhịp riêng (bảng ba hệ); thời gian phản hồi phải tính — riêng phần điều khiển khoảng 140 ms với số mặc định, nối về khoảng cách lắp rèm quang; xử lý mã hoá và nguyên nhân dừng hẳn; thụ động hoá, tái tích hợp, sườn giả; chữ ký (bảng ba hệ); cửa hẹp giữa hai phần và *reset không khởi động máy*; một ô ⚖; lời miễn trừ ⚠⚠ | ➕➕ |
+| 714 | ➕ Ch.47 mục 47.7c: số liệu HVBG (~37 %) và IFA (một trên bốn); danh sách thiếu sót thiết kế của Pilz đặt trước *năm tầng biện pháp*; chế độ vận hành đặc biệt vào tầng 3 | ➕ |
+| 715 | ➕ Loại ô thứ năm **⚖ NGOÀI HIỆN TRƯỜNG** — *người ta làm gì · vì sao · ranh giới*: chú giải ở Ch.1, danh sách ô trong `CLAUDE.md`; gắn nhãn lại hai ô phản biện của đợt 64 (Ch.15 mục 15.6, Ch.28 mục 28.5) | ➕ |
+| 716 | ➕ Năm ô ⚖ mới: Ch.3 mục 3.7 (LOTO — #705); Ch.23 mục 23.5b (giả định có tên, đặc tả có phiên bản); Ch.35 mục 35.6b (chép làm điểm xuất phát, ba điều kiện — #711); Ch.43 mục 43.5b (nới ngưỡng là quyết định chất lượng; bỏ qua camera thì sản phẩm *chưa được kiểm* — Ch.51 mục 51.7b); Ch.52 mục 52.2 (rút gọn có kiểm soát ở SAT; bước 1, 2, 4 không bao giờ bỏ) | ➕ |
+| 717 | ➕ Nguồn: bốn tài liệu mới vào `reference/00_INDEX.md` và bản đồ nguồn (bốn nhãn mới, đều quy về Ch.47); nguồn Ch.47 tách mỗi tài liệu một dòng (#712) và dẫn thêm sổ tay Siemens có sẵn (#706) — nhãn của nó đổi tên để được quy đúng; số nhãn *chưa chương nào dẫn* giảm từ 6 xuống 5; nguồn Ch.3 thêm SICK *Six Steps* | ➕ |
+
+### Kết quả đợt 65
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **20** |
+| ✔ Xác nhận | 9 — trong đó #706 kèm bổ sung |
+| ⚠⚠ Lỗi nặng | 1 — #708 |
+| ⚠ Lỗi, lưu ý | 5 |
+| ➕➕ / ➕ | 1 / 4 |
+| Mục mới | Ch.47 mục 47.4c · sáu ô ⚖ (Ch.3, 23, 35, 43, 47, 52) |
+
+⭐ **Chương đã xét nhưng KHÔNG thêm ô ⚖**, vì đã có sẵn góc nhìn hiện trường: Ch.13 mục 13.2b (ba tiêu chí
+chọn PLC ít được nhắc), Ch.27 mục 27.1 (chương trình sụp đổ khi máy lớn lên), Ch.44 mục 44.4 (*phân quyền
+quá chặt sẽ bị đi vòng*), Ch.45 mục 45.7 (việc người lập trình làm được thật), Ch.51 mục 51.7b (cờ bỏ qua
+thiết kế sẵn), Ch.53 Bẫy 5 (quy trình nặng tới mức bị lách), Ch.54 mục 54.6 (khoá bằng mật khẩu). Ch.7
+(ESD) — chưa có nguồn đủ để nói hiện trường làm gì, nên không viết.
+
+> ⭐⭐ **Bài học 1 — tài liệu PLC an toàn của hãng nói về NGƯỜI VIẾT nhiều hơn về thiết bị.** Nguyên nhân
+> dừng hẳn hay gặp nhất mà Siemens nêu là một lỗi lập trình, không phải một linh kiện hỏng; Rockwell nói
+> thẳng không có đường phá mật khẩu; SICK bỏ qua xung reset quá ngắn hoặc quá dài để nút kẹt không reset
+> được. Cả ba đều thiết kế để chặn **thói quen** — cùng mạch với đợt 64: thứ gây phiền sẽ bị vượt qua, nên
+> thiết bị an toàn phải khó vượt hơn chính sự phiền đó.
+
+> ⭐ **Bài học 2 — một quy tắc tuyệt đối thường che một quy tắc hẹp hơn.** *"Không dùng bộ định thời để
+> chờ"* thật ra là *"không dùng để chờ một cơ cấu"*; *"không chép tham số PID"* thật ra là *"không chép
+> rồi coi như xong"*. Nói tuyệt đối thì dễ nhớ — nhưng gặp ngoại lệ hợp lý đầu tiên, người đọc sẽ bỏ luôn
+> cả quy tắc. Nên sách phải nói ra **ranh giới**.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai
@@ -3603,7 +3677,7 @@ kiểm**, không phải "không có lỗi".
 
 | Nhóm | Chương | Nguồn sẵn có | Ưu tiên |
 |---|---|---|---|
-| ⚠⚠ **An toàn** | ⭐ **Đã đối chiếu hết** — 3, 6, 47, 48, Phụ lục D (đợt 1, 3, 4, 7). ⚠ Cờ ⚠ vẫn giữ | SICK ×3, Schneider, DGUV/IFA, PPSA | ⭐⭐ **Cao nhất** |
+| ⚠⚠ **An toàn** | ⭐ **Đã đối chiếu hết** — 3, 6, 47, 48, Phụ lục D (đợt 1, 3, 4, 7; Ch.47 thêm đợt 64, 65). ⚠ Cờ ⚠ vẫn giữ | SICK ×4, Schneider, DGUV/IFA, PPSA, Pilz, Siemens (an toàn), Rockwell (GuardLogix) | ⭐⭐ **Cao nhất** |
 | Đo lường & analog | ⭐ **Đã đối chiếu** (đợt 5–7, 14) | — | — |
 | Truyền thông | ⭐ **Đã đối chiếu** (đợt 3, 8, 14) | — | — |
 | Chuyển động | ⭐ **Đã đối chiếu** (đợt 9) | — | — |

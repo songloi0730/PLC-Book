@@ -67,6 +67,15 @@ Ba điều quan trọng mà người mới hay hiểu sai:
 > Với máy nhỏ, ba mốc có thể gộp lại — nhưng **gộp phải là quyết định có ghi lại**, không phải là
 > chuyện quên làm. Ghi rõ trong biên bản: "SIT gộp vào SAT do máy chạy độc lập, không ghép chuyền."
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG**
+> **Người ta làm gì:** ở SAT, dưới áp lực tiến độ, bước 3 bị rút gọn *("đã kiểm ở xưởng rồi")*, bước 7
+> và 8 bị cắt vì khách muốn chạy hàng ngay.
+> **Vì sao:** trễ bàn giao có khi bị phạt theo ngày, và máy đã chạy được ở xưởng.
+> **Ranh giới:** bước 1, 2 và 4 **không bao giờ** bỏ. Bước 3 nếu buộc phải rút gọn thì rút có kiểm
+> soát: mọi đầu nối đã tháo ra để vận chuyển, mọi dây đấu mới tại hiện trường vẫn kiểm **1-1** — đó
+> chính là lý do mốc SAT tồn tại. Bước 7, 8 nếu bị cắt thì ghi vào biên bản như một **hạng mục còn
+> mở**, có ngày làm — không để nó biến mất trong im lặng.
+
 ---
 
 ## 52.3 Bước 1–2 — kiểm nguội và cấp nguồn

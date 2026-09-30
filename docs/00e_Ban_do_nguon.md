@@ -13,9 +13,9 @@
 
 | Chỉ số | Giá trị |
 |---|---|
-| Tài liệu PDF | **79** |
-| Tổng số trang | **30 224** |
-| Mục lục nhúng đọc được | **13 219 mục** trên 59 tài liệu |
+| Tài liệu PDF | **83** |
+| Tổng số trang | **31 259** |
+| Mục lục nhúng đọc được | **13 729 mục** trên 62 tài liệu |
 | ⚠ Không trích được text | **4** |
 
 > ⚠⚠ **Tài liệu không trích được text — coi như KHÔNG CÓ cho tới khi OCR.**
@@ -36,7 +36,6 @@
 | Nguồn | Trang | Mục lục | Nhật ký đã nhắc? |
 |---|--:|--:|:--:|
 | Inovance H5U/Easy — lệnh | 1113 | 642 | ✔ |
-| Siemens Safety programming | 579 | 405 | ✔ |
 | Rabiee — Hardware and Programming | 446 | 0 | ✔ |
 | Petruzella — Activities Manual | 401 | 22 | ✔ |
 | Kuphaldt — Instrumentation Technician | 163 | 90 | ✔ |
@@ -70,23 +69,24 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Hugh Jack — Automating Manufacturing | 860 | 19, 25, 26, 27, 30, 45 |
 | Hanssen — IEC 61131-3 / CoDeSys | 419 | 14, 20, 21, 32 |
 | AutomationDirect PLC Handbook | 85 | 1, 13 |
-| Siemens S7-1200 System Manual | 864 | 7, 11, 12, 17, 30, 51 |
-| Siemens S7-1500 / TIA | 37 | 11, 30, 38 |
-| Mitsubishi FX5 — Instructions/FB | 1470 | 11, 17, 30 |
+| Siemens S7-1200 System Manual | 864 | 7, 11, 12, 15, 17, 30, 47, 51 |
+| Siemens S7-1500 / TIA | 37 | 11, 15, 30, 38, 47 |
+| Siemens Safety — Configuring and Programming | 579 | 47 |
+| Mitsubishi FX5 — Instructions/FB | 1470 | 11, 15, 17, 30 |
 | Mitsubishi FX5 — Program Design | 136 | 25, 26, 53 |
 | Rockwell — IEC 61131-3 compliance | 30 | 14, 30 |
-| Rockwell — khác | 1432 | 30, 35 |
+| Rockwell — khác | 1549 | 30, 35 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
 | IO-Link — đặc tả giao diện | 294 | 37, 38, 41, 43, 54 |
-| SICK — an toàn | 322 | 47 |
+| SICK — an toàn | 870 | 3, 28, 47 |
 | Schneider — an toàn máy | 33 | 41, 47, 56 |
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 47 |
-| PLCopen Safe Motion | 45 | 37 |
+| PLCopen Safe Motion | 45 | 3, 28, 37, 47 |
 | PLCopen Motion Control | 213 | 28, 37, 43, 45 |
 | PLCopen — Structuring Program Development | 4 | 21, 27 |
 | PLCopen — SFC do's and don'ts | 60 | 21, 26 |
-| PLCopen — Coding Guidelines | 127 | 11, 21, 30 |
+| PLCopen — Coding Guidelines | 127 | 3, 11, 21, 28, 30, 47 |
 | PLCopen — Object-Oriented Programming | 28 | 30 |
 | PLCopen — Compliant Libraries | 93 | 30 |
 | PLCopen XML exchange | 80 | 14 |
@@ -96,6 +96,10 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | IRSST — Prevention of Mechanical Hazards | 71 | 47 |
 | SEMI — bộ tiêu chuẩn (E10, E79…) | 5292 | 21, 29, 37, 38, 41, 45, 55 |
 | Sensors — vision & PLC (CC BY) | 20 | 43 |
+| Siemens Safety — mã 109750255 | 42 | 47 |
+| GuardLogix — an toàn | 117 | 47 |
+| Flexi Soft Designer | 548 | 47 |
+| Pilz — Safety Compendium | 328 | 47 |
 
 ---
 

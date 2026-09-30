@@ -36,7 +36,7 @@
       "Hoc tia portal",
       "S7 1200"
     ],
-    "Siemens Safety programming": [
+    "Siemens Safety — Configuring and Programming": [
       "safety_conf_prog"
     ],
     "Mitsubishi FX5 — Instructions/FB": [
@@ -141,6 +141,18 @@
     ],
     "Sensors — vision & PLC (CC BY)": [
       "sensors-25-06383"
+    ],
+    "Siemens Safety — mã 109750255": [
+      "Programming_Guideline_Safety"
+    ],
+    "GuardLogix — an toàn": [
+      "1756-rm012"
+    ],
+    "Flexi Soft Designer": [
+      "Flexi_Soft"
+    ],
+    "Pilz — Safety Compendium": [
+      "Pilz_Safety_Compendium"
     ]
   },
   "nguon_ngoai_bo_tai_lieu": [

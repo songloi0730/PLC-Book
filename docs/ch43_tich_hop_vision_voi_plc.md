@@ -305,6 +305,16 @@ sản phẩm tốt bị loại, và lòng tin vào hệ thống giảm dần cho
 > Trong phép đo trên, ánh sáng thay đổi làm báo lỗi giả tăng thêm **2–3 %**. ⭐ Bao che chắn sáng và
 > khống chế nguồn sáng rẻ hơn nhiều so với mọi thủ thuật ở tầng PLC.
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG**
+> **Người ta làm gì:** camera loại nhầm nhiều thì người vận hành xin **nới ngưỡng**, hoặc bật **bỏ qua
+> camera** cho kịp sản lượng.
+> **Vì sao:** mỗi sản phẩm tốt bị loại nhầm là một lần kiểm tay, một lần dừng — nhân lên cả ca.
+> **Ranh giới:** nới ngưỡng là **quyết định chất lượng**, không phải thao tác vận hành — cần người có
+> quyền và có ghi vết (Chương 44 mục 44.4). Bỏ qua camera thì mọi sản phẩm đi qua lúc đó **chưa được
+> kiểm**, và hồ sơ phải nói đúng như vậy (Chương 51 mục 51.7b, yêu cầu 4). ⭐ Cách chặn tận gốc vẫn là
+> số liệu ở mục này: đo tỉ lệ loại nhầm, tìm nguyên nhân — thường là chiếu sáng — và sửa, trước khi nó
+> thành lý do để tắt camera.
+
 ---
 
 ## 43.6 Hiệu chỉnh toạ độ camera và toạ độ máy
