@@ -239,7 +239,7 @@ DP01_PLC_v2.4_2026-08-15_them-tre-200ms-tram1.zip
 | Thành phần | Vì sao cần |
 |---|---|
 | ⭐ **Tên máy** | Kho sao lưu chứa nhiều máy; nhầm máy là tai nạn |
-| **Phần nào** | PLC · HMI · biến tần · an toàn (bảy hạng mục ở mục 54.3) |
+| **Phần nào** | PLC · HMI · biến tần · an toàn (tám hạng mục ở mục 54.3) |
 | **Số phiên bản** | Thứ tự rõ ràng |
 | ⭐ **Ngày** | ⭐ **Sắp xếp được, và trả lời "bản này có mới hơn không"** |
 | ⭐⭐ **Lý do** | Biến tên tệp thành **nhật ký thay đổi** — Chương 53 mục 53.4 |
@@ -316,7 +316,7 @@ DP01_PLC_v2.4_2026-08-15_them-tre-200ms-tram1.zip
 
 **Hiện tượng:** khôi phục xong, ⚠ **động cơ chạy sai** vì thiếu tham số biến tần; hoặc máy chạy mà
 không ai điều khiển được vì thiếu dự án HMI.
-**Cách sửa:** bảy hạng mục ở mục 54.3, không phải một.
+**Cách sửa:** tám hạng mục ở mục 54.3, không phải một.
 
 ### 🔍 BẪY 3 — Bản sao lưu chưa bao giờ thử khôi phục
 
@@ -369,7 +369,7 @@ biết bản nào mới hơn**, không biết bản nào chứa gì.
 |---|---|
 | ⚠⚠ Cách thất bại mặc định | ⭐ **Bản sao lưu duy nhất còn dùng được nằm trong CPU — và CPU là thứ vừa hỏng** |
 | "Tải từ PLC về" hỏng ở đâu | CPU chết thì không tải được; và ⭐ **thường mất chú thích + tên biến** |
-| ⭐⭐ Sao lưu mấy hạng mục | **Bảy**: PLC · cấu hình phần cứng · tham số driver · HMI · công thức · an toàn · mạng |
+| ⭐⭐ Sao lưu mấy hạng mục | **Tám**: PLC · cấu hình phần cứng · tham số driver · HMI · công thức · an toàn · mạng · ⭐ chương trình và điểm dạy của bộ điều khiển ngoài (robot) |
 | Hạng mục hay quên nhất | ⭐ **Tham số biến tần / servo** |
 | Khi nào bắt buộc sao lưu | ⭐ **Trước mọi thay đổi**; sau khi ổn định; sau nghiệm thu; định kỳ |
 | Lợi ích phụ của sao lưu định kỳ | ⭐ **Phát hiện thay đổi không ai ghi** |
@@ -390,7 +390,7 @@ biết bản nào mới hơn**, không biết bản nào chứa gì.
 
 1. ⚠⚠ Kể lại sự việc ở mục 54.1. Vì sao bản sao lưu **có tồn tại** mà vẫn không cứu được?
 2. ⭐ Nêu năm lý do "tải chương trình từ PLC về" không phải một phương án khôi phục đầy đủ.
-3. ⭐⭐ Kể bảy hạng mục phải sao lưu. Hạng mục nào hay bị quên nhất, và hậu quả cụ thể là gì?
+3. ⭐⭐ Kể tám hạng mục phải sao lưu. Hạng mục nào hay bị quên nhất, và hậu quả cụ thể là gì?
 4. Chương trình an toàn cần sao lưu thêm gì so với chương trình thường? Vì sao?
 5. Nêu năm thời điểm phải sao lưu. Thời điểm nào là bắt buộc tuyệt đối?
 6. ⭐ Sao lưu định kỳ có tác dụng phụ gì liên quan tới Chương 53?

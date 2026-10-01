@@ -133,7 +133,7 @@ DI_Clamp1Up            // tầng gán chân, chỉ xuất hiện ở một chỗ
 
 DI_   ngõ vào số          DO_   ngõ ra số
 AI_   ngõ vào analog      AO_   ngõ ra analog
-M_    biến nội bộ         X_    tín hiệu đã qua lớp chọn nguồn (Chương 50)
+M_    biến nội bộ         X_    tín hiệu đã qua tầng ánh xạ vào (Chương 27 mục 27.3c, Chương 50)
 T_    thể hiện timer      C_    thể hiện counter
 S_    bit trạng thái      FB_   kiểu khối chức năng
 ```

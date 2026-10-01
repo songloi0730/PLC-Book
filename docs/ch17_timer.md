@@ -274,6 +274,9 @@ M_StartPB       := FltStart.Out;
 END_PROGRAM
 ```
 
+⭐ Chương trình `Prg_Inputs` ở trên là hạt nhân của **tầng ánh xạ vào** — Chương 27 mục 27.3c thêm lớp
+mô phỏng, đặt tên `X_` cho tín hiệu đã lọc, và quy định tín hiệu nào **không** được lọc.
+
 Chạy thử: nháy ngắn hơn thời gian lọc — ở cả sườn lên lẫn giữa lúc có board — **không** làm đổi đầu
 ra; tín hiệu ổn định đủ lâu thì được công nhận. ⚠ Cái giá phải trả: đầu ra **trễ đúng bằng thời gian
 lọc**, nên thời gian lọc phải nhỏ hơn nhiều lần khoảng cách thật giữa hai sản phẩm (Chương 18 mục 18.4).

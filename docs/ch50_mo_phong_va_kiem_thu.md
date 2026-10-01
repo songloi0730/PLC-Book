@@ -66,7 +66,8 @@ END_IF;
 ```
 
 Từ đó, **toàn bộ chương trình chỉ dùng `X_BoardStn1`**, không dùng `DI_BoardStn1` trực tiếp. Logic
-không biết mình đang chạy thật hay giả.
+không biết mình đang chạy thật hay giả. ⭐ Trên máy thật, lớp chọn nguồn này là **bước đầu tiên của tầng
+ánh xạ vào** — Chương 27 mục 27.3c ghép nó với bộ lọc thành một khối, và giữ nó sống sau bàn giao.
 
 > ⚠⚠ **NGUY HIỂM — cờ mô phỏng là cờ nguy hiểm nhất trong chương trình**
 > Nó làm chương trình **tin vào những thứ không có thật**. Nếu máy chạy sản xuất với `M_SimMode = TRUE`,

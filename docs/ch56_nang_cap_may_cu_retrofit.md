@@ -334,7 +334,7 @@ cỗ máy ai đó sẽ retrofit trong mười năm nữa.**
 | ⭐ Chú thích giải thích **vì sao** | Chương 30 mục 30.4 — thứ duy nhất không lạc bản (Ch.53 mục 53.4) |
 | ⭐⭐ **Tài liệu as-built cập nhật** | Chương 53 — ⭐ **giá trị lớn nhất** |
 | Bảng I/O khớp số dây và tên tag | Chương 23, 49 mục 49.6 |
-| ⭐ Quy trình sao lưu bảy hạng mục | Chương 54 |
+| ⭐ Quy trình sao lưu tám hạng mục | Chương 54 |
 | Nhật ký thay đổi có ghi **lý do** | Chương 53 mục 53.3 |
 | Trình tự có cấu trúc rõ, bộ đếm bước tường minh | Chương 26 — ⭐ **người sau đọc được** |
 | ⭐ Không để "đấu tạm" không nhãn | Chương 53 mục 53.4 |

@@ -555,7 +555,7 @@ PLC biết nhiều thứ về sức khoẻ của máy mà không ai hỏi tới.
 | Ghi lại | Phát hiện được | Cách dùng |
 |---|---|---|
 | **Số lần tác động** của mỗi cơ cấu | Cơ cấu sắp hết tuổi thọ | Cảnh báo bảo dưỡng theo số lần, không theo lịch |
-| **Thời gian hành trình** của mỗi xy-lanh | Xy-lanh chậm dần → sắp kẹt hoặc rò khí | Ghi xu hướng; báo khi vượt ngưỡng |
+| **Thời gian hành trình** của mỗi xy-lanh | Xy-lanh chậm dần → sắp kẹt hoặc rò khí | Ghi xu hướng; ⚡ **nhắc** khi vượt khoảng 1,5 lần mốc nghiệm thu — nửa đường tới giới hạn báo lỗi (Phụ lục O mục O.7) |
 | **Thời gian quét lớn nhất** | Chương trình phình ra sau khi ai đó sửa | So với con số lúc bàn giao (Chương 10) |
 | **Điện áp 24 V nhỏ nhất** khi tải nặng | Bộ nguồn lão hoá (mục 51.8 ④) | Cảnh báo trước khi gây lỗi chập chờn |
 

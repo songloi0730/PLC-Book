@@ -398,7 +398,10 @@ Không xác nhận đã hút được. Board rơi giữa đường. Xem mục 6.
 Timeout quá chặt → báo động giả khi khí hơi yếu. Quá lỏng → mất tác dụng phát hiện.
 
 **Cách đúng:** đo thời gian hành trình thật trên máy, rồi cộng biên. Và ghi con số gốc lại để về sau
-so sánh (Chương 51).
+so sánh (Chương 51). ⭐ **Cộng bao nhiêu:** đo ít nhất 20 hành trình mỗi chiều ở điều kiện chậm nhất
+còn hợp lệ — áp khí thấp nhất cho phép, tải nặng nhất — rồi đặt giới hạn bằng **2 lần giá trị lớn nhất
+đo được**, tối thiểu cộng 0,5 s. Đó là quy tắc thực dụng của nghề, không phải giá trị chuẩn; lập luận
+và ngưỡng nhắc đi kèm ở Phụ lục O mục O.7.
 
 ### 🔍 BẪY 8 — Van cô lập không có cửa xả
 

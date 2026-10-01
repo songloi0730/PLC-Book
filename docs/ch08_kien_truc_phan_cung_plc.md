@@ -144,7 +144,7 @@ Nó nằm trong cái rack, và trong đầu người đã lắp.
 | 3 | Module này **phiên bản firmware nào**? | ⚠ Thay bằng module cùng mã khác phiên bản có thể **đổi hành vi** mà không báo gì |
 | 4 | ⭐⭐ Khe trống này để **dự phòng** hay là **chỗ module đã tháo**? | ⚠ Người sau sẽ cắm vào đó, và **địa chỉ dịch** — đúng lỗi im lặng ở khung trên |
 
-> ⭐ **Biểu mẫu sẵn có: Phụ lục C.10.** Nó cũng là **mục số 2** trong bộ sao lưu bảy hạng mục ở
+> ⭐ **Biểu mẫu sẵn có: Phụ lục C.10.** Nó cũng là **mục số 2** trong bộ sao lưu tám hạng mục ở
 > Phụ lục C.9 — ⚡ nghĩa là không có nó thì **bộ sao lưu của bạn chưa đầy đủ**, dù tệp dự án PLC đã
 > lưu đủ (Chương 54).
 

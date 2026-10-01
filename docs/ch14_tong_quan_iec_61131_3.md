@@ -443,7 +443,7 @@ tồn tại**, tên là **PLCopen XML** *(TC6 XML)* — và câu chuyện của 
       │
       └── Main ─────────────────── gọi các phần theo ĐÚNG thứ tự này, mỗi vòng quét
             │
-            ├── Prg_IoRead        (ST)  ── lọc rung, bắt cạnh (Ch.16, 17)
+            ├── Prg_IoRead        (ST)  ── chọn nguồn, lọc rung, bắt cạnh (Ch.16, 17, 27 mục 27.3c)
             ├── Prg_Safety        (LD)  ── đọc trạng thái mạch an toàn, điều kiện cho phép
             ├── Prg_Mechanisms    (ST)  ── gọi bốn thể hiện FB_Cylinder2Pos:
             │                                Stop1, Clamp1, Stop2, Clamp2

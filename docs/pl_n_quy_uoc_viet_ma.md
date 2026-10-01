@@ -216,7 +216,7 @@ trong dự án thật.
 
 | Mã | Câu hỏi phải trả lời | Sách chọn |
 |---|---|---|
-| N2 | Có dùng tiền tố cho biến không, loại nào? | ⭐ Tiền tố **vai trò**: `DI_` `DO_` `AI_` `AO_` `AX_` `NET_` · `M_` cờ nội bộ · `T_` bộ định thời · `C_` bộ đếm · `Stn1.` giao diện công bố của trạm (kiểu `ST_Station`) · `Stn1_` ruột của trạm (bước) · ⭐ tham số công thức **không** có tiền tố riêng: chúng là thành phần của cấu trúc `ActiveRecipe` kiểu `ST_Recipe` (Chương 29) — truy cập bằng tên, đúng CP1 |
+| N2 | Có dùng tiền tố cho biến không, loại nào? | ⭐ Tiền tố **vai trò**: `DI_` `DO_` `AI_` `AO_` `AX_` `NET_` · ⭐ `X_` tín hiệu đã qua tầng ánh xạ vào — giữ đúng phần đuôi của dây (Chương 27 mục 27.3c) · `M_` cờ nội bộ · `T_` bộ định thời · `C_` bộ đếm · `Stn1.` giao diện công bố của trạm (kiểu `ST_Station`) · `Stn1_` ruột của trạm (bước) · ⭐ tham số công thức **không** có tiền tố riêng: chúng là thành phần của cấu trúc `ActiveRecipe` kiểu `ST_Recipe` (Chương 29) — truy cập bằng tên, đúng CP1 |
 | N3 | Từ nào **không** được dùng trong tên? | Từ khoá và tên lệnh chuẩn (`TON`, `MOVE`…) · từ mơ hồ không nói được gì: `Temp`, `Data`, `Test`, `Flag`, `Aux` |
 | N4 | Viết hoa thế nào? | Tiền tố VIẾT HOA + `_` + `UpperCamelCase`: `DI_BoardStn1` · từ khoá VIẾT HOA: `IF`, `END_IF` |
 | N6 | Tên dài bao nhiêu? | ⭐ Tag của máy mẫu dài nhất **16 ký tự**; nên giữ **≤ 25** như PLCopen gợi ý |

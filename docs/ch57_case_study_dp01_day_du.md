@@ -102,7 +102,7 @@ kết thúc — vì một giai đoạn không đẻ ra tài liệu thì không c
 | ⭐ **Danh mục vật tư** | **C.11** | Mọi dòng có cột *"Sinh từ"*; ⚠ **thời gian có hàng** điền bằng tuần cho mọi dòng | Mua hàng |
 | Các phép tính | — | Công suất nguồn 24 V · tuổi thọ van và cáp — ⭐ **có ghi giả định**, đã nhân hệ số dự phòng | Nội bộ |
 
-> ⭐⭐ **Hai tài liệu giữa bảng là hai tài liệu mà Phiếu bàn giao đòi.** Bộ sao lưu bảy hạng mục ở
+> ⭐⭐ **Hai tài liệu giữa bảng là hai tài liệu mà Phiếu bàn giao đòi.** Bộ sao lưu tám hạng mục ở
 > C.9 có *"cấu hình phần cứng"* là mục 2, và phiếu bàn giao có *"danh mục vật tư + phụ tùng khuyến
 > nghị"* là mục 9. ⚡ Lập chúng **ở đây** thì cuối dự án chỉ việc cập nhật; ⚠ để tới lúc bàn giao
 > mới lập thì chúng sẽ được **dựng lại từ trí nhớ**, và sẽ sai.
@@ -213,7 +213,7 @@ tên thật của DP-01. Cả cuốn sách hội tụ về khoảng ba mươi d�
 ```iecst
 PROGRAM Main          // tác vụ chu kỳ, chạy liên tục — Ch.10, Ch.27 mục 27.6
 
-  Prg_IoRead();        //  1  lọc rung, bắt cạnh, ánh xạ tag        Ch.4, 16, 17, 23
+  Prg_IoRead();        //  1  chọn nguồn, lọc rung, ánh xạ tag      Ch.4, 17, 23, 27 mục 27.3c
   Prg_Safety();        //  2  chế độ vận hành, M_AllPermissive      Ch.25, 28, 47
   Prg_Mechanisms();    //  3  Stop1/Clamp1/Stop2/Clamp2, gantry     Ch.27, 30, 37
   Prg_AntiCollision(); //  4  tầng chống va chạm                    Ch.27 mục 27.3b
@@ -343,7 +343,7 @@ một bản chạy được.
 | ⭐⭐ **Đo và ghi các mốc** — 24 V tải nặng, dòng động cơ, lỗi mạng, chu kỳ | 8, 36, 40, 55 |
 | ⚠ Nghiệm thu an toàn, lập hồ sơ | 48 |
 | ⭐ Đào tạo người vận hành | 44, 52 |
-| ⭐ Sao lưu **bảy hạng mục**, thử khôi phục | 54 |
+| ⭐ Sao lưu **tám hạng mục**, thử khôi phục | 54 |
 | Bàn giao tài liệu as-built | 53 mục 53.4 |
 
 ### ⭐ Bộ hồ sơ bàn giao
@@ -355,7 +355,7 @@ một bản chạy được.
 | Sơ đồ điện **as-built** | 49, 53 |
 | Bảng I/O khớp số dây | 23, 49 |
 | ⭐ Chương trình PLC **có chú thích** | 24 |
-| ⭐ Bộ sao lưu bảy hạng mục + **quy trình khôi phục** | 54 |
+| ⭐ Bộ sao lưu tám hạng mục + **quy trình khôi phục** | 54 |
 | Hướng dẫn vận hành và xử lý báo động | 43, 44 |
 | Danh mục vật tư và phụ tùng khuyến nghị | 53 |
 | ⭐ Mốc đo lúc nghiệm thu | 8, 36, 40, 55 |
@@ -453,7 +453,7 @@ lúc quan trọng nhất.
 ### 🔍 BẪY 9 — Bàn giao thiếu bộ sao lưu và quy trình khôi phục
 
 **Hiện tượng:** ⚠⚠ Chương 54 mục 54.1 — cỗ máy không ai dựng lại được.
-**Cách sửa:** bảy hạng mục + quy trình khôi phục, ⭐ **đã thử ít nhất một lần** (mục 57.9).
+**Cách sửa:** tám hạng mục + quy trình khôi phục, ⭐ **đã thử ít nhất một lần** (mục 57.9).
 
 ### 🔍 BẪY 10 — Hoãn phần thống kê "để sau"
 

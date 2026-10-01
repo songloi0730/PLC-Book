@@ -1,7 +1,7 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-09-30 (đợt 65 — PLC an toàn thật; ô ⚖ *ngoài hiện trường* cho các chương còn lại)
-**Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 14 phụ lục (15 dòng A1–N).** Kế hoạch hoàn
+**Cập nhật:** 2026-10-01 (đợt 66 — sổ tay việc của người lập trình (Phụ lục O); tầng ánh xạ vào/ra; lộ trình D)
+**Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 15 phụ lục (16 dòng A1–O).** Kế hoạch hoàn
 thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61 ✅ · 62 ✅).
 
 ---
@@ -13,11 +13,11 @@ thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ 
 
 | Hạng mục | Hiện trạng |
 |---|---|
-| Bản thảo | ✅ 58 chương · 14 phụ lục (A tách A1/A2 → 15 dòng, tới Phụ lục N) |
+| Bản thảo | ✅ 58 chương · 15 phụ lục (A tách A1/A2 → 16 dòng, tới Phụ lục O) |
 | Ghép & phát hành | `bash tools/gop_sach.sh` → `output/*.md` + `.html` → chép sang kho phát hành `../CSharp Automation Machine/CSharp-Automation-Machine/book` · ⚠ kho đó còn **sách khác — chỉ stage tệp của sách này, không xoá gì khác** |
 | Phiên bản | `v1.0.0.YYMMDD` theo ngày ghép · ⚠ **chỉ đổi `1.0.0` khi chủ dự án bảo** |
-| Bộ kiểm (trong `gop_sach.sh`, có LỖI là dừng ghép) | 7 bộ: `kiem_tra_chuong` · `kiem_nhat_quan` · `kiem_tro_muc` · `kiem_danh_so` · `kiem_chu_nha` · ⭐ `kiem_cu_phap_st` (đợt 58, mở rộng đợt 62 — thử bằng 12 + 13 lỗi cài) · ⭐⭐ `chay_thu/kich_ban.py` (đợt 62, 63 — **chạy thử** các ví dụ ST và SFC dạng văn bản qua nhiều vòng quét, 98 phép; thử bằng 7 + 8 lỗi cài) + markdownlint · sau khi render: `kiem_html` |
-| Mã mẫu | 17 ví dụ hoàn chỉnh — dòng đầu `// ✔ VÍ DỤ HOÀN CHỈNH` (Ch.14–21, 24–30, Phụ lục L mục L.8, L.8b); còn lại là **đoạn trích**. Quy ước: Ch.1, Phụ lục N mục N.7 |
+| Bộ kiểm (trong `gop_sach.sh`, có LỖI là dừng ghép) | 7 bộ: `kiem_tra_chuong` · `kiem_nhat_quan` · `kiem_tro_muc` · `kiem_danh_so` · `kiem_chu_nha` · ⭐ `kiem_cu_phap_st` (đợt 58, mở rộng đợt 62 — thử bằng 12 + 13 lỗi cài) · ⭐⭐ `chay_thu/kich_ban.py` (đợt 62, 63 — **chạy thử** các ví dụ ST và SFC dạng văn bản qua nhiều vòng quét, 107 phép; thử bằng 7 + 8 lỗi cài) + markdownlint · sau khi render: `kiem_html` |
+| Mã mẫu | 18 ví dụ hoàn chỉnh — dòng đầu `// ✔ VÍ DỤ HOÀN CHỈNH` (Ch.14–21, 24–30 — Ch.27 có hai: khối xy-lanh và ⭐ tầng ánh xạ vào/ra ở mục 27.3c — Phụ lục L mục L.8, L.8b); còn lại là **đoạn trích**. Quy ước: Ch.1, Phụ lục N mục N.7 |
 | Nhật ký đối chiếu | `docs/00d_Nhat_ky_doi_chieu.md` — mỗi đợt một mục, khẳng định đánh số liên tục |
 | ⚠⚠ Chặn phát hành chính thức | Ch.3, 6, 47, 48, 56 + Phụ lục D cần **người có thẩm quyền về an toàn** duyệt · 🔍 Ch.35, 40 chờ xác minh kỹ thuật |
 
@@ -46,6 +46,17 @@ thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ 
 9. 🔧 (thấp) Bản đồ nguồn khớp theo từ nên quy thừa chương cho vài nhãn — tên *Guidelines for Safe
    Machinery* rơi vào nhãn PLCopen Safe Motion và Coding Guidelines, `S7-1200/1500` rơi vào hai nhãn
    Siemens (nhật ký #712). Không che lỗ hổng nào; sửa khi chạm `tools/ban_do_nguon.py`.
+10. ~~**Đợt 66 — giai đoạn 1**~~ ✅ (2026-10-01, design note 0012, nhật ký #718–#736) — trả lời hai nhận
+    xét: *"nhắc phải làm mà không có tiêu chí, con số"* và *"nhiều phần không liên quan, chỉ cần ánh xạ,
+    I/O, viết chương trình"*. ⭐⭐ **Phụ lục O** — 16 thẻ việc (các bước · đạt khi · con số gắn nhãn
+    [Chuẩn]/[Hãng]/[Nghề] · mẹo) + bảng con số nhanh O.17; ⭐⭐ **Ch.27 mục 27.3c** tầng ánh xạ vào/ra (ví dụ
+    chạy thử 9 phép); **lộ trình D** ở Ch.1 mục 1.2b; con số tại chỗ ở Ch.6, 18, 26, 51, 52, J.3; sửa 15 chỗ
+    *"bảy hạng mục"* sao lưu + luật kiểm mới; bất biến **B20** trong `CLAUDE.md`.
+11. **Đợt 66 — giai đoạn 2** (chưa làm, design note 0012 mục 7): dòng *"🎯 người lập trình cần gì"* ở đầu
+    các chương nhóm giao diện; rà cụm mơ hồ (*hợp lý / phù hợp* 73 chỗ, *kiểm tra kỹ / cẩn thận* 56,
+    *định kỳ* không kèm chu kỳ); thêm *"✅ đạt khi"* cho Ch.10, 11, 16, 19, 24, 29, 54, 55.
+12. ⚠ **Quyết định của chủ dự án:** có tách sách thành hai tập (*Lập trình* · *Hiện trường*) không — design
+    note 0012 mục 3, phương án B. Mặc định hiện tại: giữ một tập, dùng lộ trình D.
 
 ---
 
@@ -313,11 +324,12 @@ PLC_Programming_Book/
     00e_Ban_do_nguon.md           — bản đồ nguồn ↔ chương
     case_study_may_mau.md         — hồ sơ máy mẫu DP-01 (bản làm việc; bản phát hành là Phụ lục J)
     ch01_… ch58_…                 — 58 chương
-    pl_a1_… pl_n_…                — 15 phụ lục
-    design-notes/0001 … 0011      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
+    pl_a1_… pl_o_…                — 16 dòng phụ lục (⭐ pl_o: sổ tay việc của người lập trình)
+    design-notes/0001 … 0012      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
                                     0007: đường đi của lỗi · 0008: giao diện trạm, ví dụ hoàn chỉnh, SFC ·
                                     0009: bản đầy đủ PLCopen, chạy thử SFC · 0010: phong cách ladder,
-                                    động cơ vô hiệu hoá · 0011: PLC an toàn thật, ô ⚖)
+                                    động cơ vô hiệu hoá · 0011: PLC an toàn thật, ô ⚖ ·
+                                    0012: sổ tay việc, lộ trình D, tầng ánh xạ vào/ra)
   tools/
     gop_sach.sh                   — chạy 7 bộ kiểm → ghép → HTML → chép sang kho phát hành
     kiem_*.py                     — 6 bộ kiểm tĩnh (xem bảng ở đầu tệp)

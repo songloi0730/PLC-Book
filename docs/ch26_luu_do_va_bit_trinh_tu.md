@@ -379,6 +379,20 @@ END_IF;
 > đặt bộ định thời vào **bên trong** nhánh bị giữ thì tệ hơn: lúc chạy tiếp nó tính luôn cả thời gian
 > đã giữ và báo lỗi **ngay khi vừa bấm Start** (Chương 17 mục 17.3, Phụ lục B mục B.9b).
 
+### ⭐ Các con số 3 s, 60 s, 10 s lấy ở đâu
+
+Trong khối trên chúng là **số tròn để thấy cơ chế**. Trên máy thật, mỗi loại bước có một cách đặt —
+quy tắc thực dụng của nghề, đo rồi chỉnh:
+
+| Loại bước | Giới hạn |
+|---|---|
+| Chờ một cơ cấu | Giới hạn của **khối cơ cấu** cộng 1–2 s — để lỗi cụ thể hơn (xy-lanh nào) báo trước; mục 26.5b làm đúng vậy |
+| Chờ quy trình — tra keo, sấy | **Giới hạn trên của công thức × 1,5** — theo giới hạn, không theo mã hàng đang chạy, để đổi mã hàng không sinh báo động giả |
+| Chờ hệ khác — máy trước, trạm sau | Không giới hạn ở bước; giám sát ở tầng máy (mục dưới) |
+
+Giá trị thiết kế ban đầu của DP-01 nằm ở Phụ lục J mục J.3; cách đo và đặt lại khi máy đã chạy được —
+Phụ lục O mục O.7 và O.8.
+
 ### Hai bước cố ý **không** đặt giới hạn
 
 Bước 0 (chờ board) và bước 50 (chờ trạm 2) đặt `T#0S` — nghĩa là chờ vô hạn. Đây là **quyết định có
@@ -390,7 +404,9 @@ chủ ý**, không phải bỏ sót:
 
 Nhưng chờ vô hạn có rủi ro riêng, nên cần **giám sát ở tầng khác**: nếu máy không cho ra sản phẩm nào
 trong một khoảng thời gian dài, tầng máy báo *"máy đứng chờ"* — một cảnh báo mức thấp, không phải lỗi
-dừng máy. Cách này phân biệt được **chờ hợp lệ** với **kẹt thật**.
+dừng máy. ⭐ *"Dài"* là bao nhiêu: điểm xuất phát **5 lần chu kỳ đích** — DP-01 là 60 s; sau một tuần
+chạy, đặt lại bằng khoảng nghỉ dài nhất đã thấy khi máy trước dừng bình thường, cộng 50 % (Phụ lục O
+mục O.8). Cách này phân biệt được **chờ hợp lệ** với **kẹt thật**.
 
 > 💡 **MẸO — thông báo lỗi phải nói ba điều**
 > Không đủ: *"Lỗi trạm 1"*. Đủ: **bước nào · đang chờ gì · nên kiểm tra gì**.

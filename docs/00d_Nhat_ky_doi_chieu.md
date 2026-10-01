@@ -3670,6 +3670,72 @@ thiết kế sẵn), Ch.53 Bẫy 5 (quy trình nặng tới mức bị lách), C
 
 ---
 
+## Đợt 66 — 2026-10-01 · Sổ tay việc của người lập trình, và tầng ánh xạ vào/ra
+
+Hai nhận xét gửi tới chủ dự án, kèm yêu cầu *"phản biện và tiếp tục cải thiện"*: (1) sách **nhắc phải
+làm** nhiều việc mới nhưng thiếu cách làm, tiêu chuẩn, *"thế nào là đạt"*, con số và mẹo dạng sổ tay;
+(2) một người lập trình PLC thấy **nhiều phần không liên quan** — họ chỉ cần ánh xạ, I/O và viết chương
+trình. Đợt này **đo** trước khi sửa. Quyết định: design note 0012.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 718 | Rockwell *Logix 5000 Controllers I/O and Tag Data* (1756-PM004, 11/2023), mục *Buffer I/O*: logic không tham chiếu thẳng tag của thiết bị thật mà dùng bản sao; hai lý do — chặn giá trị đổi giữa lúc chương trình chạy (I/O cập nhật không đồng bộ) và chép vào thành phần của cấu trúc; ví dụ của hãng: chương trình chính gọi `map_inputs` · logic của máy · `map_outputs` | ✔ |
+| 719 | Rockwell *Tasks, Programs, and Routines* (1756-PM005, 9/2025): watchdog từng tác vụ 1–2 000 000 ms, **mặc định 500 ms**, tính cả thời gian bị tác vụ khác ngắt; lỗi watchdog lần hai trong cùng một lần quét → bộ điều khiển vào trạng thái lỗi | ✔ |
+| 720 | Siemens *S7-1200 System Manual* (A5E02486680-06): thời gian quét tối đa đặt 1–6000 ms, **mặc định 150 ms**; thời gian quét tối thiểu cố định là tuỳ chọn, mặc định tắt | ✔ |
+| 721 | Bryan — *Programmable Controllers: Theory and Implementation*, ch. 8, module vào nhanh: thiết bị vào nhanh (tiệm cận, tế bào quang điện) **không có nảy tiếp điểm**, nên bộ lọc chỉ gây trễ rất ngắn. ⚠ Bản nháp của Phụ lục O ghi nhầm nguồn là Petruzella — tra lại trước khi ghép, đã sửa | ✔ |
+| 722 | Kuphaldt — *Lessons in Industrial Instrumentation*, phần hiệu chuẩn: kiểm **năm điểm** 0 · 25 · 50 · 75 · 100 % của dải | ✔ |
+| 723 | Đặc tả Modbus V1.1b3: đọc thanh ghi tối đa 125, ghi nhiều thanh ghi 123, đọc bit 2000 — khớp Ch.39 mục 39.8, dùng lại cho Phụ lục O mục O.11 | ✔ |
+
+### B — Lỗi, lưu ý tìm ra
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 724 | ⚠⚠ **Phép đo nhận xét 1.** 303 câu chỉ thị *phải / cần / nên + động từ việc làm*: chỉ **6 %** không có số, bảng, mã hay con trỏ trong tám dòng quanh — sách hiếm khi nói suông. ⚠ Nhưng cụm *"đạt khi / xong khi / tiêu chí"* **vắng hẳn** ở Ch.10, 11, 16, 19, 24, 29 và ở **Ch.52, 54, 55** — đúng những chương người ta làm theo từng bước. Nhận xét đúng về **tiêu chí đạt và con số**, không đúng về *"không có hướng dẫn"*. Đợt này sửa Ch.52 mục 52.4; các chương còn lại vào giai đoạn 2 | ⚠⚠ |
+| 725 | ⚠ Bốn chỗ bảo làm mà không có số: Ch.6 Bẫy 7 *"cộng biên"* · Ch.18 mục 18.4 *"nhỏ hơn nhiều lần"* · Ch.26 mục 26.4 *"một khoảng thời gian dài"* · Ch.51 *"báo khi vượt ngưỡng"* | ⚠ |
+| 726 | ⚠ Cùng một việc, hai con số không nơi nào nói cách chọn: Phụ lục J mục J.3 ghi giới hạn bước 1–2 s, khối mã Ch.26–27 dùng 3 s và 5 s | ⚠ |
+| 727 | ⚠⚠ **Phép đo nhận xét 2.** Phần người lập trình coi là trọng tâm — **ánh xạ I/O** — là phần sách dạy mỏng nhất: `Prg_IoRead` chỉ là một dòng ở cây chương trình (Ch.14 mục 14.7) và danh sách lời gọi (Ch.57); cùng một tín hiệu đã lọc mang **ba tên** (`M_Board1Present` ở Ch.17, `X_BoardStn1` ở Ch.50, đọc thẳng `DI_BoardStn1` ở Ch.26); Phụ lục N mục N.6 thiếu tiền tố `X_` mà Ch.30 mục 30.2 đã quy định | ⚠⚠ |
+| 728 | ⚠ **15 chỗ** còn ghi *"bảy hạng mục"* sao lưu sau khi Ch.54 mục 54.3 đã đổi thành tám (#264): Ch.8 · Ch.54 (×4 — kể cả bảng chốt của chính nó) · Ch.56 · Ch.57 (×4) · Phụ lục C (×3) · Phụ lục M (×2). C.9 còn thiếu hạng mục 8 (điểm dạy robot) và thiếu ba mốc mà Ch.52 mục 52.8 bảo ghi: thời gian quét lớn nhất, thời gian hành trình từng xy-lanh, nhiệt độ tủ | ⚠ |
+| 729 | ⚠ Ch.1 bảng chốt: *"Phụ lục L — 16 mẫu"* — Phụ lục L có 17 | ⚠ |
+| 730 | ⚠ Ch.14 mục 14.7 quy định `Prg_OutputMap` vẽ bằng LD; ví dụ mới ở Ch.27 mục 27.3c viết ST — đã thêm câu giải thích (ST để chạy thử được; mỗi dòng gán là đúng một nấc thang) | ⚠ |
+| 731 | ⚠ Ba lộ trình đọc của Ch.1 chia theo **xuất phát điểm**, không theo **vai trò** — người chỉ lập trình không có lối đi tắt có căn cứ, đúng gốc của nhận xét 2 | ⚠ |
+
+### C — Bổ sung
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 732 | ➕➕ **Phụ lục O** — *Sổ tay việc của người lập trình*: mười sáu thẻ theo thứ tự một dự án, mỗi thẻ *các bước · ✅ đạt khi · con số · mẹo*; mọi con số gắn **[Chuẩn] / [Hãng] / [Nghề]**, [Nghề] có lập luận; bảng con số nhanh O.17 | ➕➕ |
+| 733 | ➕➕ **Ch.27 mục 27.3c** — tầng ánh xạ vào/ra: ba cách đọc ngõ vào cùng một bài toán (B18), năm việc của tầng đọc, ba điều cấm của tầng ghi, ngõ ra khi CPU dừng; ví dụ hoàn chỉnh **chạy thử 9 phép** (bộ chạy thử: 98 → **107**); Bẫy 8, 9; bảng chốt dòng 14–15; tự kiểm 13–14 | ➕➕ |
+| 734 | ➕ **Lộ trình D** — Ch.1 mục 1.2b: ô ⚖ trả lời nhận xét 2 (*đúng một nửa*), bảng *lõi · giao diện (đúng mục) · bỏ qua được (trừ khi)*; Mục lục bốn lộ trình, dòng Phụ lục O; Ch.1 đường 2, bảng chốt, câu tự kiểm 1 | ➕ |
+| 735 | ➕ Con số tại chỗ: Ch.6 Bẫy 7 · Ch.18 mục 18.4 (cửa sổ 30–400 ms của DP-01) · Ch.26 mục 26.4 (*con số lấy ở đâu*, *máy đứng chờ*) · Ch.51 · Ch.52 mục 52.4 (*đạt khi*) · J.3 (cột hết giờ là giá trị thiết kế) · C.9 (+3 mốc, +hạng mục 8) · Phụ lục F (+2 thuật ngữ) · Ch.14, 17, 30, 50, 57 trỏ về mục 27.3c · N.6 thêm `X_` | ➕ |
+| 736 | ➕ Quy trình: bất biến **B20** trong `CLAUDE.md`; luật `hang_muc_sao_luu` trong bộ kiểm nhất quán (thử bằng lỗi cài: bắt được); `gop_sach.sh` ghép Phụ lục O; hai chỗ bỏ qua có chủ ý của bộ kiểm chủ nhà ở Ch.27 | ➕ |
+
+### Kết quả đợt 66
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **19** |
+| ✔ Xác nhận | 6 |
+| ⚠⚠ Lỗi nặng | 2 — #724, #727 |
+| ⚠ Lỗi, lưu ý | 6 |
+| ➕➕ / ➕ | 2 / 3 |
+| Mục mới | Phụ lục O · Ch.27 mục 27.3c, Bẫy 8–9 · Ch.1 mục 1.2b |
+
+> ⭐⭐ **Bài học 1 — "có hướng dẫn" và "biết khi nào xong" là hai thứ khác nhau.** Sách đã trả lời câu
+> *"làm thế nào"* ở gần như mọi chỗ; câu nó hay bỏ trống là *"thế nào là xong"* và *"bao nhiêu"*. Người
+> đọc thấy mình *bị nhắc suông* chính ở khoảng trống đó — và phép đếm câu chỉ thị không thấy được nó,
+> phải đếm tiêu chí đạt mới thấy.
+
+> ⭐ **Bài học 2 — phần người dùng coi là trọng tâm có thể là phần sách viết mỏng nhất.** Ánh xạ I/O có
+> mặt trong mọi chương lập trình nhưng chưa từng được dạy như một việc — chính vì *ai cũng làm*, nên
+> không ai viết ra.
+
+> ⚡ **Bài học 3 — sửa một con số ở một chỗ để lại mười lăm chỗ cũ.** Bộ kiểm nhất quán chỉ bắt được
+> loại lệch đã có luật; đợt này thêm luật cho số hạng mục sao lưu, và thử nó bằng một lỗi cài.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

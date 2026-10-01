@@ -134,6 +134,8 @@
 | Chế độ tay · tự động | manual · automatic mode | | 28 |
 | Đặc tả chức năng | functional specification | | 23 |
 | Bảng vào/ra | I/O list · I/O schedule | | 23 |
+| ⭐ Ánh xạ vào/ra | I/O mapping | ⭐ Nơi **duy nhất** chương trình chạm dây — đọc ở đầu vòng quét, ghi ở cuối | 27 mục 27.3c |
+| Chép đệm vào/ra | I/O buffering | Chép giá trị I/O vào biến ở đầu đoạn — ⚠ bắt buộc khi I/O cập nhật không đồng bộ với chương trình | 10, 27 |
 | Chuỗi cho phép | permissive chain · ready chain | ⭐ Máy phải nói **thiếu điều kiện nào** | 44 |
 
 ---

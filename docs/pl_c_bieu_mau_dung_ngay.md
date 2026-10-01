@@ -232,7 +232,7 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 | 3 | Sơ đồ điện **as-built** | ☐ | ⚠ Đã sửa theo thực tế |
 | 4 | Bảng I/O khớp số dây (C.1) | ☐ | |
 | 5 | ⭐ Chương trình PLC **có chú thích** | ☐ | |
-| 6 | ⭐⭐ **Bộ sao lưu bảy hạng mục** | ☐ | Xem bên dưới |
+| 6 | ⭐⭐ **Bộ sao lưu tám hạng mục** | ☐ | Xem bên dưới |
 | 7 | ⭐ **Quy trình khôi phục một trang** | ☐ | ⚠ Đã thử ít nhất một lần |
 | 8 | Hướng dẫn vận hành và xử lý báo động | ☐ | |
 | 9 | Danh mục vật tư + phụ tùng khuyến nghị | ☐ | |
@@ -240,7 +240,7 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 | 11 | Sổ nhật ký thay đổi (để trống, treo trong tủ) | ☐ | |
 | 12 | Biên bản đào tạo người vận hành | ☐ | |
 
-### ⭐ Bộ sao lưu bảy hạng mục (mục 6)
+### ⭐ Bộ sao lưu tám hạng mục (mục 6)
 
 | # | Hạng mục | Có |
 |---|---|---|
@@ -251,6 +251,7 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 | 5 | Công thức và tham số sản phẩm | ☐ |
 | 6 | ⚠⚠ Chương trình + cấu hình thiết bị an toàn, **kèm mã kiểm tra** | ☐ |
 | 7 | Cấu hình mạng — địa chỉ, tên trạm, tệp mô tả thiết bị | ☐ |
+| 8 | ⭐⭐ Chương trình và **điểm dạy** của bộ điều khiển ngoài — robot, tay gắp thông minh (Chương 46 mục 46.5) | ☐ |
 
 ### ⭐ Mốc đo lúc nghiệm thu (mục 10)
 
@@ -261,6 +262,9 @@ và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 | Số lỗi mạng sau 8 giờ chạy | ______ | |
 | Chu kỳ máy thật | ______ s | Mã hàng nào? |
 | Thời gian từng bước — lớn nhất | (bảng riêng) | |
+| ⭐ Thời gian quét lớn nhất · thời gian chạy lớn nhất từng tác vụ | ______ ms | Chạy đủ tải (Chương 10, Chương 27 mục 27.6) |
+| ⭐ Thời gian hành trình từng xy-lanh — lớn nhất mỗi chiều | (bảng riêng) | Áp khí thấp nhất cho phép (Phụ lục O mục O.7) |
+| Nhiệt độ trong tủ | ______ °C | Sau vài giờ chạy liên tục (Chương 52 mục 52.8) |
 
 > ⭐⭐ **Mốc đo là mục có tỉ lệ bị bỏ cao nhất và giá trị lâu dài lớn nhất.**
 >
@@ -326,7 +330,7 @@ Chương 54).
 > - [ ] Dải địa chỉ trong bảng này **khớp cột "Địa chỉ" của C.1**, không sai một kênh
 > - [ ] ⭐ Phiên bản firmware của CPU và mọi module đã ghi, **ghi lúc nghiệm thu**
 > - [ ] Còn **≥ 20 %** kênh dự phòng trên mỗi loại module
-> - [ ] Bảng này đã nằm trong bộ sao lưu (C.9, mục 2 của bộ bảy hạng mục)
+> - [ ] Bảng này đã nằm trong bộ sao lưu (C.9, mục 2 của bộ tám hạng mục)
 
 > ⭐⭐ **Phép thử một phút.** Đưa bảng cho một người **chưa từng mở tủ này**, hỏi:
 > *"tín hiệu `DI_BoardStn1` vào module nào, khe mấy, kênh mấy?"* ⚡ Trả lời được trong một phút

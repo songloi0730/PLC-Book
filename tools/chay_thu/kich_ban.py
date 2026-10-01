@@ -111,6 +111,54 @@ END_PROGRAM
     kiem(not m.doc("T.C.Valve"), "mất Permit → van đứng yên, không bật theo Req")
 
 
+def ch27_anh_xa():
+    print("Ch.27 — tầng ánh xạ vào/ra (Prg_IoRead, Prg_OutputMap)")
+    m = May(chr(10).join([FB_DEB, FB_CYL, khoi("ch27_*.md", "PROGRAM Prg_IoRead")]))
+    m.dat("DI_StopPB", True)
+    m.dat("DI_AirOK", True)
+    quet(m, "Prg_IoRead")
+    kiem(m.doc("X_StopOK") and m.doc("X_AirOK"), "Stop lành, đủ khí → X_StopOK, X_AirOK")
+    m.dat("DI_BoardStn1", True)
+    quet(m, "Prg_IoRead", 3)
+    m.dat("DI_BoardStn1", False)
+    quet(m, "Prg_IoRead")
+    m.dat("DI_BoardStn1", True)
+    quet(m, "Prg_IoRead", 3)
+    kiem(not m.doc("X_BoardStn1"), "board nháy ngắn hơn 50 ms → CHƯA công nhận")
+    quet(m, "Prg_IoRead", 3)
+    kiem(m.doc("X_BoardStn1"), "board ổn định ≥ 50 ms → X_BoardStn1")
+    m.dat("DI_StopPB", False)
+    quet(m, "Prg_IoRead")
+    kiem(not m.doc("X_StopOK"), "nhấn Stop (hoặc đứt dây NC) → X_StopOK FALSE ngay trong vòng quét đó")
+    m.dat("DI_StopPB", True)
+    m.dat("M_SimMode", True)
+    m.dat("DI_BoardStn1", False)
+    m.dat("Sim_BoardStn1", True)
+    m.dat("Sim_Clamp1Up", True)
+    quet(m, "Prg_IoRead", 8)
+    kiem(m.doc("X_BoardStn1") and m.doc("X_Clamp1Up") and not m.doc("DI_Clamp1Up"),
+         "mô phỏng → X_ theo giá trị giả, dây thật bị bỏ qua")
+    m.dat("DI_StopPB", False)
+    quet(m, "Prg_IoRead")
+    kiem(not m.doc("X_StopOK"), "đang mô phỏng, nhấn Stop → X_StopOK vẫn FALSE ngay — Stop không qua lớp mô phỏng")
+    m.dat("DI_StopPB", True)
+    len_canh, truoc = 0, m.doc("X_StartPB")
+    for x in (True, False, True, False, True, True, True, True, True):
+        m.dat("DI_StartPB", x)
+        quet(m, "Prg_IoRead")
+        hien = m.doc("X_StartPB")
+        len_canh += 1 if (hien and not truoc) else 0
+        truoc = hien
+    kiem(m.doc("X_StartPB") and len_canh == 1, "nút Start nảy rồi giữ → công nhận đúng MỘT lần")
+    m.dat("M_ConvRunCmd", True)
+    m.dat("Clamp1.Valve", True)
+    quet(m, "Prg_OutputMap")
+    kiem(m.doc("DO_ConvRun") and m.doc("DO_Clamp1Vlv") and not m.doc("DO_Stop1Vlv"),
+         "tầng ghi ra chép đúng quyết định của tầng trên, mỗi ngõ ra một dòng")
+    kiem(m.doc("M_SimMode") and m.doc("DO_Clamp1Vlv"),
+         "đang mô phỏng → tầng ghi ra KHÔNG tắt van (tắt van một cuộn là ra lệnh chuyển động)")
+
+
 def ch30_chuyen_board():
     print("Ch.30 — FB_BoardTransfer (hai lần liên tiếp)")
     m = May(khoi("ch30_*.md", "FUNCTION_BLOCK FB_BoardTransfer") + """
@@ -671,7 +719,7 @@ def ch21_sfc():
 
 
 def main():
-    for f in (ch27_xylanh, ch30_chuyen_board, ch42_ma, ch14_pou, ch16_danh_dau, ch17_loc, ch18_dem,
+    for f in (ch27_xylanh, ch27_anh_xa, ch30_chuyen_board, ch42_ma, ch14_pou, ch16_danh_dau, ch17_loc, ch18_dem,
               ch19_dich, ch20_ham, ch24_bang, ch28_giam_sat, ch29_cong_thuc, ch25_may, tich_hop,
               ch21_sfc):
         f()

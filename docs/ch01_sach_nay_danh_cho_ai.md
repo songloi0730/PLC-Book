@@ -95,6 +95,73 @@ Bạn viết được C#, Python, hoặc ngôn ngữ khác. Bạn nhìn ladder v
 
 ---
 
+## 1.2b ⭐⭐ Lộ trình D — bạn chỉ lập trình: ánh xạ, I/O và viết chương trình
+
+Ba lộ trình trên chia theo **xuất phát điểm**. Lộ trình này chia theo **việc được giao**: bạn làm ở nơi
+có người thiết kế điện, người lo an toàn, người chạy thử riêng; việc của bạn là **ánh xạ vào/ra**
+*(I/O mapping)*, viết chương trình, và làm cho nó chạy. Một người lập trình đọc bản thảo đã nhận xét
+đúng điều đó: *"nhiều phần không liên quan — tôi chỉ cần ánh xạ, I/O và viết chương trình"*.
+
+> ⚖ **NGOÀI HIỆN TRƯỜNG — nhận xét đó đúng một nửa.**
+> **Đúng ở chỗ:** với vai trò đó, khoảng một phần ba cuốn sách là việc của người khác, và bạn không cần
+> đọc hết mới bắt đầu làm được việc.
+> **Sai ở chỗ:** ba thứ "của người khác" quyết định trực tiếp **dòng mã của bạn** — không biết chúng thì
+> mã đúng cú pháp mà sai nghĩa, và không bộ kiểm nào bắt được (bảng dưới).
+> **Ranh giới:** đọc phần *giao diện* của những chương đó — đúng mục, không cần cả chương.
+
+| Kiến thức "của người khác" | Nó quyết định dòng mã nào của bạn | Không biết thì |
+|---|---|---|
+| Cảm biến NPN hay PNP, tiếp điểm NO hay NC (Chương 4 mục 4.2, 4.4) | Ngõ vào báo `1` nghĩa là gì — tức là dòng ánh xạ `X_… := DI_…` | Tín hiệu đảo nghĩa; ⚠ đứt dây trông y như *"bình thường"* |
+| Van một cuộn hay hai cuộn (Chương 6 mục 6.3); trạng thái an toàn của từng ngõ ra (Chương 48 mục 48.2) | Cổng cho phép của khối cơ cấu; trạng thái ngõ ra khi CPU dừng (Chương 27 Bẫy 7, mục 27.3c) | ⚠ Máy vào lỗi là kẹp nhả, chặn hạ — đúng lúc đang có sự cố |
+| Ranh giới phần an toàn (Chương 47 mục 47.4, 47.4b, 47.4c) | Cái gì bạn **không được** viết bằng logic thường, tín hiệu nào chỉ được **đọc** | ⚠⚠ Logic "an toàn" nằm trong chương trình thường — chết cùng CPU |
+
+⭐ Và một chuyện ngoài mã: chương trình hỏng nhiều nhất ở **chạy thử** và lúc **hai giờ sáng** — và
+người bị gọi là người viết nó (Chương 51, 52, 53).
+
+### Đọc thế nào
+
+**Lõi — đọc kỹ, theo thứ tự:** Chương 10 · 11 · 14–22 · 23 · 24 · 25–30 · 50 · 54 · 57 (mục 57.6–57.8);
+Phụ lục B, C, L, M, N — và ⭐⭐ **Phụ lục O**, sổ tay việc của người lập trình: từng việc theo thứ tự,
+thế nào là đạt, con số nào, lấy từ đâu.
+
+**Giao diện — chỉ đọc đúng mục:**
+
+| Chương | Đọc mục | Vì sao bạn cần |
+|---|---|---|
+| 4 | 4.2 · 4.4 | Ngõ vào báo `1` nghĩa là gì |
+| 6 | 6.3 · 6.4 | Van về đâu khi mất điện; ghi thời gian hành trình để đặt giới hạn thời gian |
+| 7 | 7.6 | Bộ khử tĩnh điện còn sống hay không là một tín hiệu bạn phải ánh xạ |
+| 8 | 8.4 · 8.6 · 8.8 | Địa chỉ module; cái gì còn lại sau mất điện; RUN/STOP |
+| 9 | 9.2 · 9.3 · 9.3b | Kiểu ngõ ra giới hạn tần số đóng cắt; bộ lọc ngõ vào có thể nuốt xung ngắn |
+| 12 | 12.6 | Dữ liệu của cảm biến thông minh — ánh xạ thành tag |
+| 31 · 32 | 31.3 · 32.2–32.7 | Phân biệt cảm biến hỏng với giá trị thấp; quy đổi đúng thứ tự |
+| 36 · 37 | 36.5 · 36.8 · 37.3–37.8b | Nếu máy có biến tần, có trục chuyển động |
+| 38–41 | 38.9 · 39.4–39.8 · 41.3–41.6 | Ánh xạ truyền thông; bắt tay giữa hai máy |
+| 42 · 43 · 46 | 42.4–42.6 · 43.4–43.7 · 46.3, 46.8 | Đọc mã sản phẩm, camera, thiết bị có bộ điều khiển riêng — phần phía PLC |
+| 44 · 45 | 44.3 · 44.5b · 44.6 · 45.2 · 45.7 | Báo động; điều màn hình không được làm; dữ liệu gửi lên trên |
+| 47 · 48 | 47.1 · 47.4–47.4c · 48.2–48.5 | Ranh giới an toàn; trạng thái ngõ ra; nhịp tim giữa các hệ |
+| 49 | 49.6 | Số dây trong tủ phải trùng tên tag |
+| 51 | 51.7 · 51.7b | Công cụ phần mềm khi chẩn đoán; cờ bỏ qua thiết kế sẵn |
+| 52 · 53 | 52.2–52.9 · 53.2 · 53.3 | Kiểm I/O, chạy thử; sửa chương trình khi máy đang chạy |
+| 55 | 55.4 · 55.7c | Đo chu kỳ — phần chương trình phải làm |
+
+**Bỏ qua được — khi đã có người khác lo phần đó:**
+
+| Chương | Trừ khi |
+|---|---|
+| 2 | Bạn phải chọn giữa PLC và một giải pháp khác |
+| 3 | Bạn tự đo, tự sửa ở tủ — khi đó ⚠ đọc mục 3.7 **trước** khi chạm vào tủ |
+| 5 | Bạn chọn kiểu ngõ ra, rơ-le trung gian (mục 5.4, 5.5) |
+| 13 | Bạn tự chọn phần cứng, hoặc dựng bàn thực hành |
+| 33 · 34 · 35 | Máy có phép đo quá trình, đo lực, vòng điều khiển liên tục — khi đó chúng thành **lõi** |
+| 56 | Bạn nhận một máy cũ (mục 56.4) |
+| 58 | — |
+
+> ⭐ **Nếu chỉ có một tuần trước dự án đầu tiên:** Chương 10 → Chương 27 (đặc biệt mục 27.3c) → Chương 26
+> → Chương 25, rồi làm theo Phụ lục O từ thẻ O.1. Phần còn lại đọc khi việc chạm tới.
+
+---
+
 ## 1.3 Ba đường tra cứu
 
 Một cuốn sách 58 chương mà chỉ đọc được theo một cách thì hỏng. Sách này thiết kế để dùng theo ba cách,
@@ -127,6 +194,8 @@ Bạn đang phải làm một việc và cần đúng phần liên quan. Tra the
 | Đọc mã sản phẩm và nói chuyện với hệ thống quản lý sản xuất | 42 |
 | Thiết kế mạch an toàn | **47, 48** |
 | Chuẩn bị chạy thử và nghiệm thu | 50, 52 |
+| ⭐ Viết tầng ánh xạ vào/ra — đọc dây, lọc, mô phỏng, ghi ra | **27** (mục 27.3c), Phụ lục O mục O.4–O.5 |
+| ⭐ Cần **con số**: thời gian lọc, giới hạn thời gian, ngưỡng nhắc — và thế nào là đạt | ⭐⭐ **Phụ lục O** |
 | Tính máy chạy được bao nhiêu sản phẩm mỗi giờ | 55 |
 | Nhận một máy cũ không có tài liệu | 56 |
 
@@ -424,13 +493,15 @@ Ba nguyên tắc áp dụng từ trang này tới hết sách:
 | **Chuyển ngành, chưa biết điện** | ⭐ Lộ trình A — đọc tuần tự từ Ch.1 | ⚠ **Ch.3 (điện) và Ch.6 (khí nén)** — thiếu nền này thì các chương sau chỉ là chép mẫu | 3 · 4 · 9 |
 | **Thợ điện, kỹ thuật viên đi lên** | Lộ trình B — nhảy qua phần điện cơ bản | ⚠ **Ch.10 (vòng quét)** — đây là chỗ tư duy mạch điện dẫn tới hiểu sai | 10 · 15 · 17 |
 | **Dân lập trình phần mềm** | Lộ trình C | ⚠⚠ **Ch.10 và Ch.48** — chương trình PLC không "chạy một lần", và phần cứng **hỏng thật** | 10 · 15 · 48 |
+| ⭐ **Chỉ lập trình** — đã có người lo điện, an toàn | Lộ trình D (mục 1.2b) + **Phụ lục O** | ⚠ **Ch.4 mục 4.4 và Ch.48 mục 48.2** — hai chỗ quyết định nghĩa của dòng ánh xạ | 10 · 27 · 26 |
 
 | Bạn đang cần gì ngay lúc này | ⭐ Đi đường nào |
 |---|---|
 | Học nghề, có thời gian | **Đường 1** — đọc tuần tự (mục 1.3) |
 | Đang làm một việc cụ thể | **Đường 2** — tra theo việc (mục 1.3) |
 | ⚠ **Máy đang hỏng, có người đứng chờ** | ⭐⭐ **Đường 3 — Phụ lục E, tra theo triệu chứng.** Đừng đọc tuần tự lúc này |
-| Cần một đoạn code mẫu | **Phụ lục L** — 16 mẫu dùng ngay |
+| Cần một đoạn code mẫu | **Phụ lục L** — 17 mẫu dùng ngay |
+| ⭐ Cần biết **làm việc gì theo thứ tự nào, thế nào là đạt, con số nào** | ⭐⭐ **Phụ lục O** — sổ tay việc của người lập trình |
 | ⭐ Sắp làm dự án thật đầu tiên, không biết ngoài viết code còn phải làm gì | ⭐⭐ **Phụ lục M** — cấu hình, mạng, khởi động, chẩn đoán, bảo vệ |
 | Cần một công thức | **Phụ lục K** — kèm điều kiện áp dụng |
 | Cần đối chiếu sang hãng mình dùng | **Phụ lục A1 và A2** |
@@ -447,7 +518,8 @@ Ba nguyên tắc áp dụng từ trang này tới hết sách:
 
 Đọc xong chương này, bạn phải trả lời được:
 
-1. Bạn thuộc lộ trình A, B hay C? **Cái bẫy riêng của lộ trình đó là gì?**
+1. Bạn thuộc lộ trình A, B hay C? **Cái bẫy riêng của lộ trình đó là gì?** Nếu việc của bạn chỉ là lập
+   trình, lộ trình D bảo bạn đọc kỹ **hai chỗ nào** ngoài phần lập trình — và vì sao?
 2. Ba đường tra cứu là gì, và bạn sẽ dùng đường nào khi máy đang dừng mà cả xưởng đang chờ?
 3. Vì sao sách dùng **một** máy mẫu xuyên suốt thay vì mỗi chương một ví dụ?
 4. Vì sao thân sách không dạy theo một phần mềm cụ thể? Nêu được **ít nhất hai** lý do.

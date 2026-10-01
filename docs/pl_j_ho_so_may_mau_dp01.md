@@ -197,6 +197,12 @@ bộ khử tĩnh điện OK, chọn chế độ Auto, và MES kết nối đư�
 | S2.80 | Báo kết quả về MES, tăng bộ đếm sản lượng | Đã gửi | 5 s |
 | → S2.00 | Quay lại chờ board | | |
 
+> ⚡ **Cột *Hết giờ* là giá trị THIẾT KẾ** — đặt trước khi có máy, để viết được chương trình và kịch bản
+> thử. Khi máy chạy được, đo rồi đặt lại theo Phụ lục O mục O.7 và O.8: giới hạn của cơ cấu bằng 2 lần
+> thời gian lớn nhất đo được; giới hạn của bước chờ cơ cấu dài hơn giới hạn của cơ cấu 1–2 s, để lỗi cụ
+> thể báo trước (Chương 26 mục 26.5b). ⚠ Các khối mã ở Chương 26–27 dùng 3 s và 5 s làm số tròn để
+> minh hoạ cơ chế đó — không phải để chép.
+
 > 🔍 **BẪY trung tâm (Ch.17, Ch.48).** Mọi bước chờ cơ cấu ở trên chuyển tiếp bằng ⭐ **tín hiệu phản
 > hồi thật** (reed xy-lanh, cảm biến board); cột "hết giờ" chỉ để **báo lỗi**.
 >

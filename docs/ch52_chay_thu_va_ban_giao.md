@@ -157,6 +157,20 @@ Với **từng** ngõ ra:
 > Kiểm I/O 1-1 cho máy cỡ DP-01 mất khoảng nửa ngày. Đó là nửa ngày **rẻ nhất** trong cả dự án. Mọi
 > giờ bỏ ra ở đây tiết kiệm nhiều giờ ở bước 5–8, nơi lỗi khó tách hơn nhiều vì logic đã tham gia.
 
+### ✅ Bước 3 đạt khi
+
+Mỗi dòng trả lời được bằng *có* hoặc *không*:
+
+- [ ] **100 % kênh đã đấu dây** có kết quả trong biên bản — kể cả kênh dự phòng đã đấu.
+- [ ] Ngõ vào: ⭐ **đúng bit**, không phải bit bên cạnh; trạng thái nghỉ khớp cột *trạng thái nghỉ* của
+      bảng I/O — tiếp điểm NC thì nghỉ bằng 1.
+- [ ] Ngõ ra: đúng cơ cấu, ⭐ cảm biến phản hồi của chính cơ cấu đó đổi theo; **không** cơ cấu nào khác
+      chuyển động.
+- [ ] Nhãn trên màn hình và số dây trong tủ khớp tên tag (Chương 49 mục 49.6).
+- [ ] ⭐ Danh sách cưỡng bức **rỗng** khi kết thúc.
+
+Cùng danh mục, xếp theo từng việc của người lập trình: Phụ lục O mục O.13.
+
 ---
 
 ## 52.5 Bước 4 — chức năng an toàn

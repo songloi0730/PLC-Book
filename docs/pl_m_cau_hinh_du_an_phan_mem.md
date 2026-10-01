@@ -63,7 +63,7 @@ cho thấy các tham số này tồn tại**.
 > | Thời gian lọc ngõ vào đặt quá dài | ⭐ Xung ngắn **biến mất** — và mã đếm của bạn không sai một chữ nào |
 
 > ⭐⭐ **Vì vậy bảng cấu hình phần cứng (C.10) phải ghi cả tham số module, không chỉ khe cắm.** ⚡ Nó
-> là **mục số 2 của bộ sao lưu bảy hạng mục** (Phụ lục C.9) đúng vì lý do này: không có nó thì một
+> là **mục số 2 của bộ sao lưu tám hạng mục** (Phụ lục C.9) đúng vì lý do này: không có nó thì một
 > CPU mới nạp chương trình vào **vẫn không chạy đúng**.
 
 ---
@@ -294,7 +294,7 @@ của nó, vì đây đúng là chỗ người học ở trường hay nhầm.
 >
 > **Sao lưu**
 >
-> - [ ] ⭐ **Bộ sao lưu bảy hạng mục** đã đủ (Phụ lục C.9)
+> - [ ] ⭐ **Bộ sao lưu tám hạng mục** đã đủ (Phụ lục C.9)
 > - [ ] ⭐⭐ Đã **thử khôi phục ít nhất một lần**, theo đúng thứ tự ở mục M.8
 
 ---

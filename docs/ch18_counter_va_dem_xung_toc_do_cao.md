@@ -203,8 +203,13 @@ Chọn thời gian lọc theo nguyên tắc:
 > **Lớn hơn nhiều lần chu kỳ quét · lớn hơn thời gian rung dự kiến · nhỏ hơn nhiều lần khoảng cách
 > thật giữa hai sản phẩm.**
 
-Trên DP-01, board cách nhau ít nhất khoảng 2 giây, chu kỳ quét khoảng 10 ms. Cửa sổ chọn rất rộng —
-30 ms nằm thoải mái ở giữa. Khi cửa sổ đó **hẹp** hoặc **không tồn tại** (sản phẩm đi rất nhanh, sát
+⭐ **Ba vế đó thành con số** — quy tắc thực dụng, không phải chuẩn (Phụ lục O mục O.4): cận dưới
+**≥ 2 lần chu kỳ quét**, nên từ 3 lần, để có ít nhất hai lần đọc giống nhau; cận trên **≤ 1/5** của
+khoảng ngắn hơn trong hai khoảng — thời gian có vật và khe hở giữa hai vật — để còn biên khi tốc độ dao
+động.
+
+Trên DP-01, board cách nhau ít nhất khoảng 2 giây, chu kỳ quét khoảng 10 ms — cửa sổ là **30–400 ms**.
+Cửa sổ rất rộng, và 30 ms nằm trong đó. Khi cửa sổ đó **hẹp** hoặc **không tồn tại** (sản phẩm đi rất nhanh, sát
 nhau), thì lọc thời gian không còn là công cụ đúng: cần đổi cảm biến, đổi cơ cấu, hoặc chuyển sang
 bộ đếm phần cứng ở mục 18.5.
 

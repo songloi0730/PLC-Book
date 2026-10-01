@@ -370,6 +370,183 @@ phải sao lưu, 46.8 cho phục hồi.
 
 ---
 
+## 27.3c ⭐⭐ Tầng ánh xạ vào/ra — nơi duy nhất chương trình chạm vào dây
+
+Ba tầng ở mục 27.2 nói chương trình **nghĩ** thế nào. Dưới cả ba còn một lớp mỏng — nơi chương trình
+**chạm vào dây**: đọc ngõ vào ở đầu vòng quét, ghi ngõ ra ở cuối. Chương 14 mục 14.7 và Chương 57 đặt
+`Prg_IoRead` đứng đầu, `Prg_OutputMap` đứng cuối chương trình chính, nhưng chưa nói hai khối đó viết
+thế nào. Mục này làm việc đó — vì đây là phần việc người lập trình được giao nhiều nhất trên mọi dự án,
+và người trong nghề gọi nó bằng một chữ: **ánh xạ vào/ra** *(I/O mapping)*.
+
+### Ba cách đọc ngõ vào — cùng một bài toán
+
+Bài toán: hai tín hiệu của DP-01. `DI_BoardStn1` — cảm biến quang, có thể nháy ở mép board.
+`DI_StopPB` — nút Stop, tiếp điểm NC.
+
+| Cách | Viết thế nào | ⭐ Ưu | ⚠ Nhược |
+|---|---|---|---|
+| A — Đọc thẳng dây | Trình tự viết `IF DI_BoardStn1 THEN`; tầng máy, bộ đếm sản lượng cũng đọc `DI_BoardStn1` | Ít dòng nhất; người bảo trì thấy ngay sợi dây | ⚠ Lọc rung, mô phỏng (Chương 50), đổi kênh phải sửa ở **mọi** chỗ đọc; ⚠ trên hệ cập nhật I/O không đồng bộ với chương trình, hai chỗ đọc có thể thấy **hai giá trị** trong cùng một vòng quét (Chương 10 mục 10.5) |
+| B — Chép đệm nguyên trạng *(I/O buffering)* | Đầu vòng quét `X_BoardStn1 := DI_BoardStn1;` — logic chỉ đọc `X_` | ⭐ Đổi kênh sửa **một** dòng; giá trị cố định suốt vòng quét. Rockwell gọi đây là *buffer I/O* và dựng ví dụ đúng ba phần: chép vào · logic của máy · chép ra | Không xử lý gì: nháy ở mép board vẫn đi thẳng vào logic |
+| ⭐ C — Ánh xạ có xử lý | Đầu vòng quét: chọn nguồn thật hay mô phỏng → lọc → `X_BoardStn1`; còn `X_StopOK := DI_StopPB` đi thẳng | ⭐ Mọi thứ đặc thù của **một sợi dây** — lọc, mô phỏng, cực tính, đổi kênh — nằm ở **một chỗ**; logic đọc tín hiệu đã sạch | Thêm một tầng phải giữ khớp bảng I/O; tín hiệu đã lọc trễ đúng bằng thời gian lọc |
+
+> ⭐ **Sách chọn C cho mọi máy có trình tự.** B là **mức tối thiểu** trên hệ cập nhật I/O không đồng bộ
+> với chương trình — chính hãng khuyên vậy (Phụ lục A1 mục A1.5). A chỉ hợp lý cho chương trình rất
+> nhỏ, không có mô phỏng — và là cách **bắt buộc** cho tín hiệu an toàn đọc trong phần an toàn, vốn
+> không bao giờ đi qua lớp mô phỏng (Chương 50 mục 50.3).
+>
+> ⚡ Chương 26 đọc thẳng `DI_BoardStn1` trong trình tự là để ví dụ ngắn, tập trung vào trình tự.
+> Chương 17 dựng khối lọc rung, Chương 50 mục 50.3 dựng lớp chọn nguồn — mục này ⭐ **ghép hai thứ đó
+> thành một tầng**, và đặt tên theo quy ước `X_` ở Chương 30 mục 30.2: tín hiệu đã qua tầng ánh xạ giữ
+> **đúng phần đuôi** của dây, `DI_BoardStn1` → `X_BoardStn1`, để tra chéo chỉ mất một bước.
+
+### Tầng đọc vào làm năm việc — theo đúng thứ tự này
+
+| # | Việc | Quy tắc | Vì sao |
+|---|---|---|---|
+| 1 | **Chọn nguồn** — dây thật hay giá trị mô phỏng *(simulation)* | `M_SimMode` chọn `Sim_…` thay cho `DI_…` | Mọi xử lý phía sau chạy **y hệt** khi mô phỏng — thử được cả bộ lọc. ⚠⚠ Tín hiệu an toàn **không có** nhánh mô phỏng (Chương 50 mục 50.3) |
+| 2 | **Lọc rung** *(debounce)* | `FB_Debounce` của Chương 17; thời gian theo loại tín hiệu — Phụ lục O mục O.4 | Lọc phải đứng **trước** bắt cạnh (Phụ lục L mục L.7) |
+| 3 | ⭐ **Đặt tên giữ nghĩa khi đứt dây** | Tên nói trạng thái mà `TRUE` biểu diễn. Tín hiệu NC giữ nghĩa **lành**: `X_StopOK`, cùng kiểu với `DI_EStopOK`, `DI_AirOK` | ⚠ Đảo thành *"đã nhấn"* thì người đọc nấc thang phải đảo lại lần nữa trong đầu, và cái tên gộp *nhấn nút* với *đứt dây* mà không nói ra (Chương 4 mục 4.2, Chương 15 mục 15.3) |
+| 4 | ⚠ **Chiều an toàn đi thẳng** | Dừng, mất khí: chép thẳng — không lọc, không qua lớp mô phỏng (Chương 50 mục 50.3) | Lọc chỉ làm chậm phản ứng phía an toàn. Muốn chống báo giả thì đặt trễ ở **báo động** (Chương 44 mục 44.3), không đặt ở tín hiệu điều khiển |
+| 5 | **Không suy luận** | Không ghép hai tín hiệu, không kiểm hai cảm biến của một xy-lanh | Đó là việc của khối cơ cấu (mục 27.3). Tầng ánh xạ chỉ trả lời *"dây đang nói gì"* |
+
+### Tầng ghi ra — khối ngắn nhất, và ba điều cấm
+
+| # | Quy tắc | Vì sao |
+|---|---|---|
+| 1 | Mỗi `DO_` **đúng một dòng**, và dòng đó nằm ở `Prg_OutputMap` | Cuộn dây trùng không thể xảy ra (Chương 15 Bẫy 1); tham chiếu chéo một `DO_` cho đúng một kết quả |
+| 2 | Vế phải là **đầu ra của khối cơ cấu**, hoặc lệnh của **chủ duy nhất** ở tầng máy với tài nguyên chung (Bẫy 4) | Quyết định đã nằm ở tầng trên — tầng ghi ra chỉ **chép quyết định ra dây**. Quy tắc Q3 ở mục 27.2 vẫn đúng: khối cơ cấu **quyết định** van |
+| 3 | ⚠ **Không `IF`, không liên động, không chặn chung** | Liên động thuộc `Permit` và tầng chống va chạm (mục 27.3, 27.3b). ⚠⚠ Và đừng thêm *"tắt mọi ngõ ra khi mô phỏng"* cho chắc: với van một cuộn, **tắt là ra lệnh chuyển động** (Bẫy 7) — bật cờ mô phỏng trên máy thật sẽ làm kẹp nhả, chặn hạ |
+
+> ⚡ **Mục 27.3 ghi `DO_Clamp1Vlv := Clamp1.Valve;` ngay sau lời gọi khối — có mâu thuẫn không?**
+> Không. Quy tắc là **một nơi ghi cho mỗi ngõ ra**, và cả hai cách đều giữ được. Gom về `Prg_OutputMap`
+> có thêm hai cái lợi khi máy có hơn một trạm: mọi ngõ ra đọc được **trên một màn hình**, theo đúng thứ
+> tự bảng I/O; và chúng được ghi **sau cùng**, khi mọi quyết định của vòng quét đã xong (Chương 14
+> mục 14.7).
+
+> ⚠⚠ **Khi CPU dừng, `Prg_OutputMap` không chạy.** Lúc đó ngõ ra theo **cấu hình phần cứng** — giữ
+> giá trị cuối hay về giá trị thay thế (Chương 10 mục 10.5). Cấu hình ấy phải khớp cột *mất điện điều
+> khiển* trong bảng trạng thái an toàn của từng ngõ ra (Chương 48 mục 48.2), và phải được **thử thật**
+> trước khi bàn giao (Chương 52).
+
+### Ví dụ hoàn chỉnh — tầng ánh xạ của DP-01
+
+Ví dụ ánh xạ đủ **ba loại** tín hiệu — nút nhấn, cảm biến sản phẩm, reed của xy-lanh — và ghi bốn van
+cùng lệnh chạy chuyền. Các reed còn lại viết y hệt dòng của `Clamp1`. Ví dụ viết bằng ST để chạy thử
+được; trên DP-01, `Prg_OutputMap` vẽ bằng LD như Chương 14 mục 14.7 — mỗi dòng gán ở dưới là đúng
+một nấc thang: một tiếp điểm, một cuộn dây.
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — tầng ánh xạ vào/ra của DP-01: chọn nguồn, lọc, đặt tên, ghi ra
+//   Cần thêm: khối FB_Debounce (Chương 17) và FB_Cylinder2Pos (mục 27.3)
+VAR_GLOBAL
+    // ── dây thật — CHỈ hai chương trình dưới đây được chạm vào ──
+    DI_StartPB, DI_StopPB, DI_ResetPB : BOOL;   // nút Stop là NC — bình thường TRUE
+    DI_AirOK                          : BOOL;   // công tắc áp — TRUE khi đủ khí
+    DI_BoardStn1, DI_BoardStn2        : BOOL;   // quang thu-phát, PNP
+    DI_Clamp1Up, DI_Clamp1Dn          : BOOL;   // reed của xy-lanh kẹp trạm 1
+    DO_ConvRun, DO_Stop1Vlv, DO_Clamp1Vlv, DO_Stop2Vlv, DO_Clamp2Vlv : BOOL;
+    // ── tín hiệu đã qua tầng ánh xạ — phần còn lại của chương trình CHỈ đọc tên X_ ──
+    X_StartPB, X_ResetPB      : BOOL;   // đã lọc nảy tiếp điểm, 20 ms
+    X_StopOK                  : BOOL;   // TRUE = mạch Stop lành, không bị nhấn · nhấn hoặc đứt dây → FALSE
+    X_AirOK                   : BOOL;   // đi thẳng, không lọc
+    X_BoardStn1, X_BoardStn2  : BOOL;   // lọc hai chiều 50 ms — nháy ở mép board (Chương 17)
+    X_Clamp1Up, X_Clamp1Dn    : BOOL;   // không lọc — khối cơ cấu đã giám sát thời gian
+    // ── mô phỏng (Chương 50 mục 50.3) — ⚠ không giữ qua mất điện, không có cho tín hiệu an toàn ──
+    M_SimMode                 : BOOL;
+    Sim_BoardStn1, Sim_BoardStn2 : BOOL;
+    Sim_Clamp1Up, Sim_Clamp1Dn   : BOOL;
+    // ── nguồn của ngõ ra: tầng cơ cấu (mục 27.3) và chủ tài nguyên chung ở tầng máy (Bẫy 4) ──
+    Stop1        : FB_Cylinder2Pos;
+    Clamp1       : FB_Cylinder2Pos;
+    Stop2        : FB_Cylinder2Pos;
+    Clamp2       : FB_Cylinder2Pos;
+    M_ConvRunCmd : BOOL;
+END_VAR
+
+PROGRAM Prg_IoRead
+VAR_EXTERNAL
+    DI_StartPB, DI_StopPB, DI_ResetPB, DI_AirOK            : BOOL;
+    DI_BoardStn1, DI_BoardStn2, DI_Clamp1Up, DI_Clamp1Dn   : BOOL;
+    X_StartPB, X_ResetPB, X_StopOK, X_AirOK                : BOOL;
+    X_BoardStn1, X_BoardStn2, X_Clamp1Up, X_Clamp1Dn       : BOOL;
+    M_SimMode                                              : BOOL;
+    Sim_BoardStn1, Sim_BoardStn2, Sim_Clamp1Up, Sim_Clamp1Dn : BOOL;
+END_VAR
+VAR
+    FltBoard1 : FB_Debounce;
+    FltBoard2 : FB_Debounce;
+    FltStart  : FB_Debounce;
+    FltReset  : FB_Debounce;
+    RawBoard1 : BOOL;                    // sau bước chọn nguồn, trước bộ lọc
+    RawBoard2 : BOOL;
+END_VAR
+
+// ── 1 · Chọn nguồn. ⚠⚠ Tín hiệu an toàn KHÔNG BAO GIỜ đi qua đây (Chương 50 mục 50.3) ──
+IF M_SimMode THEN
+    RawBoard1  := Sim_BoardStn1;
+    RawBoard2  := Sim_BoardStn2;
+    X_Clamp1Up := Sim_Clamp1Up;
+    X_Clamp1Dn := Sim_Clamp1Dn;
+ELSE
+    RawBoard1  := DI_BoardStn1;
+    RawBoard2  := DI_BoardStn2;
+    X_Clamp1Up := DI_Clamp1Up;
+    X_Clamp1Dn := DI_Clamp1Dn;
+END_IF;
+
+// ── 2 · Lọc — mỗi thể hiện gọi đúng MỘT lần mỗi vòng, ngoài IF (Phụ lục N) ──
+FltBoard1(Raw := RawBoard1, TimeOn := T#50MS, TimeOff := T#50MS);
+FltBoard2(Raw := RawBoard2, TimeOn := T#50MS, TimeOff := T#50MS);
+FltStart(Raw := DI_StartPB, TimeOn := T#20MS, TimeOff := T#20MS);
+FltReset(Raw := DI_ResetPB, TimeOn := T#20MS, TimeOff := T#20MS);
+X_BoardStn1 := FltBoard1.Out;
+X_BoardStn2 := FltBoard2.Out;
+X_StartPB   := FltStart.Out;
+X_ResetPB   := FltReset.Out;
+
+// ── 3 · Chiều an toàn đi THẲNG — không lọc, không mô phỏng ──
+X_StopOK := DI_StopPB;        // NC: nhấn hoặc đứt dây → FALSE → dừng
+X_AirOK  := DI_AirOK;         // trễ chống báo giả đặt ở Prg_Alarm, không đặt ở đây
+END_PROGRAM
+
+PROGRAM Prg_OutputMap
+VAR_EXTERNAL
+    DO_ConvRun, DO_Stop1Vlv, DO_Clamp1Vlv, DO_Stop2Vlv, DO_Clamp2Vlv : BOOL;
+    Stop1, Clamp1, Stop2, Clamp2 : FB_Cylinder2Pos;
+    M_ConvRunCmd : BOOL;
+END_VAR
+
+// Mỗi ngõ ra ĐÚNG MỘT dòng — không IF, không liên động, không chặn chung (mục 27.3c)
+DO_ConvRun   := M_ConvRunCmd;     // chủ duy nhất: tầng máy
+DO_Stop1Vlv  := Stop1.Valve;
+DO_Clamp1Vlv := Clamp1.Valve;
+DO_Stop2Vlv  := Stop2.Valve;
+DO_Clamp2Vlv := Clamp2.Valve;
+END_PROGRAM
+```
+
+Chạy thử, theo kịch bản trong bộ chạy thử của sách: board nháy ngắn hơn 50 ms **không** làm đổi
+`X_BoardStn1`, ổn định đủ lâu thì được công nhận; bật mô phỏng thì `X_` theo giá trị giả còn dây thật bị
+bỏ qua; ⭐ nhưng nhấn Stop **vẫn** làm `X_StopOK` về `FALSE` ngay trong vòng quét đó, kể cả khi đang mô
+phỏng; nút Start nảy năm lần chỉ được công nhận một lần; và bật cờ mô phỏng **không** làm tắt van nào ở
+tầng ghi ra.
+
+### Bảng ánh xạ đạt khi nào
+
+| # | Câu hỏi kiểm tra | Đạt khi |
+|---|---|---|
+| 1 | ⭐ Tham chiếu chéo `DI_` — kết quả nằm ở đâu? | **Chỉ** trong `Prg_IoRead` — trừ tín hiệu an toàn đọc trong phần an toàn |
+| 2 | Tham chiếu chéo một `DO_` — mấy chỗ ghi? | Đúng một, trong `Prg_OutputMap` |
+| 3 | Số dòng ánh xạ so với bảng I/O | Mỗi kênh chương trình dùng có đúng một dòng, theo thứ tự bảng I/O |
+| 4 | Mỗi `X_` có chú thích loại tiếp điểm, thời gian lọc, có mô phỏng hay không? | Có |
+| 5 | Tín hiệu nào có nhánh `Sim_`? | ⚠ Không tín hiệu an toàn nào |
+| 6 | Rút dây một tín hiệu NC | `X_` về `FALSE`, máy về phía an toàn |
+
+⭐ Con số cụ thể — thời gian lọc theo loại tín hiệu, cận dưới theo vòng quét, cận trên theo sản phẩm —
+gom ở **Phụ lục O mục O.4 và O.5**, cùng các bước làm theo thứ tự.
+
+---
+
 ## 27.4 Đồng bộ giữa hai trạm — không được chờ bận
 
 Hai trạm của DP-01 chạy song song trên hai board khác nhau. Chúng cần phối hợp đúng **một** việc: trạm
@@ -703,6 +880,26 @@ chủ ý**, không phải xảy ra như tác dụng phụ của việc mất m�
 > không làm xy-lanh chạy. Nhưng khối vẫn nên theo cách B: ⭐ cùng một khối, cùng một nghĩa của
 > `Permit`, cho **mọi** loại van — người đọc chương trình không phải nhớ loại van nào đang lắp.
 
+### 🔍 BẪY 8 — Có tầng ánh xạ rồi mà vẫn đọc `DI_` ở chỗ khác
+
+**Hiện tượng:** bật mô phỏng thì trạm chạy đúng nhưng bộ đếm sản lượng đứng im — vì nó vẫn đọc
+`DI_BoardStn1`. Hoặc ngược lại trên máy thật: trình tự đọc `X_BoardStn1` đã lọc, còn tầng máy đọc
+`DI_BoardStn1` thô và đếm đôi mỗi khi board nháy. ⚠ Máy chạy **nửa thật nửa giả**, và mỗi nửa cho một
+câu trả lời khác nhau về cùng một sợi dây.
+
+**Cách sửa:** tham chiếu chéo `DI_` (mục 27.3c, bảng đạt khi dòng 1). ⭐ Một chỗ đọc vòng qua tầng ánh
+xạ là **lỗi**, không phải phong cách.
+
+### 🔍 BẪY 9 — Lọc tín hiệu dừng "cho đỡ nhiễu"
+
+**Hiện tượng:** ai đó thấy nút Stop thỉnh thoảng làm máy dừng giả, nên cho nó qua bộ lọc 50 ms — hoặc
+lọc `DI_AirOK` hai giây để khỏi báo mất khí giả. Từ đó, mỗi lần nhấn Stop máy đi thêm một quãng, và khi
+khí tụt thật thì cơ cấu đã kịp chạy thêm hai giây trên khí yếu.
+
+**Cách sửa:** chiều an toàn **đi thẳng** ở tầng ánh xạ (mục 27.3c, việc 4). Muốn chống báo giả thì đặt
+trễ ở **báo động** (Chương 44 mục 44.3); còn dừng giả thật sự thì tìm nguyên nhân — dây, đầu cốt, nhiễu
+(Chương 49) — chứ không làm chậm cái nút.
+
 ---
 
 ## 27.8 Bảng chốt — kiểm tra kiến trúc
@@ -724,6 +921,8 @@ Dùng bảng này khi rà soát chương trình của mình hoặc của ngườ
 | 11 | ⭐ Cách chia có **soi gương ranh giới vật lý** của máy không? | Có — người đứng trước máy suy ra được |
 | 12 | ⚠ Hai việc chạy **cùng lúc** có bị gộp vào một khối không? | Không |
 | 13 | ⚠⚠ Mất `Permit` thì van **giữ nguyên** hay **tắt**? | Giữ nguyên — tắt van một cuộn là ra lệnh chuyển động (Bẫy 7) |
+| 14 | ⭐ Mỗi `DI_` được đọc ở **mấy nơi**? | Một — trong `Prg_IoRead`; tín hiệu an toàn đọc trong phần an toàn (mục 27.3c) |
+| 15 | ⚠ Tín hiệu dừng, mất khí có bị lọc hay mô phỏng không? | Không — chiều an toàn đi thẳng (Bẫy 9) |
 
 ---
 
@@ -747,6 +946,10 @@ Dùng bảng này khi rà soát chương trình của mình hoặc của ngườ
 12. ⚠⚠ `Valve := Req AND Permit` trông đúng. Vì sao nó sai với van 5/2 lò xo về, và hậu quả trên
     DP-01 khi máy vào `Alarm` lúc board đang bị kẹp là gì? Khối `FB_Cylinder2Pos` tránh nó bằng cách nào,
     và vì sao khi đó `Done` phải so với **yêu cầu** chứ không chỉ với van?
+13. ⭐ Ba cách đọc ngõ vào — đọc thẳng dây, chép đệm, ánh xạ có xử lý — khác nhau ở đâu? Trên hệ cập
+    nhật I/O **không đồng bộ** với chương trình, cách nào là tối thiểu, và vì sao?
+14. ⚠ Vì sao tầng ghi ra **không** được có dòng *"tắt mọi ngõ ra khi mô phỏng"*, dù nghe rất an toàn?
+    Và khi CPU dừng thì cái gì quyết định trạng thái ngõ ra?
 
 Câu 2 và câu 5 là hai câu phân loại. Câu 2 kiểm tra bạn phân biệt được *chạy đúng* với *thiết kế đúng*;
 câu 5 kiểm tra bạn hiểu nút cổ chai — thứ quyết định mọi quyết định cải tiến năng suất về sau.
@@ -787,6 +990,10 @@ chưa trả lời: khi máy dừng giữa chừng ở một tư thế bất kỳ
   đóng gói dữ liệu), ⚠ **giới hạn của việc chia nhỏ** — chia quá tay thì công sức chuyển sang việc
   ghép, và bốn nguyên tắc đi kèm (chỉ dùng tên tượng trưng · để phần thuộc về nhau cạnh nhau ·
   không dùng lệnh nhảy · đặt tên nhất quán). *(tài liệu mở của PLCopen)*
+- **Rockwell Automation** — *Logix 5000 Controllers I/O and Tag Data* (1756-PM004, bản 11/2023), mục
+  *Buffer I/O*: ⭐ logic không tham chiếu thẳng tag của thiết bị thật mà dùng **bản sao**, vì I/O cập
+  nhật không đồng bộ với chương trình; ví dụ của hãng gọi lần lượt `map_inputs` · logic của máy ·
+  `map_outputs` — nền cho cách B và C ở mục 27.3c. Kiểm 2026-10-01.
 
 > ⚡ Ba tầng ở mục 27.2 là **cách tổ chức thực dụng đã được kiểm chứng cho máy tự động hoá rời rạc**,
 > không phải một kiến trúc chuẩn hoá bắt buộc. Máy rất nhỏ có thể gộp tầng trạm vào tầng máy; máy rất

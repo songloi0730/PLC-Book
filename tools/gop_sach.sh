@@ -71,7 +71,7 @@ sed -i -E "s/v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]{6}/${VERSION}/g" output/cover.md out
     [ -z "$f" ] && { echo "!! THIEU chuong ${n}" >&2; exit 1; }
     echo "<!-- SECTION: $(basename "$f" .md) -->"; echo "---"; cat "$f"; echo ""
   done
-  for pl in a1 a2 b c d e f g h i j k l m n; do
+  for pl in a1 a2 b c d e f g h i j k l m n o; do
     f=$(ls docs/pl_${pl}_*.md 2>/dev/null | head -1)
     [ -z "$f" ] && { echo "!! THIEU phu luc ${pl}" >&2; exit 1; }
     echo "<!-- SECTION: $(basename "$f" .md) -->"; echo "---"; cat "$f"; echo ""

@@ -57,6 +57,7 @@
       "mo_ta": "kích thước board",
       "chi_khi_co": "board"
     },
+    "hang_muc_sao_luu": {"mau": "(?i)(bảy|tám|sáu|chín|7|8)\\*{0,2}:? (?:hạng mục|thứ)", "dung": ["tám", "Tám", "8"], "mo_ta": "số hạng mục của bộ sao lưu (Chương 54 mục 54.3)", "chi_khi_co": "sao lưu"},
     "uon_cap": {
       "mau": "(\\d[\\d ]*\\d) lần uốn",
       "dung": [
