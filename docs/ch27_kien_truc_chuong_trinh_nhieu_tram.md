@@ -604,6 +604,19 @@ IF Stn1.BoardDone AND Stn2.Ready THEN
 END_IF;
 ```
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG — giao diện trạm bằng mảng cờ đánh số.**
+> **Người ta làm gì:** nhiều chương trình thật không có kiểu như `ST_Station`. Thay vào đó là **một mảng
+> chung cho mọi trạm** — mỗi trạm một phần tử, trong đó một dãy cờ đánh số `done[0]`…`done[9]` cộng vài
+> cờ có tên — còn nghĩa của từng cờ nằm trong một bảng tính đi kèm: *"trạm 3, cờ 1 = trạm ra liệu xin
+> hàng"*.
+> **Vì sao:** thêm trạm chỉ là thêm một phần tử; một màn hình chẩn đoán chung hiện được mọi trạm bằng một
+> vòng lặp; viết nhanh.
+> **Ranh giới:** cờ đánh số chỉ an toàn khi **nghĩa của chỉ số sống cùng chương trình** — hằng có tên cho
+> từng chỉ số (`DONE_REQ_BOARD` mang giá trị 1), hoặc chú thích ngay tại khai báo — và mỗi cờ **vẫn chỉ
+> một nơi ghi** (Phụ lục C mục C.2, cột *Ai ghi*). Bảng nghĩa nằm ở một tệp riêng thì sau lần sửa thứ
+> ba nó sai, và `done[3]` không còn nói gì. ⭐ Viết mới thì dùng trường có tên như trên; nhận một chương
+> trình kiểu này thì việc đầu tiên là dựng lại bảng nghĩa (Chương 22 mục 22.4).
+
 > ⚡ **LƯU Ý — "chờ bận" trong PLC nghĩa là gì**
 > Trong lập trình thông thường, *chờ bận (busy-wait)* là vòng lặp quay tại chỗ đến khi điều kiện đúng.
 > Trong PLC, viết vòng lặp như vậy **treo CPU** (Chương 20) — nên bạn sẽ không gặp dạng đó.

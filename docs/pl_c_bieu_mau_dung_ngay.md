@@ -21,24 +21,31 @@
 ⭐ **Dùng để:** làm tài liệu nền của cả dự án — đầu vào cho sơ đồ điện, đánh số dây, chương trình, HMI
 và hồ sơ bàn giao. ⚠ **Làm trước khi đấu tủ** (Chương 23, 49).
 
-| Tag | Mô tả | Loại thiết bị | NO/NC | PNP/NPN | Trạng thái nghỉ | Địa chỉ | Số dây | Cầu đấu | Ghi chú |
-|---|---|---|---|---|---|---|---|---|---|
-| `DI_BoardStn1` | Board tới vị trí trạm keo | Quang thu-phát | NO | PNP | 0 | %I0.3 | 214 | X2:14 | Ví dụ DP-01 |
-| | | | | | | | | | |
+| Tag | Mô tả | Loại thiết bị | NO/NC | PNP/NPN | Trạng thái nghỉ | ⭐ Phân loại | Hành vi khi mất | Địa chỉ | Số dây | Cầu đấu · hộp chia/cổng | Ghi chú |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Module 1 · DI 16 kênh · khe 0·1** | | | | | | | | | | | ⭐ Dòng tiêu đề module |
+| `DI_BoardStn1` | Board tới vị trí trạm keo | Quang thu-phát | NO | PNP | 0 | Quy trình | Quá giờ bước, báo lỗi | %I0.3 | 214 | X2:14 | Ví dụ DP-01 |
+| `DI_Clamp1Up` | Bàn nâng kẹp trạm 1 đã lên | Reed | NO | PNP | 0 | Quy trình | Quá giờ cơ cấu, báo lỗi | %I1.0 | 220 | X2:20 | ⭐ Cặp liền nhau, bắt đầu ở kênh chẵn |
+| `DI_Clamp1Dn` | Bàn nâng kẹp trạm 1 đã xuống | Reed | NO | PNP | 1 | Quy trình | Quá giờ cơ cấu, báo lỗi | %I1.1 | 221 | X2:21 | |
+| *(dự phòng trạm 1)* | | | | | | | | %I1.2 | | | ⭐ Dự phòng nằm trong nhóm của trạm |
+| | | | | | | | | | | | |
 
 | Cột | Vì sao có |
 |---|---|
 | ⭐ **Tag** | Tên dùng trong chương trình — **phải giống nhãn HMI và khớp số dây** |
+| ⭐ **Phân loại · Hành vi khi mất** | An toàn hay quy trình, và máy phải làm gì khi tín hiệu biến mất — hai cột bắt buộc của Chương 23 mục 23.3, đầu vào cho Chương 48 |
 | NO/NC | ⚠ Quyết định logic; tín hiệu an toàn quan trọng dùng **NC** |
 | PNP/NPN | ⭐ Sai cái này thì module không nhận dù cảm biến sáng đèn |
 | Trạng thái nghỉ | Giá trị khi máy đứng yên — ⭐ dùng khi kiểm tra I/O |
-| ⭐ **Số dây · Cầu đấu** | ⭐⭐ Nối bảng này với tủ thật — thứ giúp đi từ triệu chứng tới sợi dây |
+| ⭐ **Số dây · Cầu đấu** | ⭐⭐ Nối bảng này với tủ thật — thứ giúp đi từ triệu chứng tới sợi dây. I/O phân tán cắm qua hộp chia thì ghi **hộp chia và cổng** |
 
 > ⚠ **Trước khi coi là xong:**
 >
 > - [ ] Mỗi tag có **một** ý nghĩa, không kiêm nhiệm
 > - [ ] Đã chừa **20 % kênh dự phòng** trên mỗi module
-> - [ ] Tín hiệu an toàn đã tách riêng và đánh dấu rõ
+> - [ ] Tín hiệu an toàn có **bảng riêng**; hai kênh của một thiết bị là hai dòng liền nhau
+> - [ ] ⭐ Mỗi module có dòng tiêu đề; hai cảm biến của mỗi xy-lanh liền nhau, cùng thứ tự; dự phòng
+>       nằm **trong** nhóm của từng trạm (Chương 23 mục 23.3)
 > - [ ] ⭐ Số dây khớp sơ đồ điện **và** khớp nhãn trong tủ
 > - [ ] Đã kiểm dòng tổng qua chân chung của từng module ngõ ra
 
@@ -319,6 +326,22 @@ Chương 54).
 > phiên bản thì **không dựng lại được cấu hình mạng** trên một máy tính mới — mục 7 của bộ sao lưu ở
 > C.9 đòi chính thứ này.
 
+### C.10.3 Trục và động cơ
+
+| Tag | Tên · vị trí | Loại | Điều khiển | Công suất | ⭐ Phanh — ai đóng mở | STO | Gốc · giới hạn | Mã driver | Cáp động lực · encoder | Ghi chú |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `AX_Z` | Nâng/hạ đầu tra keo | Servo | Mạng — `NET_Drives` | ___ W | ⭐ Có — kẹp khi mất điện; ghi rõ driver hay PLC đóng mở | ___ | Gốc + giới hạn hai đầu | | ⚠ Chạy trong máng xích | Trục đứng có tải treo — ví dụ DP-01 |
+| `AX_X`, `AX_Y` | Gantry mang đầu tra keo | Servo | Mạng — `NET_Drives` | ___ W | ___ | ___ | Gốc + giới hạn hai đầu | | | |
+| — | Động cơ chuyền | Không đồng bộ, qua biến tần | `DO_ConvRun` + `AO_ConvSpeed` | ___ kW | — | ___ | — | | | |
+| | | | | | | | | | | |
+
+| Cột | Vì sao có |
+|---|---|
+| ⭐⭐ **Phanh — ai đóng mở** | Trục đứng có tải treo: mất mô-men là rơi (Chương 48 mục 48.2, Chương 37 Bẫy 6). Ghi rõ phanh do driver hay do ngõ ra PLC đóng mở — ⚠ và nếu **hai trục dùng chung một ngõ ra phanh**, ghi rõ, vì nhả phanh cho trục này là nhả luôn trục kia |
+| ⭐ **STO** | Có hay không quyết định cách dừng an toàn của trục (Chương 36 mục 36.6, Chương 37 mục 37.6b) |
+| **Gốc · giới hạn** | Trình tự về gốc dùng tín hiệu nào (Chương 28 mục 28.4b, Chương 37 mục 37.3) |
+| **Cáp** | Cáp chạy trong máng xích phải là loại dành cho máng xích — tính theo số lần uốn (Chương 49 mục 49.7) |
+
 ### ⭐⭐ Yêu cầu với kết quả — bảng này đạt khi
 
 > ⚠ **Trước khi coi là xong:**
@@ -329,6 +352,7 @@ Chương 54).
 > - [ ] Kiểu **sink / source** đã chọn được ghi rõ — ⚠ và **cũng đã ghi lên nhãn trong tủ**
 > - [ ] Dải địa chỉ trong bảng này **khớp cột "Địa chỉ" của C.1**, không sai một kênh
 > - [ ] ⭐ Phiên bản firmware của CPU và mọi module đã ghi, **ghi lúc nghiệm thu**
+> - [ ] ⭐ Mọi trục và động cơ có một dòng ở C.10.3; trục đứng có tải treo ghi rõ **phanh và ai đóng mở**
 > - [ ] Còn **≥ 20 %** kênh dự phòng trên mỗi loại module
 > - [ ] Bảng này đã nằm trong bộ sao lưu (C.9, mục 2 của bộ tám hạng mục)
 

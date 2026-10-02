@@ -182,6 +182,11 @@ sinh ra đúng để làm bit bước, dùng kèm chương trình SFC.
 > thiết bị riêng, nó được công cụ hỗ trợ tốt hơn nhưng cũng mang theo luật riêng.** ⚠ Đọc tài liệu
 > lệnh trước khi dùng — đừng suy từ thói quen với cờ nhớ thường.
 
+> ⭐ **Dùng loại thiết bị này thì chia vùng của nó theo khối — mỗi trình tự một khối 100.** `S120` khi đó
+> đọc ra *"trạm 1, bước 20"*, đúng cách đánh số bước cách 10 (Bẫy 3). ⚠ Và để riêng khối đầu tiên: trên
+> dòng FX5, lệnh khởi tạo trạng thái `IST` chiếm sẵn `S0`–`S19`. Trang quy hoạch đầy đủ: Chương 11 mục
+> 11.8b.
+
 ---
 
 ## 26.2b ⭐ Phương pháp thứ hai — và biết KHI NÀO nó hợp lệ mới là phần khó

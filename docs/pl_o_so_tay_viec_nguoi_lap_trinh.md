@@ -103,6 +103,8 @@ mục 22.4b.
 | 4 | Kiểm dòng tổng qua **chân chung** của từng module ngõ ra (Chương 9 mục 9.4) |
 | 5 | Ghi rõ **NC** ở mọi tiếp điểm NC — người sau sẽ mặc định là NO (Chương 15) |
 | 6 | Ký — sau mốc này, đổi bảng I/O là một thay đổi có kiểm soát |
+| 7 | ⭐ Xếp địa chỉ theo **bảy quy tắc** ở Chương 23 mục 23.3: theo trạm, cặp cảm biến liền nhau, dự phòng trong nhóm, bảng an toàn riêng… |
+| 8 | Máy có truyền động: lập thêm bảng **trục và động cơ** — phanh, STO, gốc, cáp (Phụ lục C mục C.10.3) |
 
 ### ✅ Đạt khi
 
@@ -111,6 +113,9 @@ mục 22.4b.
 - [ ] Tín hiệu an toàn đã tách riêng và đánh dấu.
 - [ ] ⭐ Số dây khớp sơ đồ điện **và** khớp nhãn trong tủ.
 - [ ] Dòng tổng qua mỗi chân chung đã kiểm và nằm trong giới hạn datasheet.
+- [ ] ⭐ Mỗi module có dòng tiêu đề; hai cảm biến của mỗi xy-lanh liền nhau, cùng thứ tự, bắt đầu ở kênh
+      chẵn; kênh dự phòng nằm **trong** nhóm của từng trạm.
+- [ ] Tín hiệu an toàn có **bảng riêng**; hai kênh của một thiết bị là hai dòng liền nhau.
 
 ### 📏 Con số
 
@@ -147,6 +152,8 @@ mục 22.4b.
 - [ ] Cùng một khái niệm, cùng một từ — `Board` ở mọi nơi, không lẫn `PCB`, `Part`.
 - [ ] Địa chỉ tuyệt đối **chỉ** xuất hiện ở phần khai báo (Chương 27 mục 27.2b).
 - [ ] Quy ước đã **viết ra** (Phụ lục N mục N.6). Khách có quy ước riêng thì dùng của khách.
+- [ ] ⭐ Hệ kiểu thiết bị: có **trang quy hoạch địa chỉ theo khối** trước dòng mã đầu tiên — mỗi trạm một
+      khối cho mỗi loại thiết bị, khối đầu của vùng bước để riêng (Chương 11 mục 11.8b).
 
 > 💡 **Tiền tố theo vai trò là để tham chiếu chéo trả lời nhanh.** Tìm `DI_` cho bạn mọi chỗ chạm dây;
 > nếu kết quả nằm ngoài tầng ánh xạ, bạn vừa tìm ra một chỗ đọc vòng (thẻ O.4) — trong ba giây,
@@ -363,6 +370,7 @@ mục 22.4b.
 | 4 | **Ức chế hệ quả** có điều kiện rõ, tự gỡ, và vẫn ghi vào nhật ký |
 | 5 | Ghi **báo động đầu tiên** của một chuỗi |
 | 6 | Tín hiệu dao động: **trễ trước khi báo** cho xung nhiễu; **vùng chết** cho giá trị sát ngưỡng |
+| 7 | ⭐ **Đánh số**: khối theo loại lỗi + số thứ tự thiết bị; lỗi trình tự: khối theo trạm, số theo bước (Chương 44 mục 44.3) |
 
 ### ✅ Đạt khi
 
@@ -373,6 +381,8 @@ mục 22.4b.
 - [ ] ⭐ Ngắt khí → **một** báo động gốc, không kéo theo quá giờ của từng xy-lanh.
 - [ ] Mọi báo động theo ngưỡng có **ngưỡng báo khác ngưỡng gỡ**.
 - [ ] Xác nhận **không xoá được** báo động khi nguyên nhân còn.
+- [ ] ⭐ Mỗi xy-lanh có **hai số riêng**: *không về gốc* và *không tới đích* — không gộp thành một số
+      *"quá giờ"*.
 
 ### 📏 Con số
 
@@ -643,6 +653,9 @@ In riêng trang này nếu chỉ in một trang.
 | Đo sản lượng | Một giờ liên tục | Chương 52 | O.14 |
 | Sao lưu định kỳ | Hàng quý | [Nghề] | O.15 |
 | Ghi một thay đổi | Dưới hai phút; khẩn cấp: ghi trong 24 giờ | [Nghề] | O.16 |
+| Cỡ khối quy hoạch địa chỉ (hệ kiểu thiết bị) | 100 mỗi trạm, mọi trạm cùng cỡ | [Nghề] | O.3 |
+| FX5, khi dùng lệnh `IST` | `S0`–`S19` bị chiếm sẵn — trình tự bắt đầu từ `S100` | [Hãng] | O.3 |
+| Cỡ khối số báo động | Lớn hơn số thiết bị dự kiến cộng chỗ thêm — ví dụ 50 | [Nghề] | O.9 |
 
 > ⭐⭐ **Mỗi con số [Nghề] trong bảng là một quyết định bạn được phép đổi — nhưng phải ghi lại.**
 > Đổi `Limit` từ 2 × xuống 1,5 × vì máy của bạn rất ổn định là hợp lý; đổi mà không ghi thì người sau

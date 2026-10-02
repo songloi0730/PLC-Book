@@ -508,6 +508,63 @@ Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
 
 ---
 
+## 11.8b ⭐⭐ Hệ đánh địa chỉ theo thiết bị: quy hoạch vùng nhớ theo khối, trước dòng mã đầu tiên
+
+Ở hệ có tag và cấu trúc, trình biên dịch tự cấp chỗ nhớ — bạn chỉ đặt tên (mục 11.3, 11.5). Ở hệ kiểu
+thiết bị (mục 11.8; Chương 15 mục 15.6), kể cả khi dùng nhãn, **mỗi cờ, mỗi thanh ghi, mỗi bước vẫn phải
+nằm ở một số thiết bị cụ thể** — và ai đó phải chọn số đó. Không chọn có kế hoạch thì số được chọn bằng
+thói quen *"lấy ô trống kế tiếp"*, và sau một năm, cờ của trạm 1 nằm rải ở `M7`, `M213`, `M1150`.
+
+Bảng I/O của các nhóm làm máy trên hệ kiểu thiết bị vì vậy thường đi kèm một trang **quy hoạch địa
+chỉ** *(address map)*: chia vùng của từng loại thiết bị thành **khối 100**, mỗi khối một chủ.
+
+### Ba cách cấp địa chỉ — cùng một việc: thêm cờ *"trạm 1 xin board"*
+
+| Cách | Cờ đó nằm ở | ⭐ Ưu | ⚠ Nhược |
+|---|---|---|---|
+| A — Lấy ô trống kế tiếp | `M57` — vì `M56` vừa dùng | Không phải lập kế hoạch | ⚠ Đọc địa chỉ không biết của ai; chép trạm thứ hai phải dò từng ô; xoá một trạm để lại lỗ khắp vùng nhớ |
+| ⭐ B — Quy hoạch theo khối | `M110` — khối `M100–M199` của trạm 1 | ⭐ Đọc địa chỉ là biết trạm; chép trạm thứ hai là dời đúng 100; còn chỗ trống ngay trong khối | Phí một ít địa chỉ; phải lập bảng trước khi viết |
+| C — Tag và cấu trúc | `Stn1.ReqBoard` | Không phải nghĩ về địa chỉ | Chỉ có ở hệ hỗ trợ tag và cấu trúc (mục 11.5) |
+
+> ⭐ **Trên hệ kiểu thiết bị, chọn B.** Trên hệ có tag, chọn C — và khi đó việc *quy hoạch* chuyển thành
+> việc *đặt tên* (Chương 30 mục 30.2).
+
+### Một trang quy hoạch cho DP-01 — nếu viết trên hệ kiểu thiết bị
+
+| Vùng | Chủ | Ghi chú |
+|---|---|---|
+| `M0–M99` | Chung: chế độ, cho phép chạy, gom lỗi | |
+| `M100–M199` | Trạm 1 — tra keo | |
+| `M200–M299` | Trạm 2 — sấy | |
+| `M300–M399` | Chuyền và tài nguyên chung | Một chủ duy nhất (Chương 27 Bẫy 4) |
+| `M900–M999` | Dự phòng | |
+| `M1000–M1999` | Bit báo động | ⭐ Báo động số *n* ở `M1000 + n` — đánh số theo khối và theo số thứ tự thiết bị (Chương 44 mục 44.3) |
+| `S0–S99` | ⚠ Để riêng — bước khởi đầu, về gốc | ⚠ Lệnh khởi tạo trạng thái của hãng có thể **chiếm sẵn** một phần khối này — ví dụ ngay dưới |
+| `S100–S199` | Trình tự trạm 1 | ⭐ `S120` đọc ra *"trạm 1, bước 20"* — khớp cách đánh số bước cách 10 (Chương 26) |
+| `S200–S299` | Trình tự trạm 2 | |
+| `D0–D99` · `D100–D199` · `D200–D299` | Số liệu chung · trạm 1 · trạm 2 | ⚠ Thứ cần giữ qua mất điện phải nằm trong **dải giữ được** của dòng PLC (mục 11.4) |
+| `T0–T49` · `T50–T99` | Bộ định thời trạm 1 · trạm 2 | |
+| `C0–C49` | Bộ đếm sản lượng, tuổi thọ | Thường phải giữ — ⚠ kiểm dải giữ được (Chương 18 mục 18.6b) |
+
+> ⚠⚠ **Một ví dụ về "bị chiếm sẵn".** Trên dòng FX5 của Mitsubishi, khi dùng lệnh `IST` — lệnh khởi tạo
+> trạng thái cho máy có chế độ chạy từng cơ cấu, về gốc và tự động — thì `S0`–`S9` dành cho bước khởi đầu
+> (`S0` chạy từng cơ cấu, `S1` về gốc, `S2` tự động) và `S10`–`S19` dành cho trình tự về gốc. Tài liệu của
+> hãng ghi rõ **không được dùng chúng làm bước thường**, và lệnh đó chỉ dùng được **một lần** trong chương
+> trình. ⭐ Đó là lý do khối đầu của vùng `S` nên để riêng, và trình tự trạm bắt đầu từ `S100`.
+
+### ✅ Trang quy hoạch đạt khi
+
+- [ ] Mỗi khối có **một chủ**, ghi trong trang quy hoạch.
+- [ ] Tham chiếu chéo theo dải: không địa chỉ nào được dùng ngoài khối của chủ nó.
+- [ ] Thứ cần giữ qua mất điện nằm trong dải giữ được — ⭐ đã thử bằng cách mất điện rồi bật lại.
+- [ ] Trang quy hoạch nằm cùng bảng I/O trong hồ sơ bàn giao.
+
+> ⚡ **Khối 100 là quy tắc thực dụng của nghề**, không phải chuẩn: đủ rộng cho một trạm cỡ DP-01 và dễ
+> đọc nhẩm. Trạm lớn thì dùng khối 200 hoặc 500 — miễn là **mọi trạm cùng một cỡ khối**, để địa chỉ của
+> trạm 2 luôn là địa chỉ của trạm 1 cộng một số cố định.
+
+---
+
 ## 11.9 Bẫy thường gặp
 
 ### 🔍 BẪY 1 — Dùng địa chỉ tuyệt đối trong chương trình
@@ -575,6 +632,13 @@ không phải bit bạn chờ. ⚠ Không có báo lỗi biên dịch, vì `X8` 
 **Cách sửa:** kiểm hệ đếm của dải thiết bị bằng chính con số trong tài liệu (mục 11.8); và
 ⭐ **kiểm I/O 1-1 bằng cách tác động thật** — Phụ lục C.6 bắt được nhóm lỗi này ngay.
 
+### 🔍 BẪY 11 — Lấy ô trống kế tiếp
+
+**Hiện tượng:** trên hệ kiểu thiết bị, mỗi cờ mới lấy địa chỉ trống ngay sau cờ vừa dùng. Một năm sau,
+cờ của trạm 1 rải khắp vùng nhớ; muốn chép trạm 1 thành trạm 3 thì phải dò từng ô, và một ô sót là trạm 3
+ghi vào cờ của trạm 1.
+**Cách sửa:** trang quy hoạch theo khối **trước** dòng mã đầu tiên (mục 11.8b).
+
 ## 11.10 Bảng chốt
 
 | Câu hỏi | Trả lời |
@@ -591,6 +655,7 @@ không phải bit bạn chờ. ⚠ Không có báo lỗi biên dịch, vì `X8` 
 | Phạm vi biến | **Hẹp nhất còn dùng được** |
 | Câu hỏi cho mọi biến quan trọng | *"Mất điện rồi bật lại, biến này **nên** bằng mấy?"* |
 | Hai biến không bao giờ giữ | ⚠⚠ `M_Running` và **biến bước** |
+| Hệ kiểu thiết bị — cấp địa chỉ thế nào | ⭐ **Quy hoạch theo khối** trước khi viết: mỗi trạm một khối 100 cho mỗi loại thiết bị |
 
 ---
 
@@ -613,6 +678,9 @@ không phải bit bạn chờ. ⚠ Không có báo lỗi biên dịch, vì `X8` 
 10. ⭐ Câu hỏi nào phải đặt ra cho mọi biến quan trọng khi quyết định giữ hay không giữ? Vì sao câu
     hỏi đó dùng chữ "**nên**" chứ không phải "sẽ"?
 
+11. ⭐ Trên hệ kiểu thiết bị, cờ *"trạm 1 xin board"* nên nằm ở đâu nếu trạm 1 giữ khối `M100–M199`? Vì sao
+    lấy *ô trống kế tiếp* làm chép trạm khó, và vì sao khối đầu của vùng `S` nên để riêng?
+
 > Câu 2, 4 và 10 là ba câu phân loại. Câu 10 là tinh thần của cả chương: **hành vi của biến là thứ
 > bạn THIẾT KẾ, không phải thứ bạn chấp nhận theo mặc định của hệ.**
 
@@ -631,6 +699,12 @@ một sợi dây mang một bit, cảm biến gửi cả tham số và trạng t
 - Tài liệu lập trình của từng hệ trong Phụ lục A — dùng cho bảng ở mục 11.8: mô hình tag và địa chỉ,
   nơi chứa dữ liệu, cách khai báo biến giữ được. Đây là chỗ khác nhau nhiều nhất giữa các hãng.
 - Bảng I/O của DP-01 — Phụ lục J; khối khai báo ở mục 11.7 lấy tên tag từ đó.
+- **Mitsubishi** — *MELSEC iQ-F FX5 Programming Manual (Instructions, Standard Functions/Function Blocks)*,
+  phần 8.20 *Initial State* (lệnh `IST`): `S0`–`S9` dành cho bước khởi đầu (`S0` chạy từng cơ cấu, `S1` về
+  gốc, `S2` tự động), `S10`–`S19` dành cho trình tự về gốc, không dùng làm bước thường; lệnh chỉ dùng
+  một lần — nền cho mục 11.8b. Kiểm 2026-10-03.
+- Trang quy hoạch địa chỉ theo khối ở mục 11.8b tổng quát hoá từ **bảng I/O nội bộ của các nhóm làm máy**
+  mà sách tham khảo — đã bỏ mọi chi tiết nhận dạng dự án.
 - **Siemens** — *Programming Guideline for S7-1200/S7-1500*, ch. 2.6 *Optimized blocks*: ⭐ khối tối
   ưu **chỉ truy cập được theo tên**; bảng đối chiếu cách lưu dữ liệu trên S7-1500 (có phải đổi thứ
   tự byte không, ⚠ **đọc một bit thì khoá cả byte** ở khối chuẩn, kích thước tối đa 64 kB so với

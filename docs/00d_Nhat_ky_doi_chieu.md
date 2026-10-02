@@ -3736,6 +3736,58 @@ trình. Đợt này **đo** trước khi sửa. Quyết định: design note 001
 
 ---
 
+## Đợt 67 — 2026-10-03 · Bảng I/O và quy hoạch địa chỉ từ tài liệu nội bộ của người làm nghề
+
+Chủ dự án đưa một thư mục tài liệu nội bộ của một nhà tích hợp máy — bảng I/O và trang quy hoạch địa
+chỉ của các dự án thật — và hỏi có gì bổ sung được cho sách. ⚠ Ràng buộc: **B1b** — sách không mang tên
+công ty, khách hàng, mã dự án, không chép bảng gốc; chỉ rút **quy tắc** đã tổng quát hoá. Một tệp bị phần
+mềm bảo vệ tài liệu mã hoá — **không mở**. Quyết định đặt nội dung: design note 0013.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 737 | Bảng I/O nội bộ (hai tệp đọc được): bảng I/O chia theo module, mỗi module một **dòng tiêu đề** (mã module, số nút mạng); **cặp cảm biến xy-lanh liền nhau**, cùng thứ tự; **hai cuộn van kép liền nhau**, có cột đánh dấu cuộn về vị trí ban đầu; **dự phòng nằm trong nhóm** của trạm; tín hiệu bắt tay với máy trước, máy sau đi qua **rơ-le có số `K`**; cảm biến cắm qua **hộp chia M12** có ghi chú; bảng động cơ (loại, cách điều khiển, công suất, STO, gốc/giới hạn, ⚠ **phanh hai trục dùng chung một ngõ ra**); danh sách cơ cấu **đánh số**; bảng các bước của từng trạm; bảng báo động theo **khối** và **số thứ tự cơ cấu** — *không về gốc* và *không tới đích* là hai khối riêng, lỗi trình tự một khối riêng; **mảng cờ tín hiệu trạm** đánh số kèm bảng nghĩa; **bảng I/O của PLC an toàn tách riêng**, hai kênh của một thiết bị là hai dòng liền nhau; trang chia vùng rơ-le bước theo **khối 100** | ✔ |
+| 738 | Mitsubishi *MELSEC iQ-F FX5 Programming Manual (Instructions, Standard Functions/Function Blocks)*, phần 8.20 *Initial State*: khi dùng lệnh `IST`, `S0`–`S9` dành cho bước khởi đầu (`S0` chạy từng cơ cấu, `S1` về gốc, `S2` tự động, `S3`–`S9` tuỳ), `S10`–`S19` dành cho trình tự về gốc; **không dùng làm bước thường**; `IST` dùng **một lần** trong chương trình | ✔ |
+
+### B — Lỗi, lưu ý tìm ra
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 739 | ⚠ Ch.23 mục 23.3 bắt mỗi dòng bảng I/O đủ sáu cột, trong đó có **Phân loại** và **Hành vi khi mất** — biểu mẫu C.1 lại không có hai cột đó | ⚠ |
+| 740 | ⚠ Sách chỉ dạy cấp chỗ nhớ trên hệ có tag. Trên hệ kiểu thiết bị — hai trong năm hệ của Phụ lục A — chưa có chữ nào về **cấp địa chỉ có kế hoạch** | ⚠ |
+| 741 | ⚠ `FB_Cylinder2Pos` báo mã lỗi 1 *"quá giờ"* cho cả hai chiều; sách chưa chỉ cách tách *không về gốc* / *không tới đích*, dù thông tin chiều đã nằm sẵn trong khối (chiều của van lúc lỗi) | ⚠ |
+| 742 | ⚠ Sách không bàn **giao diện trạm bằng mảng cờ đánh số** — dạng hay gặp nhất khi nhận một chương trình máy làm sẵn | ⚠ |
+| 743 | ⚠ Bảng I/O chưa có **quy tắc xếp địa chỉ**; C.10 chưa có **bảng trục và động cơ** — phanh dùng chung một ngõ ra cho hai trục là chi tiết phải ghi ra | ⚠ |
+| 744 | ⚠ Bản nháp mục 44.3 chia khối lỗi trình tự **50 số** mỗi trạm — không đủ cho bước 90 của DP-01; đổi thành khối 100 trước khi ghép | ⚠ |
+
+### C — Bổ sung
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 745 | ➕➕ Ch.23 mục 23.3: **bảy quy tắc xếp địa chỉ** + so sánh xếp theo trạm / theo loại tín hiệu | ➕➕ |
+| 746 | ➕➕ Ch.11 mục 11.8b: **quy hoạch vùng nhớ theo khối** — ba cách cấp địa chỉ, trang quy hoạch của DP-01, ví dụ `IST` chiếm `S0`–`S19`, danh mục *đạt khi*; Bẫy 11; bảng chốt; tự kiểm 11 | ➕➕ |
+| 747 | ➕ Ch.44 mục 44.3: **đánh số báo động** theo khối và số thứ tự thiết bị — ba cách, trang số của DP-01, đoạn mã tách hai chiều từ `FB_Cylinder2Pos`; Bẫy 13; bảng chốt; tự kiểm 13 | ➕ |
+| 748 | ➕ Ch.27 mục 27.4: ô ⚖ *giao diện trạm bằng mảng cờ đánh số* — người ta làm gì, vì sao, ranh giới | ➕ |
+| 749 | ➕ Phụ lục C: C.1 thêm cột *Phân loại* · *Hành vi khi mất*, dòng tiêu đề module, ví dụ cặp cảm biến và dự phòng, danh mục kiểm; ⭐ C.10.3 *trục và động cơ*. Ch.26 mục 26.2a: khối `S`. Phụ lục O thẻ O.2, O.3, O.9 và bảng O.17 | ➕ |
+
+### Kết quả đợt 67
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **13** |
+| ✔ Xác nhận | 2 |
+| ⚠ Lỗi, lưu ý | 6 |
+| ➕➕ / ➕ | 2 / 3 |
+| Mục mới | Ch.11 mục 11.8b · Ch.23 bảy quy tắc · Ch.44 đánh số báo động · C.10.3 |
+
+> ⭐⭐ **Bài học — tài liệu nội bộ của người làm nghề cho thấy thứ sách giáo khoa không có: quy ước để
+> người khác đọc được.** Không quy tắc nào trong bảy quy tắc xếp địa chỉ là tiêu chuẩn. Chúng tồn tại vì
+> người đứng ở tủ lúc hai giờ sáng cần tra một lần là ra — và đó cũng là tiêu chí để sách giữ hay bỏ một
+> quy tắc lấy từ hiện trường.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

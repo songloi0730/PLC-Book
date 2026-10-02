@@ -1,6 +1,6 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-10-01 (đợt 66 — sổ tay việc của người lập trình (Phụ lục O); tầng ánh xạ vào/ra; lộ trình D)
+**Cập nhật:** 2026-10-03 (đợt 67 — bảng I/O và quy hoạch địa chỉ rút từ tài liệu nội bộ của người làm nghề)
 **Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 15 phụ lục (16 dòng A1–O).** Kế hoạch hoàn
 thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61 ✅ · 62 ✅).
 
@@ -57,6 +57,11 @@ thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ 
     *định kỳ* không kèm chu kỳ); thêm *"✅ đạt khi"* cho Ch.10, 11, 16, 19, 24, 29, 54, 55.
 12. ⚠ **Quyết định của chủ dự án:** có tách sách thành hai tập (*Lập trình* · *Hiện trường*) không — design
     note 0012 mục 3, phương án B. Mặc định hiện tại: giữ một tập, dùng lộ trình D.
+13. ~~**Đợt 67**~~ ✅ (2026-10-03, design note 0013, nhật ký #737–#749) — chủ dự án đưa bảng I/O nội bộ
+    của một nhà tích hợp; rút quy tắc, **không** chép bảng, không mang tên dự án (B1b). Ch.23 *bảy quy tắc
+    xếp địa chỉ*; Ch.11 mục 11.8b *quy hoạch vùng nhớ theo khối* (hệ kiểu thiết bị; `IST` chiếm `S0`–`S19`);
+    Ch.44 *đánh số báo động theo khối và số thứ tự thiết bị*; Ch.27 ô ⚖ *mảng cờ trạm*; C.1 thêm cột
+    phân loại, hành vi khi mất; C.10.3 *trục và động cơ*.
 
 ---
 
@@ -325,11 +330,12 @@ PLC_Programming_Book/
     case_study_may_mau.md         — hồ sơ máy mẫu DP-01 (bản làm việc; bản phát hành là Phụ lục J)
     ch01_… ch58_…                 — 58 chương
     pl_a1_… pl_o_…                — 16 dòng phụ lục (⭐ pl_o: sổ tay việc của người lập trình)
-    design-notes/0001 … 0012      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
+    design-notes/0001 … 0013      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
                                     0007: đường đi của lỗi · 0008: giao diện trạm, ví dụ hoàn chỉnh, SFC ·
                                     0009: bản đầy đủ PLCopen, chạy thử SFC · 0010: phong cách ladder,
                                     động cơ vô hiệu hoá · 0011: PLC an toàn thật, ô ⚖ ·
-                                    0012: sổ tay việc, lộ trình D, tầng ánh xạ vào/ra)
+                                    0012: sổ tay việc, lộ trình D, tầng ánh xạ vào/ra ·
+                                    0013: bảng I/O và quy hoạch địa chỉ từ tài liệu nội bộ)
   tools/
     gop_sach.sh                   — chạy 7 bộ kiểm → ghép → HTML → chép sang kho phát hành
     kiem_*.py                     — 6 bộ kiểm tĩnh (xem bảng ở đầu tệp)

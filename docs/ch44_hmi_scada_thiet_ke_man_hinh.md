@@ -228,6 +228,56 @@ chờ vài giây rồi mới báo sẽ loại được phần lớn báo giả (
 > Đây là cùng nguyên tắc với mã lý do khi từ chối công thức (Chương 29, mục 29.4) và với cửa sổ
 > lực–vị trí (Chương 34, mục 34.5): **chẩn đoán, không chỉ phán quyết.**
 
+### ⭐⭐ Đánh số báo động — theo khối, và theo số thứ tự của thiết bị
+
+Báo động cần một **số**: để màn hình tra ra chữ, để nhật ký lọc được, để người bảo trì gọi điện nói được
+*"máy báo 51"*. Câu hỏi là số đó lấy từ đâu.
+
+| Cách | Ví dụ: kẹp trạm 1 không tới vị trí làm việc | ⭐ Ưu | ⚠ Nhược |
+|---|---|---|---|
+| A — Số tự do, ai viết trước lấy trước | `1042` | Không phải nghĩ | ⚠ Số không nói gì; bảng chữ trên màn hình gõ tay từng dòng; thêm một xy-lanh là thêm một số "ở đâu đó" |
+| B — Số theo bước | `S1.40` — trạm 1, bước 40 đang chờ kẹp | ⭐ Tra thẳng ra dòng trong đặc tả (Phụ lục J mục J.3) | Chỉ hợp cho **lỗi trình tự**; một xy-lanh dùng ở nhiều bước thì cùng một sự cố ra nhiều số |
+| ⭐ C — **Khối theo loại lỗi**, vị trí trong khối theo **số thứ tự thiết bị** | `51` = khối 50–99 *(không tới đích)* + thiết bị số 1 *(Clamp1)* | ⭐ Thêm một xy-lanh chỉ là thêm một dòng vào danh sách cơ cấu — mọi số báo động của nó **tự có**; bảng chữ sinh bằng công thức *tên thiết bị + loại lỗi* | Phải giữ **danh sách cơ cấu** đánh số cố định |
+
+⭐ Bảng báo động của các dự án thật hay đi theo **C cho thiết bị**, và để lỗi trình tự trong một **khối
+riêng theo trạm**. Sách khuyên thêm một bước: trong khối của trạm, lấy luôn **số bước** làm số báo động —
+cách B nằm gọn trong cách C. Một trang số báo động của DP-01 theo cách đó:
+
+| Khối | Loại | DP-01 |
+|---|---|---|
+| `0–49` | Xy-lanh **không về gốc** | `0` Stop1 · `1` Clamp1 · `2` Stop2 · `3` Clamp2 |
+| `50–99` | Xy-lanh **không tới vị trí làm việc** | `50`–`53` |
+| `100–149` | Xy-lanh **hai cảm biến cùng báo** | `100`–`103` |
+| `600–699` · `700–799` | Lỗi trình tự trạm 1 · trạm 2 — số trong khối theo bước, nên mỗi trạm cần đủ 100 số | `640` = trạm 1, bước 40 · `790` = trạm 2, bước 90 |
+
+> ⭐ **Vì sao tách *không về gốc* và *không tới đích* thành hai số**, thay vì một số *"quá giờ"*: chiều hỏng
+> chỉ ngay chỗ phải nhìn — cảm biến gốc hay cảm biến đích, cơ cấu kẹt lúc đi ra hay lúc về. ⚡ Khối
+> `FB_Cylinder2Pos` (Chương 27 mục 27.3) đã có sẵn thông tin đó: mã lỗi `1` kèm **chiều của van** lúc lỗi.
+
+```iecst
+// Đoạn trích — số báo động của xy-lanh tính từ SỐ THỨ TỰ trong danh sách cơ cấu
+VAR
+    Cyl      : ARRAY[0..3] OF FB_Cylinder2Pos;   // 0 Stop1 · 1 Clamp1 · 2 Stop2 · 3 Clamp2
+    AlarmBit : ARRAY[0..999] OF BOOL;
+    i        : INT;
+END_VAR
+
+FOR i := 0 TO 3 DO
+    AlarmBit[i]       := Cyl[i].Fault AND (Cyl[i].FaultCode = 1) AND NOT Cyl[i].Valve;  // không về gốc
+    AlarmBit[50 + i]  := Cyl[i].Fault AND (Cyl[i].FaultCode = 1) AND Cyl[i].Valve;      // không tới đích
+    AlarmBit[100 + i] := Cyl[i].Fault AND (Cyl[i].FaultCode = 2);                       // hai cảm biến
+END_FOR;
+```
+
+> ⚡ DP-01 khai bốn thể hiện có tên (`Stop1`, `Clamp1`…) chứ không phải mảng — khi đó viết bốn dòng cho
+> mỗi khối; **số thứ tự trong danh sách cơ cấu vẫn là thứ quyết định số báo động**. ⭐ Và kênh thông điệp
+> thứ ba ở mục 44.3b — lời nhắc ở chế độ tay, kiểu *"không đi được vì kẹp chưa lên"* — dùng **cùng số thứ
+> tự thiết bị**, ở một mảng riêng.
+>
+> ⚡ **Cỡ khối là quy tắc thực dụng**: lấy lớn hơn số thiết bị dự kiến, cộng chỗ cho phần thêm về sau — 50
+> xy-lanh mỗi khối là đủ cho một máy cỡ DP-01 nhiều lần. Ghi cách đánh số vào trang quy hoạch địa chỉ
+> (Chương 11 mục 11.8b, Phụ lục O mục O.9).
+
 ### Xác nhận và lịch sử
 
 | Việc | Yêu cầu |
@@ -642,6 +692,13 @@ treo hoặc mất mạng.
 sau.
 **Cách sửa:** ⭐ màn hình mức 4 là hạng mục **đáng đầu tư nhất** (mục 44.7).
 
+### 🔍 BẪY 13 — Một số "quá giờ" cho cả hai chiều của xy-lanh
+
+**Hiện tượng:** màn hình báo *"kẹp trạm 1 quá giờ"*. Người sửa không biết kẹp kẹt lúc đi lên hay lúc đi
+xuống, nên kiểm cả hai cảm biến, cả hai chiều khí — gấp đôi thời gian.
+**Cách sửa:** hai số riêng — *không về gốc* và *không tới đích* — suy từ mã lỗi và chiều của van lúc lỗi
+(mục 44.3).
+
 ---
 
 ## 44.10 Bảng chốt
@@ -655,6 +712,7 @@ sau.
 | Chống lụt báo động | Ức chế hệ quả · ghi **báo động đầu tiên** · trễ trước khi báo |
 | Ức chế phải | Có điều kiện rõ ràng, **tự gỡ**, và ⭐ **vẫn ghi vào nhật ký** |
 | Thành phần quan trọng nhất của một dòng báo động | ⭐⭐ **Làm gì tiếp** |
+| ⭐ Đánh số báo động | **Khối theo loại lỗi + số thứ tự thiết bị**; lỗi trình tự: khối theo trạm, số theo bước |
 | Xác nhận báo động | ⚠ **Không xoá được** khi nguyên nhân còn |
 | Phân quyền quá chặt thì | ⚠ **Bị đi vòng** — mật khẩu dán trong tủ |
 | Dù có phân quyền HMI | ⚠ **PLC vẫn phải tự kiểm** |
@@ -685,6 +743,9 @@ sau.
 12. ⭐ Vì sao hiển thị **tên bước bằng chữ** trên màn hình chẩn đoán lại quan trọng? Nó giải quyết vấn
     đề nêu ở chương nào?
 
+13. ⭐ Kẹp trạm 1 là thiết bị số 1 trong danh sách cơ cấu. Theo cách đánh số ở mục 44.3, *không tới vị trí
+    làm việc* của nó mang số mấy? Vì sao tách *không về gốc* và *không tới đích* thành hai số?
+
 > Câu 3, 5, 9 và 10 là bốn câu phân loại. Câu 1 là tinh thần của cả chương: **thiết kế giao diện vận
 > hành phần lớn là việc BỚT ĐI — bốn mươi bảy dòng báo động cho một sự cố không phải là nhiều thông
 > tin, mà là không có thông tin nào.**
@@ -707,6 +768,8 @@ công** — và về một thực tế khó chịu: phần lớn giao thức cô
 - **Tài liệu hệ HMI/SCADA** đang dùng — dùng cho liên kết tag, phân quyền, lưu lịch sử, và ⚠ **cách
   sao lưu dự án**.
 - Bảng I/O, bảng công thức và số liệu đã chốt của DP-01 — Phụ lục J.
+- Cách đánh số báo động theo khối và theo số thứ tự thiết bị ở mục 44.3 tổng quát hoá từ **bảng báo động
+  nội bộ của các nhóm làm máy** mà sách tham khảo — đã bỏ mọi chi tiết nhận dạng dự án.
 
 > ⚡ Việc chia **ba mức báo động** ở mục 44.3 và **bốn mức màn hình** ở mục 44.2 là **cấu trúc thực
 > dụng thường dùng**, không phải quy định cứng của tiêu chuẩn. Một số ngành và một số đơn vị có quy

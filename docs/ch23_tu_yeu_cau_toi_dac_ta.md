@@ -184,6 +184,32 @@ thiết bị phải mua** và **cách đấu dây**. Phát hiện muộn nghĩa 
 > "phải dừng" → an toàn. Trả lời "báo lỗi rồi chờ người xử lý" → quy trình. Câu hỏi này quyết định cả
 > năm cột còn lại.
 
+### ⭐⭐ Xếp địa chỉ — bảy quy tắc lặp lại trên bảng I/O của các dự án thật
+
+Sáu cột ở trên nói **mỗi dòng ghi gì**. Còn một câu phải trả lời trước khi điền dòng đầu tiên: **tín
+hiệu nào nằm ở kênh nào**. Bảng I/O của các nhóm làm máy có kinh nghiệm lặp đi lặp lại bảy quy tắc dưới
+đây. Không quy tắc nào là yêu cầu của tiêu chuẩn — mỗi quy tắc trả lại công ở một khâu cụ thể:
+
+| # | Quy tắc | ⭐ Trả lại công ở đâu |
+|---|---|---|
+| 1 | ⭐ **Xếp theo trạm hoặc cụm cơ khí**; mỗi module mở đầu bằng **một dòng tiêu đề**: mã module, và số nút mạng nếu là I/O phân tán | Đọc bảng là thấy máy; người kiểm I/O đi lần lượt từng module, không nhảy dòng (Chương 52 mục 52.4) |
+| 2 | ⭐ **Hai cảm biến của một xy-lanh nằm liền nhau**, theo **cùng một thứ tự** cho mọi xy-lanh — ví dụ vị trí làm việc trước, vị trí gốc ngay sau — và cặp bắt đầu ở **kênh chẵn** | Tra một biết hai; viết khối cơ cấu và kiểm I/O theo cặp (Chương 27 mục 27.3). Bắt đầu ở kênh chẵn thì cặp không vắt qua ranh giới nhóm 8 kênh của hệ đánh số bát phân (Chương 11 mục 11.8) |
+| 3 | **Van hai cuộn: hai cuộn nằm liền nhau**, và ghi rõ **cuộn nào đưa cơ cấu về vị trí ban đầu** | Lúc điều khiển cơ cấu bằng tay, người bảo trì không phải đoán bật cuộn nào (Chương 6 mục 6.3) |
+| 4 | ⭐ **Chừa kênh dự phòng ngay trong nhóm của từng trạm**, không dồn hết xuống cuối bảng | Thêm một cảm biến cho trạm 1 về sau vẫn nằm cạnh các tín hiệu trạm 1 — bảng, dây và chương trình giữ được thứ tự. ⚠ Khác với **khe module** dự phòng: khe trống phải ở **cuối rack** để không dịch địa chỉ (Phụ lục C mục C.10) |
+| 5 | **Tín hiệu bắt tay với máy khác đi qua rơ-le trung gian — ghi số rơ-le** (`K3`, `K4`…) vào cột ghi chú | Mất bắt tay thì đo ngay ở rơ-le, không phải mở máy bên kia (Chương 41 mục 41.3) |
+| 6 | ⭐ **Tín hiệu an toàn có bảng riêng**; hai kênh của một thiết bị là **hai dòng liền nhau**, cùng tên thiết bị kèm số kênh 1, 2 | Thấy ngay thiết bị nào thiếu một kênh; người có thẩm quyền về an toàn duyệt đúng một bảng (Chương 47) |
+| 7 | **I/O phân tán cắm qua hộp chia** *(junction box)*: cột *cầu đấu* ghi **hộp chia và số cổng** | Cảm biến cắm vào hộp chia không đi qua cầu đấu nào trong tủ — không ghi cổng thì muốn tìm sợi cáp phải rút thử từng cái |
+
+> ⭐ **Xếp theo trạm hay xếp theo loại tín hiệu?**
+>
+> | Cách | Ví dụ | ⭐ Ưu | ⚠ Nhược |
+> |---|---|---|---|
+> | ⭐ Theo trạm | Module 2 chứa mọi tín hiệu của trạm 1, module 3 của trạm 2 | Bảng soi gương máy, khớp cách chia chương trình theo ranh giới vật lý (Chương 27 mục 27.2); sửa trạm nào mở đúng chỗ | Mỗi module có thể còn vài kênh lẻ |
+> | Theo loại | Module 2 chứa mọi reed, module 3 mọi cảm biến quang | Dùng kín kênh từng module | ⚠ Một trạm rải trên nhiều module; thêm thiết bị là chen vào giữa |
+>
+> ⭐ **Chọn theo trạm.** Theo loại chỉ đáng khi máy chỉ có một trạm và số kênh rất sát. Biểu mẫu có sẵn
+> các cột và danh mục kiểm: Phụ lục C mục C.1; các bước làm theo thứ tự: Phụ lục O mục O.2.
+
 ---
 
 ## 23.4 Mô tả trình tự bằng lời có cấu trúc
