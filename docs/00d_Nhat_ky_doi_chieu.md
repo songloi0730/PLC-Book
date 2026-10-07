@@ -3788,6 +3788,74 @@ mềm bảo vệ tài liệu mã hoá — **không mở**. Quyết định đặ
 
 ---
 
+## Đợt 68 — 2026-10-06 – 07 · Đọc MÃ THỰC THI của một khung chương trình máy đang chạy
+
+Chủ dự án đưa thư mục một dự án máy thật — một trạm lắp ráp viết trên nền CODESYS, kèm chương trình chuyền
+viết trên một hệ kiểu thiết bị — và hỏi có gì bổ sung được cho sách: tổ chức chương trình, cấu hình hệ
+thống, cấu hình phần cứng, cài đặt giao tiếp, mã mẫu. ⚠ Ràng buộc: **B1b** — không tên công ty, khách
+hàng, dự án, người viết; chỉ rút **quy tắc**, không chép khối, bảng giao tiếp hay nhật ký sửa đổi. Thân mã
+của dự án kiểu thiết bị lưu dạng mã hoá — **không giải mã**. Dự án CODESYS mở bằng **chính phần mềm của
+hãng** trên **bản sao**, xuất 332 đối tượng ra văn bản qua giao diện kịch bản, đóng **không lưu**. ⭐ Sách
+đã đọc **kiến trúc** của chính bộ khung này ở đợt 37–38, khi thân mã chưa đọc được — đợt này chỉ lấy thứ
+thân mã mới cho thấy. Quyết định đặt nội dung: design note 0014.
+
+### A — Nguồn đã đối chiếu
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 750 | Mã thực thi của trạm lắp ráp (332 đối tượng): cây chương trình theo vai trò (khớp Ch.30 mục 30.3b); bảng giao tiếp PLC ↔ phần mềm PC ba vùng chia theo **kiểu dữ liệu**, bắt tay *"khác 0 là lệnh, bên kia xoá"* kèm ghi chú của người viết về lỗi *"xoá không được"*; chạy khô bốn mức bật/tắt cờ bỏ qua **bằng sườn**; mã trạng thái máy suy từ chuỗi `IF` không `ELSE`; kiểm khoảng hở hai giàn trên vị trí hiện tại và vị trí đích; cấu trúc hệ thống (gồm cả cờ bỏ qua) ở vùng **giữ qua mất điện**; nhật ký sửa đổi trong một chương trình con chỉ có chú thích | ✔ |
+| 751 | Cấu hình tác vụ và thiết bị đọc qua giao diện kịch bản: tác vụ EtherCAT **2 ms, ưu tiên 0** chạy chương trình trục; tác vụ chính **4 ms, ưu tiên 2**; hai tác vụ EtherNet/IP 50 ms và 100 ms. Cây EtherCAT: bộ ghép nối + 4 module vào + 2 module ra, module đếm hai kênh, 6 drive, ⭐ **hai đảo van khác hãng — một cái bị tắt** | ✔ |
+| 752 | Inovance — *Medium-Sized PLC Programming Guide (Motion Control)*, 19012378 bản A00 (09/2024), mục 3.1, 4.1, 4.5.4: tác vụ EtherCAT ưu tiên 0, chỉ một, chu kỳ thường 1–4 ms; bảng ưu tiên mặc định (logic thường ở mức 16, *không ép đổi*); chu kỳ các tác vụ là bội số nguyên, tránh 3, 6, 7, 9 ms; ⭐ khối chuyển động của trục **chỉ được gọi** trong tác vụ EtherCAT | ✔ |
+| 753 | Chạy thử bộ tạo nhịp hai `TON` nối vòng bằng bộ chạy thử của sách: nhịp đặt 5 ms bật / 5 ms tắt trong tác vụ 4 ms cho nửa chu kỳ **12 ms**; phép đo thời gian bằng đếm nhịp dư **25 %** — chuyển sang tác vụ 2 ms thì dư **150 %** | ✔ |
+
+### B — Lỗi, lưu ý tìm ra
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 754 | ⚠⚠ Ch.16 mục 16.6 và Phụ lục L.1: *"không tự lên lại… phải nhấn Start lần nữa"* — chỉ đúng khi nút đã **nhả**. Start kẹt (tiếp điểm dính, bit trên màn hình kẹt khi mất kết nối) thì tự giữ theo mức **tự chạy lại** ngay khi lỗi hết. Chương trình đã đọc mắc đúng lỗi này: sườn của lệnh Start được tính sẵn mà không ai dùng | ⚠ |
+| 755 | ⚠ Ch.39 chỉ dạy PLC **hỏi** thiết bị; không có chữ nào về PLC làm **máy chủ** cho phần mềm trên máy tính — kiểu ghép gặp ở mọi máy có vision chạy trên máy tính | ⚠ |
+| 756 | ⚠ Bằng chứng lỗi chạy khô: đổi mức 4 → 3 trong một lần ghi để lại hai cờ bỏ qua **tắt**, vì khối mức 4 đứng sau khối mức 3; đổi ngược thì đúng. Bộ chạy thử tái hiện cùng cơ chế trên bản ✗ của sách (2 → 1) | ⚠ |
+| 757 | ⚠ Ch.37 mục 37.4: *"chỉ chạy khi giữ nút — nhả là dừng"* chưa nói tới nút **trên màn hình**: mất kết nối giữa lúc giữ thì số 0 không bao giờ tới. Chương trình đã đọc jog bằng nút màn hình, không có bộ đếm sống | ⚠ |
+| 758 | ⚠ Ch.27 mục 27.3b dạy chống va chạm bằng cảm biến rời; chưa có ca **hai trục chung một vùng** — điều kiện là một khoảng cách, cần cả quãng dừng; và kiểm đích liên tục thì báo động đứng mãi (người viết chương trình gốc phải đổi sang chỉ kiểm ở sườn) | ⚠ |
+| 759 | ⚠ Phụ lục L: phần mở đầu ghi *"Mười sáu đoạn"* trong khi Mục lục và Ch.1 ghi 17 mẫu; *"Bảy mẫu còn lại chỉ có ST"* — số mẫu chỉ có ST không phải bảy | ⚠ |
+
+### C — Bổ sung
+
+| # | Nội dung | KQ |
+|---|:--|:--:|
+| 760 | ➕➕ **Ch.39 mục 39.9b** — PLC làm máy chủ cho phần mềm PC: chia vùng thanh ghi **theo người ghi**; ba cách bắt tay đặt cạnh nhau (*khác 0 + xoá* · *chép + xoá liên tục* · ⭐ *số thứ tự*) trước năm tình huống có thật; bốn ô cố định; đạt khi; ví dụ hoàn chỉnh `FB_PcRequest` + 17 phép chạy thử; Bẫy 12; bảng chốt; tự kiểm 15–16 | ➕➕ |
+| 761 | ➕➕ **Ch.37 mục 37.7b** — hai đầu chung một ray: kiểm **đích** lúc ra lệnh, kiểm **hiện tại** với quãng phản ứng + quãng phanh; con số có nhãn; đạt khi; ví dụ hoàn chỉnh `FB_TwoHeadsGap` + 11 phép chạy thử; Bẫy 14; bảng chốt; tự kiểm 17–18 | ➕➕ |
+| 762 | ➕ Ch.37 mục 37.8: ô ⚖ *khối chuyển động ở tác vụ của mạng trường* (nguồn #752, có ranh giới hai tác vụ cùng ghi); mục 37.4 thêm dòng *nút giữ trên màn hình*; nguồn tham khảo mới | ➕ |
+| 763 | ➕➕ **Ch.28 mục 28.3** — chạy khô nhiều mức: bảng ba mức của DP-01; bản ✗ bật/tắt bằng sườn cạnh ví dụ hoàn chỉnh `Prg_DryRunMap`; Bẫy 7; tự kiểm 13; 6 phép chạy thử — ba phép trên bản ✗ **chứng minh lỗi** | ➕➕ |
+| 764 | ➕➕ **Ch.22 mục 22.6b** — năm chỗ phải soi khi nhận một chương trình làm sẵn, mỗi chỗ có *vì sao nguy · tìm thế nào · sửa · đạt khi*; bảng chốt; tự kiểm 13 | ➕➕ |
+| 765 | ➕ Sửa #754: Ch.16 mục 16.6 và Phụ lục L.1 (dùng sườn `┤P├`, đạt khi). Ch.44 Bẫy 14 *nút giữ trên màn hình kẹt khi mất kết nối* — lệnh lấy sườn, jog có bộ đếm sống; bảng chốt; tự kiểm 14 | ➕ |
+| 766 | ➕ Ch.25 mục 25.2: ô ⚖ *trạng thái bằng cờ rời cộng một mã suy ra* — thứ tự `IF` là ưu tiên ngầm, tổ hợp hở giữ mã cũ; tự kiểm 11 | ➕ |
+| 767 | ➕ Ch.51 mục 51.7b: ô ⚖ *cờ bỏ qua nằm chung vùng giữ qua mất điện* — xoá ở vòng quét đầu hoặc tách cấu trúc; bỏ qua cửa an toàn và dừng khẩn không có cách đặt nào hợp lệ | ➕ |
+| 768 | ➕ Ch.41 mục 41.5: ô ⚖ *hai PLC của cùng một máy bắt tay hoàn toàn qua mạng* — nhịp tim hai chiều, mỗi byte một bên ghi, an toàn đi đường riêng | ➕ |
+| 769 | ➕ Phụ lục M mục M.2: *biến thể phần cứng trong cùng một dự án* — hai cách, khuyến nghị kèm ba quy tắc, đạt khi; M.10 thêm một mục (nay 19) | ➕ |
+| 770 | ➕ Ch.30 mục 30.6: ô ⚖ *nhật ký nằm trong một chương trình con chỉ có chú thích* — số phiên bản phải đổi cùng dòng nhật ký | ➕ |
+| 771 | ➕ Phụ lục L: L.9b, L.16b (giống hệt bản ở chương), L.17, L.18, L.19; sửa #759 — nay **19 mẫu** (Mục lục, Ch.1). Phụ lục O: thẻ O.6, O.7, O.11 và bảng O.17 — 8 con số mới có nhãn. Mục lục | ➕ |
+| 772 | ⚠ Bản đồ nguồn (00e): thêm nhãn cho sổ tay chuyển động ở #752. Dựng lại bản đồ lộ ra nhãn *"Schneider — an toàn máy"* có từ phân biệt duy nhất là **"máy"** — nên mọi nguồn có chữ *máy* bị quy cho Schneider (Ch.11, 41, 56 — cả ba **sai**). Đổi tên nhãn thành *"Schneider — an toàn"*: nay chỉ Ch.47, đúng. Còn bốn nhãn mang từ tiếng Việt thông dụng làm từ phân biệt (ghi vào TODO 9) | ⚠ |
+
+### Kết quả đợt 68
+
+| | Số lượng |
+|---|---|
+| Khẳng định đã kiểm | **23** |
+| ✔ Xác nhận | 4 |
+| ⚠ Lỗi, lưu ý | 7 |
+| ➕➕ / ➕ | 4 / 8 |
+| Ví dụ hoàn chỉnh mới | 3 — `FB_PcRequest`, `FB_TwoHeadsGap`, `Prg_DryRunMap`; sách nay có **23** khối hoàn chỉnh, kể cả hai bản ở Phụ lục L |
+| Chạy thử | **141** phép (+34) |
+
+> ⭐⭐ **Bài học — đọc được thân mã thì thấy thứ kiến trúc không cho thấy: lỗi nằm ở chỗ HAI thứ gặp
+> nhau.** Năm phát hiện lớn của đợt này đều ở một ranh giới: hai chương trình cùng ghi một ô, hai tác vụ
+> cùng ghi một biến, hai sườn trong cùng một vòng quét, hai trục chung một vùng, hai nguồn lệnh Start.
+> Kiến trúc đọc ở đợt 37 đẹp và đúng — nó không thể lộ ra những thứ này. Chỉ đọc từng dòng, và chạy thử
+> từng vòng quét, mới lộ.
+
+---
+
 ## Chương CHƯA được đối chiếu
 
 ⚠ **Đây là phần quan trọng nhất của nhật ký.** Chương không có trong bảng trên nghĩa là **chưa ai

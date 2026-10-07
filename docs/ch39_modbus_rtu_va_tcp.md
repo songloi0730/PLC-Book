@@ -471,6 +471,300 @@ M_CanStart := ... AND NOT M_GlueTempFault;
 
 ---
 
+## 39.9b ⭐⭐ Khi PLC là máy chủ cho một phần mềm trên máy tính — bảng thanh ghi giao tiếp
+
+Từ đầu chương, PLC luôn ở vai **hỏi**: nó đọc bộ điều khiển nhiệt độ, nó ghi điểm đặt. Trên máy thật
+còn một kiểu ghép ngược lại, gặp nhiều không kém: một **phần mềm chạy trên máy tính công nghiệp** — xử
+lý ảnh, đo kích thước, ghi dữ liệu truy xuất — đọc và ghi thẳng vào vùng nhớ của PLC qua Modbus TCP.
+Khi đó PLC là **máy chủ** *(server)*, phần mềm là **máy khách** *(client)*: phần mềm hỏi theo nhịp của
+riêng nó, còn PLC chỉ để sẵn một vùng thanh ghi cho nó đọc ghi.
+
+⭐ Với DP-01, đây đúng là kiến trúc nếu sau này thêm vision loại **hệ PC** (Chương 43 mục 43.9).
+
+Ba thứ đổi so với các mục trên — và cả ba là nguồn lỗi nếu không nghĩ trước:
+
+| | Khi PLC hỏi thiết bị | ⚠ Khi phần mềm hỏi PLC |
+|---|---|---|
+| Ai quyết định lúc nào trao đổi | PLC — theo vòng quét của nó | ⚠ **Phần mềm** — theo nhịp riêng, không đồng bộ với vòng quét |
+| Ai ghi vào vùng nhớ của PLC | Chỉ chương trình PLC | ⚠ **Cả hai** — chương trình PLC và phần mềm |
+| Bên kia khởi động lại | Thiết bị hầu như không | ⚠ Phần mềm **khởi động lại, treo, được cập nhật** độc lập với máy |
+
+### Quy tắc một — chia vùng theo NGƯỜI GHI, không theo kiểu dữ liệu
+
+⭐ **Mỗi thanh ghi chỉ một bên được ghi — kể cả việc ghi số 0 để "xoá".** Đây là quy tắc *một nơi ghi*
+của tham chiếu chéo (Chương 22 mục 22.3), áp cho đường biên giữa hai chương trình. Phía PLC còn tham
+chiếu chéo được; phía phần mềm thì không — nên quy tắc phải nằm **ngay trong bảng giao tiếp**.
+
+| Vùng | Ai ghi | Ai đọc | Chứa |
+|---|---|---|---|
+| ⭐ **A — PLC → phần mềm** | **Chỉ PLC** | Phần mềm | Yêu cầu (số thứ tự, mã lệnh, tham số) · trạng thái máy · số bước · nhịp tim · phiên bản giao diện |
+| ⭐ **B — phần mềm → PLC** | **Chỉ phần mềm** | PLC | Trả lời (số thứ tự đã xử lý, mã kết quả, dữ liệu kết quả) · nhịp tim · phiên bản · mã lỗi của phần mềm |
+
+> ⚠ **Chia theo kiểu dữ liệu là cách hay gặp — và là gốc của lỗi.** Một chương trình máy đang chạy
+> mà tôi đọc được mã chia ba vùng: *số nguyên PLC gửi* · *số nguyên phần mềm gửi* · **số thực**. Vùng
+> số thực vì thế chứa cả toạ độ **PLC ghi** (vị trí hiện tại của trục) lẫn toạ độ **phần mềm ghi**
+> (điểm cần tới) — nhìn bảng không trả lời được câu *"ô này ai ghi?"*. ⭐ Chia theo người ghi thì mỗi
+> vùng chứa được cả số nguyên lẫn số thực; ⚠ số thực 32 bit chiếm hai thanh ghi, và thứ tự word vẫn
+> phải thử như mục 39.5.
+
+```iecst
+// Hai vùng, mỗi vùng MỘT người ghi — gắn vào địa chỉ thanh ghi của máy chủ theo cấu hình của hệ bạn dùng
+TYPE ST_PcAreaA :                  // ⭐ CHỈ chương trình PLC ghi
+STRUCT
+    Version      : DINT;           // phiên bản bảng giao tiếp, dạng năm-tháng-ngày: 261007
+    Heartbeat    : INT;            // tăng 1 mỗi 0,5 s
+    MachineState : INT;            // mã trạng thái máy — một con số, tính ở một chỗ (Chương 25)
+    StepMain     : INT;            // bước của trình tự chính trạm 1
+    StepSub      : INT;            // bước của trình tự con đang chạy — 0 nếu không có
+    ReqId        : INT;            // số thứ tự yêu cầu đang gửi
+    ReqCmd       : INT;            // mã lệnh: 1 = đo vị trí board
+    ReqParam     : INT;            // tham số: số thứ tự board trong lô
+END_STRUCT
+END_TYPE
+
+TYPE ST_PcAreaB :                  // ⭐ CHỈ phần mềm ghi
+STRUCT
+    Version      : DINT;           // phiên bản bảng giao tiếp mà phần mềm được viết theo
+    Heartbeat    : INT;            // tăng 1 mỗi 0,5 s
+    ErrorBits    : WORD;           // lỗi phía phần mềm — mỗi bit một lỗi, nghĩa ghi trong bảng
+    AckResult    : INT;            // 1 = OK · 2 = NG — ghi TRƯỚC AckId
+    OffsetXX100  : INT;            // độ lệch X, đơn vị 0,01 mm — ghi TRƯỚC AckId
+    OffsetYX100  : INT;            // độ lệch Y, đơn vị 0,01 mm — ghi TRƯỚC AckId
+    AckId        : INT;            // ⭐ ghi SAU CÙNG, bằng một lệnh ghi riêng
+END_STRUCT
+END_TYPE
+```
+
+> ⚠ **Gắn vùng nhớ nào vào địa chỉ thanh ghi nào là cấu hình của từng hệ**, không phải của Modbus.
+> Tra tài liệu chức năng máy chủ Modbus TCP của đúng CPU, rồi **xác nhận bằng giá trị đã biết** từ phía
+> phần mềm — đúng quy trình mục 39.8, chỉ đổi chiều.
+
+### Quy tắc hai — bắt tay một yêu cầu: ba cách, cùng một bài toán
+
+Bài toán: trạm 1 nhờ phần mềm **đo vị trí board số n**; phần mềm trả **OK hoặc NG** kèm độ lệch. Cả ba
+cách dưới đây đều gặp ở máy đang chạy.
+
+**Cách A — "khác 0 là lệnh, bên kia xoá về 0".**
+
+```iecst
+// ✗ CÁCH A — mỗi ô có HAI người ghi: PLC ghi lệnh, phần mềm xoá; phần mềm ghi kết quả, PLC xoá
+CASE Stn1_Step OF
+    …
+    40: PcCmd := 1;                     // "đo đi" — phần mềm đọc xong tự ghi 0 vào ô này
+        Stn1_Step := 41;
+    41: IF PcResult <> 0 THEN           // 1 = OK · 2 = NG
+            M_PartOk := (PcResult = 1);
+            PcResult := 0;              // ⚠ PLC xoá ô của phần mềm
+            Stn1_Step := 50;
+        END_IF;
+END_CASE;
+```
+
+**Cách B — "chép rồi xoá liên tục"** — thường là bản vá của cách A sau lần lỗi đầu tiên.
+
+```iecst
+// ✗ CÁCH B — đỡ hơn A, nhưng PLC VẪN ghi vào ô của phần mềm
+IF PcResult <> 0 THEN
+    M_PcResultCopy := PcResult;         // chép ra biến của PLC
+END_IF;
+IF M_PcResultCopy <> 0 THEN
+    PcResult := 0;                      // ⚠ còn bản chép thì cứ xoá ô gốc, mỗi vòng quét
+END_IF;
+```
+
+**Cách C — số thứ tự.** PLC chỉ ghi vùng A, phần mềm chỉ ghi vùng B, **không ai xoá gì**: yêu cầu mang
+một số thứ tự *(request ID)*, trả lời mang lại đúng số đó, và PLC coi là xong khi hai số bằng nhau.
+
+```iecst
+// ✔ CÁCH C — gọi MỖI vòng, ngoài CASE (Chương 30 mục 30.5b); khối đầy đủ ở ngay dưới
+PcMeasure(Execute   := (Stn1_Step = 40),
+          Cmd       := 1,
+          Param     := BoardNo,
+          AckId     := PcB.AckId,
+          AckResult := PcB.AckResult,
+          TimeOut   := T#2S);
+PcA.ReqId    := PcMeasure.ReqId;        // ⭐ ba dòng duy nhất ghi phần yêu cầu của vùng A
+PcA.ReqCmd   := PcMeasure.ReqCmd;
+PcA.ReqParam := PcMeasure.ReqParam;
+
+CASE Stn1_Step OF
+    …
+    40: IF PcMeasure.Done THEN
+            M_PartOk    := PcMeasure.Ok;
+            OffsetXX100 := PcB.OffsetXX100; // ⭐ CHỐT dữ liệu ngay ở vòng có kết quả
+            OffsetYX100 := PcB.OffsetYX100;
+            Stn1_Step   := 50;
+        ELSIF PcMeasure.Error THEN
+            M_PartUnknown := TRUE;          // không trả lời ≠ NG (Chương 43 mục 43.7)
+            Stn1_Step     := 90;
+        END_IF;
+END_CASE;
+```
+
+⚠ **A và B hỏng thỉnh thoảng — nên rất khó bắt.** Đặt ba cách cạnh nhau trước những tình huống có thật:
+
+| Tình huống | Cách A | Cách B | ⭐ Cách C |
+|---|---|---|---|
+| ⭐ Phần mềm **ghi lại cả vùng của nó mỗi lần hỏi** — cách viết rất phổ biến vì gọn | ⚠ PLC vừa xoá `PcResult`, phần mềm ghi lại số cũ → kết quả cũ **hiện lại**, bước sau nhận nhầm | ⚠ Hai bên **giằng co** trên một ô — ai ghi sau cùng thì thắng, thắng thua theo thời điểm | ✅ Ghi lại cùng một `AckId` không đổi gì |
+| Phần mềm xoá `PcCmd` **trễ** — sau khi PLC đã ghi lệnh kế tiếp | ⚠ Lệnh kế tiếp **bị xoá trước khi phần mềm kịp thấy** → trạm chờ tới quá thời gian | ⚠ Như A | ✅ Không ai xoá — lệnh nằm nguyên tới khi được trả lời |
+| Hai kết quả **giống nhau liên tiếp** (OK rồi OK) | ⚠ Bắt sườn *"khác 0"* thì lần hai **không có sườn** nếu ô chưa kịp về 0 | ⚠ Dễ lẫn hai lần | ✅ Mỗi kết quả mang số thứ tự riêng |
+| Trả lời **đến muộn** — PLC đã quá thời gian và gửi yêu cầu mới | ⚠ Nhận nhầm cho yêu cầu mới | ⚠ Như A | ✅ Mang số cũ → **tự bị bỏ qua** |
+| PLC **khởi động lại** giữa chừng | ⚠ Ô còn giá trị cũ, không biết của lần nào | ⚠ Như A | ✅ PLC lấy số phần mềm đã trả làm gốc → yêu cầu đầu mang số khác |
+| Công sức | Ít nhất | Ít | Thêm hai ô và một phép so sánh |
+
+> ⚡ **Chương trình máy thật mà tôi đọc được mã đi đúng con đường A → B.** Ghi chú của chính người viết
+> trong khối chuyển đổi: dùng sườn lên thì có lúc *"xoá không được"*, nên đổi sang chép rồi xoá liên
+> tục — và mục *"vấn đề còn mở"* trong chương trình vẫn ghi nó là việc *"chờ kiểm lâu dài"*. ⭐ Bệnh
+> không nằm ở sườn hay mức, mà ở chỗ **hai chương trình cùng ghi một ô**. Đổi cách bắt không chữa được
+> bệnh đó — chỉ đổi giao thức mới chữa được.
+
+⭐ **Khuyến nghị:** giao diện mới thì dùng **cách C**. Chỉ dùng A hay B khi phía phần mềm **không sửa
+được** — và khi đó bắt buộc thêm ba thứ: phần mềm **chỉ ghi khi có kết quả mới**, không ghi lại cả vùng
+mỗi chu kỳ; PLC **chốt** kết quả ngay ở vòng thấy nó và có **giới hạn thời gian** cho mỗi yêu cầu; và
+PLC **đếm số lần quá thời gian** — con số đó tăng dần là giao diện đang làm mất yêu cầu.
+
+### Khối hoàn chỉnh — một yêu cầu, theo hợp đồng `Execute`/`Done`
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — một yêu cầu tới phần mềm PC theo số thứ tự (cách C, Chương 39 mục 39.9b; giống hệt Phụ lục L mục L.16b)
+FUNCTION_BLOCK FB_PcRequest
+VAR_INPUT
+    Execute   : BOOL;            // ⭐ SƯỜN LÊN = gửi một yêu cầu mới · lệnh và tham số CHỐT tại sườn này
+    Cmd       : INT;             // mã lệnh theo bảng giao tiếp
+    Param     : INT;             // tham số của lệnh
+    AckId     : INT;             // ← vùng B: số thứ tự phần mềm đã xử lý xong
+    AckResult : INT;             // ← vùng B: 1 = OK · 2 = NG · số khác = phần mềm không hiểu lệnh
+    TimeOut   : TIME := T#2S;    // [Nghề] 3–5 lần thời gian trả lời đo được (Phụ lục O mục O.11)
+END_VAR
+VAR_OUTPUT
+    ReqId     : INT;             // → vùng A: số thứ tự của yêu cầu — chạy vòng 1…30000, không dùng số 0
+    ReqCmd    : INT;             // → vùng A
+    ReqParam  : INT;             // → vùng A
+    Busy      : BOOL;            // ⭐ Busy · Done · Error LOẠI TRỪ nhau (Chương 30 mục 30.5b)
+    Done      : BOOL;            // phần mềm đã trả lời — Ok cho biết OK hay NG
+    Ok        : BOOL;            // chỉ có nghĩa khi Done
+    Error     : BOOL;
+    ErrorID   : INT;             // 0 = không lỗi · 1 = quá thời gian · 2 = phần mềm trả mã lạ
+END_VAR
+VAR
+    ExecEdge  : R_TRIG;
+    T_Out     : TON;
+    LimitCopy : TIME;            // bản CHỐT của TimeOut
+    Started   : BOOL;            // đã qua lần gọi đầu tiên sau khi bật máy
+END_VAR
+VAR_TEMP
+    Start     : BOOL;            // vòng này vừa NHẬN một yêu cầu mới
+    NewResult : BOOL;            // kết quả vừa có trong vòng này
+END_VAR
+
+// ── 0. Lần gọi đầu sau khi bật máy: lấy số phần mềm đã trả làm gốc → yêu cầu đầu mang số KHÁC ──
+IF NOT Started THEN
+    ReqId   := AckId;
+    Started := TRUE;
+END_IF;
+
+ExecEdge(CLK := Execute);
+
+// ── 1. Sườn lên khi rỗi → số thứ tự mới, chốt lệnh và tham số. Sườn lên khi bận → bỏ qua ──
+Start := ExecEdge.Q AND NOT Busy;
+IF Start THEN
+    IF (ReqId < 1) OR (ReqId >= 30000) THEN
+        ReqId := 1;              // quay vòng — và số 0 không bao giờ được dùng
+    ELSE
+        ReqId := ReqId + 1;
+    END_IF;
+    ReqCmd    := Cmd;
+    ReqParam  := Param;
+    Busy      := TRUE;
+    Done      := FALSE;
+    Ok        := FALSE;
+    Error     := FALSE;
+    ErrorID   := 0;
+    LimitCopy := TimeOut;
+END_IF;
+
+// ── 2. Xong khi phần mềm báo ĐÚNG số này — trả lời mang số cũ, đến muộn, tự bị bỏ qua ──
+T_Out(IN := Busy AND NOT Start, PT := LimitCopy);
+IF Busy AND (AckId = ReqId) THEN
+    Busy      := FALSE;
+    NewResult := TRUE;
+    IF (AckResult = 1) OR (AckResult = 2) THEN
+        Done := TRUE;
+        Ok   := (AckResult = 1);
+    ELSE
+        Error   := TRUE;
+        ErrorID := 2;
+    END_IF;
+ELSIF Busy AND T_Out.Q THEN
+    Busy      := FALSE;
+    Error     := TRUE;           // ⚠ không trả lời ≠ NG (Chương 43 mục 43.7)
+    ErrorID   := 1;
+    NewResult := TRUE;
+END_IF;
+
+// ── 3. Execute đã tắt và việc đã xong → xoá kết quả; kết quả VỪA có vẫn hiện ít nhất MỘT vòng ──
+IF NOT Execute AND NOT Busy AND NOT NewResult THEN
+    Done    := FALSE;
+    Ok      := FALSE;
+    Error   := FALSE;
+    ErrorID := 0;
+END_IF;
+END_FUNCTION_BLOCK
+```
+
+| Việc | Dòng nào lo |
+|---|---|
+| Sau khi bật máy, không dùng lại số phần mềm vừa trả | Phần 0: `ReqId := AckId` ở lần gọi đầu |
+| Mỗi yêu cầu một số, không bao giờ là 0 | Phần 1: quay vòng 1…30000 — vừa kiểu `INT` |
+| Trả lời đến muộn không bị nhận nhầm | Phần 2: chỉ nhận khi `AckId = ReqId` |
+| Không trả lời **không** thành NG | `ErrorID := 1`, `Ok` vẫn FALSE — trạm biết đó là *"không biết"* |
+| Năm quy tắc của hợp đồng `Execute`/`Done` | Y hệt `FB_BoardTransfer` (Chương 30 mục 30.5b) |
+
+⭐ **Phía phần mềm chỉ cần ba luật** — ghi chúng ở dòng đầu bảng giao tiếp:
+
+1. Thấy `ReqId` trong vùng A **khác** `AckId` trong vùng B — đọc cả hai từ PLC, không dùng biến nhớ của
+   phần mềm — thì xử lý yêu cầu đó, **đúng một lần**.
+2. Ghi kết quả và dữ liệu **trước**, rồi ghi `AckId := ReqId` bằng một lệnh ghi **riêng**, sau cùng. Nhờ
+   vậy PLC thấy số mới thì kết quả **chắc chắn** đã nằm sẵn.
+3. Đọc vùng A **hai lần liên tiếp**, chỉ xử lý khi hai lần cùng một `ReqId` — rẻ, và không cần biết PLC
+   cập nhật vùng nhớ vào lúc nào so với lúc máy chủ trả lời.
+
+⚡ **Với dữ liệu trả về:** chốt nó vào biến của PLC **đúng ở vòng `Done`** — như đoạn cách C ở trên — rồi
+kiểm dải trước khi dùng (Chương 43 mục 43.5); đừng đọc lại vùng B ở bước sau. Chương trình thật nói ở
+trên phải thêm bước *"xoá toạ độ sau khi dùng"* chính vì đọc thẳng vùng của phần mềm ở bước sau; có số
+thứ tự và dữ liệu đã chốt thì bước xoá đó hết lý do tồn tại. ⚠ Toạ độ **tuyệt đối** do phần mềm gửi thì
+kiểm thêm hai điều: nằm trong **giới hạn phần mềm** của trục (Chương 37 mục 37.6), và **khác (0, 0)** —
+cặp số 0 thường nghĩa là *"chưa có dữ liệu"*, không phải một toạ độ.
+
+### Quy tắc ba — bốn ô cố định mà bảng giao tiếp nào cũng phải có
+
+| Ô | Vùng | Trả lời câu hỏi gì khi máy dừng lúc nửa đêm | ✅ Đạt khi |
+|---|---|---|---|
+| ⭐ **Phiên bản bảng giao tiếp** | A và B | *"Hai chương trình có đang nói cùng một ngôn ngữ không?"* | Hai số khác nhau → máy **không vào tự động**, báo đúng *"lệch phiên bản giao tiếp"* |
+| ⭐ **Nhịp tim** *(heartbeat)* | A và B | *"Bên kia còn sống không?"* | Rút cáp → mỗi bên phát hiện trong thời gian giám sát đã định (Chương 48 mục 48.5) |
+| **Trạng thái máy** | A | *"Máy đang ở đâu lúc phần mềm ghi dòng nhật ký này?"* | Một con số, tính ở **một** chỗ (Chương 25) |
+| **Số bước** | A | *"Trạm kẹt ở bước nào?"* | Phần mềm ghi được bước vào nhật ký của nó, cùng dấu thời gian |
+
+📏 **Con số:** phiên bản viết dạng năm-tháng-ngày, ví dụ `261007` — **[Nghề]**: đọc bằng mắt được,
+luôn tăng, vừa kiểu `DINT`. Nhịp tim tăng mỗi **0,5 s**, giám sát **2 s** — **[Nghề]**, lập luận ở
+Chương 48 mục 48.5 và Phụ lục O mục O.11.
+
+> ⚡ Trạm gọi **trình tự con** (lấy hàng, đo, nhả…) thì gửi **hai ô**: bước chính và bước con. Một ô
+> kiểu *"cơ sở của trình tự con + bước con"* (3000 + 20 = 3020) gọn hơn, nhưng ⚠ phải giữ thêm một bảng
+> cơ sở và vỡ khi trình tự con có quá 99 bước; hai ô thì không cần giải mã gì.
+
+### ✅ Đạt khi — bảng giao tiếp PLC ↔ phần mềm
+
+- [ ] Bảng giao tiếp là **một tài liệu có số phiên bản**: ai ghi từng ô, đơn vị, và ba luật phía phần mềm.
+- [ ] Tham chiếu chéo trên PLC: mọi ô vùng B **không** có chỗ nào ghi; mọi ô vùng A **đúng một** chỗ ghi.
+- [ ] ⭐ Tắt phần mềm lúc PLC đang chờ → PLC báo **quá thời gian**, sản phẩm thành *"không biết"*, không
+      thành NG; bật lại phần mềm → yêu cầu kế tiếp chạy, **không** phải nạp lại gì.
+- [ ] Khởi động lại PLC khi phần mềm vẫn chạy → yêu cầu đầu tiên sau đó được trả lời đúng.
+- [ ] Hai yêu cầu liền nhau cùng ra OK → PLC nhận đủ **hai** kết quả.
+- [ ] Phiên bản hai bên lệch → máy không vào tự động, thông báo nói đúng lý do.
+
+---
+
 ## 39.10 Khác biệt giữa các hãng
 
 | Khía cạnh | Điều cần biết |
@@ -554,6 +848,14 @@ tìm nhầm hướng.
 **Hiện tượng:** mất nhiều giờ nghi ngờ chương trình, trong khi vấn đề ở tầng vật lý hoặc ở thiết bị.
 **Cách sửa:** ⭐ **tách PLC ra trước** — dùng chủ giả lập trên máy tính (mục 39.8, bước 1).
 
+### 🔍 BẪY 12 — Hai chương trình cùng ghi một ô của bảng giao tiếp
+
+**Hiện tượng:** thỉnh thoảng một yêu cầu gửi phần mềm PC **mất** — trạm chờ tới quá thời gian; thỉnh
+thoảng một kết quả cũ **được dùng lần hai**. Thêm bắt sườn, thêm *"xoá liên tục"* thì đỡ một thời gian
+rồi lại bị.
+**Cách sửa:** chia vùng thanh ghi theo **người ghi**, bắt tay mỗi yêu cầu bằng **số thứ tự**, không bên
+nào xoá ô của bên kia (mục 39.9b).
+
 ---
 
 ## 39.12 Bảng chốt
@@ -582,6 +884,9 @@ tìm nhầm hướng.
 | Ghi tham số vào thiết bị | ⭐ **Chỉ khi giá trị đổi** — so với lần ghi trước |
 | Từ trạng thái khai kiểu | ⚠ **`WORD`**, không phải `INT` |
 | Bước gỡ lỗi đầu tiên | ⭐ **Tách PLC ra** — chủ giả lập trên máy tính |
+| ⭐⭐ Phần mềm PC đọc ghi PLC — chia vùng thế nào | **Theo người ghi**: vùng A chỉ PLC ghi · vùng B chỉ phần mềm ghi — không theo kiểu dữ liệu |
+| ⭐⭐ Bắt tay một yêu cầu với phần mềm | **Số thứ tự**: xong khi `AckId = ReqId`; không bên nào xoá ô của bên kia (`FB_PcRequest`) |
+| Bốn ô cố định của bảng giao tiếp | Phiên bản · nhịp tim (hai chiều) · trạng thái máy · số bước |
 | ⚠⚠ Modbus cho tín hiệu an toàn | ❌ **Không bao giờ** |
 
 ---
@@ -605,8 +910,12 @@ tìm nhầm hướng.
 12. Vì sao nên đọc **theo cụm** thay vì từng thanh ghi riêng? Điều kiện là gì?
 13. Vì sao **không** được ghi điểm đặt mỗi lần công thức được nạp?
 14. ⚠ Từ trạng thái của thiết bị phải khai kiểu gì, và khai nhầm thì triệu chứng là gì?
+15. ⭐⭐ Một phần mềm PC đọc ghi PLC qua Modbus TCP. Vì sao cách *"khác 0 là lệnh, bên kia xoá về 0"*
+    hỏng khi phần mềm ghi lại cả vùng của nó mỗi lần hỏi? Cách số thứ tự tránh điều đó thế nào?
+16. Nêu bốn ô mà bảng giao tiếp PLC–phần mềm nào cũng nên có, và mỗi ô trả lời câu hỏi gì khi máy
+    dừng lúc nửa đêm.
 
-> Câu 3, 4, 5, 9 và 11 là năm câu phân loại. Câu 4 là tinh thần của cả chương: **đọc được một con số
+> Câu 3, 4, 5, 9, 11 và 15 là sáu câu phân loại. Câu 4 là tinh thần của cả chương: **đọc được một con số
 > không có nghĩa là đọc đúng — và Modbus không có gì nói cho bạn biết bạn đang đọc nhầm.**
 
 ---

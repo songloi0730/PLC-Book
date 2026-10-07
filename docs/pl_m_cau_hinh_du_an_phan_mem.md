@@ -66,6 +66,29 @@ cho thấy các tham số này tồn tại**.
 > là **mục số 2 của bộ sao lưu tám hạng mục** (Phụ lục C.9) đúng vì lý do này: không có nó thì một
 > CPU mới nạp chương trình vào **vẫn không chạy đúng**.
 
+### ⭐ Biến thể phần cứng trong cùng một dự án
+
+Máy đóng theo lô thường **không giống hệt nhau**: lô đầu dùng đảo van của hãng này, lô sau đổi sang
+hãng khác vì giá hay vì hàng về chậm. Hai cách quản lý, cùng bài toán *"hai loại đảo van trên mạng"*:
+
+| Cách | Làm thế nào | Ưu | Nhược |
+|---|---|---|---|
+| **A — hai dự án** | Mỗi biến thể một bản dự án riêng | Mỗi bản sạch, không có thiết bị thừa | ⚠⚠ Sửa một lỗi phải sửa **hai nơi**; sau vài lần sửa, hai bản lệch nhau mà không ai biết |
+| ⭐ **B — một dự án, khai cả hai, tắt cái không lắp** | Cấu hình mạng khai cả hai thiết bị; cái không lắp đánh dấu **không dùng**; chương trình chọn biến thể bằng **một tham số** | **Một** nguồn duy nhất; đổi biến thể ngay lúc chạy thử | ⚠ Bật nhầm cái không lắp thì mạng không lên — phải có cách nhận ra ngay |
+
+⭐ **Khuyến nghị: cách B**, kèm ba quy tắc — một máy đang chạy mà tôi đọc được cấu hình làm đúng cách
+này: hai đảo van khác hãng cùng nằm trong cấu hình, một cái bị tắt, và ghi chú đầu chương trình nhắc
+*phải xác nhận lắp hãng nào*.
+
+1. Tham số biến thể nằm ở **một** chỗ, ghi vào bảng cấu hình phần cứng (**Phụ lục C.10**) và hiện
+   trên màn hình chẩn đoán.
+2. Ngay sau khởi động, **so** thiết bị đã khai với thiết bị thật sự trả lời trên mạng; lệch thì báo một
+   lỗi **có tên** — *"cấu hình biến thể sai"* — thay vì một lỗi *"mất kết nối"* chung chung.
+3. Nhật ký sửa đổi ghi rõ **lô máy nào** dùng biến thể nào (Chương 30 mục 30.6).
+
+**✅ Đạt khi:** đặt tham số biến thể và tắt đúng thiết bị → máy lên mạng không lỗi; cố ý bật nhầm thiết
+bị → thông báo nói đúng *"cấu hình biến thể sai"*, không phải lỗi chung.
+
 ---
 
 ## M.3 ⭐ Mạng: địa chỉ IP, tên trạm, và một sơ đồ phải quản lý
@@ -267,6 +290,8 @@ của nó, vì đây đúng là chỗ người học ở trường hay nhầm.
 > - [ ] ⭐ **Tham số từng module** đã đặt và **đã ghi vào Phụ lục C.10**
 > - [ ] Trạng thái ngõ ra **khi CPU sang STOP** đã đặt có chủ ý (Chương 8 mục 8.8)
 > - [ ] ⭐ Chẩn đoán **đứt dây** của kênh analog đã bật ở những kênh cần
+> - [ ] Máy có **biến thể phần cứng**: thiết bị không lắp đã tắt trong cấu hình; tham số biến thể ghi
+>   vào Phụ lục C.10 (mục M.2)
 >
 > **Mạng**
 >

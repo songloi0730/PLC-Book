@@ -140,6 +140,7 @@ Chạy chậm là lúc **người đứng gần máy nhất** và **cơ cấu ch
 |---|---|
 | **Tốc độ jog phải chậm** | Người phải kịp phản ứng |
 | ⭐ **Chỉ chạy khi giữ nút** — nhả là dừng | Không có chế độ "chạy liên tục" khi jog |
+| ⚠⚠ Nút giữ **trên màn hình** phải có **bộ đếm sống** | Mất kết nối đúng lúc đang giữ thì PLC không bao giờ thấy *"nhả"* (Chương 44, Bẫy 14) |
 | **Giới hạn phần mềm vẫn phải hoạt động** | ⚠ Đây là chỗ hay bị bỏ qua "cho tiện" |
 | **Chỉ ở chế độ Manual**, có điều kiện cho phép | Chương 28 |
 | ⚠ Nếu chưa về gốc thì jog thế nào | Xem bên dưới |
@@ -364,6 +365,157 @@ Cam điện tử và trục ảo nêu ở đây ở mức khái niệm; chúng t
 
 ---
 
+## 37.7b ⭐⭐ Hai đầu công tác chung một ray — kiểm KHOẢNG HỞ, và kiểm cả vị trí ĐÍCH
+
+Muốn gấp đôi năng suất ở trạm làm việc mà không thêm trạm, cách hay gặp là **thêm đầu công tác thứ hai
+trên cùng khung**: hai cụm trục đối diện nhau, cùng phủ một vùng làm việc. ⭐ Nếu DP-01 làm vậy ở trạm
+tra keo, sẽ có hai đầu keo chạy trên cùng một ray X — và một ràng buộc mới mà tầng chống va chạm ở
+Chương 27 mục 27.3b chưa từng gặp.
+
+Tầng đó viết ràng buộc bằng **cảm biến rời**: *"kẹp chưa lên thì cấm hạ"*. Ở đây ràng buộc là một
+**khoảng cách** giữa hai vị trí luôn thay đổi, và hai thứ làm nó khó hơn hẳn:
+
+| | Ràng buộc kiểu cảm biến (Chương 27) | ⚠ Hai trục chung một vùng |
+|---|---|---|
+| Điều kiện | Một bit: đúng hoặc sai | Một **khoảng hở** *(clearance)*: `X2 − X1` phải đủ lớn |
+| Khi điều kiện vừa sai | Cơ cấu chưa chuyển động — chặn là xong | ⚠⚠ Hai trục **đang chạy** — chặn lúc đó thì chúng vẫn trượt thêm cả quãng dừng |
+| Thời điểm kiểm | Lúc ra lệnh là đủ | ⭐ **Hai thời điểm**: lúc ra lệnh **và** liên tục trong lúc chạy |
+
+### Đưa hai trục về MỘT hệ toạ độ
+
+Mỗi trục thường về gốc ở đầu ray của nó, nên trục bên phải đo **ngược chiều** với trục bên trái. Trước
+khi so sánh gì, đổi về một hệ: `X2_máy = L − X2_trục`, với `L` là khoảng cách giữa hai điểm gốc đo trên
+máy. ⚡ Chương trình thật thường viết gọn thành *"tổng hai vị trí phải nhỏ hơn một ngưỡng"* — cùng một
+phép toán, nhưng ⚠ ngưỡng đó chỉ đúng khi cả hai trục đã về gốc **đúng**: một trục về gốc lệch thì cả
+phép kiểm lệch theo, nên kiểm khoảng hở chỉ được bật **sau** khi cả hai trục đã về gốc (mục 37.3).
+
+### Lúc ra lệnh — kiểm ĐÍCH: hai đoạn đường đi không được chồng nhau
+
+Một đầu đang đi từ chỗ nó đứng tới đích sẽ **chiếm cả đoạn** ở giữa. Lệnh mới chỉ được phát khi đoạn của
+đầu trái (tới điểm xa nhất về bên phải) cộng khoảng hở tối thiểu còn nằm trước đoạn của đầu phải:
+
+```text
+   max(X1, X1 đích) + khoảng hở tối thiểu  ≤  min(X2, X2 đích)      → được phát lệnh
+```
+
+⚠ Đầu đứng yên thì đích bằng vị trí thật; đầu đang chạy thì dùng **đích đang lệnh** — không dùng vị trí
+thật, vì đầu đó sắp tới đó.
+
+> ⚡ **Kiểm đích ở LÚC RA LỆNH, không kiểm liên tục như một báo động.** Chương trình máy thật mà tôi đọc
+> được mã từng kiểm đích liên tục và báo động khi vi phạm — kết quả là báo động **đứng mãi**, trục
+> không nhúc nhích được để thoát ra; người viết phải đổi sang chỉ kiểm ở **sườn**. ⭐ Đích là câu hỏi
+> *"có được đi không"*, nên chỗ của nó là **điều kiện phát lệnh**; câu hỏi *"có đang nguy không"* là
+> việc của phép kiểm thứ hai.
+
+### Liên tục — kiểm HIỆN TẠI: khoảng hở phải đủ để DỪNG KỊP
+
+Phép kiểm này bắt mọi thứ phép kiểm đích không lường được: jog, một lệnh viết sai, sai lệch bám lớn
+bất thường. Nó phải kích **trước** khi hai đầu chạm nhau một khoảng bằng đúng quãng chúng cần để dừng:
+
+```text
+   khoảng hở cần có  =  khoảng hở tối thiểu
+                      + quãng phản ứng   (tổng tốc độ tiến lại × thời gian phản ứng)
+                      + quãng phanh      (v² / 2a, tính cho TỪNG đầu đang tiến lại)
+```
+
+⭐ Nhờ có tốc độ trong công thức, hai đầu **đứng yên** sát nhau — đúng khoảng hở tối thiểu — **không**
+báo gì: việc làm sát nhau vẫn được phép. Chỉ khi chúng **tiến lại** nhau thì khoảng cần có mới lớn lên.
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — khoảng hở hai đầu chung một ray: kiểm ĐÍCH lúc ra lệnh, kiểm HIỆN TẠI liên tục (giống hệt Phụ lục L mục L.9b)
+FUNCTION_BLOCK FB_TwoHeadsGap
+VAR_INPUT
+    X1Act   : REAL;          // đầu 1 (bên trái): vị trí thật, mm, theo hệ toạ độ MÁY
+    X1Tgt   : REAL;          // đầu 1: đích đang lệnh hoặc sắp lệnh — đứng yên thì bằng X1Act
+    X2Act   : REAL;          // đầu 2 (bên phải): vị trí thật, mm
+    X2Tgt   : REAL;          // đầu 2: đích
+    V1Act   : REAL;          // tốc độ thật đầu 1, mm/s, dương = đi sang phải
+    V2Act   : REAL;          // tốc độ thật đầu 2, mm/s, dương = đi sang phải
+    GapMin  : REAL;          // khoảng hở tối thiểu, mm — kích thước hai thân + biên (mục 37.7b)
+    DecStop : REAL;          // gia tốc hãm của lệnh dừng, mm/s² — giá trị NHỎ hơn của hai trục
+    TReact  : REAL;          // thời gian phản ứng, s — [Nghề] 3 chu kỳ của tác vụ chạy khối này
+END_VAR
+VAR_OUTPUT
+    PathClear : BOOL;        // ⭐ hai đoạn đường đi theo ĐÍCH không chồng nhau → được phát lệnh
+    StopBoth  : BOOL;        // ⚠ khoảng hở HIỆN TẠI không còn đủ để dừng kịp → dừng cả hai
+    GapNow    : REAL;        // khoảng hở hiện tại, mm — để hiển thị và ghi mốc
+    GapNeed   : REAL;        // khoảng hở cần có ở tốc độ hiện tại, mm
+END_VAR
+VAR_TEMP
+    Close1  : REAL;          // tốc độ đầu 1 tiến VỀ PHÍA đầu 2, mm/s, không âm
+    Close2  : REAL;          // tốc độ đầu 2 tiến về phía đầu 1, mm/s, không âm
+END_VAR
+
+// ── 1. Kiểm ĐÍCH — dùng lúc RA LỆNH: mỗi đầu chiếm cả đoạn từ chỗ đang đứng tới đích ──
+PathClear := (MAX(X1Act, X1Tgt) + GapMin <= MIN(X2Act, X2Tgt)) AND (DecStop > 0.0);
+
+// ── 2. Kiểm HIỆN TẠI — liên tục: khoảng hở phải đủ cho cả quãng phản ứng lẫn quãng phanh ──
+GapNow := X2Act - X1Act;
+Close1 := MAX(V1Act, 0.0);       // đầu 1 đi sang phải là đi VỀ PHÍA đầu 2
+Close2 := MAX(-V2Act, 0.0);      // đầu 2 đi sang trái là đi về phía đầu 1
+IF DecStop > 0.0 THEN
+    GapNeed  := GapMin
+              + (Close1 + Close2) * TReact                               // quãng phản ứng
+              + (Close1 * Close1 + Close2 * Close2) / (2.0 * DecStop);   // quãng phanh của từng đầu
+    StopBoth := GapNow < GapNeed;
+ELSE
+    GapNeed  := GapMin;
+    StopBoth := TRUE;            // ⚠ thiếu gia tốc hãm → không biết dừng mất bao xa → coi là không an toàn
+END_IF;
+END_FUNCTION_BLOCK
+```
+
+📏 **Con số — tính, không đoán:**
+
+| Đại lượng | Lấy từ đâu | Ví dụ |
+|---|---|---|
+| Quãng phanh `v²/(2a)` | `a` là **gia tốc hãm của lệnh dừng bạn đặt** cho khối dừng — không phải gia tốc lớn nhất của động cơ | 300 mm/s, 3000 mm/s² → **15 mm** mỗi đầu |
+| Thời gian phản ứng | **[Nghề] 3 chu kỳ** của tác vụ chạy khối: một chu kỳ để vị trí mới về tới PLC, một để logic chạy, một để lệnh dừng ra tới drive | Tác vụ 2 ms → **6 ms** → 1,8 mm ở 300 mm/s |
+| Khoảng hở tối thiểu | Kích thước hai thân lấy từ **bản vẽ** + biên **[Nghề] ≥ 2 lần sai lệch bám lớn nhất** đo được ở tốc độ cao nhất (mục 37.8b) — trong lúc chạy, vị trí thật lệch khỏi vị trí lệnh đúng bằng sai lệch bám; nhân đôi để có chỗ cho dao động giữa các lần đo | Đo rồi chỉnh |
+| ⭐ Hai đầu **cùng** tiến lại nhau ở 300 mm/s | Cộng cả hai đầu | Khoảng hở tối thiểu + 3,6 + 30 mm |
+
+⭐ **Trục đứng cũng thuộc tầng này.** Hai đầu chỉ được chạy ngang khi trục Z của **chính đầu đó** đã ở
+trên độ cao an toàn — và so với **một ngưỡng có dung sai**, không so bằng: trục vừa lên tới nơi vẫn có
+thể lệch vài phần trăm mi-li-mét (Chương 19 mục 19.5). Dung sai đó **[Nghề]** phải nhỏ hơn khe hở dọc
+giữa đáy đầu công tác và vật cao nhất trên đường đi.
+
+Bên gọi — trạm của đầu 1, cùng tác vụ với khối chuyển động (mục 37.8):
+
+```iecst
+// ⭐ Gọi MỖI vòng, ngoài IF/CASE — đầu nào đứng yên thì đích của nó bằng vị trí thật
+Gap(X1Act := X1ActPos, X1Tgt := X1Target, X2Act := X2ActPos, X2Tgt := X2Target,
+    V1Act := X1ActVel, V2Act := X2ActVel,
+    GapMin := 40.0, DecStop := 3000.0, TReact := 0.006);
+M_Itf_Heads := Gap.StopBoth;               // → dừng CẢ HAI đầu, báo động nhóm chống va chạm (Ch.27)
+
+CASE Head1_Step OF
+    …
+    30: X1Target   := Head1NextX;          // ⭐ đặt ĐÍCH trước — khối tính lại ngay vòng sau
+        Head1_Step := 31;
+    31: IF Gap.PathClear THEN              // đoạn đường tới đích còn trống
+            Head1_Step := 40;              // bước 40 phát lệnh chạy: Execute := (Head1_Step = 40)
+        END_IF;                            // chưa trống → CHỜ đầu kia đi khỏi; bước chờ có giới hạn thời gian
+END_CASE;
+```
+
+> ⚠ **Hai đầu cùng chờ nhau là chuyện có thật** — đầu trái muốn sang phải đúng lúc đầu phải muốn sang
+> trái. Phải có **luật ưu tiên** viết ra từ trước, đúng như mọi tài nguyên dùng chung (Chương 27 mục
+> 27.4); và bước chờ có giới hạn thời gian như mọi bước chờ (Phụ lục O mục O.8).
+
+### ✅ Đạt khi — thử trên máy, chạy chậm, không người trong vùng
+
+- [ ] Ra lệnh cho hai đầu tới hai đích chồng lấn → lệnh **không được phát**, trạm đứng chờ, không va.
+- [ ] Jog một đầu về phía đầu kia ở tốc độ jog lớn nhất → cả hai dừng, khoảng hở còn lại **đo bằng
+      thước** ≥ khoảng hở tối thiểu.
+- [ ] Hai đầu đứng yên cách nhau khoảng hở tối thiểu + 1 mm → **không** có báo động.
+- [ ] Cố ý đặt gia tốc hãm bằng 0 → khối báo dừng và không cho phát lệnh.
+- [ ] Một trục chưa về gốc → kiểm khoảng hở **chưa bật**, và hai đầu chỉ được chạy chậm bằng tay.
+
+> ⚠⚠ **Tầng này bảo vệ MÁY, không bảo vệ NGƯỜI** — nó chạy trong CPU thường và dựa vào vị trí do
+> chính hệ đó báo về (Chương 27 mục 27.3b, Chương 47).
+
+---
+
 ## 37.8 PLCopen Motion — và vì sao khối lệnh có `Execute` / `Done` / `Busy`
 
 Chuyển động là việc **kéo dài nhiều vòng quét**. Một lệnh "đi tới 45 mm" mất vài trăm mili-giây tới
@@ -417,6 +569,23 @@ END_IF;
 | **Giữ `Execute` ở mức TRUE** | Ở nhiều hệ, lệnh chỉ phát một lần ở cạnh lên; giữ mức thì lần sau không phát được |
 | ⚠ **Dùng chung một thể hiện khối cho nhiều lệnh** | Cùng lỗi với Chương 14 mục 14.3 — mỗi lệnh một thể hiện riêng |
 | **Không xử lý `CommandAborted`** | Lệnh bị chen ngang mà chương trình vẫn chờ `Done` → trình tự treo |
+
+> ⚖ **NGOÀI HIỆN TRƯỜNG — chương trình trục chạy ở tác vụ của mạng trường, logic máy ở tác vụ khác.**
+> **Người ta làm gì:** ở máy có servo qua EtherCAT, mọi lời gọi khối `MC_*` gom vào **một** chương
+> trình trục, gắn vào **tác vụ *(task)* của mạng trường** — chu kỳ bằng chu kỳ mạng, ưu tiên cao nhất;
+> trình tự, báo động, màn hình chạy ở tác vụ chính chậm hơn. Một máy đang chạy mà tôi đọc được cấu hình
+> đặt tác vụ mạng **2 ms, ưu tiên 0**, tác vụ chính **4 ms**.
+> **Vì sao:** không phải sở thích — tài liệu lập trình chuyển động của hãng PLC đó ghi thẳng rằng khối
+> chuyển động của trục **chỉ được gọi trong tác vụ EtherCAT**, vì nó phải chạy liên tục theo chu kỳ ngắn
+> và theo dõi đáp ứng của drive kịp thời; tác vụ đó ưu tiên 0, chỉ được có một, chu kỳ thường **1–4
+> ms**, và càng nhiều trục thì càng cần chu kỳ dài hơn.
+> **Ranh giới:** từ lúc đó chương trình có **hai tác vụ**, và mọi cảnh báo của Chương 27 mục 27.6 đều
+> áp. ⚠ Dữ liệu qua ranh giới tác vụ phải có **một người ghi**: trình tự ghi lệnh, khối trục ghi phản
+> hồi — máy nói trên để khối trục **tự xoá** cờ lệnh do trình tự đặt, tức hai tác vụ cùng ghi một biến
+> (Chương 22 mục 22.6b). ⚠ Chu kỳ các tác vụ đặt **bội số nguyên** của nhau — tài liệu hãng khuyên 1, 2
+> hoặc 4 ms cho tác vụ mạng và tránh 3, 6, 7, 9 ms. ⚠ Và **đừng tự đổi thứ tự ưu tiên mặc định**: cũng
+> máy đó đặt tác vụ chính ở mức 2, trong khi bảng ưu tiên mặc định của hãng để logic thường ở mức 16 kèm
+> lời dặn không được ép đổi.
 
 ---
 
@@ -678,6 +847,14 @@ bằng một xung sườn lên như Phụ lục L mục L.9 (Chương 30 mục 3
 **Cách sửa:** giới hạn phần mềm vẫn hoạt động khi jog; jog chưa về gốc thì chạy **rất chậm** và dựa
 vào giới hạn phần cứng (mục 37.4).
 
+### 🔍 BẪY 14 — Chống va chạm hai đầu chỉ bằng vị trí hiện tại
+
+**Hiện tượng:** báo động *"hai đầu quá gần"* kêu đúng lúc — mà hai đầu vẫn chạm, vì lúc kêu chúng còn
+đang chạy và trượt thêm cả quãng phanh. Hoặc ngược lại: đặt ngưỡng thật rộng cho chắc, rồi hai đầu không
+bao giờ làm việc được ở gần nhau.
+**Cách sửa:** kiểm **đích** lúc ra lệnh; kiểm **hiện tại** với khoảng hở cần có tính theo **tốc độ**
+(mục 37.7b).
+
 ---
 
 ## 37.12 Bảng chốt
@@ -706,6 +883,9 @@ vào giới hạn phần cứng (mục 37.4).
 | Chuyển bước sau lệnh chuyển động | ⭐ Chờ **`Done`**, không chờ timer |
 | Trục có tải treo cần | **Phanh cơ khí**, ⚠ kẹp **trước** khi nhả mô-men |
 | Kiểm tỉ số truyền bằng | ⭐ Đi một quãng **đã biết** và **đo bằng thước** |
+| ⭐⭐ Hai đầu chung một ray — kiểm gì | **Đích** lúc ra lệnh (hai đoạn đường không chồng nhau) + **hiện tại** liên tục (khoảng hở ≥ khoảng cần có ở tốc độ đó) |
+| Khoảng hở cần có | Tối thiểu + quãng phản ứng `v·T` + quãng phanh `v²/(2a)` của **từng** đầu đang tiến lại |
+| ⭐ Khối `MC_*` gọi ở tác vụ nào | Tác vụ của **mạng trường** — tài liệu hãng: chỉ được gọi ở đó; dữ liệu qua hai tác vụ phải một người ghi |
 
 ---
 
@@ -730,8 +910,13 @@ vào giới hạn phần cứng (mục 37.4).
 14. Trên gantry của DP-01, vì sao **Z phải về gốc trước** X và Y?
 15. ⚠ Trục Z có tải treo cần thêm gì, và thứ tự nào phải đặt đúng?
 16. ⭐ Khai báo tỉ số truyền sai thì triệu chứng là gì, và kiểm bằng cách nào?
+17. ⭐⭐ Hai đầu chung một ray. Vì sao chỉ kiểm khoảng hở **hiện tại** là không đủ? Tính khoảng hở cần
+    có khi hai đầu cùng tiến lại nhau ở 300 mm/s, gia tốc hãm 3000 mm/s², thời gian phản ứng 6 ms,
+    khoảng hở tối thiểu 40 mm.
+18. Vì sao khối chuyển động phải gọi ở tác vụ của mạng trường, và việc tách tác vụ đó kéo theo những
+    điều gì phải giữ?
 
-> Câu 2, 5, 6, 8, 9 và 13 là sáu câu phân loại. Câu 8 và 9 là tinh thần của cả chương: **giới hạn
+> Câu 2, 5, 6, 8, 9, 13 và 17 là bảy câu phân loại. Câu 8 và 9 là tinh thần của cả chương: **giới hạn
 > phần mềm bảo vệ chống lỗi lập trình; nó không bảo vệ chống việc hệ toạ độ bị sai — và những lúc bạn
 > cần bảo vệ nhất lại chính là lúc phần mềm không đáng tin.**
 
@@ -769,6 +954,11 @@ công nghiệp, và là cách bộ điều khiển nhiệt độ của DP-01 nó
 - **Tài liệu servo drive** của hệ đang dùng — dùng cho ⚠ **đơn vị kỹ thuật và tỉ số truyền**, kiểu về
   gốc hỗ trợ, ngõ vào giới hạn phần cứng, ngưỡng sai số bám, và ⚠ **điều khiển phanh cùng thứ tự
   nhả/kẹp**.
+- **Inovance** — *Medium-Sized PLC Programming Guide (Motion Control)*, mã tài liệu 19012378, bản A00
+  (09/2024), dòng AM400/AM500/AM600/AC700/AP700/AC800: mục 3.1 và 4.1 — tác vụ EtherCAT ưu tiên 0,
+  chỉ một, chu kỳ thường 1–4 ms, bảng ưu tiên mặc định (logic thường ở mức 16, *không ép đổi*), chu kỳ
+  các tác vụ là bội số nguyên; mục 4.5.4 — khối chuyển động của trục **chỉ được gọi** trong tác vụ
+  EtherCAT. Nền cho ô ⚖ ở mục 37.8. *(có sẵn trong bộ tài liệu tham khảo)*
 - Bảng I/O, vùng làm việc gantry và số liệu đã chốt của DP-01 — Phụ lục J §J.1 và §J.2.
 
 > ⚡ Các con số giới hạn ở mục 37.6 (−1/51 mm, −3/53 mm, −5/55 mm) là **minh hoạ cho nguyên tắc ba

@@ -1,6 +1,6 @@
 # Phụ lục L — Thư viện mẫu code dùng ngay
 
-> **Tài liệu tra cứu.** Mười sáu đoạn logic lặp lại ở gần như mọi cỗ máy, gom về một chỗ — cộng một
+> **Tài liệu tra cứu.** Mười chín đoạn logic lặp lại ở gần như mọi cỗ máy, gom về một chỗ — cộng một
 > **danh mục ở L.17** trả lời câu hỏi đứng trước tất cả: *khối nào nên tự viết, khối nào đã có sẵn*. Mỗi mẫu kèm
 > ⭐ **điều kiện dùng** và ⚠ **thứ nó KHÔNG làm** — vì chép một mẫu mà không biết giới hạn của nó là
 > cách tạo ra lỗi trông rất giống code đúng.
@@ -11,7 +11,7 @@
 >
 > | | |
 > |---|---|
-> | 1 | ⭐ Mẫu viết bằng **Structured Text**; ⭐⭐ **bảy mẫu có thêm bản LADDER** ngay bên dưới. ⚠ Bảy mẫu còn lại cố ý **chỉ có ST** — lý do và cách chọn ở **mục L.18** |
+> | 1 | ⭐ Mẫu viết bằng **Structured Text**; ⭐⭐ **bảy mẫu có thêm bản LADDER** ngay bên dưới. ⚠ Các mẫu còn lại cố ý **chỉ có ST** — lý do và cách chọn ở **mục L.18** |
 > | 2 | ⭐ Tên biến theo máy mẫu DP-01 (Phụ lục J). Đổi sang tên máy của bạn — ⚠ **đừng giữ tên mẫu** |
 > | 3 | ⚠⚠ **Không mẫu nào ở đây là chức năng an toàn.** Xem L.3 |
 > | 4 | ⭐ Mọi mẫu đều **chạy trong một tác vụ chu kỳ**, được gọi mỗi vòng quét (Chương 10) |
@@ -52,6 +52,11 @@ M_Running := (DI_StartPB OR M_Running)      // nhánh tự giữ
 >
 > ⭐ Nút Stop vật lý là **NC**, nên trong code kiểm **bằng 1**, không phải `NOT`. Đứt dây = dừng
 > (Chương 15, mục 15.3).
+
+> ⚠⚠ **Mẫu này giả định nút Start được NHẢ.** Tiếp điểm dính, nút bị đè, hay bit Start từ màn hình
+> kẹt ở 1 khi mất kết nối thì lỗi vừa hết là `M_Running` lên lại — máy **tự chạy**. Máy nhận lệnh
+> Start từ nhiều nơi thì thay `DI_StartPB` bằng **sườn** của nó (`StartEdge.Q`, L.7); ở ladder là
+> tiếp điểm `┤P├`. Lý do đầy đủ: Chương 16 mục 16.6.
 
 ---
 
@@ -683,6 +688,68 @@ M_Alm_AxisZ := (AxZ_Step = 90);
 
 ---
 
+## L.9b ⭐ Hai đầu chung một ray — kiểm khoảng hở theo ĐÍCH và theo QUÃNG DỪNG
+
+⭐ **Dùng khi:** hai cụm trục chạy chung một vùng làm việc — hai đầu công tác trên một ray, hai giàn
+đối diện nhau. Hai trục đưa về **một hệ toạ độ máy** trước, đầu 1 ở bên trái, đầu 2 ở bên phải
+(Chương 37 mục 37.7b).
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — khoảng hở hai đầu chung một ray (giống hệt Chương 37 mục 37.7b)
+FUNCTION_BLOCK FB_TwoHeadsGap
+VAR_INPUT
+    X1Act   : REAL;          // đầu 1 (bên trái): vị trí thật, mm, theo hệ toạ độ MÁY
+    X1Tgt   : REAL;          // đầu 1: đích đang lệnh hoặc sắp lệnh — đứng yên thì bằng X1Act
+    X2Act   : REAL;          // đầu 2 (bên phải): vị trí thật, mm
+    X2Tgt   : REAL;          // đầu 2: đích
+    V1Act   : REAL;          // tốc độ thật đầu 1, mm/s, dương = đi sang phải
+    V2Act   : REAL;          // tốc độ thật đầu 2, mm/s, dương = đi sang phải
+    GapMin  : REAL;          // khoảng hở tối thiểu, mm — kích thước hai thân + biên (mục 37.7b)
+    DecStop : REAL;          // gia tốc hãm của lệnh dừng, mm/s² — giá trị NHỎ hơn của hai trục
+    TReact  : REAL;          // thời gian phản ứng, s — [Nghề] 3 chu kỳ của tác vụ chạy khối này
+END_VAR
+VAR_OUTPUT
+    PathClear : BOOL;        // ⭐ hai đoạn đường đi theo ĐÍCH không chồng nhau → được phát lệnh
+    StopBoth  : BOOL;        // ⚠ khoảng hở HIỆN TẠI không còn đủ để dừng kịp → dừng cả hai
+    GapNow    : REAL;        // khoảng hở hiện tại, mm — để hiển thị và ghi mốc
+    GapNeed   : REAL;        // khoảng hở cần có ở tốc độ hiện tại, mm
+END_VAR
+VAR_TEMP
+    Close1  : REAL;          // tốc độ đầu 1 tiến VỀ PHÍA đầu 2, mm/s, không âm
+    Close2  : REAL;          // tốc độ đầu 2 tiến về phía đầu 1, mm/s, không âm
+END_VAR
+
+// ── 1. Kiểm ĐÍCH — dùng lúc RA LỆNH: mỗi đầu chiếm cả đoạn từ chỗ đang đứng tới đích ──
+PathClear := (MAX(X1Act, X1Tgt) + GapMin <= MIN(X2Act, X2Tgt)) AND (DecStop > 0.0);
+
+// ── 2. Kiểm HIỆN TẠI — liên tục: khoảng hở phải đủ cho cả quãng phản ứng lẫn quãng phanh ──
+GapNow := X2Act - X1Act;
+Close1 := MAX(V1Act, 0.0);       // đầu 1 đi sang phải là đi VỀ PHÍA đầu 2
+Close2 := MAX(-V2Act, 0.0);      // đầu 2 đi sang trái là đi về phía đầu 1
+IF DecStop > 0.0 THEN
+    GapNeed  := GapMin
+              + (Close1 + Close2) * TReact                               // quãng phản ứng
+              + (Close1 * Close1 + Close2 * Close2) / (2.0 * DecStop);   // quãng phanh của từng đầu
+    StopBoth := GapNow < GapNeed;
+ELSE
+    GapNeed  := GapMin;
+    StopBoth := TRUE;            // ⚠ thiếu gia tốc hãm → không biết dừng mất bao xa → coi là không an toàn
+END_IF;
+END_FUNCTION_BLOCK
+```
+
+> ⭐⭐ **Hai phép kiểm, hai thời điểm — và đó là toàn bộ ý của mẫu:**
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ `PathClear` — dùng **lúc ra lệnh**: đích mới chỉ được phát khi hai đoạn đường đi không chồng nhau. ⚠ Đừng biến nó thành một báo động kiểm liên tục: đích vi phạm thì báo động **đứng mãi** và trục không đi ra được |
+> | 2 | ⭐ `StopBoth` — kiểm **liên tục**: khoảng hở hiện tại phải đủ cho quãng phản ứng **và** quãng phanh ở tốc độ đang chạy. Đứng yên sát nhau thì **không** báo — làm việc gần nhau vẫn được phép |
+> | 3 | ⚠ Gia tốc hãm là **giá trị của lệnh dừng bạn đặt**, không phải gia tốc lớn nhất của động cơ; thiếu tham số này thì khối coi là **không an toàn** |
+>
+> ⚠⚠ **Tầng này bảo vệ máy, không bảo vệ người** — nó chạy trong CPU thường (Chương 27 mục 27.3b).
+
+---
+
 ## L.10 Đảo chiều có khoá chéo · sao–tam giác
 
 ```iecst
@@ -1063,6 +1130,112 @@ END_FUNCTION_BLOCK
 
 ---
 
+## L.16b ⭐ Yêu cầu tới phần mềm PC theo số thứ tự — không bên nào xoá ô của bên kia
+
+⭐ **Dùng khi:** một phần mềm trên máy tính — xử lý ảnh, đo, truy xuất — đọc ghi vùng thanh ghi của PLC,
+và PLC cần nhờ nó làm một việc rồi chờ kết quả. Bảng giao tiếp chia hai vùng **theo người ghi**: vùng A
+chỉ PLC ghi, vùng B chỉ phần mềm ghi (Chương 39 mục 39.9b).
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — một yêu cầu tới phần mềm PC theo số thứ tự (giống hệt Chương 39 mục 39.9b)
+FUNCTION_BLOCK FB_PcRequest
+VAR_INPUT
+    Execute   : BOOL;            // ⭐ SƯỜN LÊN = gửi một yêu cầu mới · lệnh và tham số CHỐT tại sườn này
+    Cmd       : INT;             // mã lệnh theo bảng giao tiếp
+    Param     : INT;             // tham số của lệnh
+    AckId     : INT;             // ← vùng B: số thứ tự phần mềm đã xử lý xong
+    AckResult : INT;             // ← vùng B: 1 = OK · 2 = NG · số khác = phần mềm không hiểu lệnh
+    TimeOut   : TIME := T#2S;    // [Nghề] 3–5 lần thời gian trả lời đo được (Phụ lục O mục O.11)
+END_VAR
+VAR_OUTPUT
+    ReqId     : INT;             // → vùng A: số thứ tự của yêu cầu — chạy vòng 1…30000, không dùng số 0
+    ReqCmd    : INT;             // → vùng A
+    ReqParam  : INT;             // → vùng A
+    Busy      : BOOL;            // ⭐ Busy · Done · Error LOẠI TRỪ nhau (Chương 30 mục 30.5b)
+    Done      : BOOL;            // phần mềm đã trả lời — Ok cho biết OK hay NG
+    Ok        : BOOL;            // chỉ có nghĩa khi Done
+    Error     : BOOL;
+    ErrorID   : INT;             // 0 = không lỗi · 1 = quá thời gian · 2 = phần mềm trả mã lạ
+END_VAR
+VAR
+    ExecEdge  : R_TRIG;
+    T_Out     : TON;
+    LimitCopy : TIME;            // bản CHỐT của TimeOut
+    Started   : BOOL;            // đã qua lần gọi đầu tiên sau khi bật máy
+END_VAR
+VAR_TEMP
+    Start     : BOOL;            // vòng này vừa NHẬN một yêu cầu mới
+    NewResult : BOOL;            // kết quả vừa có trong vòng này
+END_VAR
+
+// ── 0. Lần gọi đầu sau khi bật máy: lấy số phần mềm đã trả làm gốc → yêu cầu đầu mang số KHÁC ──
+IF NOT Started THEN
+    ReqId   := AckId;
+    Started := TRUE;
+END_IF;
+
+ExecEdge(CLK := Execute);
+
+// ── 1. Sườn lên khi rỗi → số thứ tự mới, chốt lệnh và tham số. Sườn lên khi bận → bỏ qua ──
+Start := ExecEdge.Q AND NOT Busy;
+IF Start THEN
+    IF (ReqId < 1) OR (ReqId >= 30000) THEN
+        ReqId := 1;              // quay vòng — và số 0 không bao giờ được dùng
+    ELSE
+        ReqId := ReqId + 1;
+    END_IF;
+    ReqCmd    := Cmd;
+    ReqParam  := Param;
+    Busy      := TRUE;
+    Done      := FALSE;
+    Ok        := FALSE;
+    Error     := FALSE;
+    ErrorID   := 0;
+    LimitCopy := TimeOut;
+END_IF;
+
+// ── 2. Xong khi phần mềm báo ĐÚNG số này — trả lời mang số cũ, đến muộn, tự bị bỏ qua ──
+T_Out(IN := Busy AND NOT Start, PT := LimitCopy);
+IF Busy AND (AckId = ReqId) THEN
+    Busy      := FALSE;
+    NewResult := TRUE;
+    IF (AckResult = 1) OR (AckResult = 2) THEN
+        Done := TRUE;
+        Ok   := (AckResult = 1);
+    ELSE
+        Error   := TRUE;
+        ErrorID := 2;
+    END_IF;
+ELSIF Busy AND T_Out.Q THEN
+    Busy      := FALSE;
+    Error     := TRUE;           // ⚠ không trả lời ≠ NG (Chương 43 mục 43.7)
+    ErrorID   := 1;
+    NewResult := TRUE;
+END_IF;
+
+// ── 3. Execute đã tắt và việc đã xong → xoá kết quả; kết quả VỪA có vẫn hiện ít nhất MỘT vòng ──
+IF NOT Execute AND NOT Busy AND NOT NewResult THEN
+    Done    := FALSE;
+    Ok      := FALSE;
+    Error   := FALSE;
+    ErrorID := 0;
+END_IF;
+END_FUNCTION_BLOCK
+```
+
+> ⭐⭐ **Ba điều làm mẫu này khác cách *"khác 0 là lệnh, bên kia xoá về 0"* hay gặp:**
+>
+> | | |
+> |---|---|
+> | 1 | ⭐ **Không ai xoá ô của người kia** — PLC chỉ ghi `ReqId`, `ReqCmd`, `ReqParam`; phần mềm chỉ ghi `AckId`, `AckResult` |
+> | 2 | ⭐ Trả lời **đến muộn** mang số cũ → tự bị bỏ qua; hai kết quả giống nhau liên tiếp vẫn là **hai** kết quả |
+> | 3 | ⚠⚠ **Không trả lời không phải NG** — `ErrorID = 1`, trạm xử lý như *"không biết"* (Chương 43 mục 43.7) |
+>
+> ⚡ Phía phần mềm phải theo **ba luật** ở Chương 39 mục 39.9b — ⚠ nhất là luật 2: ghi kết quả
+> **trước**, số thứ tự **sau**, bằng hai lần ghi riêng.
+
+---
+
 ## L.17 ⭐⭐ Danh mục khối dùng lại — cái nào tự viết, cái nào đã có sẵn
 
 Trước khi viết một khối chức năng cho máy mới, hỏi đúng **một** câu: ⭐ **thứ này đã có ai làm chuẩn
@@ -1133,7 +1306,8 @@ hoạt động. Mỗi dòng dưới đây đã có mẫu ở đâu đó trong s�
 | **Đo chu kỳ** | Đo thật từng trạm, không tính lý thuyết | Chương 55 mục 55.4 |
 | ⭐ **Đồng hồ trạng thái máy** | Bật máy · chạy · dừng · chờ, và bất biến giữa chúng | **Chương 55 mục 55.7c** |
 | ⭐ **Thống kê năng suất** | Tỉ lệ đạt, khả dụng, hiệu suất — cất số **đếm**, không cất phần trăm | **Chương 55 mục 55.7c** |
-| ⭐ **Bắt tay với máy tính / hệ trên** | Kích · bận · kết quả · mã lệnh · số lần thử lại | Chương 43, Chương 45 |
+| ⭐ **Bắt tay với máy tính / hệ trên** | Số thứ tự yêu cầu · kết quả · quá thời gian — mỗi ô một người ghi | **Phụ lục L.16b**, Chương 39 mục 39.9b |
+| ⭐ **Khoảng hở hai đầu chung một ray** | Kiểm đích lúc ra lệnh, kiểm quãng dừng liên tục | **Phụ lục L.9b**, Chương 37 mục 37.7b |
 | **Điều khiển lực ép** | Vòng kín trên nền khối PID của hãng, cộng bù hiệu chuẩn | Chương 34, Chương 35 |
 
 > ⭐⭐ **Bằng chứng rằng nhóm 3 đáng đầu tư, đo trên bốn cỗ máy khác nhau của cùng một nhóm kỹ
@@ -1155,7 +1329,7 @@ hoạt động. Mỗi dòng dưới đây đã có mẫu ở đâu đó trong s�
 
 ## L.18 ⭐⭐ Ladder hay ST — mẫu nào nên viết bằng gì
 
-Bảy mẫu ở trên có **cả hai bản**. Bảy mẫu còn lại **chỉ có ST** — và đó là chủ ý, không phải lười.
+Bảy mẫu ở trên có **cả hai bản**. Các mẫu còn lại **chỉ có ST** — và đó là chủ ý, không phải lười.
 ⭐ Mục này nói rõ vì sao, để bạn quyết định cho máy của mình.
 
 ### ⭐ Cùng một bài toán, hai ngôn ngữ, hai kết quả rất khác nhau
@@ -1176,6 +1350,8 @@ Bảy mẫu ở trên có **cả hai bản**. Bảy mẫu còn lại **chỉ có
 | **L.12** analog bốn bước | ⚠⚠ Phép tính bằng ladder rất khó đọc | ⭐⭐ Tự nhiên | ⭐⭐ **ST** |
 | **L.14** đếm sản lượng | ⚠ Phép chia và kiểm mẫu số thành nhiều hộp | ⭐ Bốn dòng | ⭐⭐ **ST** |
 | **L.16** tuổi thọ vật tư | ⚠ So sánh và phần trăm rối | ⭐ Rõ | ⭐ **ST** |
+| **L.9b** khoảng hở hai đầu | ⚠⚠ Phép tính quãng phanh thành một chuỗi hộp toán | ⭐ Ba dòng | ⭐⭐ **ST** |
+| **L.16b** yêu cầu tới phần mềm PC | ⚠ Máy trạng thái nhỏ nhiều nhánh | ⭐ Rõ | ⭐ **ST** |
 
 ### ⭐⭐ Rút ra một quy tắc dùng được
 
@@ -1229,6 +1405,7 @@ hợp lý:
 | Làm đúng một lần mỗi sự kiện | L.7 | ⚠ Lọc rung **trước** bắt cạnh | 16, 18 |
 | Điều khiển xy-lanh | L.8 | ⭐ Kiểm **hai cảm biến cùng báo** | 27, 30, 48 |
 | Điều khiển servo | L.9 | ⚠ Giữ `Execute`; bỏ qua `CommandAborted` | 37 |
+| Hai đầu chung một ray | L.9b | ⚠⚠ Chỉ kiểm vị trí hiện tại — quên quãng phanh | 27, 37 |
 | Đảo chiều, sao–tam giác | L.10 | ⚠⚠ **Khoảng chết** và **khoá cơ khí** | 3, 36 |
 | Báo động | L.11 | ⭐ Giữ **báo động đầu tiên** | 44 |
 | Đọc analog | L.12 | ⚠⚠ Kiểm ngoài dải **trước** khi quy đổi | 31, 32 |
@@ -1236,6 +1413,7 @@ hợp lý:
 | Đếm sản lượng | L.14 | ⚠⚠ Chia cho 0 ở đầu ca | 19, 55 |
 | Gắp bằng giác hút | L.15 | ⚠⚠ Ngừng hút **không phải** là nhả | 6, 33, 46 |
 | Theo dõi tuổi thọ vật tư | L.16 | ⚠⚠ Bộ đếm bị xoá khi nạp lại chương trình | 11, 53 |
+| Nhờ phần mềm PC làm một việc | L.16b | ⚠⚠ Hai chương trình cùng ghi một ô | 39, 43 |
 | ⭐ **Chọn viết bằng ladder hay ST** | **L.18** | ⚠ Viết ngõ ra cuối bằng ST — thợ bảo trì bị chặn | 15, 20 |
 | ⭐ Khối nào tự viết, khối nào đã có sẵn | **L.17** | ⚠⚠ Tự viết khối chức năng an toàn | 30, 47 |
 

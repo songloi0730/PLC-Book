@@ -1067,6 +1067,20 @@ Không cần hệ thống phức tạp. Bốn thứ này đã giải quyết ph�
 Chú ý cột **vì sao** trong cả hai dòng. Không có nó, người sau sẽ thấy timeout 3 s và không biết có
 được đổi hay không.
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG — nhật ký nằm trong một chương trình con chỉ có chú thích.**
+> **Người ta làm gì:** thay vì vài dòng ở đầu chương trình chính, nhiều người dành hẳn **một chương
+> trình con không có mã** cho nhật ký: mỗi lần sửa một mục có ngày và người sửa, liệt kê *sửa gì* và
+> thường cả *vì sao*; cuối là mục **"vấn đề còn mở"** — những thứ đã biết là chưa ổn. Một chương
+> trình máy đang chạy mà tôi đọc được mã có gần năm mươi lần sửa ghi ngày như thế trong khoảng ba
+> tháng chạy thử.
+> **Vì sao:** nhật ký đi theo chương trình tới mọi máy, đọc được ngay khi đang kết nối trực tuyến, không
+> cần công cụ nào thêm; mục *vấn đề còn mở* cho người tiếp quản biết chỗ nào đừng tin.
+> **Ranh giới:** ⚠ **số phiên bản phải đổi cùng lúc với dòng nhật ký** — trong chương trình nói trên,
+> số phiên bản gửi lên máy tính là một ngày, mà nhật ký có hơn hai mươi lần sửa **sau** ngày đó: câu
+> hỏi *"máy đang chạy bản nào"* có câu trả lời sai. ✅ Đạt khi: so sánh dự án giữa hai bản sao lưu
+> liền nhau, mỗi chỗ khác có một dòng nhật ký, và số phiên bản đã đổi. ⚠ Nhật ký cũng **không thay**
+> bản sao lưu có ngày (quy ước 3 ở trên, Chương 54).
+
 ---
 
 ## 30.7 Bẫy thường gặp

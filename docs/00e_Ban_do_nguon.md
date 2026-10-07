@@ -77,9 +77,10 @@ mà bộ tài liệu lại có **nhiều bản khác nhau** — nên không truy
 | Rockwell — IEC 61131-3 compliance | 30 | 14, 30 |
 | Rockwell — khác | 1549 | 30, 35 |
 | Inovance InoProShop / CODESYS | 1642 | 19 |
+| Inovance Medium-Sized Motion | 344 | 37 |
 | IO-Link — đặc tả giao diện | 294 | 37, 38, 41, 43, 54 |
 | SICK — an toàn | 870 | 3, 28, 47 |
-| Schneider — an toàn máy | 33 | 41, 47, 56 |
+| Schneider — an toàn | 33 | 47 |
 | DGUV / IFA | 324 | 47 |
 | PLCopen Safety Part 1 | 194 | 47 |
 | PLCopen Safe Motion | 45 | 3, 28, 37, 47 |
@@ -113,7 +114,6 @@ Bổ sung bí danh nếu tài liệu có giá trị; bỏ qua nếu không.
 | `Manual/H5U&Easy_Manual/H5U&Easy系列可编程逻辑控制器指令手册.PDF` | 1037 |
 | `Manual/H5U&Easy_Manual/H5U&Easy系列可编程逻辑控制器编程手册.pdf` | 894 |
 | `Manual/H1UH2UH3U_Manual/H3U系列可编程逻辑控制器指令及编程手册.pdf` | 744 |
-| `en/Motion Control.pdf` | 344 |
 | `Manual/H5U&Easy_Manual/Easy系列可编程逻辑控制器用户手册.PDF` | 123 |
 | `Manual/H5U&Easy_Manual/Easy321&Easy511可编程逻辑控制器用户手册.PDF` | 117 |
 | `reference/03_Vendor_Manuals/Siemens_Programming_Guideline_S7-1200_1500_v14.pdf` | 109 |
@@ -173,14 +173,17 @@ nhưng thiếu bí danh (thêm vào `bi_danh_tep`).
 
 | Tên | Số lần |
 |---|--:|
+| Trang quy hoạch địa chỉ theo khối ở mục 11.8b tổng quát hoá  | 1 |
 | Thông tin về vòng đời sản phẩm và thông báo ngừng sản xuất,  | 1 |
 | ⚠ **Giới hạn của bảng 4 tổ hợp** (mục 15.3): nó chỉ phủ **hỏ | 1 |
 | OIML R 60 \| OIML R 60 — *Metrological regulation for load ce | 1 |
 | ISO/IEC 16022 \| **ISO/IEC 16022** — *Data Matrix bar code sy | 1 |
 | ISO/IEC 15415 \| **ISO/IEC 15415** và **ISO/IEC 29158** — chấ | 1 |
+| Cách đánh số báo động theo khối và theo số thứ tự thiết bị ở | 1 |
 | ISO/TS 15066 \| **ISO/TS 15066** — *Robots and robotic device | 1 |
 | Hướng dẫn lắp đặt của nhà sản xuất biến tần và PLC \| **Hướng | 1 |
 | Hướng dẫn của nhà sản xuất PLC, biến tần, HMI \| **Hướng dẫn  | 1 |
+| Quy định pháp luật tại thị trường của bạn \| **Quy định pháp  | 1 |
 | Toàn bộ các chương được dẫn trong bảng ở mục 57.3–57.10 \| To | 1 |
 
 ---

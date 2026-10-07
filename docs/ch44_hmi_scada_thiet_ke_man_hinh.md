@@ -699,6 +699,24 @@ xuống, nên kiểm cả hai cảm biến, cả hai chiều khí — gấp đô
 **Cách sửa:** hai số riêng — *không về gốc* và *không tới đích* — suy từ mã lỗi và chiều của van lúc lỗi
 (mục 44.3).
 
+### 🔍 BẪY 14 — Nút giữ trên màn hình kẹt khi mất kết nối
+
+**Hiện tượng:** nhấn *Start* hay *Jog* trên màn hình đúng lúc kết nối chập chờn — PLC thấy nút **vẫn
+đang được giữ**. Máy **tự chạy lại** ngay khi lỗi được xoá, hoặc trục đang jog **chạy mãi** cho tới khi
+chạm giới hạn.
+**Nguyên nhân:** nút giữ trên màn hình ghi số 1 lúc nhấn và số 0 lúc nhả — qua mạng. Mất kết nối giữa
+hai lần ghi thì số 0 **không bao giờ tới**, và PLC giữ giá trị cuối cùng nó nhận được.
+**Cách sửa:**
+
+- Lệnh kiểu *bắt đầu*, *xác nhận*: lấy **sườn** (Chương 16 mục 16.5) — bit kẹt ở 1 không tạo được sườn
+  thứ hai (Chương 22 mục 22.6b, chỗ thứ hai).
+- Lệnh kiểu **giữ để chạy** (jog): màn hình gửi kèm một **bộ đếm sống** tăng đều chừng nào nút còn
+  được giữ; PLC dừng jog khi bộ đếm đứng yên quá **[Nghề] 3 lần chu kỳ cập nhật** của màn hình, đo
+  trên máy — đủ ngắn để trục không đi xa, đủ dài để một gói tin trễ không làm jog giật. Hoặc dùng **nút
+  jog phần cứng** ngay trên máy.
+- Mất kết nối màn hình là **một trạng thái** (Chương 38 mục 38.9): mọi lệnh giữ để chạy từ màn hình về 0
+  trong PLC.
+
 ---
 
 ## 44.10 Bảng chốt
@@ -720,6 +738,7 @@ xuống, nên kiểm cả hai cảm biến, cả hai chiều khí — gấp đô
 | ⚠⚠ HMI không được | Chứa **logic điều khiển** · làm **chức năng an toàn** · là **nơi lưu trữ chính** |
 | Phép thử logic đặt đúng chỗ | ⭐ **Rút cáp HMI — máy phải chạy tiếp an toàn** |
 | Nút dừng khẩn trên màn cảm ứng | ❌ **Không phải dừng khẩn cấp** |
+| ⚠ Nút giữ trên màn hình khi mất kết nối | **Kẹt ở 1** — lệnh Start lấy **sườn**; jog cần **bộ đếm sống** |
 | Màn hình chẩn đoán nên có | ⭐ **Tên bước bằng chữ** · I/O · xu hướng · so với **mốc nghiệm thu** |
 | Dự án HMI | ⚠ Nằm trong **bản sao lưu chung** |
 
@@ -745,6 +764,8 @@ xuống, nên kiểm cả hai cảm biến, cả hai chiều khí — gấp đô
 
 13. ⭐ Kẹp trạm 1 là thiết bị số 1 trong danh sách cơ cấu. Theo cách đánh số ở mục 44.3, *không tới vị trí
     làm việc* của nó mang số mấy? Vì sao tách *không về gốc* và *không tới đích* thành hai số?
+14. ⚠ Vì sao nút *Jog* trên màn hình có thể làm trục chạy mãi khi mất kết nối? Nêu hai cách chặn, và
+    giải thích vì sao với lệnh *Start* thì chỉ cần lấy sườn.
 
 > Câu 3, 5, 9 và 10 là bốn câu phân loại. Câu 1 là tinh thần của cả chương: **thiết kế giao diện vận
 > hành phần lớn là việc BỚT ĐI — bốn mươi bảy dòng báo động cho một sự cố không phải là nhiều thông

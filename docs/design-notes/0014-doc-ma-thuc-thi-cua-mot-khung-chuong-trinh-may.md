@@ -1,6 +1,6 @@
 # 0014 — Đợt 68: đọc MÃ THỰC THI của một khung chương trình máy thật
 
-**Trạng thái:** ⏳ **ĐANG LÀM** — 2026-10-06
+**Trạng thái:** ✅ **XONG 2026-10-07**
 **Ngày:** 2026-10-06
 **Thuộc:** đợt 68 — chủ dự án đưa thư mục một dự án máy thật (một trạm lắp ráp viết trên nền CODESYS,
 kèm chương trình chuyền viết trên một hệ kiểu thiết bị) và hỏi *"có thể bổ sung gì vào sách như cách
@@ -45,7 +45,7 @@ nó chỉ lấy thứ chỉ thân mã mới cho thấy.
 | Jog bằng nút giữ trên màn hình | Ch.37 mục 37.4 — *"chỉ chạy khi giữ nút"* | ⚠ Nút giữ trên màn hình **kẹt khi mất kết nối** |
 | Mã trạng thái máy cho bên ngoài suy từ một **chuỗi `IF` không có `ELSE`** | Ch.25 — máy trạng thái bằng kiểu liệt kê | Ca lai: cờ rời + một mã suy ra — và lỗ hổng của nó |
 | Khối trục gọi trong tác vụ của mạng trường 2 ms ưu tiên 0; logic 4 ms; ⚠ tác vụ chính bị đổi ưu tiên | Ch.27 mục 27.6 — nguyên tắc tác vụ | Khối chuyển động **chỉ được** gọi ở tác vụ mạng trường (tài liệu hãng) |
-| `InterfereAll := TRUE`, `SafetyGrateClosed := TRUE` — chỗ để sẵn cho phép kiểm, gán cứng; `PosLimitReach OR PosLimitReach`; nhịp 100 Hz trong tác vụ 4 ms dùng để đo thời gian; cấu trúc lệnh trục bị hai tác vụ cùng ghi | Ch.22 — đọc chương trình người khác | ⚠ **Danh mục chỗ phải soi** khi nhận chương trình làm sẵn |
+| Biến điều kiện *"không giao thoa"*, *"rèm không bị che"* gán cứng `TRUE` — chỗ để sẵn cho phép kiểm; một vế giới hạn dương chép hai lần thay cho giới hạn âm; nhịp 100 Hz trong tác vụ 4 ms dùng để đo thời gian; cấu trúc lệnh trục bị hai tác vụ cùng ghi | Ch.22 — đọc chương trình người khác | ⚠ **Danh mục chỗ phải soi** khi nhận chương trình làm sẵn |
 | Hai đảo van khác hãng cùng nằm trong cây cấu hình, một cái **bị tắt** | Phụ lục M mục M.2 | Biến thể phần cứng trong một dự án |
 | Một chương trình con **chỉ có chú thích**: nhật ký sửa đổi theo ngày (cái gì + vì sao), mục *vấn đề còn mở*; số phiên bản giao diện là ngày sửa | Ch.30 mục 30.6, Bẫy 7 | Ô ⚖ — nhật ký nằm trong chương trình |
 | Hai PLC của cùng một máy (chuyền ↔ trạm) bắt tay **hoàn toàn qua mạng**, có nhịp tim, mã trạng thái một byte | Ch.41 mục 41.5 — khuyên tín hiệu cứng cho việc chuyển sản phẩm | Ô ⚖ — khi hai PLC là một máy |

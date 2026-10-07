@@ -72,6 +72,22 @@ làm. Với một biến bốn trạng thái, bạn thử bốn trạng thái. V
 > bạn **đang tự tay dựng lại** một trạng thái từ nhiều mảnh. Đó là dấu hiệu rõ ràng: hãy đặt tên cho
 > trạng thái đó và lưu nó vào một biến.
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG — trạng thái giữ bằng cờ rời, rồi suy ra MỘT mã cho bên ngoài.**
+> **Người ta làm gì:** nhiều khung chương trình dùng lại qua nhiều máy giữ trạng thái bằng một bộ cờ
+> rời — *đang chạy*, *chế độ tự động*, *sẵn sàng*, *đã khởi tạo*, *có thao tác tay* — rồi cuối chương
+> trình tính **một mã trạng thái** gửi cho chuyền và cho phần mềm bên ngoài bằng một chuỗi `IF`, mỗi
+> `IF` ghi đè `IF` đứng trước.
+> **Vì sao:** mỗi cờ nối thẳng được vào một nút, một đèn; bên ngoài chỉ cần một con số; khung đã có
+> sẵn thì không ai muốn viết lại máy trạng thái.
+> **Ranh giới:** chuỗi `IF` không có `ELSE` có hai lỗ, cả hai đều thấy trong một chương trình máy đang
+> chạy mà tôi đọc được mã. ⚠ **Thứ tự các `IF` là độ ưu tiên ngầm** — không ai viết ra, nên người sau
+> thêm một dòng vào giữa là đổi ưu tiên mà không biết. ⚠⚠ **Tổ hợp không rơi vào `IF` nào thì mã giữ
+> giá trị cũ**: máy ở chế độ tự động, đã dừng, không lỗi, nhưng một trục vừa mất mô-men làm cờ *"có
+> thao tác tay"* bật lên — không `IF` nào đúng, mã vẫn báo *"sẵn sàng"* trong khi máy không chạy được.
+> ⭐ Vá tối thiểu: viết lại thành `IF … ELSIF …` từ ưu tiên cao xuống thấp, có `ELSE` gán một mã
+> *"không xác định"* — để lỗ hổng **lộ ra** thay vì nói dối. Viết mới thì mã đó **chính là** biến trạng
+> thái của máy (mục 25.5), không phải thứ suy ra từ cờ.
+
 ---
 
 ## 25.3 Mô hình trạng thái chuẩn cho một cỗ máy
@@ -713,6 +729,9 @@ Chi tiết đối chiếu năm hệ: **Phụ lục A1**.
     `CASE` thì cái nào thắng? Với **bit trạng thái** thì sao? ⭐ Nêu cách cưỡng chế ưu tiên cho cách
     thứ hai.
 10. ⭐ Vì sao chuyển tiếp **về `Alarm`** phải đứng trên cùng trong thứ tự ưu tiên?
+11. ⭐ Một chương trình tính mã trạng thái gửi ra ngoài bằng một chuỗi `IF` không có `ELSE`, mỗi `IF`
+    ghi đè cái trước. Nêu hai lỗ hổng của cách đó, cho một tổ hợp cờ làm mã nói sai, và cách vá tối
+    thiểu.
 
 Câu 1 và câu 3 là hai câu phân loại. Câu 1 kiểm tra bạn hiểu *vì sao* chứ không chỉ *làm thế nào*; câu
 3 kiểm tra bạn có phản xạ về an toàn khi khởi động lại — thứ Chương 28 sẽ khai triển.

@@ -337,6 +337,17 @@ Bốn điều kiện nối tiếp, đặt **trước** điểm nối của nhán
 Stop, dừng khẩn, khí, hoặc có lỗi — thì `M_Running` tắt ngay và **không tự lên lại**. Muốn chạy tiếp
 phải nhấn Start lần nữa: một hành động có chủ ý của người.
 
+> ⚠⚠ **Câu trên đúng với một điều kiện: nút Start đã được NHẢ.** Nếu `DI_StartPB` còn bằng 1 — tiếp
+> điểm nút dính, nút bị đè, hay lệnh Start đến qua mạng từ một thiết bị khác rồi **kẹt** ở 1 vì mất
+> kết nối đúng lúc đang nhấn — thì lỗi vừa hết, nấc này đóng lại ngay: máy **tự chạy lại**.
+>
+> ⭐ Cách chặn rẻ nhất: thay tiếp điểm Start bằng **tiếp điểm sườn lên** `┤P├` (mục 16.5) — giữ nút
+> bao lâu cũng chỉ có một sườn. Máy nhận lệnh Start từ nhiều nơi — nút, màn hình, hệ trên — thì
+> **bắt buộc** dùng sườn (Chương 22 mục 22.6b; nút trên màn hình: Chương 44, Bẫy 14).
+>
+> ✅ **Đạt khi:** giữ nút Start, gây một lỗi rồi xoá lỗi → máy **không** chạy cho tới khi nhả nút và
+> nhấn lần nữa.
+
 > ⚠ Nhắc lại từ Chương 15: `DI_StopPB` và `DI_EStopOK` là tín hiệu từ **tiếp điểm NC**, nên bình
 > thường chúng bằng 1. Trong nấc thang, chúng dùng lệnh tiếp điểm **thường mở** `┤ ├`. Đứt dây → tín
 > hiệu về 0 → mạch mở → máy dừng. Đó là tổ hợp 3 trong bảng bốn tổ hợp.

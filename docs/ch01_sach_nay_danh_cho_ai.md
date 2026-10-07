@@ -500,7 +500,7 @@ Ba nguyên tắc áp dụng từ trang này tới hết sách:
 | Học nghề, có thời gian | **Đường 1** — đọc tuần tự (mục 1.3) |
 | Đang làm một việc cụ thể | **Đường 2** — tra theo việc (mục 1.3) |
 | ⚠ **Máy đang hỏng, có người đứng chờ** | ⭐⭐ **Đường 3 — Phụ lục E, tra theo triệu chứng.** Đừng đọc tuần tự lúc này |
-| Cần một đoạn code mẫu | **Phụ lục L** — 17 mẫu dùng ngay |
+| Cần một đoạn code mẫu | **Phụ lục L** — 19 mẫu dùng ngay |
 | ⭐ Cần biết **làm việc gì theo thứ tự nào, thế nào là đạt, con số nào** | ⭐⭐ **Phụ lục O** — sổ tay việc của người lập trình |
 | ⭐ Sắp làm dự án thật đầu tiên, không biết ngoài viết code còn phải làm gì | ⭐⭐ **Phụ lục M** — cấu hình, mạng, khởi động, chẩn đoán, bảo vệ |
 | Cần một công thức | **Phụ lục K** — kèm điều kiện áp dụng |

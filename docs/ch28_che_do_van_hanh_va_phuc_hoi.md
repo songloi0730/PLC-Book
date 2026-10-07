@@ -105,6 +105,100 @@ END_IF;
 > - Cờ này **tự tắt** khi chuyển ra khỏi `Dry-run` hoặc khi máy vào `Alarm`.
 > - Trong lúc `Dry-run`, đèn tháp và màn hình phải hiển thị rõ ràng khác với chạy thật.
 
+### ⭐ Chạy khô nhiều mức — và cách tính cờ cho đúng
+
+Một cờ `M_DryRun` đủ cho lần chạy thử đầu tiên. Máy đã vào sản xuất thì người ta cần **nhiều mức** chạy
+khô, vì mỗi lần thử phải bỏ qua một tập thứ khác nhau. Một chương trình máy đang chạy mà tôi đọc được mã
+có **bốn** mức, chọn từ phần mềm máy tính đi kèm máy. Với DP-01 ở lát cắt này, ba mức là đủ:
+
+| Mức | Dùng khi | Bỏ qua chờ board | Đầu công tác không làm việc | Bỏ qua bắt tay máy trước/sau | Bỏ qua trao đổi với hệ trên |
+|---|---|:-:|:-:|:-:|:-:|
+| **0** — chạy thật | Sản xuất | — | — | — | — |
+| **1** — không board | Thử trình tự sau khi sửa chương trình | ✔ | ✔ | ✔ | ✔ |
+| **2** — board thật, không làm việc | Thử chuyền, chặn, kẹp với board đặt bằng tay | — | ✔ | ✔ | ✔ |
+| **3** — board mẫu, không ghi lên | Chạy board mẫu để kiểm máy mà không ghi kết quả lên hệ trên | — | — | — | ✔ |
+
+Mỗi cột ✔ là một **cờ bỏ qua** mà trình tự đọc — cùng loại cờ ở Chương 51 mục 51.7b. ⭐ Câu hỏi của
+mục này chỉ là: **cờ đó được tính thế nào.** Hai cách, cùng bài toán, chỉ khác một chỗ:
+
+```iecst
+// ✗ BẬT ở sườn lên của từng mức, TẮT ở sườn xuống — kết quả theo THỨ TỰ DÒNG MÃ, không theo mức
+Lv1Up(CLK := (M_DryLevel = 1));          // R_TRIG
+Lv1Dn(CLK := (M_DryLevel = 1));          // F_TRIG
+Lv2Up(CLK := (M_DryLevel = 2));
+Lv2Dn(CLK := (M_DryLevel = 2));
+IF Lv1Up.Q THEN
+    M_BypBoard := TRUE;
+    M_BypWork  := TRUE;
+    M_BypLine  := TRUE;
+    M_BypHost  := TRUE;
+END_IF;
+IF Lv1Dn.Q THEN
+    M_BypBoard := FALSE;
+    M_BypWork  := FALSE;
+    M_BypLine  := FALSE;
+    M_BypHost  := FALSE;
+END_IF;
+IF Lv2Up.Q THEN
+    M_BypWork := TRUE;
+    M_BypLine := TRUE;
+    M_BypHost := TRUE;
+END_IF;
+IF Lv2Dn.Q THEN                          // ⚠ đứng SAU khối mức 1 → đổi 2 → 1 thì nó thắng
+    M_BypWork := FALSE;
+    M_BypLine := FALSE;
+    M_BypHost := FALSE;
+END_IF;
+```
+
+⚠⚠ **Đổi thẳng từ mức 2 sang mức 1 trong một lần ghi:** cùng một vòng quét có sườn lên của mức 1 (bật
+cả bốn cờ) **và** sườn xuống của mức 2 (tắt ba cờ). Khối mức 2 đứng sau nên thắng: máy ở mức *không
+board* mà chỉ còn cờ *bỏ qua chờ board* — ⚠ **đầu công tác làm việc thật trên chỗ không có board**, và
+trình tự chờ bắt tay của máy trước. Đổi ngược 1 → 2 thì lại đúng, vì thứ tự dòng mã tình cờ hợp. ⭐ Đúng
+lỗi này có trong chương trình thật nói ở trên, giữa mức 4 và mức 3: bộ chạy thử của sách tái hiện được
+nó trên bản ✗, và cho thấy bản ✔ dưới đây không mắc.
+
+```iecst
+// ✔ VÍ DỤ HOÀN CHỈNH — cờ bỏ qua của chạy khô nhiều mức: TÍNH TỪ MỨC mỗi vòng, không bật/tắt bằng sườn
+VAR_GLOBAL
+    M_DryLevel    : INT;     // 0 = chạy thật · 1, 2, 3 = mức chạy khô theo bảng trên — chỉ tầng máy ghi
+    M_BypLineMan  : BOOL;    // người có quyền bật TAY: bỏ qua bắt tay máy trước/sau (Chương 51 mục 51.7b)
+    M_BypHostMan  : BOOL;    // người có quyền bật TAY: bỏ qua trao đổi với hệ trên
+    M_BypBoard    : BOOL;    // ⭐ bốn cờ HIỆU LỰC — trình tự chỉ đọc bốn cờ này
+    M_BypWork     : BOOL;
+    M_BypLine     : BOOL;
+    M_BypHost     : BOOL;
+    M_AnyBypass   : BOOL;    // → đèn tháp và màn hình: "đang bỏ qua"
+    M_DryLevelBad : BOOL;    // mức nằm ngoài bảng → gom vào lỗi, chặn chạy (Chương 25 mục 25.5c)
+END_VAR
+
+PROGRAM Prg_DryRunMap
+// Gọi MỖI vòng, TRƯỚC tầng trạm (Chương 27 mục 27.6) — mỗi cờ đúng MỘT dòng gán
+M_DryLevelBad := (M_DryLevel < 0) OR (M_DryLevel > 3);
+M_BypBoard    := (M_DryLevel = 1);
+M_BypWork     := (M_DryLevel = 1) OR (M_DryLevel = 2);
+M_BypLine     := (M_DryLevel = 1) OR (M_DryLevel = 2) OR M_BypLineMan;
+M_BypHost     := ((M_DryLevel >= 1) AND (M_DryLevel <= 3)) OR M_BypHostMan;
+M_AnyBypass   := M_BypBoard OR M_BypWork OR M_BypLine OR M_BypHost;
+END_PROGRAM
+```
+
+| | ✗ Bật/tắt bằng sườn | ⭐ Tính từ mức |
+|---|---|---|
+| Kết quả phụ thuộc | Thứ tự các khối **và** lịch sử chuyển mức | **Chỉ** mức đang chọn |
+| Cờ người vận hành bật tay | ⚠ Bị sườn xuống của một mức **xoá mất** | ✅ Cộng vào bằng `OR` — mức không xoá được nó |
+| Bật máy lên giữa chừng | ⚠ Cờ giữ giá trị cũ hoặc về mặc định — tuỳ cách khai | ✅ Vòng đầu đã đúng |
+| Thêm mức thứ tư | Thêm hai khối sườn, và ⚠ phải xét lại thứ tự mọi khối | Thêm một vế `OR` vào đúng những dòng cần |
+| Tham chiếu chéo một cờ | Nhiều chỗ ghi | ⭐ **Một** chỗ ghi (Chương 22 mục 22.3) |
+
+> ⭐ Hai việc còn lại vẫn theo hai nguyên tắc ở trên: **đổi mức** chỉ khi máy không chạy (nguyên tắc
+> Một) — tầng máy chép mức người vận hành chọn vào `M_DryLevel` lúc máy dừng; và máy vào `Alarm` thì
+> `M_DryLevel` về 0 (hộp *NGUY HIỂM* ở trên).
+
+**✅ Đạt khi:** đổi qua lại **mọi cặp mức**, mỗi lần đổi bằng **một lần ghi** → sau một vòng quét, cả bốn
+cờ đúng bảng mức; bật một cờ tay rồi đổi mức → cờ tay **còn nguyên**; ghi một mức ngoài bảng → máy
+**không** chạy và báo lỗi cấu hình.
+
 ---
 
 ### ⭐ Ba nguyên tắc đó bằng ladder
@@ -528,6 +622,16 @@ nhiều giờ ở Chương 51.
 Đã nêu ở mục 28.3. Đưa vào đây vì nó là bẫy **của chế độ**, và hậu quả xuất hiện muộn: máy chạy sản
 xuất thật mà vẫn bỏ qua kiểm tra có board, cho ra hàng loạt sản phẩm không được xử lý.
 
+### 🔍 BẪY 7 — Bật và tắt cờ bỏ qua bằng sườn khi đổi mức chạy khô
+
+**Hiện tượng:** đổi thẳng từ mức này sang mức kia thì **có lúc** một cờ bỏ qua sai — máy ở mức *không
+board* mà đầu công tác vẫn làm việc thật; đổi chiều ngược lại thì không sao. Tắt rồi bật lại chạy khô là
+hết, nên không ai tái hiện được.
+**Nguyên nhân:** mỗi mức **bật** cờ ở sườn lên và **tắt** ở sườn xuống, các mức **dùng chung** cờ. Đổi
+mức trong một lần ghi thì cùng một vòng quét có một sườn lên và một sườn xuống — khối đứng **sau** thắng.
+**Cách sửa:** tính cờ **từ mức**, mỗi vòng, mỗi cờ một dòng gán; cờ bật tay **cộng vào** bằng `OR`
+(`Prg_DryRunMap`, mục 28.3).
+
 ---
 
 ## 28.8 Bảng chốt — quy trình thiết kế trình tự về gốc
@@ -569,6 +673,9 @@ xuất thật mà vẫn bỏ qua kiểm tra có board, cho ra hàng loạt sản
     được dùng cái nào? ⭐ Nêu cách kiểm rẻ nhất để không dùng nhầm.
 12. ⭐⭐ Một lỗi lặp **mỗi giờ**. Vì sao *"luôn huỷ chu trình và về gốc"* có thể làm máy **kém an toàn
     hơn**? Nêu ba nhóm lỗi theo cách phục hồi, mỗi nhóm một ví dụ trên DP-01.
+13. ⭐ Máy có ba mức chạy khô dùng chung cờ bỏ qua. Vì sao bật cờ ở sườn lên và tắt ở sườn xuống của
+    từng mức lại sai khi đổi thẳng từ mức 2 sang mức 1, nhưng đúng khi đổi từ 1 sang 2? Viết lại cho
+    đúng, và nêu phép thử chứng minh bản mới đúng.
 
 Câu 2, 3 và 7 là ba câu phân loại. Trả lời được cả ba nghĩa là bạn đã có phản xạ *suy thứ tự từ phân
 tích va chạm* — thứ phân biệt người viết được máy chạy an toàn với người viết được máy chạy.

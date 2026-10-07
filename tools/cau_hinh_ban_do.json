@@ -69,6 +69,9 @@
       "en/User Manual",
       "en/Command Manual"
     ],
+    "Inovance Medium-Sized Motion": [
+      "en/Motion Control"
+    ],
     "IO-Link — đặc tả giao diện": [
       "IO-Link_Interface"
     ],
@@ -82,7 +85,7 @@
       "sick",
       "SICK"
     ],
-    "Schneider — an toàn máy": [
+    "Schneider — an toàn": [
       "schneider"
     ],
     "DGUV / IFA": [

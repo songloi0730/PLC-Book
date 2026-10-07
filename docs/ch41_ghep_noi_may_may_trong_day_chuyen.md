@@ -239,6 +239,20 @@ Ngày nay hai máy thường đã nối chung mạng (Chương 40). Vậy sao kh
 >
 > Đây chính là nguyên tắc hỏng-về-an-toàn ở Chương 3 mục 3.6 và Chương 15, áp cho giao diện máy–máy.
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG — hai PLC của CÙNG một máy bắt tay hoàn toàn qua mạng.**
+> **Người ta làm gì:** máy có một PLC chạy chuyền và một PLC chạy trạm công tác — thường do cùng một
+> nhà tích hợp làm, hai tủ đứng cạnh nhau. Mọi thứ giữa hai PLC đi qua mạng: *cho phép làm*, *số việc
+> phải làm trên sản phẩm này*, *đã làm xong*, một byte mã trạng thái, nhịp tim, nút Start/Stop/Reset
+> chuyển qua lại, và cả trạng thái dừng khẩn, cửa, STO ở dạng **thông tin**.
+> **Vì sao:** một người viết cả hai đầu theo cùng một bảng giao tiếp, cấu hình một lần; bớt hàng chục
+> sợi dây; và trạm cần nhiều dữ liệu hơn hai bit — đúng bài toán mục 41.6.
+> **Ranh giới:** những điều của mục này vẫn phải giữ, chỉ đổi cách giữ. ⚠ **Chiều an toàn:** mất mạng
+> phải ra *"không cho phép"* — mỗi bên giám sát **nhịp tim** của bên kia (Chương 48 mục 48.5) và coi
+> mất nhịp tim như mọi tín hiệu cho phép đã về 0. ⚠ **Mỗi byte một bên ghi** — bảng giao tiếp theo
+> đúng quy tắc của Chương 39 mục 39.9b. ⚠⚠ Dừng khẩn, cửa, STO đi qua mạng **chỉ là thông tin** để
+> trình tự phản ứng; chức năng an toàn vẫn đi đường riêng của nó qua thiết bị an toàn (Chương 47). Và
+> khi chuyền đưa sản phẩm sang **máy của người khác làm**, quay về khuyến nghị ở trên: tín hiệu cứng.
+
 ---
 
 ## 41.6 Bắt tay dữ liệu — khi cần nhiều hơn hai bit

@@ -1,6 +1,6 @@
 # PROJECT_STATUS — PLC Programming Book
 
-**Cập nhật:** 2026-10-03 (đợt 67 — bảng I/O và quy hoạch địa chỉ rút từ tài liệu nội bộ của người làm nghề)
+**Cập nhật:** 2026-10-07 (đợt 68 — đọc mã thực thi của một khung chương trình máy đang chạy)
 **Giai đoạn:** ✅ **bản thảo xong toàn bộ — 58 chương + 15 phụ lục (16 dòng A1–O).** Kế hoạch hoàn
 thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ · 59 ✅ · 60 ✅ · 61 ✅ · 62 ✅).
 
@@ -16,8 +16,8 @@ thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ 
 | Bản thảo | ✅ 58 chương · 15 phụ lục (A tách A1/A2 → 16 dòng, tới Phụ lục O) |
 | Ghép & phát hành | `bash tools/gop_sach.sh` → `output/*.md` + `.html` → chép sang kho phát hành `../CSharp Automation Machine/CSharp-Automation-Machine/book` · ⚠ kho đó còn **sách khác — chỉ stage tệp của sách này, không xoá gì khác** |
 | Phiên bản | `v1.0.0.YYMMDD` theo ngày ghép · ⚠ **chỉ đổi `1.0.0` khi chủ dự án bảo** |
-| Bộ kiểm (trong `gop_sach.sh`, có LỖI là dừng ghép) | 7 bộ: `kiem_tra_chuong` · `kiem_nhat_quan` · `kiem_tro_muc` · `kiem_danh_so` · `kiem_chu_nha` · ⭐ `kiem_cu_phap_st` (đợt 58, mở rộng đợt 62 — thử bằng 12 + 13 lỗi cài) · ⭐⭐ `chay_thu/kich_ban.py` (đợt 62, 63 — **chạy thử** các ví dụ ST và SFC dạng văn bản qua nhiều vòng quét, 107 phép; thử bằng 7 + 8 lỗi cài) + markdownlint · sau khi render: `kiem_html` |
-| Mã mẫu | 18 ví dụ hoàn chỉnh — dòng đầu `// ✔ VÍ DỤ HOÀN CHỈNH` (Ch.14–21, 24–30 — Ch.27 có hai: khối xy-lanh và ⭐ tầng ánh xạ vào/ra ở mục 27.3c — Phụ lục L mục L.8, L.8b); còn lại là **đoạn trích**. Quy ước: Ch.1, Phụ lục N mục N.7 |
+| Bộ kiểm (trong `gop_sach.sh`, có LỖI là dừng ghép) | 7 bộ: `kiem_tra_chuong` · `kiem_nhat_quan` · `kiem_tro_muc` · `kiem_danh_so` · `kiem_chu_nha` · ⭐ `kiem_cu_phap_st` (đợt 58, mở rộng đợt 62 — thử bằng 12 + 13 lỗi cài) · ⭐⭐ `chay_thu/kich_ban.py` (đợt 62, 63 — **chạy thử** các ví dụ ST và SFC dạng văn bản qua nhiều vòng quét, 141 phép; thử bằng 7 + 8 lỗi cài) + markdownlint · sau khi render: `kiem_html` |
+| Mã mẫu | 23 ví dụ hoàn chỉnh — dòng đầu `// ✔ VÍ DỤ HOÀN CHỈNH` (Ch.14–21, 24–30 — Ch.27 có hai: khối xy-lanh và ⭐ tầng ánh xạ vào/ra ở mục 27.3c; Ch.28 thêm `Prg_DryRunMap` — Ch.37 `FB_TwoHeadsGap` — Ch.39 `FB_PcRequest` — Phụ lục L mục L.8, L.8b, L.9b, L.16b); còn lại là **đoạn trích**. Quy ước: Ch.1, Phụ lục N mục N.7 |
 | Nhật ký đối chiếu | `docs/00d_Nhat_ky_doi_chieu.md` — mỗi đợt một mục, khẳng định đánh số liên tục |
 | ⚠⚠ Chặn phát hành chính thức | Ch.3, 6, 47, 48, 56 + Phụ lục D cần **người có thẩm quyền về an toàn** duyệt · 🔍 Ch.35, 40 chờ xác minh kỹ thuật |
 
@@ -46,6 +46,10 @@ thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ 
 9. 🔧 (thấp) Bản đồ nguồn khớp theo từ nên quy thừa chương cho vài nhãn — tên *Guidelines for Safe
    Machinery* rơi vào nhãn PLCopen Safe Motion và Coding Guidelines, `S7-1200/1500` rơi vào hai nhãn
    Siemens (nhật ký #712). Không che lỗ hổng nào; sửa khi chạm `tools/ban_do_nguon.py`.
+   ⭐ Chẩn đoán đợt 68 (#772): bệnh nằm ở **từ tiếng Việt thông dụng được chọn làm từ phân biệt** của
+   nhãn — đã sửa nhãn Schneider (*máy*); còn *"Rockwell — khác"* (*khác*), hai nhãn IO-Link (*giao*,
+   *diện*, *thống*), *"Tài liệu PLC tiếng Việt"*, *"SEMI — bộ tiêu chuẩn"* (*chuẩn*, *tiêu*). Cách sửa
+   gọn: đổi tên nhãn sang từ định danh không dấu, hoặc cho `tu_phan_biet` bỏ từ có dấu.
 10. ~~**Đợt 66 — giai đoạn 1**~~ ✅ (2026-10-01, design note 0012, nhật ký #718–#736) — trả lời hai nhận
     xét: *"nhắc phải làm mà không có tiêu chí, con số"* và *"nhiều phần không liên quan, chỉ cần ánh xạ,
     I/O, viết chương trình"*. ⭐⭐ **Phụ lục O** — 16 thẻ việc (các bước · đạt khi · con số gắn nhãn
@@ -62,6 +66,13 @@ thiện 5 đợt ở `docs/design-notes/0005-*.md` **đã xong** (đợt 58 ✅ 
     xếp địa chỉ*; Ch.11 mục 11.8b *quy hoạch vùng nhớ theo khối* (hệ kiểu thiết bị; `IST` chiếm `S0`–`S19`);
     Ch.44 *đánh số báo động theo khối và số thứ tự thiết bị*; Ch.27 ô ⚖ *mảng cờ trạm*; C.1 thêm cột
     phân loại, hành vi khi mất; C.10.3 *trục và động cơ*.
+14. ~~**Đợt 68**~~ ✅ (2026-10-06 – 07, design note 0014, nhật ký #750–#772) — chủ dự án đưa một dự án
+    máy thật; mở bằng chính phần mềm của hãng trên **bản sao**, đọc **mã thực thi** (đợt 37 mới đọc được
+    kiến trúc). Ch.39 mục 39.9b *PLC làm máy chủ cho phần mềm PC* (`FB_PcRequest`); Ch.37 mục 37.7b *hai
+    đầu chung một ray* (`FB_TwoHeadsGap`) + ô ⚖ tác vụ của khối trục; Ch.28 *chạy khô nhiều mức*
+    (`Prg_DryRunMap`, Bẫy 7); Ch.22 mục 22.6b *năm chỗ phải soi*; ⚠ sửa Ch.16 mục 16.6 / L.1 (Start theo
+    mức tự chạy lại khi nút kẹt) + Ch.44 Bẫy 14; ô ⚖ ở Ch.25, 30, 41, 51; M.2 biến thể phần cứng.
+    Để ngỏ: chụp bay bằng ngõ ra so sánh của bộ đếm (hợp với Ch.43 mục 43.4), tích hợp tô vít điện.
 
 ---
 
@@ -330,12 +341,13 @@ PLC_Programming_Book/
     case_study_may_mau.md         — hồ sơ máy mẫu DP-01 (bản làm việc; bản phát hành là Phụ lục J)
     ch01_… ch58_…                 — 58 chương
     pl_a1_… pl_o_…                — 16 dòng phụ lục (⭐ pl_o: sổ tay việc của người lập trình)
-    design-notes/0001 … 0013      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
+    design-notes/0001 … 0014      — quyết định thiết kế (0005: kế hoạch đợt 58–62 · 0006: khối xy-lanh ·
                                     0007: đường đi của lỗi · 0008: giao diện trạm, ví dụ hoàn chỉnh, SFC ·
                                     0009: bản đầy đủ PLCopen, chạy thử SFC · 0010: phong cách ladder,
                                     động cơ vô hiệu hoá · 0011: PLC an toàn thật, ô ⚖ ·
                                     0012: sổ tay việc, lộ trình D, tầng ánh xạ vào/ra ·
-                                    0013: bảng I/O và quy hoạch địa chỉ từ tài liệu nội bộ)
+                                    0013: bảng I/O và quy hoạch địa chỉ từ tài liệu nội bộ ·
+                                    0014: đọc mã thực thi của một khung chương trình máy)
   tools/
     gop_sach.sh                   — chạy 7 bộ kiểm → ghép → HTML → chép sang kho phát hành
     kiem_*.py                     — 6 bộ kiểm tĩnh (xem bảng ở đầu tệp)

@@ -718,10 +718,223 @@ def ch21_sfc():
     kiem(vet_a == vet_b, "hai kiểu .T khi rời bước cho CÙNG một chuỗi bước — ví dụ đúng với cả hai hệ")
 
 
+def ch39_yeu_cau_pc():
+    print("Ch.39 — FB_PcRequest (bắt tay với phần mềm PC theo số thứ tự)")
+    vo = """
+VAR_GLOBAL
+    GEx : BOOL;
+    GCmd, GPar, GAck, GRes : INT;
+END_VAR
+PROGRAM T
+VAR
+    R : FB_PcRequest;
+END_VAR
+R(Execute := GEx, Cmd := GCmd, Param := GPar, AckId := GAck, AckResult := GRes, TimeOut := T#1S);
+END_PROGRAM
+"""
+    fb = khoi("ch39_*.md", "FUNCTION_BLOCK FB_PcRequest")
+    m = May(fb + vo)
+
+    def tra_loi(ket_qua, so=None):
+        # phần mềm: ghi kết quả TRƯỚC, số thứ tự SAU (luật 2 của mục 39.9b)
+        m.dat("GRes", ket_qua)
+        m.dat("GAck", m.doc("T.R.ReqId") if so is None else so)
+
+    quet(m, "T")
+    m.dat("GCmd", 1)
+    m.dat("GPar", 7)
+    m.dat("GEx", True)
+    quet(m, "T")
+    kiem(m.doc("T.R.Busy") and m.doc("T.R.ReqId") == 1 and m.doc("T.R.ReqCmd") == 1
+         and m.doc("T.R.ReqParam") == 7, "sườn Execute → yêu cầu số 1, chốt lệnh và tham số, Busy")
+    quet(m, "T", 3)
+    tra_loi(1)
+    quet(m, "T")
+    kiem(m.doc("T.R.Done") and m.doc("T.R.Ok") and not m.doc("T.R.Busy"), "phần mềm trả OK số 1 → Done, Ok")
+    m.dat("GEx", False)
+    quet(m, "T")
+    kiem(not m.doc("T.R.Done") and not m.doc("T.R.Ok"), "Execute hạ → kết quả xoá")
+    m.dat("GEx", True)
+    quet(m, "T")
+    kiem(m.doc("T.R.Busy") and m.doc("T.R.ReqId") == 2, "yêu cầu thứ hai mang số 2")
+    quet(m, "T", 2)
+    kiem(m.doc("T.R.Busy") and not m.doc("T.R.Done"),
+         "phần mềm còn để nguyên kết quả cũ (OK, số 1) → KHÔNG bị nhận nhầm cho yêu cầu 2")
+    tra_loi(1)
+    quet(m, "T")
+    kiem(m.doc("T.R.Done") and m.doc("T.R.Ok"), "hai kết quả OK liên tiếp → nhận đủ cả hai")
+    m.dat("GEx", False)
+    quet(m, "T")
+    m.dat("GEx", True)
+    quet(m, "T")
+    tra_loi(2)
+    quet(m, "T")
+    kiem(m.doc("T.R.Done") and not m.doc("T.R.Ok"), "phần mềm trả NG → Done, Ok FALSE")
+    m.dat("GEx", False)
+    quet(m, "T")
+    m.dat("GEx", True)
+    quet(m, "T", 99)
+    kiem(m.doc("T.R.Busy") and not m.doc("T.R.Error"), "chờ chưa đủ 1 s → còn chờ, chưa lỗi")
+    quet(m, "T", 3)
+    kiem(m.doc("T.R.Error") and m.doc("T.R.ErrorID") == 1 and not m.doc("T.R.Ok") and not m.doc("T.R.Done"),
+         "quá 1 s không trả lời → Error mã 1 — KHÔNG thành NG")
+    so_bo_cuoc = m.doc("T.R.ReqId")
+    m.dat("GEx", False)
+    quet(m, "T")
+    m.dat("GEx", True)
+    quet(m, "T")
+    tra_loi(1, so_bo_cuoc)
+    quet(m, "T", 3)
+    kiem(m.doc("T.R.Busy") and not m.doc("T.R.Done"), "trả lời ĐẾN MUỘN cho yêu cầu đã bỏ cuộc → bị bỏ qua")
+    tra_loi(2)
+    quet(m, "T")
+    kiem(m.doc("T.R.Done") and not m.doc("T.R.Ok"), "trả lời đúng số của yêu cầu đang chờ → nhận")
+    m.dat("GEx", False)
+    quet(m, "T")
+    m.dat("GEx", True)
+    quet(m, "T")
+    tra_loi(7)
+    quet(m, "T")
+    kiem(m.doc("T.R.Error") and m.doc("T.R.ErrorID") == 2, "phần mềm trả mã lạ → Error mã 2")
+    m.dat("GEx", False)
+    quet(m, "T")
+    m.dat("GEx", True)
+    quet(m, "T")
+    so = m.doc("T.R.ReqId")
+    m.dat("GEx", False)
+    quet(m, "T", 2)
+    m.dat("GEx", True)
+    quet(m, "T")
+    kiem(m.doc("T.R.Busy") and m.doc("T.R.ReqId") == so, "kích lại khi đang bận → bỏ qua, số không đổi")
+    m.dat("GEx", False)
+    quet(m, "T")
+    tra_loi(1)
+    quet(m, "T")
+    kiem(m.doc("T.R.Done") and m.doc("T.R.Ok"), "Execute chỉ là xung → kết quả vẫn hiện ít nhất MỘT vòng")
+    quet(m, "T")
+    kiem(not m.doc("T.R.Done"), "… và xoá ở vòng sau")
+    m.dat("T.R.ReqId", 30000)
+    m.dat("GEx", True)
+    quet(m, "T")
+    kiem(m.doc("T.R.ReqId") == 1, "quay vòng: sau 30000 là 1, không bao giờ là 0")
+    m2 = May(fb + vo)
+    m2.dat("GAck", 57)
+    quet(m2, "T")
+    m2.dat("GEx", True)
+    quet(m2, "T")
+    kiem(m2.doc("T.R.ReqId") == 58 and m2.doc("T.R.Busy"),
+         "PLC khởi động lại khi phần mềm đã trả số 57 → yêu cầu đầu mang số 58, không nhận nhầm 57")
+
+
+def ch37_hai_dau():
+    print("Ch.37 — FB_TwoHeadsGap (hai đầu chung một ray)")
+    m = May(khoi("ch37_*.md", "FUNCTION_BLOCK FB_TwoHeadsGap") + """
+VAR_GLOBAL
+    A1, T1, A2, T2, V1, V2 : REAL;
+    Dec : REAL := 3000.0;
+END_VAR
+PROGRAM T
+VAR
+    G : FB_TwoHeadsGap;
+END_VAR
+G(X1Act := A1, X1Tgt := T1, X2Act := A2, X2Tgt := T2, V1Act := V1, V2Act := V2,
+  GapMin := 40.0, DecStop := Dec, TReact := 0.006);
+END_PROGRAM
+""")
+
+    def dat(a1, t1, a2, t2, v1=0.0, v2=0.0):
+        for k, v in (("A1", a1), ("T1", t1), ("A2", a2), ("T2", t2), ("V1", v1), ("V2", v2)):
+            m.dat(k, float(v))
+        quet(m, "T")
+
+    dat(100, 100, 500, 500)
+    kiem(m.doc("T.G.PathClear") and not m.doc("T.G.StopBoth") and abs(m.doc("T.G.GapNow") - 400) < 1e-6,
+         "hai đầu xa nhau, đứng yên → được đi, không dừng, khoảng hở 400 mm")
+    dat(100, 480, 500, 500)
+    kiem(not m.doc("T.G.PathClear"), "đích đầu 1 lấn vào đầu 2 (480 + 40 > 500) → KHÔNG được phát lệnh")
+    dat(100, 280, 500, 300)
+    kiem(not m.doc("T.G.PathClear"), "đầu 2 đang đi sang 300: đích 280 của đầu 1 cộng 40 lấn đoạn đó → chặn")
+    dat(100, 250, 500, 300)
+    kiem(m.doc("T.G.PathClear"), "đích 250 + 40 = 290 ≤ 300 → được đi")
+    dat(200, 200, 241, 241)
+    kiem(not m.doc("T.G.StopBoth"), "đứng yên sát nhau 41 mm (> 40) → KHÔNG báo — việc làm sát nhau vẫn được phép")
+    dat(200, 300, 280, 280, v1=300.0)
+    kiem(abs(m.doc("T.G.GapNeed") - 56.8) < 1e-6 and not m.doc("T.G.StopBoth"),
+         "đầu 1 tiến lại 300 mm/s: cần 40 + 1,8 + 15 = 56,8 mm; đang hở 80 → chưa dừng")
+    dat(230, 300, 280, 280, v1=300.0)
+    kiem(m.doc("T.G.StopBoth"), "hở còn 50 < 56,8 → dừng cả hai")
+    dat(200, 300, 270, 200, v1=300.0, v2=-300.0)
+    kiem(abs(m.doc("T.G.GapNeed") - 73.6) < 1e-6 and m.doc("T.G.StopBoth"),
+         "hai đầu cùng tiến lại 300 mm/s: cần 73,6 mm; hở 70 → dừng")
+    dat(200, 300, 280, 200, v1=300.0, v2=-300.0)
+    kiem(not m.doc("T.G.StopBoth"), "… hở 80 > 73,6 → chưa dừng")
+    dat(200, 100, 245, 245, v1=-300.0)
+    kiem(not m.doc("T.G.StopBoth"), "đầu 1 đang đi RA XA (tốc độ âm) → không tính quãng phanh, hở 45 → không dừng")
+    m.dat("Dec", 0.0)
+    dat(100, 100, 500, 500)
+    kiem(m.doc("T.G.StopBoth") and not m.doc("T.G.PathClear"),
+         "gia tốc hãm bằng 0 (thiếu tham số) → dừng và không cho phát lệnh")
+
+
+def ch28_chay_kho():
+    print("Ch.28 — chạy khô nhiều mức: bản ✗ (sườn) và Prg_DryRunMap (tính từ mức)")
+    bang = {0: (False, False, False, False), 1: (True, True, True, True),
+            2: (False, True, True, True), 3: (False, False, False, True)}
+    co = ("M_BypBoard", "M_BypWork", "M_BypLine", "M_BypHost")
+    sai = khoi("ch28_*.md", "Lv1Up(CLK")
+    m = May("""
+VAR_GLOBAL
+    M_DryLevel : INT;
+    M_BypBoard, M_BypWork, M_BypLine, M_BypHost : BOOL;
+END_VAR
+PROGRAM X
+VAR
+    Lv1Up, Lv2Up : R_TRIG;
+    Lv1Dn, Lv2Dn : F_TRIG;
+END_VAR
+""" + sai + """
+END_PROGRAM
+""")
+    quet(m, "X", 3)
+    m.dat("M_DryLevel", 2)
+    quet(m, "X")
+    kiem(tuple(m.doc(c) for c in co) == bang[2], "✗ bản sườn: 0 → 2 → cờ đúng bảng mức 2")
+    m.dat("M_DryLevel", 1)
+    quet(m, "X")
+    kiem(tuple(m.doc(c) for c in co) == (True, False, False, False),
+         "✗ bản sườn: đổi 2 → 1 trong MỘT lần ghi → chỉ còn M_BypBoard — đúng lỗi Bẫy 7 (đầu công tác làm việc thật)")
+    m.dat("M_DryLevel", 2)
+    quet(m, "X")
+    kiem(tuple(m.doc(c) for c in co) == bang[2], "✗ bản sườn: đổi 1 → 2 thì lại đúng — lỗi chỉ theo MỘT chiều")
+
+    m = May(khoi("ch28_*.md", "PROGRAM Prg_DryRunMap"))
+    hong = []
+    for a in range(4):
+        for b in range(4):
+            m.dat("M_DryLevel", a)
+            quet(m, "Prg_DryRunMap")
+            m.dat("M_DryLevel", b)
+            quet(m, "Prg_DryRunMap")
+            if tuple(m.doc(c) for c in co) != bang[b] or m.doc("M_AnyBypass") != any(bang[b]):
+                hong.append((a, b))
+    kiem(not hong, "✔ Prg_DryRunMap: đổi qua lại cả 16 cặp mức bằng một lần ghi → bốn cờ luôn đúng bảng")
+    m.dat("M_BypHostMan", True)
+    m.dat("M_DryLevel", 2)
+    quet(m, "Prg_DryRunMap")
+    m.dat("M_DryLevel", 0)
+    quet(m, "Prg_DryRunMap")
+    kiem(m.doc("M_BypHost") and not m.doc("M_BypWork") and m.doc("M_AnyBypass"),
+         "✔ cờ bật TAY còn nguyên khi rời chạy khô — mức không xoá được nó")
+    m.dat("M_BypHostMan", False)
+    m.dat("M_DryLevel", 5)
+    quet(m, "Prg_DryRunMap")
+    kiem(m.doc("M_DryLevelBad") and not m.doc("M_AnyBypass"), "✔ mức ngoài bảng → báo lỗi cấu hình, không bật cờ nào")
+
+
 def main():
     for f in (ch27_xylanh, ch27_anh_xa, ch30_chuyen_board, ch42_ma, ch14_pou, ch16_danh_dau, ch17_loc, ch18_dem,
               ch19_dich, ch20_ham, ch24_bang, ch28_giam_sat, ch29_cong_thuc, ch25_may, tich_hop,
-              ch21_sfc):
+              ch21_sfc, ch39_yeu_cau_pc, ch37_hai_dau, ch28_chay_kho):
         f()
     print("-" * 78)
     print("CHẠY THỬ: %d đạt · %d hỏng" % (SO_DAT[0], len(SO_HONG)))

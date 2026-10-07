@@ -371,6 +371,20 @@ kiện tối thiểu:
 trọng hơn, vì cờ bỏ qua **được phép tồn tại lâu**, nên càng dễ bị quên. Một cỗ máy đang chạy với ba
 cờ bỏ qua bật phải **trông khác** một cỗ máy chạy đủ chức năng, nhìn từ xa.
 
+> ⚖ **NGOÀI HIỆN TRƯỜNG — cờ bỏ qua nằm chung vùng nhớ giữ qua mất điện.**
+> **Người ta làm gì:** một chương trình máy đang chạy mà tôi đọc được mã gom **mọi** thứ của hệ thống —
+> trạng thái, đèn, báo động **và cả bộ cờ bỏ qua** — vào một cấu trúc duy nhất, đặt ở một địa chỉ cố
+> định trong vùng **giữ được qua mất điện**. Danh sách bỏ qua trên màn hình của nó còn có cả mục
+> *"bỏ qua cửa an toàn"* và *"bỏ qua dừng khẩn"*, nằm cạnh *"bỏ qua còi"*.
+> **Vì sao:** màn hình đọc ghi theo địa chỉ, nên một cấu trúc ở một chỗ là gọn nhất; và người ta muốn
+> số liệu đếm, tham số còn nguyên sau khi tắt máy — cả cấu trúc được giữ cho chắc.
+> **Ranh giới:** điều kiện 3 ở trên không đổi — ⚠ cờ bỏ qua **phải tự hết khi khởi động lại**. Giữ
+> chung cấu trúc thì **xoá bộ cờ bỏ qua ở vòng quét đầu** (Phụ lục M mục M.4), hoặc tách nó sang một cấu
+> trúc **không giữ**; ✅ đạt khi tắt rồi bật máy, màn hình chính báo *"đang bỏ qua: 0 mục"*. ⚠⚠ Còn
+> hai mục bỏ qua cửa an toàn và dừng khẩn thì không có cách đặt nào làm chúng hợp lệ trong một chương
+> trình thường — đúng ranh giới ở mục này; gặp chúng khi nhận máy thì báo người có thẩm quyền về an
+> toàn, đừng tự sửa cũng đừng dùng.
+
 ---
 
 ## 51.8 Lỗi chập chờn — bốn nguyên nhân vật lý hay bị bỏ sót

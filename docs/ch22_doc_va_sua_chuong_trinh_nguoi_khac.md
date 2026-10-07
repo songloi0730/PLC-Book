@@ -379,6 +379,94 @@ Một máy mười năm tuổi thường đã qua tay năm, sáu người. Dấu
 
 ---
 
+## 22.6b ⭐⭐ Năm chỗ phải soi khi nhận một chương trình làm sẵn
+
+Mục 22.6 là dấu hiệu của chương trình bị sửa qua nhiều đời. Mục này nói một loại khác: lỗi **nằm im**
+trong một chương trình **đang chạy tốt**. Đọc mã của một máy đang sản xuất — khung chương trình chuẩn
+của một nhóm kỹ thuật, dùng lại qua nhiều máy — cho thấy năm loại. ⭐ Cả năm có chung hai đặc điểm:
+biên dịch **không báo gì**, và máy vẫn chạy **gần như mọi lúc**. Và mỗi loại tìm được bằng **một phép
+tìm** trong bản xuất văn bản (mục 22.3b, cách ⑤) hoặc bằng tham chiếu chéo.
+
+### ① Biến điều kiện bị gán cứng
+
+```iecst
+// ✗ hai dòng thật sự gặp — tên đã đổi
+M_NoInterference := TRUE;                    // phép kiểm chưa ai viết — gán cứng cho chạy được
+// M_GuardsClosed := X_Guard1 AND X_Guard2;  // dòng tính thật đã bị biến thành chú thích
+M_GuardsClosed := TRUE;
+```
+
+| | |
+|---|---|
+| **Vì sao nguy** | Khung chương trình để sẵn **chỗ** cho một phép kiểm, rồi người làm máy gán cứng cho chạy được. ⚠ **Cái tên vẫn còn** — người đọc, kể cả người nghiệm thu, tưởng phép kiểm còn |
+| **Tìm thế nào** | Tìm mọi dòng **gán hằng** đứng ngoài `IF`: `:= TRUE;`, `:= FALSE;`. Với mỗi kết quả hỏi: *tên này có phải tên của một ĐIỀU KIỆN không* — kiểu *…OK*, *…Closed*, *…Ready*, *No…* |
+| **Sửa** | Viết phép kiểm thật; hoặc xoá biến và ghi rõ *"máy này không có …"*. ⚠ Không để một cái tên nói dối. Biến thuộc **thiết bị bảo vệ người** thì không phải việc sửa trong chương trình thường — báo người phụ trách an toàn (Chương 47) |
+| **✅ Đạt khi** | Mọi biến mang tên điều kiện có **ít nhất một** chỗ gán từ tín hiệu thật — kiểm bằng tham chiếu chéo |
+
+### ② Sườn đã tính mà không ai dùng — lệnh chạy theo MỨC
+
+```iecst
+// ✗ thể hiện bắt sườn được gọi đều đặn… nhưng không ai đọc .Q của nó
+StartEdge(CLK := M_StartCmd);                // M_StartCmd = nút Start OR bit Start từ màn hình
+IF M_StartCmd AND M_Ready AND M_AutoMode THEN
+    M_Running := TRUE;                       // ⚠ chạy theo MỨC của lệnh, không theo sườn
+END_IF;
+```
+
+| | |
+|---|---|
+| **Vì sao nguy** | ⚠⚠ Lệnh Start **kẹt ở 1** — tiếp điểm dính, hay bit từ màn hình kẹt vì mất kết nối đúng lúc đang nhấn (Chương 44, Bẫy 14) — thì máy **tự chạy lại** ngay khi lỗi vừa được xoá: đúng thứ *"khởi động lại phải có chủ ý"* cấm (Chương 16 mục 16.6) |
+| **Tìm thế nào** | Liệt kê mọi thể hiện `R_TRIG`/`F_TRIG`, tham chiếu chéo `.Q` của từng cái. ⭐ Thể hiện được **gọi** mà `.Q` **không ai đọc** là dấu hiệu gần như chắc chắn: người viết định dùng sườn rồi quên |
+| **Sửa** | Lấy sườn: `IF StartEdge.Q AND M_Ready AND M_AutoMode THEN` |
+| **✅ Đạt khi** | Giữ nút Start, gây một lỗi rồi xoá lỗi → máy **không** chạy lại cho tới khi nhả nút và nhấn lần nữa |
+
+### ③ Nhịp tự tạo nhanh hơn tác vụ — rồi đo thời gian bằng cách đếm nhịp
+
+Chương trình tự tạo một nhịp *"100 Hz"* — 5 ms bật, 5 ms tắt, dựng bằng hai `TON` nối vòng — trong một
+tác vụ *(task)* chu kỳ **4 ms**; một bộ đếm cộng 1 mỗi vòng quét mà nhịp đang bật, rồi đọc kết quả như
+*"số lần 10 ms"* để đo thời gian một thao tác.
+
+| | |
+|---|---|
+| **Vì sao sai** | `TON` chỉ được xét **lúc được gọi** (Phụ lục B mục B.9b), nên nửa chu kỳ không thể ngắn hơn một chu kỳ tác vụ và bị **làm tròn lên**. Chạy thử đúng đoạn mã đó: trong tác vụ 4 ms, mỗi nửa chu kỳ dài **12 ms** chứ không phải 5 ms; phép đo bằng đếm nhịp **dư 25 %**. Cùng đoạn mã ấy chuyển sang tác vụ 2 ms thì dư **150 %** — ⚠ con số sai đổi theo chu kỳ tác vụ, nên không *"chỉnh hệ số"* mà chữa được |
+| **Tìm thế nào** | Mọi khối tạo nhịp tự viết có thời gian đặt **≤ 2 lần** chu kỳ tác vụ; mọi dòng dạng `IF Clock… THEN X := X + 1` |
+| **Sửa** | Đo thời gian bằng `ET` của một `TON`, hoặc bằng hiệu hai lần đọc đồng hồ hệ thống. Nhịp tự tạo chỉ dùng để **nháy đèn**, với nửa chu kỳ **[Nghề] ≥ 10 lần** chu kỳ tác vụ — sai số làm tròn khi đó dưới 10 % |
+| **✅ Đạt khi** | Phép đo thời gian của chương trình khớp đồng hồ bấm hoặc bản ghi theo thời gian, sai không quá **một chu kỳ tác vụ** |
+
+### ④ Một vế bị chép trùng
+
+```iecst
+// ✗ dòng thật: được chạy tay khi KHÔNG lỗi, hoặc khi lỗi chỉ là đang chạm giới hạn
+M_ManualAdmit := (NOT M_AxisFault OR M_PosLimitHit OR M_PosLimitHit) AND M_ManualMode;
+//                                                      ⚠ lẽ ra là M_NegLimitHit
+```
+
+| | |
+|---|---|
+| **Vì sao nguy** | Chép một dòng rồi sửa thiếu. Biên dịch không báo, máy chạy được; sai chỉ lộ ở **trường hợp đối xứng hiếm gặp** — ở đây: chạm giới hạn **âm** mà trục báo lỗi thì không chạy tay ra được, đúng lúc người ta cần nhất |
+| **Tìm thế nào** | Tìm biểu thức có **cùng một tên hai lần** trong một chuỗi `OR`/`AND` — một biểu thức chính quy như `(\b[\w.]+\b) (OR\|AND) \1\b` trên bản xuất văn bản. ⭐ Soi kỹ các cặp đối xứng: trái/phải, dương/âm, trên/dưới, trạm 1/trạm 2 |
+| **Sửa** | Sửa vế; thêm phép thử phía đối xứng vào danh mục kiểm |
+| **✅ Đạt khi** | Với **mỗi** cặp đối xứng, đã thử **cả hai phía** trên bàn hoặc trên máy |
+
+### ⑤ Hai tác vụ cùng ghi một biến
+
+Trình tự chạy ở tác vụ chính **đặt** cờ lệnh của một trục; khối điều khiển trục chạy ở tác vụ nhanh hơn,
+ưu tiên cao hơn, **xoá** cờ đó khi làm xong.
+
+| | |
+|---|---|
+| **Vì sao nguy** | Tác vụ ưu tiên cao chen vào **giữa** vòng quét của tác vụ thấp (Chương 27 mục 27.6). Tác vụ thấp đọc cờ đầu vòng, tác vụ cao xoá nó giữa chừng, tác vụ thấp ghi lại giá trị cũ cuối vòng — lệnh **chạy hai lần** hoặc **mất**. ⚠ Lỗi hiếm, và **không tái hiện** được khi ngồi xem trực tuyến |
+| **Tìm thế nào** | Tham chiếu chéo, lọc các chỗ **ghi** (mục 22.3), rồi ghi cạnh mỗi chỗ: chương trình đó **chạy ở tác vụ nào**. Một biến có chỗ ghi ở hai tác vụ là dấu hiệu |
+| **Sửa** | Mỗi biến **một** tác vụ ghi. Lệnh và xác nhận tách làm hai biến — bên ra lệnh ghi lệnh, bên làm ghi xác nhận — cùng ý với cách *số thứ tự* ở Chương 39 mục 39.9b |
+| **✅ Đạt khi** | Bảng *"biến ↔ tác vụ ghi"* không có dòng nào mang hai tác vụ |
+
+> ⭐⭐ **Vì sao năm chỗ này đáng soát TRƯỚC mọi việc khác:** chúng không gây triệu chứng hôm bạn nhận
+> máy. Chúng gây triệu chứng vào một đêm nào đó — Start kẹt, chạm giới hạn âm, hai tác vụ đụng nhau đúng
+> một micro-giây — và khi ấy **người sửa cuối cùng** là người bị hỏi. ⚡ Năm phép tìm mất chưa tới một
+> giờ; ghi kết quả vào bản tóm tắt hệ thống (mục 22.4b) như một danh sách *"đã biết"*.
+
+---
+
 ## 22.7 ⭐ Quy tắc sửa an toàn
 
 Bốn bước, theo đúng thứ tự. Không bỏ bước nào, kể cả khi "chỉ sửa một dòng".
@@ -624,6 +712,7 @@ nó, hay đổi để chữa cái gì.
 | ⭐ Dựng xong bản đồ thì làm gì | **Viết ra 2–3 trang**, ⚠ **đánh dấu rõ chỗ nào là suy đoán** |
 | Ghi thêm mục nào | ⭐ **Ai viết, ai sửa, sửa khi nào** — nửa lời giải cho code chắp vá |
 | Trước khi nhận bảo trì một máy | Hỏi: **có file dự án gốc không?** |
+| ⭐⭐ Nhận một chương trình đang chạy tốt | Soát **năm chỗ** của mục 22.6b — gán cứng · sườn bỏ đó · nhịp nhanh hơn tác vụ · vế chép trùng · hai tác vụ cùng ghi |
 
 ---
 
@@ -646,6 +735,8 @@ nó, hay đổi để chữa cái gì.
     trước** trong khi sơ đồ đấu dây thì còn?
 12. ⭐ Sau khi dựng xong bản đồ chương trình của người khác, việc nên làm tiếp là gì? Nêu **hai** cái
     lợi cho chính bạn, không phải cho người sau.
+13. ⭐ Bạn nhận một chương trình máy đang chạy tốt. Nêu năm chỗ phải soi ở mục 22.6b; với mỗi chỗ, nói
+    cách tìm nó trong vài phút và phép thử để biết đã sửa xong.
 
 > Câu 2, 5 và 9 là ba câu phân loại. Câu 9 là tinh thần của cả chương: **làm cho triệu chứng biến mất
 > không phải là sửa — và đôi khi nó còn tệ hơn không làm gì, vì nó tắt luôn bộ phát hiện.**
